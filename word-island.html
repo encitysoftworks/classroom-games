@@ -440,6 +440,27 @@ body.jp .kq-prompt .ja{color:#6b6358}
 .ru-in small{font:400 22px var(--f-display);color:var(--accent);letter-spacing:.08em}
 .ru-in b{font:400 clamp(28px,6vw,48px)/1 var(--f-display);color:#fff;-webkit-text-stroke:3px #000;paint-order:stroke fill;text-shadow:4px 4px 0 #000}
 .ru-in .ja{color:#fff;font-weight:800;font-size:16px;opacity:1}
+
+/* 2-player island */
+.pairgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px;text-align:left}
+.pairgrid .panel h3{color:var(--accent);font-size:16px;margin-bottom:6px}
+.roles{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.roles .btn{max-width:230px;white-space:normal}
+.callwrap{max-width:640px;margin:0 auto;text-align:center}
+.callcard{background:var(--paper);color:var(--ink);border:4px solid #000;border-radius:18px;box-shadow:0 8px 0 #000;padding:18px;margin:14px auto;display:flex;flex-direction:column;align-items:center;gap:8px}
+.callcard .word{font:400 clamp(36px,8vw,64px)/1 var(--f-display)}
+.callcard .ja{color:#6b6358;font-size:18px}
+.callcard .kit-pic{width:min(192px,50vw);height:auto}
+.callround{font:400 20px var(--f-display);color:var(--accent)}
+.callwrap .rowbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.paircode{font:400 22px var(--f-display);color:var(--accent);letter-spacing:.08em}
+
+/* class shell jar (teacher page) */
+.jar{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.jar-glass{width:90px;height:120px;border:4px solid #000;border-top-width:8px;border-radius:12px 12px 22px 22px;background:#cfeaff;position:relative;overflow:hidden;flex:none}
+.jar-glass i{position:absolute;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,#ffc0c8 0 10px,#ff9db5 10px 20px);transition:height .6s ease-out}
+.jar-total{font:400 clamp(30px,6vw,52px)/1 var(--f-display);color:var(--accent)}
+.ticket{font:400 26px var(--f-display);letter-spacing:.1em;color:var(--accent)}
 </style>
 
 <div class="app">
@@ -551,6 +572,10 @@ body.jp .kq-prompt .ja{color:#6b6358}
         <div class="shopgrid" id="shopGrid"></div>
       </div>
     </div>
+  </section>
+
+  <section class="screen" id="caller" hidden>
+    <div class="callwrap" id="callWrap"></div>
   </section>
 
   <section class="screen" id="result" hidden></section>
@@ -2123,6 +2148,9 @@ window.Kit3D=Kit3D;
    Shells buy capsules (Critter Maker) and things in the Shell Shop; island stars give rank titles.
    Stakes: shells in your backpack can be stolen by a seagull when you make a mistake.
    Banked shells, stars, critters and parts are never lost.
+     Stage 3 "Quick ears!"  the signs walk in circles and duck into bushes
+   2-player island: one Chromebook is the Caller (sees the word, says it), the other the Walker; then swap.
+   Class mode: students get a shell ticket; the teacher types tickets into the class shell jar.
    Saving: automatic on this computer + a save code to carry it to another computer.
    ===================================================================== */
 (function(){
@@ -2206,6 +2234,9 @@ const COLLECT={list:{name:["Shopping list!","おつかい！"],how:["Listen, the
   spell:{name:["Spell it!","つづろう！"],how:["Collect the letters in the right order.","正しいじゅんばんで文字を集めよう。"]},
   phrase:{name:["Build it!","文をつくろう！"],how:["Collect the words in the right order.","正しいじゅんばんで単語を集めよう。"]}};
 const FIND={name:["Find it!","見つけよう！"],how:["Listen and walk to the right picture.","聞いて、正しい絵まで歩こう。"]};
+const QUICK={name:["Quick ears!","すばやく聞こう！"],how:["The signs are on the move, and they hide in bushes! Listen and catch the right one.","かんばんが動いて、草むらにかくれるよ！聞いて、正しいのをつかまえよう。"]};
+const PAIR={name:["2-player island","ふたりの島"],how:["Your partner says a word in English. Walk to its picture!","パートナーが英語で言うよ。その絵まで歩こう！"]};
+const ISLAND_STAGES=["find","collect","quick"];
 
 /* ---------- codes ---------- */
 const CKEYS=()=>window.Kit3D?Object.keys(Kit3D.CRITTERS):[];
@@ -2215,7 +2246,11 @@ const saveCodec2=Kit.codec({game:"word-island-save2",fields:[{k:"book",n:8},...A
 const saveCodec={encode:S=>saveCodec2.encode(S),decode:c=>saveCodec2.decode(c)||saveCodec1.decode(c),length:saveCodec2.length+4};
 const critCodec=window.Kit3D?Kit.codec({game:"word-island-critter",fields:Kit3D.critterFields}):null;
 const classCodec=Kit.codec({game:"word-island-class",fields:[...Kit.words.fields,{k:"stage",n:4},{k:"rounds",n:3},{k:"hint",n:2}]});
-const ROUNDS=[3,5,8],STAGES=[["Whole island","島ぜんぶ"],["Find it only","見つけようだけ"],["Collect only","集めようだけ"]];
+const ROUNDS=[3,5,8],STAGES=[["Whole island","島ぜんぶ"],["Find it only","見つけようだけ"],["Collect only","集めようだけ"],["Quick ears only","すばやく聞こうだけ"]];
+/* 2-player island codes: book + how many units, and a seed so both partners get the same words */
+const pairCodec=Kit.codec({game:"word-island-pair",fields:[{k:"book",n:8},{k:"to",n:16}],seed:4096});
+/* class shell tickets: a student's shells from today's class island, for the teacher's class jar */
+const ticketCodec=cc=>Kit.codec({game:"word-island-ticket:"+cc,fields:[{k:"shells",n:1024},{k:"n",n:512}]});
 
 /* ---------- progress (auto-saved on this computer) ---------- */
 const P=Object.assign({book:-1,stars:{},shells:0,caps:0,pick:"cat",custom:null,story:false,shop:[],seen:{}},st.get("save",{}));
@@ -2339,10 +2374,10 @@ function renderHome(){
     <div class="rowbtns"><button class="btn primary" id="playClass" type="button">${bi(["Play","あそぶ"])}</button><button class="btn small" id="dropClass" type="button">${bi(["Close","とじる"])}</button></div>`;
     $("#playClass").onclick=()=>startClass();$("#dropClass").onclick=()=>{classSel=null;renderHome();};}
 }
-Kit.codeEntry("#classEntry",{codec:classCodec,onCode(d){classSel=Object.assign({},d.S,Kit.words.clamp(d.S));renderHome();}});
+Kit.codeEntry("#classEntry",{codec:classCodec,onCode(d){classSel=Object.assign({},d.S,Kit.words.clamp(d.S),{code:d.code});renderHome();}});
 Kit.codeEntry("#saveEntry",{codec:saveCodec,placeholder:"Type save code",onCode(d){if(loadSave(d)){Kit.toast(bi(["Save code loaded!","セーブコードを読み込みました！"]));renderHome();}}});
 const fromLink=classCodec.fromHash();
-if(fromLink){classSel=Object.assign({},fromLink.S,Kit.words.clamp(fromLink.S));setTimeout(()=>Kit.toast(bi(["Class code "+fromLink.code+" loaded","クラスコード "+fromLink.code+" を読み込みました"])),300);}
+if(fromLink){classSel=Object.assign({},fromLink.S,Kit.words.clamp(fromLink.S),{code:fromLink.code});setTimeout(()=>Kit.toast(bi(["Class code "+fromLink.code+" loaded","クラスコード "+fromLink.code+" を読み込みました"])),300);}
 
 /* ---------- modal: book choice, story, capsule ---------- */
 const modal={open(html,cls){$("#modalCard").className="modal-card"+(cls?" "+cls:"");$("#modalCard").innerHTML=html;$("#modal").hidden=false;const b=$("#modalCard button");if(b)b.focus();},
@@ -2467,13 +2502,14 @@ function renderMapInfo(){
       ${I.open?`<button class="btn primary big" id="mSail" type="button">${bi(I.boss?["FIGHT!","たたかう！"]:["Set sail!","しゅっぱつ！"])}</button>`
         :`<span class="lockmsg">${I.boss?bi(["Clear every island first ("+done+"/"+nU+")","先に島を全部クリアしよう（"+done+"/"+nU+"）"]):bi(["Clear island "+M.sel+" first","先に島 "+M.sel+" をクリアしよう"])}</span>`}
       <button class="btn small" id="mNext" type="button" ${M.sel>=M.islands.length-1?"disabled":""}>&#9654;</button>
+      <button class="btn small" id="mPair" type="button">${bi(["2 players","ふたりで"])}</button>
       <button class="btn small" id="mHome" type="button">${bi(["Home","ホーム"])}</button></div>`;
-  $("#mPrev").onclick=()=>selectIsland(M.sel-1);$("#mNext").onclick=()=>selectIsland(M.sel+1);$("#mHome").onclick=()=>scr.show("home");
+  $("#mPrev").onclick=()=>selectIsland(M.sel-1);$("#mNext").onclick=()=>selectIsland(M.sel+1);$("#mHome").onclick=()=>scr.show("home");$("#mPair").onclick=pairMenu;
   const b=$("#mSail");if(b)b.onclick=sail;
 }
 function sail(){const I=M.islands[M.sel];if(!I||!I.open)return;
   if(I.boss){startBoss();return;}
-  startIsland({book:P.book,from:M.sel,to:M.sel,island:M.sel,stages:["find","collect"],rounds:5,signs:4,hint:0,adventure:true});}
+  startIsland({book:P.book,from:M.sel,to:M.sel,island:M.sel,stages:ISLAND_STAGES,rounds:5,signs:4,hint:0,adventure:true});}
 
 /* =====================================================================
    ISLAND PLAY
@@ -2514,10 +2550,58 @@ function themeWorld(i){const W=world;if(W.theme===i)return;W.theme=i;const T=the
   const R=Kit.rng("island",i);decorate(W.deco,i,8.1,9,R);
   for(let k=0;k<6;k++){const a=R()*Math.PI*2,r=6.5+R()*1.6,rk=Kit3D.rock({r:0.3+R()*0.3});rk.position.x=Math.cos(a)*r;rk.position.z=Math.sin(a)*r;W.deco.add(rk);}}
 
+/* ---------- 2-player island ---------- */
+const pairTo=b=>{const n=unitsOf(b).length,s=starsOf(b);let k=0;while(k<n-1&&s[k]>0)k++;return k;};   /* units up to the first one not cleared yet */
+function pairWords(book,to){const p=islandPool({book,from:0,to}).words,pics=p.filter(hasPic);return pics.length>=4?pics:p;}
+function pairMenu(){
+  modal.open(`<h2>${bi(["2-player island","ふたりの島"],true)}</h2>
+    <p>${bi(["Two Chromebooks. The <b>Caller</b> sees a word and says it in English. The <b>Walker</b> listens and walks to its picture. Then swap!",
+      "Chromebook 2台で。<b>コーラー</b>は単語を見て英語で言う。<b>ウォーカー</b>は聞いて、その絵まで歩く。終わったら交代！"])}</p>
+    <div class="pairgrid"><div class="panel"><h3>${bi(["Make a code","コードを作る"])}</h3>
+      <button class="btn primary" id="pMake" type="button">${bi(["Make a pair code","ペアコードを作る"])}</button></div>
+      <div class="panel"><h3>${bi(["Your partner has a code?","パートナーのコードがある？"])}</h3><div id="pEntry"></div></div></div>
+    <div id="pRoles"></div>
+    <div class="rowbtns"><button class="btn" id="pClose" type="button">${bi(["Close","とじる"])}</button></div>`);
+  const roles=(S,seed,code)=>{$("#pRoles").innerHTML=`<p style="margin-top:12px">${bi(["Pair code","ペアコード"])}: <span class="paircode">${esc(code)}</span><br>
+      ${bi(["Both type or share this code. Who are you?","ふたりとも同じコードで。きみはどっち？"])}</p>
+      <div class="roles"><button class="btn primary big" data-r="caller" type="button">${bi(["Caller: I say the words","コーラー：言う人"])}</button>
+      <button class="btn primary big" data-r="walker" type="button">${bi(["Walker: I walk","ウォーカー：歩く人"])}</button></div>`;
+    $$("#pRoles [data-r]").forEach(b=>b.onclick=()=>{modal.close();startPair(S,seed,b.dataset.r);});};
+  $("#pMake").onclick=()=>{const S={book:P.book,to:pairTo(P.book)},seed=Kit.ri(Kit.RND,4096),code=pairCodec.encode(S,seed);Kit.sound.play("ok");roles(S,seed,code);};
+  Kit.codeEntry("#pEntry",{codec:pairCodec,placeholder:"Pair code",onCode(d){if(!BOOKS[d.S.book])return;roles(d.S,d.seed,d.code);}});
+  $("#pClose").onclick=()=>modal.close();}
+function pairPlan(S,seed){const words=pairWords(S.book,S.to),targets=Kit.pickN(Kit.rng("pair",S.book,S.to,seed),words,Math.min(6,words.length));return {words,targets};}
+function startPair(S,seed,role){const plan=pairPlan(S,seed);
+  if(plan.words.length<2){Kit.toast(bi(["This unit has no words yet","このユニットにはまだ単語がありません"]));return;}
+  if(role==="caller"){showCaller(S,seed,plan);return;}
+  G.pairWords=plan.words;
+  startIsland({book:S.book,from:0,to:S.to,island:S.to,stages:["pair"],rounds:plan.targets.length,signs:4,hint:0,adventure:false,
+    pair:{S,seed,targets:plan.targets,code:pairCodec.encode(S,seed)}});}
+/* the Caller's screen: one word card at a time, no 3D */
+function showCaller(S,seed,plan){let i=0;const t0=Date.now();scr.show("caller");
+  const draw=()=>{const w=plan.targets[i],done=i>=plan.targets.length;
+    $("#callWrap").innerHTML=done?`<div class="callcard">${art("ui:trophy",96)}<div class="word">${bi(["All done!","おわり！"])}</div>
+        <p>${bi(["Great calling! Now swap roles: you walk, your partner calls.","ナイス！こんどは交代。きみが歩いて、パートナーが言う番。"])}</p></div>
+        <div class="rowbtns"><button class="btn primary big" id="cSwap" type="button">${bi(["Swap roles!","役割を交代！"])}</button>
+        <button class="btn" id="cBack" type="button">${bi(["Sea map","マップ"])}</button></div>`
+      :`<div class="callround">${bi(["Word "+(i+1)+" of "+plan.targets.length,"単語 "+(i+1)+" / "+plan.targets.length])}</div>
+        <div class="callcard">${Kit.pics.has(w.en)?Kit.pics.img(w.en,192,w.en):`<div style="font-size:120px;line-height:1">${esc(w.emoji||"")}</div>`}
+        <div class="word">${esc(w.en)}</div>${w.ja?`<span class="ja">${esc(w.ja)}</span>`:""}</div>
+        <p>${bi(["Say it to your partner in English. Don't show the screen!","パートナーに英語で言おう。画面は見せないでね！"])}</p>
+        <div class="rowbtns"><button class="btn" id="cHear" type="button">${bi(["How do I say it?","読み方を聞く"])}</button>
+        <button class="btn primary big" id="cNext" type="button">${bi(["They found it! Next","見つけた！つぎへ"])}</button>
+        <button class="btn" id="cBack" type="button">${bi(["Quit","やめる"])}</button></div>`;
+    const h=$("#cHear");if(h)h.onclick=()=>Kit.speech.say(w.en,0.8);
+    const n=$("#cNext");if(n)n.onclick=()=>{i++;Kit.sound.play("ok");
+      if(i>=plan.targets.length&&Date.now()-t0>20000){P.shells+=10;save();Kit.toast(bi(["+10 shells for great calling!","いい声！貝+10"]));}draw();};
+    const sw=$("#cSwap");if(sw)sw.onclick=()=>startPair(S,seed+1,"walker");
+    $("#cBack").onclick=()=>scr.show("map");};
+  draw();}
+
 /* ---------- Word Kaiju fight ---------- */
 const KZ=-7.2;   /* where the Kaiju stands */
 function startBoss(){const b=P.book,n=unitsOf(b).length,k=kaijuOf(b);
-  const go=()=>startIsland({book:b,from:0,to:n-1,island:n,stages:["find","collect","find"],rounds:4,signs:5,hint:0,adventure:true,boss:true});
+  const go=()=>startIsland({book:b,from:0,to:n-1,island:n,stages:["find","collect","quick"],rounds:4,signs:5,hint:0,adventure:true,boss:true});
   if(!P.seen.bossIntro)storyShow(BOSS_STORY(k),()=>{P.seen.bossIntro=1;save();go();});else go();}
 function setBossLook(on){const W=world;W.st.scene.background.set(on?0x3a2058:0x9fd8ff);W.island.material.color.set(on?0xb8a6d8:0xffffff);W.water.material.color.set(on?0x9a88d0:0xffffff);
   if(W.kaiju){W.st.scene.remove(W.kaiju);dispose(W.kaiju);W.kaiju=null;}
@@ -2572,7 +2656,7 @@ function startIsland(cfg){
 }
 function startStage(){
   const kind=G.cfg.stages[G.stageI];G.kind=kind;
-  G.stage=kind==="find"?stageFind():stageCollect();
+  G.stage=kind==="find"?stageFind():kind==="quick"?stageQuick():kind==="pair"?stagePair():stageCollect();
   G.oops=0;G.round=0;clearItems();spawnShells(6);hud();
   const S=G.stage;$("#stageChip").innerHTML=esc(S.name[0]);
   const title=G.cfg.boss?["ROUND "+(G.stageI+1)+": "+S.name[0],"ラウンド"+(G.stageI+1)+"："+S.name[1]]:["STAGE "+(G.stageI+1)+": "+S.name[0],"ステージ"+(G.stageI+1)+"："+S.name[1]];
@@ -2613,8 +2697,8 @@ function finishIsland(){
   const openBefore=CKEYS().filter(critterOpen),rankBefore=rankOf(rankPts());
   P.shells+=bank;
   /* stars count for the map when the island matches the student's adventure book */
-  let isl=cfg.adventure?cfg.island:(cfg.from===cfg.to&&cfg.book===P.book&&cfg.stages.length===2?cfg.from:-1);
-  if(P.book<0&&!cfg.adventure&&cfg.from===cfg.to&&cfg.stages.length===2){P.book=cfg.book;isl=cfg.from;}
+  let isl=cfg.pair?-1:cfg.adventure?cfg.island:(cfg.from===cfg.to&&cfg.book===P.book&&cfg.stages.length>1?cfg.from:-1);
+  if(P.book<0&&!cfg.adventure&&!cfg.pair&&cfg.from===cfg.to&&cfg.stages.length>1){P.book=cfg.book;isl=cfg.from;}
   if(isl>=0&&isl<MAXI){const a=starsOf(P.book);a[isl]=Math.max(a[isl],G.islandStars);P.stars[P.book]=a;}
   save();
   const newCrit=CKEYS().filter(k=>critterOpen(k)&&!openBefore.includes(k)).map(k=>Kit3D.CRITTERS[k]);
@@ -2623,14 +2707,18 @@ function finishIsland(){
   if(rankNow!==rankBefore)after.push(next=>rankUp(rankNow,next));
   if(P.book>=0&&!cfg.boss&&!P.seen.mid[P.book]&&doneU>=Math.ceil(nU/2)&&doneU<nU)after.push(next=>{P.seen.mid[P.book]=1;save();storyShow(MID_STORY(kaijuOf(P.book)),next);});
   const toBoss=cfg.adventure&&!cfg.boss&&P.book>=0&&isOpen(P.book,nU)&&!bossBeaten(P.book);
+  const ticket=!cfg.adventure&&!cfg.pair&&classSel&&classSel.code?ticketCodec(classSel.code).encode({shells:Math.min(1023,bank),n:Kit.ri(Kit.RND,512)}):"";
   const canCap=P.caps<GACHA.length&&P.shells>=CAPSULE;
   const nextI=cfg.adventure&&cfg.island+1<unitsOf(P.book).length?cfg.island+1:-1;
   Kit.result("#result",{elapsed:G.times,oops:G.oopsAll,stars:G.islandStars,
     title:cfg.boss?["KAIJU DEFEATED!","怪獣をたおした！"]:G.islandStars===3?["Legendary!","伝説級！"]:G.islandStars===2?["Great job!","よくできました！"]:["Island clear!","島クリア！"],
     nums:[{label:["Time","タイム"],value:Kit.fmtTime(G.times)},{label:["Oops","ミス"],value:G.oopsAll},{label:["Best combo","最高コンボ"],value:G.best},{label:["Shells","貝"],value:"+"+bank}],
     art:`<div style="line-height:1">${art(cfg.boss?"ui:kaiju":"ui:island",112)}</div>`,
-    buttons:[toBoss?{label:["Face the Kaiju!","怪獣にいどむ！"],primary:true,onClick:()=>{M.sel=nU;st.set("sel"+P.book,nU);startBoss();}}
-      :nextI>=0?{label:["Next island","つぎの島"],primary:true,onClick:()=>{M.sel=nextI;st.set("sel"+P.book,nextI);startIsland({book:P.book,from:nextI,to:nextI,island:nextI,stages:["find","collect"],rounds:5,signs:4,hint:0,adventure:true});}}
+    swap:!!cfg.pair,
+    buttons:cfg.pair?[{label:["Swap roles!","役割を交代！"],primary:true,onClick:()=>startPair(cfg.pair.S,cfg.pair.seed+1,"caller")},
+      {label:["Sea map","マップ"],onClick:()=>scr.show("map"),hidden:P.book<0},{label:["Home","ホーム"],onClick:()=>scr.show("home")}]
+    :[toBoss?{label:["Face the Kaiju!","怪獣にいどむ！"],primary:true,onClick:()=>{M.sel=nU;st.set("sel"+P.book,nU);startBoss();}}
+      :nextI>=0?{label:["Next island","つぎの島"],primary:true,onClick:()=>{M.sel=nextI;st.set("sel"+P.book,nextI);startIsland({book:P.book,from:nextI,to:nextI,island:nextI,stages:ISLAND_STAGES,rounds:5,signs:4,hint:0,adventure:true});}}
       :{label:["Play again","もう一度"],primary:true,onClick:()=>startIsland(cfg)},
       {label:["Sea map","マップ"],onClick:()=>scr.show("map"),hidden:P.book<0},
       {label:["Critter Maker","キャラをつくる"],onClick:()=>scr.show("maker")},
@@ -2639,6 +2727,7 @@ function finishIsland(){
   const extra=document.createElement("div");extra.className="resextra";
   extra.innerHTML=newCrit.map(c=>`<div class="unlock">${art("ui:gift",26)} ${bi(["New critter: "+c.name[0]+"!","新しいキャラ："+c.name[1]+"！"])}</div>`).join("")
     +(canCap&&Math.floor(P.shells/CAPSULE)>capsBefore?`<div class="unlock">${art("ui:gift",26)} ${bi(["You can open a capsule in the Critter Maker!","キャラメーカーでカプセルを開けられるよ！"])}</div>`:"")
+    +(ticket?`<div class="unlock" style="flex-direction:column">${bi(["Shell ticket for your teacher's class jar:","先生のクラスの貝びん用チケット："])}<span class="ticket">${ticket}</span></div>`:"")
     +(P.book>=0?`<p class="note">${bi(["Your save code","セーブコード"])}</p><div class="savecode">${fmt4(saveCode())}</div>`:"");
   $("#result .kit-result").insertBefore(extra,$("#result .rowbtns"));
   scr.show("result");
@@ -2661,7 +2750,7 @@ function placeAnswers(list){/* list: [{label, pic, value}] */
   world.items.children.filter(o=>o.userData.answer).forEach(o=>{world.items.remove(o);dispose(o);});
   const used=[];G.answers=list.map(a=>{const s=answerSign(a.label,a.pic);const q=freeSpot(2.1,used);used.push(q);s.position.set(q.x,0,q.z);
     s.userData.answer=a;s.userData.base=s.userData.sprite.position.y;world.items.add(s);return s;});}
-function removeAnswer(s){world.items.remove(s);dispose(s);G.answers=G.answers.filter(x=>x!==s);}
+function removeAnswer(s){if(s.userData.bushM){world.items.remove(s.userData.bushM);dispose(s.userData.bushM);}world.items.remove(s);dispose(s);G.answers=G.answers.filter(x=>x!==s);}
 function spawnShells(n){G.shells=[];for(let i=0;i<n;i++){const q=freeSpot(1.2,G.shells.map(s=>s.position));const s=shell3d();s.position.set(q.x,0,q.z);world.items.add(s);G.shells.push(s);}}
 
 /* ---------- HUD, bubble, banners, pop-ups ---------- */
@@ -2670,8 +2759,8 @@ function hud(){$("#tOops").textContent=G.oops||0;$("#tCombo").textContent=G.comb
 function bubble(msg){const b=$("#bubble");
   if(msg){b.innerHTML=`<div><b>${msg[0]}</b><span class="ja">${msg[1]||""}</span></div>`;return;}
   if(!G.stage||!G.stage.bubble){b.innerHTML="";return;}
-  b.innerHTML=G.stage.bubble()+`<button class="btn small" id="sayBtn" type="button">${bi(["Again","もう一度"])}</button>`;
-  $("#sayBtn").onclick=()=>G.stage&&G.stage.say();}
+  b.innerHTML=G.stage.bubble()+(G.kind==="pair"?"":`<button class="btn small" id="sayBtn" type="button">${bi(["Again","もう一度"])}</button>`);
+  const sb=$("#sayBtn");if(sb)sb.onclick=()=>G.stage&&G.stage.say();}
 function bang(main,sub,ms,extra,cb,dark){const L=$("#bang");
   L.innerHTML=`<div class="bang-lines"></div><div class="bang-band"><b>${main[0]}</b>${main[1]?`<span class="ja">${main[1]}</span>`:""}${sub&&sub[0]?`<span>${bi(sub)}</span>`:""}${extra||""}</div>`;
   L.className="bang in"+(dark?" dark":"");L.hidden=false;
@@ -2711,6 +2800,47 @@ function stageFind(){
       if(w===target){good(3);bubble(["Yes! "+esc(target.en)+"!","せいかい！"]);Kit.speech.say(target.en,0.85);G.round++;roundWon();hud();
         later(()=>{G.busy=false;if(G.round>=total)stageDone();else S.next();},1200);}
       else oops(s,["That's "+esc(w.en)+"!","それは "+esc(w.en)+" だよ！"]);}
+  };
+  return S;
+}
+
+/* ---------- stage 3: Quick ears! The signs walk in circles and duck into bushes ---------- */
+function bushMesh(){const g=new THREE.Group(),m=Kit3D.mat(0x3f9e4a);
+  [[0,0.3,0,0.45],[-0.35,0.22,0.1,0.32],[0.35,0.22,0.05,0.34],[0,0.25,0.3,0.3]].forEach(([x,y,z,r])=>{const b=Kit3D.mesh(new THREE.SphereGeometry(r,6,4),m);b.position.set(x,y,z);g.add(b);});
+  g.userData.answer={bush:true};return g;}
+function stageQuick(){
+  const signs=G.cfg.signs||4,pics=G.pool.filter(hasPic),usePics=pics.length>=signs,words=usePics?pics:G.pool,bag=Kit.bag(words);
+  let target=null;const total=G.cfg.rounds||5;
+  const S={name:QUICK.name,how:QUICK.how,total,par:()=>total*10,peek:()=>target,
+    next(){G.missed=false;target=bag();const others=Kit.pickN(Kit.RND,words.filter(w=>w.en!==target.en),Math.min(signs,words.length)-1);
+      placeAnswers(Kit.shuffle([target].concat(others),Kit.RND).map(w=>({label:usePics?picKey(w):w.en,pic:usePics,value:w})));
+      G.answers.forEach((s,i)=>{const r=Math.min(6.8,Math.max(3,Math.hypot(s.position.x,s.position.z)));
+        s.userData.orbit={r,a:Math.atan2(s.position.z,s.position.x),v:(i%2?1:-1)*(0.22+Kit.RND()*0.18)};s.userData.duck=1.2+Kit.RND()*3;s.userData.down=0;
+        const b=bushMesh();world.items.add(b);s.userData.bushM=b;});
+      hud();bubble();later(S.say,450);},
+    say(){if(target)Kit.speech.say("Catch the "+target.en+"!",0.85);},
+    bubble(){const show=G.cfg.hint||G.missed||!usePics;
+      return `<span class="ear">${art("ui:ear",34,"listen")}</span><div><b>${show?"Catch: "+esc(target.en):"Catch the picture!"}</b><span class="ja">${show&&target.ja?esc(target.ja):"聞いて、つかまえよう！"}</span></div>`;},
+    hit(s){const w=s.userData.answer.value;G.busy=true;keys.clear();
+      if(w===target){good(4);bubble(["Got it! "+esc(target.en)+"!","つかまえた！"]);Kit.speech.say(target.en,0.85);G.round++;roundWon();hud();
+        later(()=>{G.busy=false;if(G.round>=total)stageDone();else S.next();},1100);}
+      else oops(s,["That's "+esc(w.en)+"!","それは "+esc(w.en)+" だよ！"]);}
+  };
+  return S;
+}
+
+/* ---------- 2-player island: the Walker hears the word from a partner (the Caller) ---------- */
+function stagePair(){
+  const words=G.pairWords,targets=G.cfg.pair.targets;let target=null;const total=targets.length,usePics=words.every(hasPic);
+  const S={name:PAIR.name,how:PAIR.how,total,par:()=>total*14,peek:()=>target,
+    next(){G.missed=false;target=targets[G.round];const others=Kit.pickN(Kit.RND,words.filter(w=>w.en!==target.en),Math.min(4,words.length)-1);
+      placeAnswers(Kit.shuffle([target].concat(others),Kit.RND).map(w=>({label:usePics?picKey(w):w.en,pic:usePics,value:w})));hud();bubble();},
+    say(){},
+    bubble(){return `<span class="ear">${art("ui:ear",34,"listen")}</span><div><b>${bi(["Word "+(G.round+1)+" of "+total+": listen to your partner!",""])}</b><span class="ja">${esc("パートナーの英語を聞こう！")}</span></div>`;},
+    hit(s){const w=s.userData.answer.value;G.busy=true;keys.clear();
+      if(w===target){good(4);bubble(["Yes! "+esc(target.en)+"! Tell your partner: next word!","正解！パートナーに「つぎ！」と言おう"]);G.round++;hud();
+        later(()=>{G.busy=false;if(G.round>=total)stageDone();else S.next();},1600);}
+      else oops(s,["Not that one! Ask your partner to say it again.","ちがうよ！もう一度言ってもらおう。"]);}
   };
   return S;
 }
@@ -2778,7 +2908,12 @@ function tick(dt,t){
     K.rotation.x=G.kjHurt>0?-Math.sin(G.kjHurt/0.6*Math.PI)*0.3:0;if(G.kjHurt>0)G.kjHurt-=dt;}
   (G.beams||[]).slice().forEach(b=>{b.t+=dt;const k=Math.max(0.01,1-b.t/0.6);b.m.scale.set(k,1,k);if(b.t>=0.6){W.st.scene.remove(b.m);dispose(b.m);G.beams=G.beams.filter(x=>x!==b);}});
   c.update(dt,len>0?1:0);
-  G.answers.forEach((s,i)=>{s.userData.sprite.position.y=s.userData.base+Math.sin(t*2+i)*0.06;});
+  G.answers.forEach((s,i)=>{s.userData.sprite.position.y=s.userData.base+Math.sin(t*2+i)*0.06;const o=s.userData.orbit;if(!o)return;
+    if(!G.busy){o.a+=o.v*dt;s.position.x=Math.cos(o.a)*o.r;s.position.z=Math.sin(o.a)*o.r;
+      if(s.userData.down>0){s.userData.down-=dt;if(s.userData.down<=0)s.userData.duck=2+Kit.RND()*3;}
+      else{s.userData.duck-=dt;if(s.userData.duck<=0)s.userData.down=1.3;}}
+    const wantY=s.userData.down>0?-3.6:0;s.position.y+=(wantY-s.position.y)*Math.min(1,dt*8);
+    if(s.userData.bushM)s.userData.bushM.position.set(s.position.x,0,s.position.z+0.35);});
   G.shells.forEach((s,i)=>{s.rotation.y=t*1.5+i;s.position.y=Math.sin(t*3+i)*0.08;});
   if(G.chest){const ch=G.chest;if(ch.open&&ch.t<1){ch.t=Math.min(1,ch.t+dt*1.6);ch.lid.rotation.x=-ch.t*1.9;}
     ch.g.scale.setScalar(Math.min(1,(ch.g.scale.x||0)+dt*3));}
@@ -2787,14 +2922,14 @@ function tick(dt,t){
   else Kit3D.follow(W.st.camera,c.group,new THREE.Vector3(0,5.2,7),0.08);
   for(const s of G.shells.slice()){if(Math.hypot(s.position.x-p.x,s.position.z-p.z)<0.85){G.shells=G.shells.filter(x=>x!==s);world.items.remove(s);dispose(s);G.pack+=2;pop("+2 "+art("ui:shell",22));Kit.sound.play("key");hud();}}
   if(G.busy)return;
-  for(const s of G.answers){if(Math.hypot(s.position.x-p.x,s.position.z-p.z)<1.05){G.stage.hit(s);break;}}
+  for(const s of G.answers){if(s.position.y<-0.6)continue;if(Math.hypot(s.position.x-p.x,s.position.z-p.z)<1.05){G.stage.hit(s);break;}}
 }
 Kit.keys({" ":()=>G.stage&&!G.busy&&G.stage.say()},()=>scr.current==="play");
-$("#playQuit").onclick=()=>scr.show(G.cfg&&G.cfg.adventure?"map":"home");
+$("#playQuit").onclick=()=>scr.show(G.cfg&&(G.cfg.adventure||G.cfg.pair)?"map":"home");
 
 /* class mode: the teacher's code picks the unit and settings */
 function startClass(){const S=classSel;if(!S)return;
-  const stages=S.stage===1?["find"]:S.stage===2?["collect"]:["find","collect"];
+  const stages=S.stage===1?["find"]:S.stage===2?["collect"]:S.stage===3?["quick"]:ISLAND_STAGES;
   startIsland({book:S.book,from:S.from,to:S.to,island:S.from,stages,rounds:ROUNDS[S.rounds],signs:4,hint:S.hint,adventure:false});}
 
 /* =====================================================================
@@ -2906,14 +3041,26 @@ tpanel.innerHTML=`<div id="tWords"></div>
  <div class="set-row"><h3>${bi(["Rounds per stage","ステージの回数"])}</h3><div class="seg" id="tRounds"></div></div>
  <div class="set-row"><h3>${bi(["Show the words","単語を表示"])}</h3><div class="seg" id="tHint"></div></div>
  <div class="classcode"><div class="cc">${bi(["Class code","クラスコード"],true)}<b class="kitCode">----</b><span class="kit-cname" id="tName"></span></div></div>
- <p class="note">${bi(["Stage 2 depends on the book: Let's Try = Shopping list (listening), Junior Sunshine = Spell it, Sunshine = Build it (unit phrases).","ステージ2は教科書で変わります。Let's Try＝おつかい、Junior Sunshine＝つづり、Sunshine＝文づくり。"])}</p>`;
+ <div class="set-row"><h3>${bi(["Class shell jar","クラスの貝びん"])}</h3>
+  <p class="note">${bi(["After playing, each student gets a 5-letter shell ticket. Type the tickets here to fill the class jar (no names, no ranking).","プレイ後、生徒に5文字の貝チケットが出ます。ここに入力するとクラスの貝びんがたまります（名前・順位なし）。"])}</p>
+  <div class="jar"><div class="jar-glass"><i id="jarFill"></i></div><div><div class="jar-total" id="jarTotal">0</div><small class="note" id="jarCount"></small></div>
+   <div id="jarEntry"></div><button class="btn small" id="jarReset" type="button">${bi(["Empty the jar","びんを空にする"])}</button></div></div>
+ <p class="note">${bi(["Stage 2 depends on the book: Let's Try = Shopping list (listening), Junior Sunshine = Spell it, Sunshine = Build it (unit phrases). Stage 3, Quick ears: the signs move and hide in bushes.","ステージ2は教科書で変わります。Let's Try＝おつかい、Junior Sunshine＝つづり、Sunshine＝文づくり。"])}</p>`;
 const tpicker=Kit.words.picker($("#tWords",tpanel),TS,tchanged);
 function tchanged(){st.set("tcode",tcode());renderTeacherSettings();teach.refresh();}
+/* the class jar is kept per class code on the teacher's computer */
+const jarGet=()=>st.get("jar:"+tcode(),{total:0,used:[]});
+function renderJar(){const J=jarGet();$("#jarTotal",tpanel).innerHTML=art("ui:shell",34)+" "+J.total;
+  $("#jarCount",tpanel).innerHTML=bi([J.used.length+" tickets",J.used.length+"まい"]);$("#jarFill",tpanel).style.height=Math.min(100,J.total/15)+"%";}
+Kit.codeEntry($("#jarEntry",tpanel),{codec:{decode:c=>ticketCodec(tcode()).decode(c),length:5},placeholder:"Ticket",onCode(d){const J=jarGet();
+  if(J.used.includes(d.code)){Kit.toast(bi(["That ticket is already in the jar","そのチケットはもう入っています"]));return;}
+  J.used.push(d.code);J.total+=d.S.shells;st.set("jar:"+tcode(),J);renderJar();Kit.toast(bi(["+"+d.S.shells+" shells!","貝+"+d.S.shells+"！"]));}});
+$("#jarReset",tpanel).onclick=()=>{st.set("jar:"+tcode(),{total:0,used:[]});renderJar();};
 function renderTeacherSettings(){
   Kit.seg($("#tStage",tpanel),STAGES.map(s=>({html:bi(s)})),(o,i)=>TS.stage===i,(o,i)=>{TS.stage=i;tchanged();});
   Kit.seg($("#tRounds",tpanel),ROUNDS.map(n=>({html:String(n)})),(o,i)=>TS.rounds===i,(o,i)=>{TS.rounds=i;tchanged();});
   Kit.seg($("#tHint",tpanel),[{html:bi(["Listen only","聞くだけ"])},{html:bi(["Show them","表示する"])}],(o,i)=>TS.hint===i,(o,i)=>{TS.hint=i;tchanged();});
-  Kit.badges(tcode());$("#tName",tpanel).innerHTML=bi(Kit.words.label(TS));
+  Kit.badges(tcode());$("#tName",tpanel).innerHTML=bi(Kit.words.label(TS));renderJar();
 }
 const teach=Kit.teacher({mount:"#teacher",artifactUrl:ARTIFACT_URL,store:st,getCode:tcode,getName:()=>Kit.words.label(TS),
   steps:[["Choose the unit and settings below.","下でユニットと設定を選びます。"],
@@ -2925,6 +3072,6 @@ $("#toTeacher").onclick=()=>scr.show("teacher");
 
 $$("[data-art]").forEach(e=>e.innerHTML=art(e.dataset.art,+(e.dataset.size||22)));
 scr.show("home");
-window.WI={G,M,MK,P,SH,saveCodec,critCodec,classCodec,startIsland,startBoss,get world(){return world;}};
+window.WI={G,M,MK,P,SH,pairCodec,ticketCodec,startPair,saveCodec,critCodec,classCodec,startIsland,startBoss,get world(){return world;}};
 })();
 </script>
