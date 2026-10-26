@@ -1,0 +1,573 @@
+{
+ "book": "Sunshine English Course 2",
+ "publisher": "Kairyudo",
+ "grade": "JHS2",
+ "edition": "2025",
+ "source": "Outline from ALTopedia Sunshine (2025) page, which matches Wyatt's newest edition. ALTopedia lists pages and grammar points, not program numbers; 'unit' here is our own grouping by page. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "units": [
+  {
+   "unit": 1,
+   "page": 8,
+   "title": "I'm going to practice with Ken this Sunday.",
+   "topic": "be going to, will, gerund (enjoy ~ing)",
+   "grammar": "be going to, will, gerund (enjoy ~ing)",
+   "verified": false,
+   "phrases": [
+    "I'm going to (practice) this Sunday.",
+    "I'll be late.",
+    "I enjoyed (singing) with you."
+   ],
+   "words": [
+    {
+     "en": "practice",
+     "ja": "練習する"
+    },
+    {
+     "en": "this Sunday",
+     "ja": "今度の日曜日"
+    },
+    {
+     "en": "late",
+     "ja": "遅れて"
+    },
+    {
+     "en": "enjoy",
+     "ja": "楽しむ"
+    },
+    {
+     "en": "tomorrow",
+     "ja": "明日"
+    },
+    {
+     "en": "next week",
+     "ja": "来週"
+    }
+   ]
+  },
+  {
+   "unit": 2,
+   "page": 20,
+   "title": "When I was a kid, I enjoyed sewing.",
+   "topic": "that-clause, when, if",
+   "grammar": "that-clause, when, if",
+   "verified": false,
+   "phrases": [
+    "I hear that (Anya will play in a game).",
+    "When I was a kid, I (enjoyed sewing).",
+    "If you (hit a home run), I'll (make cookies)."
+   ],
+   "words": [
+    {
+     "en": "hear",
+     "ja": "聞く"
+    },
+    {
+     "en": "think",
+     "ja": "思う"
+    },
+    {
+     "en": "know",
+     "ja": "知っている"
+    },
+    {
+     "en": "kid",
+     "ja": "子ども"
+    },
+    {
+     "en": "sew",
+     "ja": "ぬう",
+     "emoji": "🧵"
+    },
+    {
+     "en": "home run",
+     "ja": "ホームラン",
+     "emoji": "⚾"
+    },
+    {
+     "en": "cookie",
+     "ja": "クッキー",
+     "emoji": "🍪"
+    }
+   ]
+  },
+  {
+   "unit": 3,
+   "page": 29,
+   "title": "Weather forecast",
+   "topic": "Weather",
+   "grammar": "Weather",
+   "verified": false,
+   "phrases": [
+    "It will be (sunny) tomorrow.",
+    "How's the weather?"
+   ],
+   "words": [
+    {
+     "en": "sunny",
+     "ja": "晴れ",
+     "emoji": "☀️"
+    },
+    {
+     "en": "cloudy",
+     "ja": "くもり",
+     "emoji": "☁️"
+    },
+    {
+     "en": "rainy",
+     "ja": "雨",
+     "emoji": "🌧️"
+    },
+    {
+     "en": "snowy",
+     "ja": "雪",
+     "emoji": "❄️"
+    },
+    {
+     "en": "windy",
+     "ja": "風が強い",
+     "emoji": "🌬️"
+    },
+    {
+     "en": "typhoon",
+     "ja": "台風",
+     "emoji": "🌀"
+    },
+    {
+     "en": "temperature",
+     "ja": "気温",
+     "emoji": "🌡️"
+    }
+   ]
+  },
+  {
+   "unit": 4,
+   "page": 32,
+   "title": "I want to go!",
+   "topic": "Infinitives (noun, adverb, adjective uses)",
+   "grammar": "Infinitives (noun, adverb, adjective uses)",
+   "verified": false,
+   "phrases": [
+    "I want (to go)!",
+    "You use it (to scoop up fish).",
+    "I need a bowl (to keep it in)."
+   ],
+   "words": [
+    {
+     "en": "want to",
+     "ja": "〜したい"
+    },
+    {
+     "en": "need",
+     "ja": "必要とする"
+    },
+    {
+     "en": "bowl",
+     "ja": "おわん",
+     "emoji": "🥣"
+    },
+    {
+     "en": "scoop",
+     "ja": "すくう"
+    },
+    {
+     "en": "goldfish scooping",
+     "ja": "金魚すくい",
+     "emoji": "🐟"
+    },
+    {
+     "en": "festival",
+     "ja": "祭り",
+     "emoji": "🏮"
+    }
+   ]
+  },
+  {
+   "unit": 5,
+   "page": 46,
+   "title": "Reading 1: The Three Dolls",
+   "topic": "Story reading",
+   "grammar": "Story reading",
+   "verified": false,
+   "phrases": [
+    "Once upon a time, ..."
+   ],
+   "words": [
+    {
+     "en": "doll",
+     "ja": "人形",
+     "emoji": "🪆"
+    },
+    {
+     "en": "king",
+     "ja": "王",
+     "emoji": "🤴"
+    },
+    {
+     "en": "wise",
+     "ja": "賢い"
+    }
+   ]
+  },
+  {
+   "unit": 6,
+   "page": 50,
+   "title": "Power Up 2: Let's make a phone call",
+   "topic": "Phone conversations",
+   "grammar": "Phone conversations",
+   "verified": false,
+   "phrases": [
+    "Hello. This is (Ken).",
+    "May I speak to (Daniel)?",
+    "Just a moment.",
+    "Can I leave a message?"
+   ],
+   "words": [
+    {
+     "en": "phone",
+     "ja": "電話",
+     "emoji": "📞"
+    },
+    {
+     "en": "message",
+     "ja": "伝言"
+    }
+   ]
+  },
+  {
+   "unit": 7,
+   "page": 52,
+   "title": "You must turn down the volume.",
+   "topic": "must, have to, infinitive (emotion)",
+   "grammar": "must, have to, infinitive (emotion)",
+   "verified": false,
+   "phrases": [
+    "You must (turn down the volume).",
+    "I have to (be careful).",
+    "I'm surprised to hear that.",
+    "You don't have to (hurry)."
+   ],
+   "words": [
+    {
+     "en": "must",
+     "ja": "〜しなければならない"
+    },
+    {
+     "en": "have to",
+     "ja": "〜しなければならない"
+    },
+    {
+     "en": "volume",
+     "ja": "音量",
+     "emoji": "🔊"
+    },
+    {
+     "en": "careful",
+     "ja": "注意深い"
+    },
+    {
+     "en": "surprised",
+     "ja": "驚いた",
+     "emoji": "😲"
+    },
+    {
+     "en": "quiet",
+     "ja": "静かな"
+    }
+   ]
+  },
+  {
+   "unit": 8,
+   "page": 61,
+   "title": "Power Up 3: Let's eat at a restaurant",
+   "topic": "Ordering",
+   "grammar": "Ordering",
+   "verified": false,
+   "phrases": [
+    "Are you ready to order?",
+    "I'll have (the steak).",
+    "Anything else?",
+    "Check, please."
+   ],
+   "words": [
+    {
+     "en": "menu",
+     "ja": "メニュー"
+    },
+    {
+     "en": "order",
+     "ja": "注文する"
+    },
+    {
+     "en": "dessert",
+     "ja": "デザート",
+     "emoji": "🍰"
+    },
+    {
+     "en": "check",
+     "ja": "お会計"
+    }
+   ]
+  },
+  {
+   "unit": 9,
+   "page": 66,
+   "title": "You'll become a good athlete.",
+   "topic": "become/look, how to, SVOO",
+   "grammar": "become/look, how to, SVOO",
+   "verified": false,
+   "phrases": [
+    "You'll become (a good athlete).",
+    "I don't know how to (use it).",
+    "I'll lend you (this apron)."
+   ],
+   "words": [
+    {
+     "en": "become",
+     "ja": "〜になる"
+    },
+    {
+     "en": "look",
+     "ja": "〜に見える"
+    },
+    {
+     "en": "athlete",
+     "ja": "運動選手"
+    },
+    {
+     "en": "how to",
+     "ja": "〜の仕方"
+    },
+    {
+     "en": "lend",
+     "ja": "貸す"
+    },
+    {
+     "en": "give",
+     "ja": "あげる"
+    },
+    {
+     "en": "show",
+     "ja": "見せる"
+    },
+    {
+     "en": "apron",
+     "ja": "エプロン"
+    }
+   ]
+  },
+  {
+   "unit": 10,
+   "page": 76,
+   "title": "This cafe is cuter than that one.",
+   "topic": "Comparatives and superlatives",
+   "grammar": "Comparatives and superlatives",
+   "verified": false,
+   "phrases": [
+    "This umbrella is as light as that one.",
+    "This cafe is cuter than that one.",
+    "The parfaits are the most popular here."
+   ],
+   "words": [
+    {
+     "en": "light",
+     "ja": "軽い"
+    },
+    {
+     "en": "heavy",
+     "ja": "重い"
+    },
+    {
+     "en": "cute",
+     "ja": "かわいい"
+    },
+    {
+     "en": "popular",
+     "ja": "人気のある"
+    },
+    {
+     "en": "than",
+     "ja": "〜より"
+    },
+    {
+     "en": "the most",
+     "ja": "いちばん"
+    },
+    {
+     "en": "cafe",
+     "ja": "カフェ",
+     "emoji": "☕"
+    },
+    {
+     "en": "parfait",
+     "ja": "パフェ",
+     "emoji": "🍨"
+    }
+   ]
+  },
+  {
+   "unit": 11,
+   "page": 85,
+   "title": "Power Up 4: Email update",
+   "topic": "Writing an email",
+   "grammar": "Writing an email",
+   "verified": false,
+   "phrases": [
+    "Dear (Ms. Brown),",
+    "How are you?",
+    "Best wishes,"
+   ],
+   "words": [
+    {
+     "en": "email",
+     "ja": "メール",
+     "emoji": "📧"
+    },
+    {
+     "en": "subject",
+     "ja": "件名"
+    },
+    {
+     "en": "attach",
+     "ja": "添付する"
+    }
+   ]
+  },
+  {
+   "unit": 12,
+   "page": 92,
+   "title": "Reading 2: Friendship beyond Time and Borders",
+   "topic": "Story reading",
+   "grammar": "Story reading",
+   "verified": false,
+   "phrases": [],
+   "words": [
+    {
+     "en": "friendship",
+     "ja": "友情"
+    },
+    {
+     "en": "border",
+     "ja": "国境"
+    },
+    {
+     "en": "ship",
+     "ja": "船",
+     "emoji": "🚢"
+    }
+   ]
+  },
+  {
+   "unit": 13,
+   "page": 98,
+   "title": "Which design do you like the best?",
+   "topic": "like ~ better / the best, teach how to",
+   "grammar": "like ~ better / the best, teach how to",
+   "verified": false,
+   "phrases": [
+    "Which (design) do you like the best?",
+    "I like aquariums better than zoos.",
+    "I'll teach you how to (cook)."
+   ],
+   "words": [
+    {
+     "en": "design",
+     "ja": "デザイン"
+    },
+    {
+     "en": "aquarium",
+     "ja": "水族館",
+     "emoji": "🐠"
+    },
+    {
+     "en": "zoo",
+     "ja": "動物園",
+     "emoji": "🦁"
+    },
+    {
+     "en": "better",
+     "ja": "よりよく"
+    },
+    {
+     "en": "best",
+     "ja": "いちばんよく"
+    }
+   ]
+  },
+  {
+   "unit": 14,
+   "page": 108,
+   "title": "Where was it taken?",
+   "topic": "Passive voice",
+   "grammar": "Passive voice",
+   "verified": false,
+   "phrases": [
+    "Where was it taken?",
+    "It's visited by many tourists every year.",
+    "Momiji manju is known to many people."
+   ],
+   "words": [
+    {
+     "en": "taken",
+     "ja": "撮られた"
+    },
+    {
+     "en": "visited",
+     "ja": "訪れられた"
+    },
+    {
+     "en": "known",
+     "ja": "知られている"
+    },
+    {
+     "en": "made",
+     "ja": "作られた"
+    },
+    {
+     "en": "tourist",
+     "ja": "観光客"
+    },
+    {
+     "en": "photo",
+     "ja": "写真",
+     "emoji": "📷"
+    },
+    {
+     "en": "world heritage site",
+     "ja": "世界遺産"
+    }
+   ]
+  },
+  {
+   "unit": 15,
+   "page": 117,
+   "title": "Power Up 5: Airplane announcements",
+   "topic": "Travel listening",
+   "grammar": "Travel listening",
+   "verified": false,
+   "phrases": [
+    "Please fasten your seat belt.",
+    "We will arrive at (Narita) in (30 minutes)."
+   ],
+   "words": [
+    {
+     "en": "airport",
+     "ja": "空港",
+     "emoji": "🛫"
+    },
+    {
+     "en": "seat belt",
+     "ja": "シートベルト"
+    },
+    {
+     "en": "gate",
+     "ja": "搭乗口"
+    },
+    {
+     "en": "passport",
+     "ja": "パスポート",
+     "emoji": "🛂"
+    }
+   ]
+  }
+ ]
+}

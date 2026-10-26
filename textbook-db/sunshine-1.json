@@ -1,0 +1,657 @@
+{
+ "book": "Sunshine English Course 1",
+ "publisher": "Kairyudo",
+ "grade": "JHS1",
+ "edition": "2025",
+ "source": "Outline from ALTopedia Sunshine (2025) page, which matches Wyatt's newest edition. ALTopedia lists pages and grammar points, not program numbers; 'unit' here is our own grouping by page. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "units": [
+  {
+   "unit": 1,
+   "page": 8,
+   "title": "Getting started: town, friends, alphabet",
+   "topic": "Greetings, alphabet review",
+   "grammar": "Greetings, alphabet review",
+   "verified": false,
+   "phrases": [
+    "Hello. I'm (Mao).",
+    "Nice to meet you.",
+    "How do you spell it?"
+   ],
+   "words": [
+    {
+     "en": "station",
+     "ja": "駅",
+     "emoji": "🚉"
+    },
+    {
+     "en": "park",
+     "ja": "公園",
+     "emoji": "🌳"
+    },
+    {
+     "en": "library",
+     "ja": "図書館",
+     "emoji": "📚"
+    },
+    {
+     "en": "hospital",
+     "ja": "病院",
+     "emoji": "🏥"
+    },
+    {
+     "en": "post office",
+     "ja": "郵便局",
+     "emoji": "🏤"
+    },
+    {
+     "en": "bookstore",
+     "ja": "書店",
+     "emoji": "📖"
+    },
+    {
+     "en": "restaurant",
+     "ja": "レストラン",
+     "emoji": "🍽️"
+    },
+    {
+     "en": "convenience store",
+     "ja": "コンビニ",
+     "emoji": "🏪"
+    }
+   ]
+  },
+  {
+   "unit": 2,
+   "page": 22,
+   "title": "Hi, Mao. I'm Felipe.",
+   "topic": "be verb (am / are)",
+   "grammar": "be verb (am / are)",
+   "verified": false,
+   "phrases": [
+    "I'm (Felipe).",
+    "Are you from (Australia)?",
+    "Yes, I am. / No, I'm not.",
+    "I'm not (a fan of natto)."
+   ],
+   "words": [
+    {
+     "en": "from",
+     "ja": "〜出身"
+    },
+    {
+     "en": "Australia",
+     "ja": "オーストラリア",
+     "emoji": "🇦🇺"
+    },
+    {
+     "en": "Brazil",
+     "ja": "ブラジル",
+     "emoji": "🇧🇷"
+    },
+    {
+     "en": "fan",
+     "ja": "ファン"
+    },
+    {
+     "en": "new",
+     "ja": "新しい"
+    },
+    {
+     "en": "friend",
+     "ja": "友だち"
+    }
+   ]
+  },
+  {
+   "unit": 3,
+   "page": 30,
+   "title": "I have a dog at home.",
+   "topic": "General verbs, plurals",
+   "grammar": "General verbs, plurals",
+   "verified": false,
+   "phrases": [
+    "I have (a dog).",
+    "Do you (like cats)?",
+    "Yes, I do. / No, I don't.",
+    "I have five (frogs)."
+   ],
+   "words": [
+    {
+     "en": "have",
+     "ja": "持っている"
+    },
+    {
+     "en": "like",
+     "ja": "好き"
+    },
+    {
+     "en": "play",
+     "ja": "する・演奏する"
+    },
+    {
+     "en": "want",
+     "ja": "ほしい"
+    },
+    {
+     "en": "eat",
+     "ja": "食べる"
+    },
+    {
+     "en": "dog",
+     "ja": "犬",
+     "emoji": "🐶"
+    },
+    {
+     "en": "cat",
+     "ja": "ねこ",
+     "emoji": "🐱"
+    },
+    {
+     "en": "frog",
+     "ja": "カエル",
+     "emoji": "🐸"
+    },
+    {
+     "en": "bird",
+     "ja": "鳥",
+     "emoji": "🐦"
+    },
+    {
+     "en": "pet",
+     "ja": "ペット"
+    }
+   ]
+  },
+  {
+   "unit": 4,
+   "page": 38,
+   "title": "I can make sushi.",
+   "topic": "can",
+   "grammar": "can",
+   "verified": false,
+   "phrases": [
+    "I can (make sushi).",
+    "Can you (play the guitar)?",
+    "Yes, I can. / No, I can't."
+   ],
+   "words": [
+    {
+     "en": "make",
+     "ja": "作る"
+    },
+    {
+     "en": "cook",
+     "ja": "料理する"
+    },
+    {
+     "en": "play the guitar",
+     "ja": "ギターをひく",
+     "emoji": "🎸"
+    },
+    {
+     "en": "dance",
+     "ja": "おどる",
+     "emoji": "💃"
+    },
+    {
+     "en": "draw",
+     "ja": "描く",
+     "emoji": "✏️"
+    },
+    {
+     "en": "sushi",
+     "ja": "すし",
+     "emoji": "🍣"
+    },
+    {
+     "en": "well",
+     "ja": "上手に"
+    }
+   ]
+  },
+  {
+   "unit": 5,
+   "page": 50,
+   "title": "Power Up 1: Hamburger shop",
+   "topic": "Ordering food",
+   "grammar": "Ordering food",
+   "verified": false,
+   "phrases": [
+    "Can I help you?",
+    "I'd like (a hamburger).",
+    "For here or to go?",
+    "That'll be (600) yen."
+   ],
+   "words": [
+    {
+     "en": "hamburger",
+     "ja": "ハンバーガー",
+     "emoji": "🍔"
+    },
+    {
+     "en": "French fries",
+     "ja": "フライドポテト",
+     "emoji": "🍟"
+    },
+    {
+     "en": "drink",
+     "ja": "飲み物",
+     "emoji": "🥤"
+    },
+    {
+     "en": "small",
+     "ja": "S"
+    },
+    {
+     "en": "medium",
+     "ja": "M"
+    },
+    {
+     "en": "large",
+     "ja": "L"
+    }
+   ]
+  },
+  {
+   "unit": 6,
+   "page": 52,
+   "title": "Who is this woman?",
+   "topic": "who, he / she, this / that",
+   "grammar": "who, he / she, this / that",
+   "verified": false,
+   "phrases": [
+    "Who is this woman?",
+    "She is (Rami), a famous cook.",
+    "This is (yokan).",
+    "What's that?"
+   ],
+   "words": [
+    {
+     "en": "who",
+     "ja": "だれ"
+    },
+    {
+     "en": "woman",
+     "ja": "女性"
+    },
+    {
+     "en": "man",
+     "ja": "男性"
+    },
+    {
+     "en": "famous",
+     "ja": "有名な"
+    },
+    {
+     "en": "cook",
+     "ja": "料理人"
+    },
+    {
+     "en": "he",
+     "ja": "彼"
+    },
+    {
+     "en": "she",
+     "ja": "彼女"
+    },
+    {
+     "en": "this",
+     "ja": "これ"
+    },
+    {
+     "en": "that",
+     "ja": "あれ"
+    }
+   ]
+  },
+  {
+   "unit": 7,
+   "page": 62,
+   "title": "My brother likes home economics.",
+   "topic": "3rd person singular -s",
+   "grammar": "3rd person singular -s",
+   "verified": false,
+   "phrases": [
+    "My brother likes (home economics).",
+    "Does he (play soccer)?",
+    "Yes, he does. / No, he doesn't.",
+    "He doesn't (like math)."
+   ],
+   "words": [
+    {
+     "en": "brother",
+     "ja": "兄弟"
+    },
+    {
+     "en": "sister",
+     "ja": "姉妹"
+    },
+    {
+     "en": "mother",
+     "ja": "母"
+    },
+    {
+     "en": "father",
+     "ja": "父"
+    },
+    {
+     "en": "home economics",
+     "ja": "家庭科",
+     "emoji": "🍳"
+    },
+    {
+     "en": "math",
+     "ja": "数学",
+     "emoji": "➕"
+    },
+    {
+     "en": "science",
+     "ja": "理科",
+     "emoji": "🔬"
+    },
+    {
+     "en": "P.E.",
+     "ja": "保健体育",
+     "emoji": "🏃"
+    },
+    {
+     "en": "art",
+     "ja": "美術",
+     "emoji": "🎨"
+    },
+    {
+     "en": "music",
+     "ja": "音楽",
+     "emoji": "🎵"
+    }
+   ]
+  },
+  {
+   "unit": 8,
+   "page": 70,
+   "title": "Power Up 2: Asking about belongings",
+   "topic": "Whose ~? / Which ~?",
+   "grammar": "Whose ~? / Which ~?",
+   "verified": false,
+   "phrases": [
+    "Whose (pen) is this?",
+    "It's (mine).",
+    "Which (bag) is yours?"
+   ],
+   "words": [
+    {
+     "en": "whose",
+     "ja": "だれの"
+    },
+    {
+     "en": "mine",
+     "ja": "私のもの"
+    },
+    {
+     "en": "yours",
+     "ja": "あなたのもの"
+    },
+    {
+     "en": "his",
+     "ja": "彼のもの"
+    },
+    {
+     "en": "hers",
+     "ja": "彼女のもの"
+    },
+    {
+     "en": "umbrella",
+     "ja": "かさ",
+     "emoji": "☂️"
+    }
+   ]
+  },
+  {
+   "unit": 9,
+   "page": 72,
+   "title": "I don't know her.",
+   "topic": "Object pronouns",
+   "grammar": "Object pronouns",
+   "verified": false,
+   "phrases": [
+    "I don't know her.",
+    "Do you know (him)?",
+    "Please tell (me)."
+   ],
+   "words": [
+    {
+     "en": "me",
+     "ja": "私を"
+    },
+    {
+     "en": "you",
+     "ja": "あなたを"
+    },
+    {
+     "en": "him",
+     "ja": "彼を"
+    },
+    {
+     "en": "her",
+     "ja": "彼女を"
+    },
+    {
+     "en": "us",
+     "ja": "私たちを"
+    },
+    {
+     "en": "them",
+     "ja": "彼らを"
+    }
+   ]
+  },
+  {
+   "unit": 10,
+   "page": 82,
+   "title": "There is a steak restaurant over there.",
+   "topic": "There is / There are",
+   "grammar": "There is / There are",
+   "verified": false,
+   "phrases": [
+    "There is (a steak restaurant) over there.",
+    "There are (two parks) in my town.",
+    "Is there (a bank) near here?"
+   ],
+   "words": [
+    {
+     "en": "over there",
+     "ja": "あそこに"
+    },
+    {
+     "en": "near",
+     "ja": "〜の近くに"
+    },
+    {
+     "en": "steak",
+     "ja": "ステーキ",
+     "emoji": "🥩"
+    },
+    {
+     "en": "bank",
+     "ja": "銀行",
+     "emoji": "🏦"
+    },
+    {
+     "en": "shrine",
+     "ja": "神社",
+     "emoji": "⛩️"
+    },
+    {
+     "en": "temple",
+     "ja": "寺",
+     "emoji": "🛕"
+    }
+   ]
+  },
+  {
+   "unit": 11,
+   "page": 91,
+   "title": "Power Up 3: Directions at school",
+   "topic": "Asking the way",
+   "grammar": "Asking the way",
+   "verified": false,
+   "phrases": [
+    "Where is the (music room)?",
+    "Go up the stairs.",
+    "It's next to the (library)."
+   ],
+   "words": [
+    {
+     "en": "stairs",
+     "ja": "階段"
+    },
+    {
+     "en": "floor",
+     "ja": "階"
+    },
+    {
+     "en": "next to",
+     "ja": "〜のとなり"
+    },
+    {
+     "en": "between",
+     "ja": "〜の間"
+    },
+    {
+     "en": "teachers' room",
+     "ja": "職員室"
+    },
+    {
+     "en": "nurse's office",
+     "ja": "保健室"
+    }
+   ]
+  },
+  {
+   "unit": 12,
+   "page": 100,
+   "title": "Sorry, I'm studying now.",
+   "topic": "Present continuous",
+   "grammar": "Present continuous",
+   "verified": false,
+   "phrases": [
+    "I'm (studying) now.",
+    "What are you doing?",
+    "Are you (watching TV)?"
+   ],
+   "words": [
+    {
+     "en": "studying",
+     "ja": "勉強している"
+    },
+    {
+     "en": "cooking",
+     "ja": "料理している"
+    },
+    {
+     "en": "watching",
+     "ja": "見ている"
+    },
+    {
+     "en": "running",
+     "ja": "走っている"
+    },
+    {
+     "en": "sleeping",
+     "ja": "寝ている"
+    },
+    {
+     "en": "now",
+     "ja": "今"
+    }
+   ]
+  },
+  {
+   "unit": 13,
+   "page": 110,
+   "title": "I stayed home and watched TV.",
+   "topic": "Past tense (regular / irregular)",
+   "grammar": "Past tense (regular / irregular)",
+   "verified": false,
+   "phrases": [
+    "I (stayed) home and (watched) TV.",
+    "Did you (go out)?",
+    "Yes, I did. / No, I didn't.",
+    "What did you do yesterday?"
+   ],
+   "words": [
+    {
+     "en": "stayed",
+     "ja": "とどまった"
+    },
+    {
+     "en": "watched",
+     "ja": "見た"
+    },
+    {
+     "en": "played",
+     "ja": "した"
+    },
+    {
+     "en": "went",
+     "ja": "行った"
+    },
+    {
+     "en": "ate",
+     "ja": "食べた"
+    },
+    {
+     "en": "saw",
+     "ja": "見た"
+    },
+    {
+     "en": "made",
+     "ja": "作った"
+    },
+    {
+     "en": "yesterday",
+     "ja": "昨日"
+    },
+    {
+     "en": "last week",
+     "ja": "先週"
+    }
+   ]
+  },
+  {
+   "unit": 14,
+   "page": 124,
+   "title": "I was a student thirty years ago.",
+   "topic": "was / were, past continuous",
+   "grammar": "was / were, past continuous",
+   "verified": false,
+   "phrases": [
+    "I was (a student) thirty years ago.",
+    "Were you (busy)?",
+    "I was (sleeping) then."
+   ],
+   "words": [
+    {
+     "en": "was",
+     "ja": "〜だった"
+    },
+    {
+     "en": "were",
+     "ja": "〜だった"
+    },
+    {
+     "en": "ago",
+     "ja": "〜前"
+    },
+    {
+     "en": "then",
+     "ja": "そのとき"
+    },
+    {
+     "en": "busy",
+     "ja": "忙しい"
+    }
+   ]
+  }
+ ]
+}
