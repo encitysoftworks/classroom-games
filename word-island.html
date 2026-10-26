@@ -461,6 +461,26 @@ body.jp .kq-prompt .ja{color:#6b6358}
 .jar-glass i{position:absolute;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,#ffc0c8 0 10px,#ff9db5 10px 20px);transition:height .6s ease-out}
 .jar-total{font:400 clamp(30px,6vw,52px)/1 var(--f-display);color:var(--accent)}
 .ticket{font:400 26px var(--f-display);letter-spacing:.1em;color:var(--accent)}
+.ideas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;max-width:1000px;margin:0 auto}
+@media (max-width:760px){.ideas{grid-template-columns:1fr}}
+.ideas h2{display:flex;align-items:center;gap:10px;margin:0 0 6px}
+.ideas .steps{margin:8px 0 0;padding-left:22px;line-height:1.5}
+.ideas .steps li{margin:4px 0}
+.ideacats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin:10px 0}
+.ideacats button{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--panel2);border:2px solid var(--edge);border-radius:10px;padding:8px 6px;font:700 14px/1.2 var(--f-body);color:var(--text);cursor:pointer}
+.ideacats button .ja{font-size:11px}
+.ideacats button[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 22%,var(--panel2))}
+.ideabox{width:100%;box-sizing:border-box;min-height:110px;resize:vertical;font:600 17px/1.4 var(--f-body);color:var(--ink);background:var(--paper);border:2px solid var(--edge);border-radius:10px;padding:10px 12px}
+.ideacount{text-align:right;font-size:12px;color:var(--dim)}
+.ideacheck{display:flex;align-items:center;gap:8px;margin:8px 0;font-weight:700}
+.ideacheck input{width:20px;height:20px}
+.idealist{display:flex;flex-direction:column;gap:8px;margin-top:8px;max-height:520px;overflow:auto}
+.idea{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;background:var(--panel2);border:2px solid var(--edge);border-radius:10px;padding:8px 10px}
+.idea.done{opacity:.55}
+.idea p{margin:2px 0;font-size:16px;white-space:pre-wrap;overflow-wrap:anywhere}
+.idea small{color:var(--muted)}
+.idea .rowbtns{flex-direction:column;gap:4px}
+.ideafilter{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 </style>
 
 <div class="app">
@@ -504,6 +524,7 @@ body.jp .kq-prompt .ja{color:#6b6358}
     </div>
     <p class="foot">
       <button class="btn small" id="changeBook" type="button">Change book<span class="ja">教科書をかえる</span></button>
+      <button class="btn small" id="goIdeas" type="button">Ideas &amp; requests<span class="ja">アイデア・リクエスト</span></button>
       <button class="btn small" id="toTeacher" type="button">Teacher page<span class="ja">先生用ページ</span></button>
     </p>
   </section>
@@ -576,6 +597,33 @@ body.jp .kq-prompt .ja{color:#6b6358}
 
   <section class="screen" id="caller" hidden>
     <div class="callwrap" id="callWrap"></div>
+  </section>
+
+  <section class="screen" id="ideas" hidden>
+    <div class="ideas">
+      <div class="panel">
+        <h2><span aria-hidden="true" data-art="ui:speech" data-size="40"></span><span>Ideas &amp; requests<span class="ja">アイデア・リクエスト</span></span></h2>
+        <p>What do you want to see in Word Island? Tell your teacher! Your idea could be in the next update.<span class="ja">ワードアイランドに、どんなものがあったらいい？先生に教えてね！次のアップデートに入るかも。</span></p>
+        <ol class="steps">
+          <li>Choose a kind of idea.<span class="ja">アイデアのしゅるいをえらぼう。</span></li>
+          <li>Write your idea. English or Japanese is OK.<span class="ja">アイデアを書こう。英語でも日本語でもOK。</span></li>
+          <li>Press <b>Send</b>.<span class="ja">「送る」をおそう。</span></li>
+        </ol>
+        <p class="note">Please do not write your name or anything mean.<span class="ja">名前や、いじわるなことは書かないでね。</span></p>
+        <div class="ideacats" id="ideaCats"></div>
+      </div>
+      <div class="panel">
+        <h3 id="ideaAsk"></h3>
+        <textarea class="ideabox" id="ideaText" maxlength="300" placeholder="My idea is..."></textarea>
+        <div class="ideacount" id="ideaCount">0 / 300</div>
+        <label class="ideacheck" id="ideaCritRow" hidden><input type="checkbox" id="ideaCrit"> <span>Send my critter too<span class="ja">自分のキャラもいっしょに送る</span></span></label>
+        <div class="rowbtns">
+          <button class="btn" id="ideasBack" type="button">Back<span class="ja">もどる</span></button>
+          <button class="btn primary" id="ideaSend" type="button">Send<span class="ja">送る</span></button>
+        </div>
+        <div id="ideaResult"></div>
+      </div>
+    </div>
   </section>
 
   <section class="screen" id="result" hidden></section>
@@ -2294,7 +2342,8 @@ const scr=Kit.screens({onShow(id){
   if(id==="map")showMap();
   if(id==="maker")openMaker();
   if(id==="shop")openShop();
-  if(id==="teacher"){teach.slot.appendChild(tpanel);renderTeacherSettings();teach.refresh();}
+  if(id==="ideas")openIdeas();
+  if(id==="teacher"){teach.slot.appendChild(tpanel);renderTeacherSettings();teach.refresh();openInbox();}
 }});
 $("#goHome").onclick=()=>scr.show("home");
 if(!window.Kit3D){$("#heroStage").innerHTML=`<p class="warn">${bi(["The 3D tool couldn't load. Check the internet connection, then reopen this page.","3Dを読み込めませんでした。インターネット接続を確認してください。"])}</p>`;}
@@ -3069,6 +3118,90 @@ const teach=Kit.teacher({mount:"#teacher",artifactUrl:ARTIFACT_URL,store:st,getC
          ["Turn the volume up a little: the game says the words out loud.","音量を少し上げてください。ゲームが単語を読み上げます。"]],
   note:"Words come from the draft textbook word bank. Units with few picture words use word signs instead. Pictures are drawn sprites (game-kit/pictures.js)."});
 $("#toTeacher").onclick=()=>scr.show("teacher");
+
+/* =====================================================================
+   IDEAS & REQUESTS
+   Students send ideas to the artifact's shared db ("requests" collection).
+   db only works for signed-in claude.ai viewers who may write (the teacher);
+   anywhere else the idea is kept on this Chromebook and shown as a card.
+   NEW IDEA KINDS GO HERE (append only: the index is stored with each idea).
+   ===================================================================== */
+const IDEA_KINDS=[
+  {art:"ui:capsule",name:["New critter","新しいキャラ"],ask:["What critter do you want? What does it look like?","どんなキャラがほしい？どんな見た目？"],crit:true},
+  {art:"ui:island",name:["New island or words","新しい島・ことば"],ask:["What island or words do you want to play?","どんな島やことばであそびたい？"]},
+  {art:"ui:shop",name:["Shop item","お店のアイテム"],ask:["What should the Shell Shop sell?","貝のおみせで何を売ってほしい？"]},
+  {art:"ui:kaiju",name:["Boss idea","ボスのアイデア"],ask:["What new Word Kaiju or boss do you want?","どんなワード怪獣やボスと戦いたい？"]},
+  {art:"ui:star",name:["New game or stage","新しいゲーム・ステージ"],ask:["What new game or stage do you want?","どんなゲームやステージがほしい？"]},
+  {art:"ui:machine",name:["Fix a problem","なおしてほしいこと"],ask:["What was broken, too hard, or confusing?","こわれていた、むずかしすぎた、わかりにくかったことは？"]},
+  {art:"ui:speech",name:["Something else","そのほか"],ask:["Tell us anything!","なんでも教えてね！"]},
+];
+const ID={kind:-1};
+let ideaDb;   /* undefined = not asked yet, null = not available here */
+const getIdeaDb=async()=>{if(ideaDb===undefined){try{ideaDb=window.claude&&claude.use?await claude.use("db"):null;}catch(e){ideaDb=null;}}return ideaDb;};
+const ideaLocal=()=>st.get("ideas",[]);
+function renderIdeaKinds(){
+  $("#ideaCats").innerHTML=IDEA_KINDS.map((k,i)=>`<button type="button" data-i="${i}" aria-pressed="${ID.kind===i}">${art(k.art,40)}${bi(k.name)}</button>`).join("");
+  $$("#ideaCats button").forEach(b=>b.onclick=()=>{Kit.sound.play("click");ID.kind=+b.dataset.i;renderIdeaKinds();renderIdeaAsk();});
+}
+function renderIdeaAsk(){const k=IDEA_KINDS[ID.kind];
+  $("#ideaAsk").innerHTML=bi(k?k.ask:["First, choose a kind of idea.","まず、アイデアのしゅるいをえらぼう。"]);
+  $("#ideaCritRow").hidden=!(k&&k.crit&&P.pick==="custom");}
+function openIdeas(){renderIdeaKinds();renderIdeaAsk();$("#ideaResult").innerHTML="";$("#ideaCount").textContent=$("#ideaText").value.length+" / 300";}
+$("#ideaText").oninput=()=>{$("#ideaCount").textContent=$("#ideaText").value.length+" / 300";};
+$("#ideasBack").onclick=()=>scr.show("home");
+$("#goIdeas").onclick=()=>scr.show("ideas");
+async function sendIdea(){
+  const text=$("#ideaText").value.trim().slice(0,300),k=IDEA_KINDS[ID.kind];
+  if(!k){Kit.toast(bi(["Choose a kind of idea first","まず、アイデアのしゅるいをえらんでね"]));return;}
+  if(text.length<2){Kit.toast(bi(["Write your idea first","アイデアを書いてね"]));$("#ideaText").focus();return;}
+  const idea={kind:ID.kind,text,at:Date.now(),book:P.book>=0&&BOOKS[P.book]?BOOKS[P.book].name:"",done:false};
+  if(k.crit&&P.pick==="custom"&&$("#ideaCrit").checked)idea.critter=critCodec.encode(Kit3D.recipeToCode(P.custom));
+  const btn=$("#ideaSend");btn.disabled=true;
+  let sent=false;const db=await getIdeaDb();
+  if(db){try{await db.collection("requests").add(idea);sent=true;}catch(e){}}
+  btn.disabled=false;
+  if(!sent){const L=ideaLocal();L.push(idea);st.set("ideas",L.slice(-50));}
+  Kit.sound.play("win");
+  $("#ideaResult").innerHTML=sent
+    ?`<p class="note" style="text-align:center">${art("ui:gift",48)}<br>${bi(["Sent! Thank you for your idea.","送ったよ！アイデアありがとう。"])}</p>`
+    :`<div class="panel" style="margin-top:10px;text-align:center">${art(k.art,48)}<p style="font-size:20px;font-weight:700;white-space:pre-wrap;overflow-wrap:anywhere">${esc(text)}</p>
+      <p class="note">${bi(["Saved on this Chromebook. Show this to your teacher, or type it on the teacher's computer.","このChromebookに保存したよ。先生に見せるか、先生のパソコンで入力してね。"])}</p></div>`;
+  $("#ideaText").value="";$("#ideaCount").textContent="0 / 300";ID.kind=-1;renderIdeaKinds();renderIdeaAsk();
+}
+$("#ideaSend").onclick=sendIdea;
+
+/* teacher inbox: lives on the teacher page, reads the shared "requests" collection */
+const ipanel=document.createElement("div");ipanel.className="set-row";ipanel.style.display="block";
+ipanel.innerHTML=`<h3>${bi(["Student ideas and requests","生徒のアイデア・リクエスト"])}</h3>
+ <p class="note">${bi(["Students press Ideas & requests on the home screen. Ideas sent from a computer signed in to Claude (like yours) arrive here. Students' own Chromebooks keep their ideas and show them on screen, so you can also open Ideas & requests on your computer and let students type there.","生徒はホーム画面の「アイデア・リクエスト」から送ります。Claudeにログインしたパソコン（先生のパソコンなど）から送ったアイデアがここに届きます。生徒のChromebookでは画面に表示して保存するので、先生のパソコンで「アイデア・リクエスト」を開いて生徒に入力してもらうこともできます。"])}</p>
+ <div class="seg ideafilter" id="ideaFilter"></div><div class="idealist" id="ideaList"></div>`;
+const IN={filter:-1,docs:[],sub:false,state:"loading"};
+function renderInbox(){
+  const L=$("#ideaList",ipanel);
+  Kit.seg($("#ideaFilter",ipanel),[{html:bi(["All","すべて"])}].concat(IDEA_KINDS.map(k=>({html:bi(k.name)}))),(o,i)=>IN.filter===i-1,(o,i)=>{IN.filter=i-1;renderInbox();});
+  if(IN.state==="none"){L.innerHTML=`<p class="note">${bi(["The idea inbox only works on the claude.ai link while you are signed in.","アイデアの受信箱は、claude.aiのリンクにログインしているときだけ使えます。"])}</p>`;return;}
+  if(IN.state==="loading"){L.innerHTML=`<p class="note">${bi(["Loading...","よみこみ中..."])}</p>`;return;}
+  const rows=IN.docs.filter(d=>IN.filter<0||d.v.kind===IN.filter);
+  if(!rows.length){L.innerHTML=`<p class="note">${bi(["No ideas yet.","まだアイデアはありません。"])}</p>`;return;}
+  L.innerHTML=rows.map(d=>{const v=d.v,k=IDEA_KINDS[v.kind]||IDEA_KINDS[IDEA_KINDS.length-1];
+    return `<div class="idea${v.done?" done":""}">${art(k.art,40)}<div><small>${bi(k.name,true)} · ${esc(new Date(v.at||0).toLocaleDateString())}${v.book?" · "+esc(v.book):""}</small>
+      <p>${esc(String(v.text||""))}</p>${v.critter?`<small>${bi(["Critter code","キャラコード"],true)}: <b>${esc(fmt4(String(v.critter)))}</b></small>`:""}</div>
+      <div class="rowbtns"><button class="btn small" type="button" data-done="${esc(d.id)}">${bi(v.done?["Undo","もどす"]:["Done","済み"])}</button>
+      <button class="btn small" type="button" data-del="${esc(d.id)}">${bi(["Delete","削除"])}</button></div></div>`;}).join("");
+  $$("[data-done]",L).forEach(b=>b.onclick=async()=>{const d=IN.docs.find(x=>x.id===b.dataset.done);if(!d)return;
+    try{await ideaDb.collection("requests").doc(d.id).update({done:!d.v.done});}catch(e){Kit.toast(bi(["Could not save","保存できませんでした"]));}});
+  $$("[data-del]",L).forEach(b=>b.onclick=async()=>{b.disabled=true;
+    try{await ideaDb.collection("requests").doc(b.dataset.del).delete();}catch(e){b.disabled=false;Kit.toast(bi(["Could not delete","削除できませんでした"]));}});
+}
+async function openInbox(){
+  if(!ipanel.parentNode)tpanel.appendChild(ipanel);
+  renderInbox();if(IN.sub)return;IN.sub=true;
+  const db=await getIdeaDb();
+  if(!db){IN.state="none";renderInbox();return;}
+  db.collection("requests").orderBy("at","desc").limit(500).onSnapshot(snap=>{
+    IN.docs=snap.docs.map(d=>({id:d.id,v:d.data()||{}}));IN.state="ok";renderInbox();
+  },()=>{IN.state="none";renderInbox();});
+}
 
 $$("[data-art]").forEach(e=>e.innerHTML=art(e.dataset.art,+(e.dataset.size||22)));
 scr.show("home");
