@@ -1,0 +1,955 @@
+<title>The Keypad Game</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Bungee&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<style>
+/* Layout: one centered column (max 1180px). Top bar, then one screen at a time.
+   Play screen = bomb (or vault door) on the left, keypad on the right; the codebook = page tabs left, bombs right.
+   Single dark look on purpose (a game console), so colors are set once on :root. */
+:root{
+  --bg:#14161d; --panel:#1e212b; --panel2:#272b37; --edge:#3a3f50; --text:#f2eee5; --muted:#aeacba; --dim:#7d7b8c;
+  --accent:#ff7a3d; --ink:#1b1a17; --key:#f6f1e3; --key2:#e6dfcb; --go:#7fd18b; --oops:#ff8f6b; --paper:#fffaf0; --line:#9fb7d8; --base:#e06a5a;
+  --f-display:"Bungee","Arial Black",Impact,sans-serif;
+  --f-body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans",system-ui,sans-serif;
+  --f-letter:"Andika","Century Gothic","Trebuchet MS",sans-serif;
+  color-scheme:dark;
+}
+body[data-th="vault"]{--accent:#e8b93c}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);background-image:radial-gradient(1000px 480px at 50% -10%,#262a3a 0%,rgba(20,22,29,0) 65%);color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.app{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 40px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;margin:0;line-height:1.15;text-wrap:balance}
+h3{font-size:15px;letter-spacing:.04em}
+p{margin:0}
+.ja{display:none}
+body.jp .ja{display:block;font-size:.82em;color:var(--muted);line-height:1.45;font-weight:500;letter-spacing:0;font-family:var(--f-body)}
+body.jp .ja.inl{display:inline;margin-left:6px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font:700 15px/1.25 var(--f-body);color:var(--text);background:var(--panel2);border:2px solid var(--edge);border-radius:8px;padding:9px 16px;cursor:pointer;box-shadow:0 3px 0 #07080b;text-align:center}
+.btn:hover{border-color:var(--dim)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #07080b}
+.btn.primary{background:var(--accent);color:var(--ink);border-color:color-mix(in srgb,var(--accent) 60%,#000)}
+.btn.primary .ja{color:#3b2a12}
+.btn.small{font-size:13px;padding:6px 10px}
+.btn.big{font-size:18px;padding:13px 24px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:4px 8px;border-bottom:2px dashed var(--edge);margin-bottom:12px}
+.brand{background:none;border:0;cursor:pointer;display:flex;align-items:baseline;gap:10px;padding:4px 0;font-family:var(--f-display);font-size:22px;color:var(--accent)}
+.brand span{font:700 13px var(--f-body);color:var(--muted)}
+.tb-tools{display:flex;gap:8px;flex-wrap:wrap}
+.tog{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:2px solid var(--edge);border-radius:20px;padding:5px 12px 5px 8px;cursor:pointer;font-size:13px;font-weight:700}
+.tog::before{content:"";width:28px;height:16px;border-radius:9px;background:var(--edge)}
+.tog[aria-pressed="true"]::before{background:var(--go);background-image:radial-gradient(circle at 21px 8px,#fff 5px,transparent 5.5px)}
+.tog[aria-pressed="false"]::before{background-image:radial-gradient(circle at 7px 8px,#cfc8de 5px,transparent 5.5px)}
+
+/* home */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:center;margin-bottom:20px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:6px}
+.hero h1{font-size:clamp(38px,6vw,64px);text-shadow:0 4px 0 #000}
+.hero .lead{font-size:18px;margin-top:10px;max-width:34em}
+.hero-pic{display:flex;justify-content:center}
+.hero-pic svg{width:min(260px,100%);height:auto}
+.panel{background:var(--panel);border:2px solid var(--edge);border-radius:12px;padding:16px 18px;box-shadow:0 4px 0 #07080b;min-width:0}
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.role{display:flex;flex-direction:column;gap:8px}
+.role h2{font-size:22px;color:var(--accent)}
+.role .who{font-weight:800;color:var(--muted);font-size:14px}
+.say{list-style:none;padding:0;margin:2px 0 4px;display:flex;flex-wrap:wrap;gap:6px}
+.say li{background:var(--panel2);border-radius:6px;padding:4px 10px;font-weight:700;font-size:15px}
+.say li::before{content:"\201C";color:var(--accent);margin-right:2px}.say li::after{content:"\201D";color:var(--accent);margin-left:2px}
+.role .btn{align-self:flex-start}
+.more{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+
+/* settings */
+.settings{display:flex;flex-direction:column;gap:12px}
+.set-row{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
+.set-row h3{min-width:140px;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{display:flex;flex-direction:column;align-items:center;background:var(--panel2);border:2px solid var(--edge);border-radius:8px;padding:6px 12px;font-weight:700;font-size:14px;cursor:pointer;line-height:1.2}
+.seg button .ja{font-size:11px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.seg button[aria-pressed="true"] .ja{color:#3b2a12}
+.seg button small{font:400 12px var(--f-letter);opacity:.85}
+details.custom{border-top:2px dashed var(--edge);padding-top:10px}
+details.custom summary{cursor:pointer;font-weight:800;color:var(--accent);font-size:15px;margin-bottom:6px}
+details.custom .set-row{margin-top:8px}
+.classcode{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;border-top:2px dashed var(--edge);padding-top:12px}
+.cc{display:flex;align-items:baseline;gap:10px}
+.cc b{font-family:var(--f-display);font-size:30px;letter-spacing:.12em;color:var(--accent)}
+.cc-name{color:var(--muted);font-weight:700;font-size:14px}
+#ccForm{display:flex;gap:6px;align-items:center;margin-left:auto}
+#ccIn{width:9em;font:700 18px var(--f-display);letter-spacing:.12em;text-transform:uppercase;background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px;padding:6px 10px}
+.err{color:var(--oops);font-weight:700;font-size:14px;width:100%}
+.note{color:var(--muted);font-size:14px}
+
+/* HUD */
+.hud{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;background:var(--panel);border:2px solid var(--edge);border-radius:12px;padding:6px 12px;margin-bottom:8px}
+.rolechip{font:800 13px var(--f-body);background:var(--accent);color:var(--ink);border-radius:14px;padding:3px 12px;text-transform:uppercase;letter-spacing:.05em}
+.lights{display:flex;gap:6px;align-items:center}
+.lights i{width:18px;height:18px;border-radius:50%;background:#3d2a26;border:2px solid #000;box-shadow:inset 0 -3px 0 rgba(0,0,0,.35)}
+.lights i.on{background:var(--go)}
+.lights i.now{background:var(--oops)}
+.stat{font:700 15px var(--f-body);color:var(--muted);font-variant-numeric:tabular-nums}
+.stat b{color:var(--text);font-family:var(--f-display);font-weight:400;font-size:18px;margin-left:4px}
+.hud .badge{margin-left:auto;font-size:13px;color:var(--muted);font-weight:700}
+.hud .badge b{font-family:var(--f-display);font-weight:400;color:var(--accent);letter-spacing:.1em;font-size:16px}
+
+/* play screen */
+.stage{position:relative;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:16px;align-items:start}
+.bombside{display:flex;flex-direction:column;align-items:center;gap:10px}
+.bombbox{position:relative;width:100%;max-width:230px}
+.bombbox svg{width:100%;height:auto;display:block}
+.pagebox{background:#0b1a12;border:4px solid #050806;border-radius:10px;padding:8px 18px;text-align:center;box-shadow:inset 0 0 0 2px #1e3a28,0 3px 0 #000}
+.pagebox small{display:block;font:800 12px var(--f-body);color:#7fd18b;letter-spacing:.08em;text-transform:uppercase}
+.pagebox b{font:400 44px/1 var(--f-display);color:#9cf0a9}
+.roundlbl{font-family:var(--f-display);font-size:16px;color:var(--muted)}
+.keyside{display:flex;flex-direction:column;gap:10px;min-width:0}
+.display{width:100%;max-width:540px;margin:0 auto;display:flex;gap:6px;justify-content:center;background:#0d0f14;border:3px solid #000;border-radius:10px;padding:7px;min-height:70px;flex-wrap:nowrap}
+.slot{flex:0 1 54px;min-width:0;height:56px;border-radius:6px;background:var(--paper);display:flex;align-items:center;justify-content:center;border:2px dashed #b9b2a0}
+.slot.full{border-style:solid;border-color:#8a8270}
+.slot svg{width:46px;max-width:100%;height:50px}
+.display.shake{animation:shake .4s}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;max-width:540px;margin:0 auto}
+.key{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;aspect-ratio:1.6/1;background:var(--key);border:0;border-radius:10px;box-shadow:0 5px 0 #8f8873,0 6px 0 #000;cursor:pointer;color:var(--ink);padding:4px}
+.key:hover{background:#fffdf5}
+.key:active,.key.hit{transform:translateY(4px);box-shadow:0 1px 0 #8f8873,0 2px 0 #000}
+.key svg.gl{height:82%;width:auto}
+.key svg.gs{height:60%;width:auto}
+.key small{font:700 12px/1 var(--f-body);color:#555048;margin-top:2px}
+.controls{display:flex;gap:10px;align-items:stretch;width:100%;max-width:540px;margin:0 auto}
+.controls .btn{flex:1}
+.controls .go{flex:1.6;font-family:var(--f-display);font-weight:400;font-size:22px;letter-spacing:.06em;background:#d8352a;color:#fff;border-color:#7a1c16}
+body[data-th="vault"] .controls .go{background:#2f8a4a;border-color:#174a26}
+.controls .go .ja{color:#ffe6e0}
+.phrases{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.phrases b{font-size:13px;color:var(--muted);margin-right:4px}
+.phrases span.p{background:var(--panel2);border-radius:6px;padding:3px 9px;font-weight:700;font-size:14px}
+.partner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel2);border:2px solid var(--edge);border-radius:10px;padding:8px 12px}
+.partner .bub{flex:1;min-width:0;font-weight:800;font-size:17px}
+.partner .bub .ja{font-weight:500}
+
+/* traps (no flashing: movement and sound only) */
+.trap-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5;border-radius:12px}
+.trap-layer.block{pointer-events:auto;cursor:default}
+.tr{position:absolute;line-height:1;user-select:none}
+.wordwrap{transform:translateX(-50%);z-index:2}
+.word{display:flex;flex-direction:column;align-items:center;font-family:var(--f-display);font-size:40px;color:#fff;-webkit-text-stroke:2px #000;text-shadow:0 4px 0 #000;white-space:nowrap;animation:pop .35s ease-out both}
+body.jp .word .ja{-webkit-text-stroke:0;text-shadow:none;font-size:16px;color:#fff;background:rgba(0,0,0,.6);border-radius:6px;padding:2px 8px;text-align:center}
+@keyframes pop{from{transform:scale(.3)}70%{transform:scale(1.12)}to{transform:scale(1)}}
+.glove{font-size:90px;animation:glove 2s ease-in-out both}
+@keyframes glove{0%{transform:translate(-50%,-50%) scale(.2)}35%{transform:translate(-50%,-50%) scale(2.4)}50%{transform:translate(-50%,-50%) scale(1.9)}65%{transform:translate(-50%,-50%) scale(2.3)}85%{transform:translate(-50%,-50%) scale(2.2);opacity:1}100%{transform:translate(-50%,-50%) scale(.2);opacity:0}}
+.chicken{font-size:120px;bottom:-140px;animation:chick 2.4s ease-in-out both}
+@keyframes chick{0%{transform:translateY(0)}25%{transform:translateY(-180px) rotate(-8deg)}40%{transform:translateY(-170px) rotate(8deg)}55%{transform:translateY(-180px) rotate(-8deg)}75%{transform:translateY(-175px) rotate(6deg)}100%{transform:translateY(0)}}
+.soot{width:120px;height:110px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#3b3b3f,#141416 70%,rgba(20,20,22,0) 72%);cursor:pointer;pointer-events:auto;transition:opacity .35s,transform .35s}
+.soot.gone{opacity:0;transform:scale(.4);pointer-events:none}
+.hint{position:absolute;left:50%;transform:translateX(-50%);bottom:10px;background:rgba(0,0,0,.78);border-radius:8px;padding:6px 14px;font-weight:800;text-align:center;white-space:nowrap}
+.duck{font-size:100px;bottom:20px;left:-130px;animation:duck 3s linear both}
+@keyframes duck{0%{transform:translateX(0) rotate(-5deg)}12%{transform:translateX(120px) rotate(5deg)}25%{transform:translateX(250px) rotate(-5deg)}37%{transform:translateX(370px) rotate(5deg)}50%{transform:translateX(500px) rotate(-5deg)}62%{transform:translateX(620px) rotate(5deg)}75%{transform:translateX(750px) rotate(-5deg)}87%{transform:translateX(870px) rotate(5deg)}100%{transform:translateX(1000px)}}
+.drop{font-size:38px;animation:drop 1.4s ease-in both}
+@keyframes drop{from{transform:translate(0,0)}to{transform:translate(var(--dx),var(--dy));opacity:.2}}
+.bear{font-size:130px;left:50%;bottom:-150px;animation:bear 2.8s ease-in-out both}
+@keyframes bear{0%{transform:translate(-50%,0)}25%,75%{transform:translate(-50%,-190px)}50%{transform:translate(-50%,-182px)}100%{transform:translate(-50%,0)}}
+.zz{font:400 34px var(--f-display);color:#cfe3ff;animation:zz 2.4s ease-out both}
+@keyframes zz{from{transform:translate(0,0);opacity:0}20%{opacity:1}to{transform:translate(40px,-110px);opacity:0}}
+.cat{font-size:130px;cursor:pointer;pointer-events:auto;animation:catin .5s ease-out both}
+@keyframes catin{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
+.cat.bye{animation:catout .6s ease-in both}
+@keyframes catout{to{transform:translateX(400px)}}
+.heart{font-size:34px;animation:zz 1.2s ease-out both}
+.mst{animation:pop .4s ease-out both;transform-box:fill-box;transform-origin:center}
+.bombbox.done svg{animation:sleep 1.2s ease-in-out both}
+@keyframes sleep{30%{transform:rotate(-6deg)}60%{transform:rotate(5deg)}100%{transform:rotate(0)}}
+.bombbox.opened svg{animation:dooropen 1.2s ease-in-out both;transform-origin:12% 50%}
+.bombbox svg{position:relative;z-index:1}
+.inside{position:absolute;inset:9% 15% 5% 15%;background:radial-gradient(circle at 50% 40%,#4a3f2a,#120f0a 75%);border:4px solid #000;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:84px;line-height:1;z-index:0}
+.inside.sm{inset:28% 29% 22% 29%;font-size:50px}
+.prize{display:flex;flex-direction:column;align-items:center;gap:4px}
+.prize .em{font-size:120px;line-height:1}
+.prize b{font-family:var(--f-display);font-weight:400;font-size:22px;color:var(--accent)}
+@keyframes dooropen{to{transform:perspective(700px) rotateY(-84deg)}}
+.spark{animation:wob 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes wob{50%{transform:rotate(18deg) scale(1.08)}}
+.wheel{transform-box:fill-box;transform-origin:center}
+.bombbox.opened .wheel{animation:spin 1s ease-in-out both}
+@keyframes spin{to{transform:rotate(270deg)}}
+
+/* codebook */
+.book{display:grid;grid-template-columns:268px minmax(0,1fr);gap:16px;align-items:start}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tabs button{aspect-ratio:1;border-radius:8px;border:2px solid var(--edge);background:var(--panel2);font:400 17px var(--f-display);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.ask{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.ask b{font-size:13px;color:var(--muted)}
+.ask span.p{background:var(--panel2);border-radius:6px;padding:4px 10px;font-weight:700;font-size:15px}
+.pageview{background:var(--paper);color:var(--ink);border-radius:12px;padding:14px 16px 18px;box-shadow:0 4px 0 #07080b;min-height:300px;min-width:0}
+.pageview h2{font-size:26px;color:#3b3530;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pageview h2 small{font:700 14px var(--f-body);color:#7a7266}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:12px}
+.card{display:flex;flex-direction:column;align-items:center;gap:6px;border:2px solid #d9d0bd;border-radius:10px;padding:8px 8px 10px;background:#fff}
+.card svg.mini{width:110px;height:110px}
+.card .desc{font-weight:800;font-size:14px;color:#5a5248}
+.code{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.code .g{display:flex;flex-direction:column;align-items:center;width:48px}
+.code .g svg.gl{width:48px;height:50px}
+.code .g svg.gs{width:40px;height:40px;margin:5px 0}
+.code .g small{font:700 10px/1.1 var(--f-body);color:#6b6358;text-align:center}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:260px;text-align:center;color:#6b6358}
+.empty b{font-family:var(--f-display);font-weight:400;font-size:30px;color:#3b3530}
+
+/* letters on 4-line paper */
+.gl line{stroke:var(--line);stroke-width:1.2}
+.gl line.l2{stroke-dasharray:3 3}
+.gl line.l3{stroke:var(--base);stroke-width:1.6}
+.gl text{font-family:var(--f-letter);font-size:47px;fill:var(--ink)}
+
+/* result + overlays */
+.result{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.result svg.endart{width:min(240px,70vw);height:auto}
+.stars{display:flex;gap:6px}.stars svg{width:46px;height:46px}
+.nums{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.nums div{background:var(--panel);border:2px solid var(--edge);border-radius:10px;padding:8px 16px;min-width:110px}
+.nums small{display:block;color:var(--muted);font-weight:700;font-size:13px}
+.nums b{font-family:var(--f-display);font-weight:400;font-size:26px;font-variant-numeric:tabular-nums}
+.swap{display:flex;align-items:center;gap:14px;background:var(--accent);color:var(--ink);border-radius:12px;padding:12px 20px;font-family:var(--f-display);font-size:26px}
+.swap .ja{color:#3b2a12}
+.swap svg{width:54px;height:54px;flex:none}
+.rowbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.veil{position:fixed;inset:0;background:rgba(8,9,12,.92);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.veil-card{background:var(--panel);border:2px solid var(--edge);border-radius:14px;padding:22px;max-width:720px;width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.bigcode{font-family:var(--f-display);font-size:clamp(60px,14vw,150px);letter-spacing:.14em;color:var(--accent);line-height:1}
+.qr{background:#fff;border-radius:8px;padding:6px;line-height:0}
+.qr canvas{width:220px;height:220px;image-rendering:pixelated}
+.teacher{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+#tLink{width:100%;font:13px var(--f-body);background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px;padding:6px 8px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--go);color:var(--ink);font-weight:800;border-radius:10px;padding:8px 16px;z-index:60;box-shadow:0 4px 0 #000}
+
+@media (max-width:820px){
+  .hero,.roles,.stage,.book,.teacher{grid-template-columns:minmax(0,1fr)}
+  .hero-pic{display:none}
+  .bombbox{max-width:220px}
+  #ccForm{margin-left:0}
+  .set-row h3{min-width:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  .spark,.glove,.chicken,.duck,.bear{animation-duration:2.2s}
+  .spark{animation:none}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1a8"/><stop offset=".45" stop-color="#e2b33a"/><stop offset="1" stop-color="#9c7314"/></linearGradient>
+    <linearGradient id="gSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#bfc5cc"/><stop offset="1" stop-color="#7c848d"/></linearGradient>
+  </defs>
+</svg>
+
+<div class="app">
+  <header class="topbar">
+    <button class="brand" id="goHome" type="button">The Keypad Game <span>キーパッドゲーム</span></button>
+    <div class="tb-tools">
+      <button class="tog" id="jpToggle" type="button" aria-pressed="true">日本語サポート</button>
+      <button class="tog" id="sndToggle" type="button" aria-pressed="true">Sound</button>
+    </div>
+  </header>
+
+  <main>
+  <!-- HOME -->
+  <section class="screen" id="home">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">A two-player English speaking game</p>
+        <h1 id="heroTitle">Defuse the bomb!</h1>
+        <p class="lead" id="heroLead"></p>
+        <p class="ja" id="heroLeadJa"></p>
+      </div>
+      <div class="hero-pic" id="heroPic"></div>
+    </div>
+
+    <div class="roles">
+      <div class="panel role">
+        <p class="who" id="r1who">Sees the bomb. Clicks the keypad.</p>
+        <h2 id="r1name">Defuser</h2>
+        <p class="ja" id="r1ja"></p>
+        <ul class="say" id="r1say"></ul>
+        <button class="btn primary big" id="startKeypad" type="button">Play the Keypad<span class="ja">キーパッドを担当</span></button>
+      </div>
+      <div class="panel role">
+        <p class="who" id="r2who">Has the codebook. Reads the codes.</p>
+        <h2 id="r2name">Expert</h2>
+        <p class="ja" id="r2ja"></p>
+        <ul class="say" id="r2say"></ul>
+        <button class="btn primary big" id="startBook" type="button">Open the Codebook<span class="ja">コードブックを担当</span></button>
+      </div>
+    </div>
+    <div class="more">
+      <button class="btn" id="startSolo" type="button">Solo practice (computer voice)<span class="ja">ひとりで練習（コンピューターの声）</span></button>
+      <button class="btn" id="toTeacher" type="button">Teacher page<span class="ja">先生用ページ</span></button>
+    </div>
+    <div class="panel" id="homeSlot"></div>
+  </section>
+
+  <!-- KEYPAD PLAYER -->
+  <section class="screen" id="play" hidden>
+    <div class="hud">
+      <span class="rolechip" id="playRole">Defuser</span>
+      <div class="lights" id="lights" aria-label="Progress"></div>
+      <span class="stat">Time<b id="tTime">0:00</b></span>
+      <span class="stat">Oops<b id="tOops">0</b></span>
+      <span class="badge">Class code <b class="ccBadge">----</b></span>
+      <button class="btn small" id="playQuit" type="button">Quit<span class="ja">やめる</span></button>
+    </div>
+    <div class="stage" id="stage">
+      <div class="bombside">
+        <div class="roundlbl" id="roundLbl">Bomb 1 of 3</div>
+        <div class="bombbox" id="bombBox"></div>
+        <div class="pagebox" id="pageBox"><small>Codebook page<span class="ja">コードブックのページ</span></small><b id="pageNum">12</b></div>
+      </div>
+      <div class="keyside">
+        <div class="partner" id="partner" hidden>
+          <div class="bub" id="partnerBub">Listen to the code!<span class="ja">コードを聞こう！</span></div>
+          <button class="btn small" id="sayAgain" type="button">Say it again<span class="ja">もう一度</span></button>
+          <button class="btn small" id="saySlow" type="button">Slowly<span class="ja">ゆっくり</span></button>
+        </div>
+        <div class="display" id="display" aria-live="polite"></div>
+        <div class="keys" id="keys"></div>
+        <div class="controls">
+          <button class="btn" id="kBack" type="button">Back<span class="ja">1つ消す</span></button>
+          <button class="btn" id="kClear" type="button">Clear<span class="ja">全部消す</span></button>
+          <button class="btn go" id="kGo" type="button">CUT!<span class="ja">切る！</span></button>
+        </div>
+        <div class="phrases" id="playPhrases"></div>
+      </div>
+      <div class="trap-layer" id="trapLayer"></div>
+    </div>
+  </section>
+
+  <!-- CODEBOOK PLAYER -->
+  <section class="screen" id="bookScr" hidden>
+    <div class="hud">
+      <span class="rolechip" id="bookRole">Expert</span>
+      <button class="tog" id="hintToggle" type="button" aria-pressed="true">Word hints<span class="ja inl">ことばヒント</span></button>
+      <span class="badge">Class code <b class="ccBadge">----</b></span>
+      <button class="btn small" id="bookSwap" type="button">Switch to Keypad<span class="ja">キーパッドに交代</span></button>
+      <button class="btn small" id="bookQuit" type="button">Home<span class="ja">ホーム</span></button>
+    </div>
+    <div class="book">
+      <div class="panel">
+        <h3 style="margin-bottom:8px">Pages<span class="ja inl">ページ</span></h3>
+        <div class="tabs" id="tabs"></div>
+        <div class="ask" id="askList"></div>
+      </div>
+      <div class="pageview" id="pageView"></div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="result" hidden>
+    <div class="result">
+      <div id="endArt"></div>
+      <h1 id="resMsg" style="font-size:clamp(30px,5vw,48px)">Great job!</h1>
+      <p class="ja" id="resMsgJa"></p>
+      <div class="stars" id="resStars"></div>
+      <div class="nums">
+        <div><small>Time<span class="ja">タイム</span></small><b id="resTime">0:00</b></div>
+        <div><small>Oops<span class="ja">ミス</span></small><b id="resOops">0</b></div>
+        <div><small>Score<span class="ja">スコア</span></small><b id="resScore">0</b></div>
+      </div>
+      <div class="swap" id="swapCard">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18h28l-7-7M40 30H12l7 7" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>Swap roles!<span class="ja">役割を交代しよう！</span></div>
+      </div>
+      <div class="rowbtns">
+        <button class="btn primary big" id="resAgain" type="button">Play again<span class="ja">もう一度</span></button>
+        <button class="btn big" id="resBook" type="button">Switch to Codebook<span class="ja">コードブックに交代</span></button>
+        <button class="btn big" id="resHome" type="button">Home<span class="ja">ホーム</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEACHER -->
+  <section class="screen" id="teacher" hidden>
+    <div class="teacher">
+      <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+        <div class="panel">
+          <h2 style="font-size:24px;color:var(--accent);margin-bottom:8px">Teacher page<span class="ja inl">先生用ページ</span></h2>
+          <ol class="steps">
+            <li>Choose the mode and settings below.<span class="ja">下でモードと設定を選びます。</span></li>
+            <li>Show the class code on the board, or let students scan the QR code.<span class="ja">クラスコードを黒板に書くか、QRコードを読み取らせます。</span></li>
+            <li>Students open the game, type the class code, and pick a role. Partners check that their codes match.<span class="ja">ゲームを開き、クラスコードを入力して役割を選びます。ペアでコードが同じか確認します。</span></li>
+          </ol>
+          <p class="note" style="margin-top:8px">Every Chromebook builds the same codebook from the class code, so nothing needs internet syncing. Each bomb picks its own random page, so neighbouring pairs get different bombs.</p>
+        </div>
+        <div class="panel" id="teacherSlot"></div>
+      </div>
+      <div class="panel" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
+        <small class="note">Class code<span class="ja">クラスコード</span></small>
+        <div class="bigcode ccBadge" style="font-size:54px">----</div>
+        <div class="cc-name" id="tName"></div>
+        <div class="qr"><canvas id="qrSmall" width="220" height="220"></canvas></div>
+        <p class="err" id="qrErr"></p>
+        <input id="tLink" type="text" aria-label="Game link">
+        <div class="rowbtns">
+          <button class="btn small" id="btnCopy" type="button">Copy link<span class="ja">リンクをコピー</span></button>
+          <button class="btn small" id="btnLinkReset" type="button">Reset link<span class="ja">リセット</span></button>
+        </div>
+        <button class="btn primary" id="btnBig" type="button">Show on the projector<span class="ja">大きく表示</span></button>
+      </div>
+    </div>
+  </section>
+  </main>
+</div>
+
+<div class="veil" id="bigVeil" hidden role="dialog" aria-label="Class code">
+  <div class="veil-card">
+    <h2>Class code<span class="ja">クラスコード</span></h2>
+    <div class="bigcode ccBadge">----</div>
+    <div class="cc-name" id="bigName"></div>
+    <div class="qr"><canvas id="qrLarge" width="300" height="300" style="width:300px;height:300px"></canvas></div>
+    <button class="btn" id="bigClose" type="button">Close<span class="ja">閉じる</span></button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+(function(){
+"use strict";
+const ARTIFACT_URL="https://claude.ai/artifact/7JtQVUWTzA3P3KHdtaYwFG";
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+const bi=p=>`<span class="en">${p[0]}</span><span class="ja">${p[1]}</span>`;
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hash32(x){x|=0;x=Math.imul(x^(x>>>16),0x7feb352d);x=Math.imul(x^(x>>>15),0x846ca68b);return(x^(x>>>16))>>>0;}
+const ri=(r,n)=>Math.floor(r()*n);
+function shuffle(a,r){for(let i=a.length-1;i>0;i--){const j=ri(r,i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+const pickN=(r,arr,n)=>shuffle(arr.slice(),r).slice(0,n);
+const RND=mulberry32((Date.now()^(Math.random()*4294967296))>>>0);
+
+/* =====================================================================
+   CONTENT: shapes, colors, code types, modes and levels.
+   To add a code type: add it to TYPES (pool, confusables, words) and give it a mask bit.
+   To add a harder mode (Grandmaster, Nightmare...): add an entry to MODES with fixed settings.
+   ===================================================================== */
+const SHAPES=[
+ {k:"circle",ja:"まる"},{k:"square",ja:"正方形"},{k:"rectangle",ja:"長方形"},{k:"triangle",ja:"三角"},
+ {k:"diamond",ja:"ダイヤ"},{k:"heart",ja:"ハート"},{k:"star",ja:"星"}];
+const SHAPE_KEYS=SHAPES.map(s=>s.k);
+const COLORS=[
+ {k:"red",fill:"#e2463b",ja:"赤"},{k:"blue",fill:"#2f6fdc",ja:"青"},{k:"yellow",fill:"#f7d038",ja:"黄色"},
+ {k:"green",fill:"#36a852",ja:"緑"},{k:"pink",fill:"#f59ac0",ja:"ピンク"},{k:"black",fill:"#26262b",ja:"黒"},
+ {k:"purple",fill:"#8b4fc6",ja:"むらさき"},{k:"orange",fill:"#f5892a",ja:"オレンジ"},{k:"white",fill:"#fbfbf7",ja:"白"},
+ {k:"brown",fill:"#8a5a33",ja:"茶色"},{k:"gold",fill:"url(#gGold)",ja:"金"},{k:"silver",fill:"url(#gSilver)",ja:"銀"}];
+const COLOR_COUNTS=[6,9,12];
+const colorOf=k=>COLORS.find(c=>c.k===k);
+const colorList=S=>COLORS.slice(0,COLOR_COUNTS[S.colors]);
+const UP="ABCDEFGHIJKLMNOPQRSTUVWXYZ",LO=UP.toLowerCase();
+const UP_SOUND=["BCDEGPTVZ","MN","AHJK","IYR","QUW","FSX","LO"];
+const LO_LOOK=["bdpq","nhmu","ijlt","aoec","vwy","rf","gq","sz","kx"];
+const TYPES=[
+ {key:"U",bit:1,name:["Capital letters","大文字"]},
+ {key:"L",bit:2,name:["Small letters","小文字"]},
+ {key:"S",bit:4,name:["Colored shapes","色と形"]}];
+const LEVELS=[
+ {name:["Easy","かんたん"],len:3,per:3,colors:0},
+ {name:["Normal","ふつう"],len:4,per:4,colors:1},
+ {name:["Hard","むずかしい"],len:5,per:6,colors:2}];
+const MODES=[
+ {key:"upper",mask:1,name:["Uppercase","大文字"],ex:"A B C"},
+ {key:"lower",mask:2,name:["Lowercase","小文字"],ex:"a b c"},
+ {key:"shapes",mask:4,name:["Colored shapes","色と形"],ex:"★ ♥ ▲"},
+ {key:"letters",mask:3,name:["Letters","大文字＋小文字"],ex:"A b C"},
+ {key:"master",mask:7,name:["Master","マスター"],ex:"A b ★",fixed:{len:5,per:6,colors:2,size:1}}];
+
+/* ---------- class codes ----------
+   4 characters = 16 settings bits + 4-bit checksum. The codebook comes from the settings that change its pages
+   (types, length, bombs per page, colors, big/small, edition), so every Chromebook with the same code has the same book. */
+const ALPH="23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+function packS(S){return (S.mask-1)|((S.len-3)<<3)|((S.per-3)<<5)|(S.colors<<7)|(S.size<<9)|((S.rounds-1)<<10)|(S.theme<<13)|(S.ed<<14);}
+function unpackS(v){return {mask:(v&7)+1,len:((v>>3)&3)+3,per:((v>>5)&3)+3,colors:(v>>7)&3,size:(v>>9)&1,rounds:((v>>10)&7)+1,theme:(v>>13)&1,ed:(v>>14)&3};}
+const mixOf=chk=>hash32(chk*7919+101)&0xFFFF;
+function encodeS(S){const v=packS(S),chk=hash32(v^0x51ed)&15;let val=chk*65536+(v^mixOf(chk)),out="";for(let i=0;i<4;i++){out=ALPH[val%32]+out;val=Math.floor(val/32);}return out;}
+function decodeS(str){
+  const c=(str||"").toUpperCase().replace(/[^0-9A-Z]/g,"");if(c.length!==4)return null;
+  let val=0;for(const ch of c){const i=ALPH.indexOf(ch);if(i<0)return null;val=val*32+i;}
+  const chk=Math.floor(val/65536),v=(val%65536)^mixOf(chk);
+  if((hash32(v^0x51ed)&15)!==chk)return null;
+  const S=unpackS(v);if(S.mask>7||S.colors>2||S.rounds>5||S.ed>2)return null;return S;
+}
+const bookKey=S=>packS(S)&~((7<<10)|(1<<13));
+function presetOf(S){
+  const m=MODES.findIndex(m=>m.mask===S.mask);if(m<0)return null;const M=MODES[m];
+  if(M.fixed){const f=M.fixed;return f.len===S.len&&f.per===S.per&&f.colors===S.colors&&f.size===S.size?{m,l:-1}:null;}
+  if(S.size)return null;
+  const l=LEVELS.findIndex(L=>L.len===S.len&&L.per===S.per&&L.colors===S.colors);return l<0?null:{m,l};
+}
+function nameOf(S){const p=presetOf(S);if(!p)return ["Custom","カスタム"];const M=MODES[p.m];if(p.l<0)return M.name;return [M.name[0]+" · "+LEVELS[p.l].name[0],M.name[1]+"・"+LEVELS[p.l].name[1]];}
+
+/* ---------- symbols: "U:B", "L:b", "S:red:star" ---------- */
+const typesOf=S=>TYPES.filter(t=>S.mask&t.bit).map(t=>t.key);
+const mixedLetters=S=>(S.mask&3)===3;
+function letterPool(t,S){let p=t==="U"?UP:LO;if(mixedLetters(S))p=p.replace(t==="U"?"I":"l","");return p;}
+function parse(id){const p=id.split(":");return p[0]==="S"?{t:"S",color:p[1],shape:p[2]}:{t:p[0],ch:p[1]};}
+function randSym(t,S,r){if(t==="S")return "S:"+colorList(S)[ri(r,COLOR_COUNTS[S.colors])].k+":"+SHAPE_KEYS[ri(r,7)];const p=letterPool(t,S);return t+":"+p[ri(r,p.length)];}
+function wordOf(id,S,forceCase){const s=parse(id);if(s.t==="S")return s.color+" "+s.shape;
+  if(s.t==="U")return (forceCase||S.mask&2?"capital ":"")+s.ch;return (forceCase||S.mask&1?"small ":"")+s.ch;}
+/* the voice spells each letter from its capital form ("A." reads as the letter name; spelled-out names like "ay" were misread) */
+function speakOf(id,S){const s=parse(id);if(s.t==="S")return s.color+" "+s.shape+".";const n=s.ch.toUpperCase()+".";
+  if(s.t==="U")return (S.mask&2?"capital ":"")+n;return (S.mask&1?"small ":"")+n;}
+function genCode(S,r){
+  const ts=typesOf(S),order=ts.slice(0,Math.min(ts.length,S.len));
+  while(order.length<S.len)order.push(ts[ri(r,ts.length)]);
+  shuffle(order,r);const used=new Set();
+  return order.map(t=>{let id,n=0;do{id=randSym(t,S,r);n++;}while(used.has(id)&&n<50);used.add(id);return id;});
+}
+function confusables(id,S){
+  const s=parse(id),out=[],pool=t=>letterPool(t,S);
+  if(s.t==="U"){const g=UP_SOUND.find(g=>g.includes(s.ch));if(g)for(const c of g)if(c!==s.ch&&pool("U").includes(c))out.push("U:"+c);if(S.mask&2&&pool("L").includes(s.ch.toLowerCase()))out.push("L:"+s.ch.toLowerCase());}
+  else if(s.t==="L"){LO_LOOK.filter(g=>g.includes(s.ch)).forEach(g=>{for(const c of g)if(c!==s.ch&&pool("L").includes(c))out.push("L:"+c);});if(S.mask&1&&pool("U").includes(s.ch.toUpperCase()))out.push("U:"+s.ch.toUpperCase());}
+  else{colorList(S).forEach(c=>{if(c.k!==s.color)out.push("S:"+c.k+":"+s.shape);});SHAPE_KEYS.forEach(k=>{if(k!==s.shape)out.push("S:"+s.color+":"+k);});}
+  return out;
+}
+function buildKeys(S,code,r){
+  const set=new Set(code),lists=code.map(id=>shuffle(confusables(id,S),r));
+  for(let pass=0;pass<2;pass++)lists.forEach(l=>{while(l.length&&set.size<12){const c=l.shift();if(!set.has(c)){set.add(c);break;}}});
+  const ts=typesOf(S);let n=0;while(set.size<12&&n<500){set.add(randSym(ts[ri(r,ts.length)],S,r));n++;}
+  return shuffle([...set],r);
+}
+
+/* ---------- the codebook: page p is the same on every Chromebook with the same class code ---------- */
+const PAGES=30;
+const pageCache=new Map();
+function pageOf(S,p){
+  const key=bookKey(S)+"/"+p;if(pageCache.has(key))return pageCache.get(key);
+  const r=mulberry32(hash32(bookKey(S)*2654435761^(p*40503)^0x5bd1e995));
+  const n=S.per,k=n<=3?n:Math.ceil(n/2),cols=pickN(r,colorList(S).map(c=>c.k),k),bombs=[];
+  cols.forEach((c,ci)=>{
+    let cnt=0;for(let i=0;i<n;i++)if(i%k===ci)cnt++;
+    if(cnt===1)bombs.push({color:c,sticker:SHAPE_KEYS[ri(r,7)],big:S.size?r()<0.5:true});
+    else if(S.size&&r()<0.6){const sh=SHAPE_KEYS[ri(r,7)];bombs.push({color:c,sticker:sh,big:true},{color:c,sticker:sh,big:false});}
+    else{const [a,b]=pickN(r,SHAPE_KEYS,2);bombs.push({color:c,sticker:a,big:S.size?r()<0.5:true},{color:c,sticker:b,big:S.size?r()<0.5:true});}
+  });
+  shuffle(bombs,r);const seen=new Set();
+  bombs.forEach(b=>{let c;do{c=genCode(S,r);}while(seen.has(c.join()));seen.add(c.join());b.code=c;});
+  const pg={p,bombs};pageCache.set(key,pg);return pg;
+}
+
+/* =====================================================================
+   DRAWING (SVG strings)
+   ===================================================================== */
+const INK="#1b1a17";
+function starPts(cx,cy,R,r0){let s="";for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r0:R;s+=(cx+rr*Math.cos(a)).toFixed(1)+","+(cy+rr*Math.sin(a)).toFixed(1)+" ";}return s;}
+function shapeEl(k,fill,sw){
+  const a=`fill="${fill}" stroke="${INK}" stroke-width="${sw==null?2.5:sw}" stroke-linejoin="round"`;
+  if(k==="circle")return `<circle cx="20" cy="20" r="15" ${a}/>`;
+  if(k==="square")return `<rect x="6" y="6" width="28" height="28" ${a}/>`;
+  if(k==="rectangle")return `<rect x="1.5" y="11" width="37" height="18" ${a}/>`;
+  if(k==="triangle")return `<polygon points="20,4 37,34 3,34" ${a}/>`;
+  if(k==="diamond")return `<polygon points="20,1.5 32,20 20,38.5 8,20" ${a}/>`;
+  if(k==="heart")return `<path d="M20 35 C 6 25 2 16 7 10 C 11 5 18 5 20 11.5 C 22 5 29 5 33 10 C 38 16 34 25 20 35 Z" ${a}/>`;
+  return `<polygon points="${starPts(20,21,17,7.2)}" ${a}/>`;
+}
+function glyph(id){
+  const s=parse(id);
+  if(s.t==="S")return `<svg class="gs" viewBox="0 0 40 40" aria-hidden="true">${shapeEl(s.shape,colorOf(s.color).fill)}</svg>`;
+  return `<svg class="gl" viewBox="0 0 60 62" aria-hidden="true"><line class="l1" x1="1" x2="59" y1="11" y2="11"/><line class="l2" x1="1" x2="59" y1="22" y2="22"/><line class="l3" x1="1" x2="59" y1="44" y2="44"/><line class="l4" x1="1" x2="59" y1="56" y2="56"/><text x="30" y="44" text-anchor="middle">${s.ch}</text></svg>`;
+}
+function bombSVG(b,o){
+  o=o||{};const c=colorOf(b.color),dark=b.color==="black",face=dark?"#f2eee5":INK,s=b.big?1:0.66;
+  const eyes=o.asleep?`<path d="M72 100 q8 7 16 0 M112 100 q8 7 16 0" fill="none" stroke="${face}" stroke-width="4" stroke-linecap="round"/>`
+    :`<circle cx="80" cy="98" r="10" fill="#fff" stroke="${INK}" stroke-width="3"/><circle cx="82" cy="100" r="4.5" fill="${INK}"/><circle cx="120" cy="98" r="10" fill="#fff" stroke="${INK}" stroke-width="3"/><circle cx="122" cy="100" r="4.5" fill="${INK}"/>`;
+  const mouth=o.asleep?`<ellipse cx="100" cy="124" rx="5" ry="4" fill="${face}"/>`:`<path d="M86 118 Q100 130 114 118" fill="none" stroke="${face}" stroke-width="4" stroke-linecap="round"/>`;
+  const must=o.mustache?`<path class="mst" d="M100 116 C 92 108 80 108 74 118 C 82 116 90 120 100 120 C 110 120 118 116 126 118 C 120 108 108 108 100 116 Z" fill="${dark?"#f2eee5":"#3a2416"}"/>`:"";
+  const hat=o.hat?`<polygon points="100,8 82,58 118,58" fill="#ffd34d" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/><circle cx="100" cy="8" r="7" fill="#e2463b" stroke="${INK}" stroke-width="3"/>`:"";
+  return `<svg viewBox="0 0 200 200" class="${o.cls||""}" role="img" aria-label="${b.big||!o.sizeOn?"":"small "}${b.color} bomb with a ${b.sticker} sticker">${!b.big&&o.sizeOn?`<circle cx="100" cy="122" r="64" fill="none" stroke="#8a8798" stroke-width="3" stroke-dasharray="7 7"/>`:""}<g transform="translate(100 120) scale(${s}) translate(-100 -120)">
+  <path d="M100 52 C 104 30 122 22 142 26" fill="none" stroke="#7b5b3a" stroke-width="6" stroke-linecap="round"/>
+  ${o.asleep?"":`<g class="spark"><polygon points="${starPts(144,25,13,6)}" fill="#ffd34d" stroke="#f5892a" stroke-width="2.5" stroke-linejoin="round"/></g>`}
+  <rect x="83" y="46" width="34" height="18" rx="4" fill="#5d6170" stroke="${INK}" stroke-width="4"/>
+  <circle cx="100" cy="122" r="64" fill="${c.fill}" stroke="${INK}" stroke-width="5"/>
+  <ellipse cx="72" cy="88" rx="15" ry="9" fill="#fff" opacity=".35" transform="rotate(-35 72 88)"/>
+  ${eyes}${mouth}${must}
+  <circle cx="100" cy="156" r="19" fill="#fff" stroke="${INK}" stroke-width="3"/>
+  <g transform="translate(86 142) scale(.7)">${shapeEl(b.sticker,INK,0)}</g>${hat}
+  </g></svg>`;
+}
+function vaultSVG(b,o){
+  o=o||{};const c=colorOf(b.color),s=b.big?1:0.66;
+  const bolts=[[50,40],[150,40],[50,168],[150,168]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5" fill="#d9dce2" stroke="${INK}" stroke-width="2"/>`).join("");
+  return `<svg viewBox="0 0 200 200" class="${o.cls||""}" role="img" aria-label="${b.big||!o.sizeOn?"":"small "}${b.color} vault door with a ${b.sticker} sign">${!b.big&&o.sizeOn?`<rect x="26" y="16" width="148" height="176" rx="12" fill="none" stroke="#8a8798" stroke-width="3" stroke-dasharray="7 7"/>`:""}<g transform="translate(100 104) scale(${s}) translate(-100 -104)">
+  <rect x="26" y="16" width="148" height="176" rx="12" fill="#3a3d48" stroke="${INK}" stroke-width="5"/>
+  <rect x="38" y="28" width="124" height="152" rx="8" fill="${c.fill}" stroke="${INK}" stroke-width="4"/>
+  <rect x="44" y="34" width="112" height="140" rx="6" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="3"/>
+  ${bolts}
+  <g class="wheel"><circle cx="100" cy="86" r="30" fill="#c9ccd3" stroke="${INK}" stroke-width="4"/>
+  <path d="M100 58 V114 M72 86 H128 M80 66 L120 106 M120 66 L80 106" stroke="${INK}" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="100" cy="86" r="9" fill="#8d929c" stroke="${INK}" stroke-width="3"/></g>
+  <rect x="71" y="126" width="58" height="40" rx="5" fill="#fff" stroke="${INK}" stroke-width="3"/>
+  <g transform="translate(86 132) scale(.7)">${shapeEl(b.sticker,INK,0)}</g>
+  </g></svg>`;
+}
+const objSVG=(b,o)=>(S.theme?vaultSVG:bombSVG)(b,Object.assign({sizeOn:!!S.size},o));
+const STAR=on=>`<svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.6 5.7 21.1l1.5-7L2 9.3l7-.8z" fill="${on?"#f2c14e":"none"}" stroke="${on?"#f2c14e":"#5a5868"}" stroke-width="2" stroke-linejoin="round"/></svg>`;
+
+/* ---------- theme text ---------- */
+const TH=[
+ {key:"bomb",title:["Defuse the bomb!","ばくだんを止めよう！"],lead:["One player sees a silly bomb and a keypad. The other has the codebook. Talk in English to find the right code and switch the bomb off.","ひとりはばくだんとキーパッド、ひとりはコードブック。英語で話して正しいコードを見つけ、ばくだんを止めよう！"],
+  r1:["Defuser","解除係"],r2:["Expert","エキスパート"],obj:"bomb",objs:["Bomb","ばくだん"],objsP:["Bombs per game","1ゲームのばくだんの数"],go:["CUT!","切る！"],mark:"sticker",
+  done:["Phew! It's off!","ふう！止まった！"],win:["The bomb is asleep!","ばくだんはねむった！"],traps:["glove","chicken","soot","mustache"]},
+ {key:"vault",title:["Open the vault!","金庫を開けよう！"],lead:["The big festival is tomorrow, and the bank manager forgot the vault codes. One player works the keypad. The other reads the codebook. Talk in English to open every door.","明日はお祭り。でも銀行の人が金庫のコードを忘れちゃった！ひとりはキーパッド、ひとりはコードブック。英語で話してドアを開けよう！"],
+  r1:["Vault opener","金庫あけ係"],r2:["Bank manager","銀行の人"],obj:"door",objs:["Door","ドア"],objsP:["Doors per game","1ゲームのドアの数"],go:["OPEN!","開ける！"],mark:"sign",
+  done:["Click! It's open!","カチッ！開いた！"],win:["You opened the vault!","金庫が開いた！"],traps:["water","duck","bear","cat"]}];
+
+/* =====================================================================
+   STATE + SETTINGS
+   ===================================================================== */
+const DEFAULT_S={mask:1,len:3,per:3,colors:0,size:0,rounds:3,theme:0,ed:0};
+let S=decodeS(store.get("kp_code",""))||Object.assign({},DEFAULT_S);
+let curLevel=store.get("kp_level",0);
+let JP=store.get("kp_jp",true),SND=store.get("kp_snd",true),HINTS=store.get("kp_hints",true);
+let toastT=0;
+function toast(t){let el=$("#toast");if(!el){el=document.createElement("div");el.id="toast";el.className="toast";document.body.appendChild(el);}el.innerHTML=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2600);}
+try{const h=(location.hash||"").replace("#","");const d=decodeS(h);if(d){S=d;setTimeout(()=>toast(bi(["Class code "+h.toUpperCase()+" loaded","クラスコード "+h.toUpperCase()+" を読み込みました"])),300);}}catch(e){}
+
+function applyToggles(){document.body.classList.toggle("jp",JP);$("#jpToggle").setAttribute("aria-pressed",String(JP));$("#sndToggle").setAttribute("aria-pressed",String(SND));$("#hintToggle").setAttribute("aria-pressed",String(HINTS));}
+$("#jpToggle").onclick=()=>{JP=!JP;store.set("kp_jp",JP);applyToggles();};
+$("#sndToggle").onclick=()=>{SND=!SND;store.set("kp_snd",SND);applyToggles();};
+$("#hintToggle").onclick=()=>{HINTS=!HINTS;store.set("kp_hints",HINTS);applyToggles();renderPage();};
+
+/* settings panel (one element, moved between the home and teacher screens) */
+const panel=document.createElement("div");panel.className="settings";panel.id="settings";
+panel.innerHTML=`
+ <div class="set-row"><h3>Mode<span class="ja">モード</span></h3><div class="seg" id="setMode"></div></div>
+ <div class="set-row" id="levelRow"><h3>Level<span class="ja">レベル</span></h3><div class="seg" id="setLevel"></div></div>
+ <div class="set-row"><h3>Theme<span class="ja">テーマ</span></h3><div class="seg" id="setTheme"></div></div>
+ <div class="set-row"><h3 id="roundsLbl">Bombs per game</h3><div class="seg" id="setRounds"></div></div>
+ <details class="custom" id="custom"><summary>Make your own difficulty<span class="ja inl">自分でむずかしさを作る</span></summary>
+  <div class="set-row"><h3>Code types<span class="ja">コードの種類</span></h3><div class="seg" id="setTypes"></div></div>
+  <div class="set-row"><h3>Colors<span class="ja">色の数</span></h3><div class="seg" id="setColors"></div></div>
+  <div class="set-row"><h3>Code length<span class="ja">コードの長さ</span></h3><div class="seg" id="setLen"></div></div>
+  <div class="set-row"><h3 id="perLbl">Bombs per page</h3><div class="seg" id="setPer"></div></div>
+  <div class="set-row"><h3>Big and small<span class="ja">大きい・小さい</span></h3><div class="seg" id="setSize"></div></div>
+  <div class="set-row"><h3>Codebook edition<span class="ja">コードブックの版</span></h3><div class="seg" id="setEd"></div></div>
+  <p class="note">Changing any of these makes a new class code. Both partners need the same code.<span class="ja">設定を変えるとクラスコードも変わります。ペアで同じコードにしよう。</span></p>
+ </details>
+ <div class="classcode">
+  <div class="cc">Class code<b class="ccBadge">----</b><span class="cc-name" id="ccName"></span></div>
+  <form id="ccForm" autocomplete="off"><input id="ccIn" maxlength="5" placeholder="Type code" aria-label="Type a class code"><button class="btn small" type="submit">Use code<span class="ja">このコードを使う</span></button></form>
+  <p class="err" id="ccErr"></p>
+  <p class="note">Partners: check that your class codes match!<span class="ja">ペアでクラスコードが同じか確認しよう！</span></p>
+ </div>`;
+$("#homeSlot").appendChild(panel);
+
+function seg(el,opts,isOn,onPick){
+  el.innerHTML=opts.map((o,i)=>`<button type="button" data-i="${i}" aria-pressed="${isOn(o,i)}">${o.html}</button>`).join("");
+  $$("button",el).forEach(b=>b.onclick=()=>{onPick(opts[+b.dataset.i],+b.dataset.i);ac();sfx("click");setChanged();});
+}
+function setChanged(){store.set("kp_code",encodeS(S));store.set("kp_level",curLevel);renderSettings();}
+function applyMode(m){const M=MODES[m];S.mask=M.mask;if(M.fixed)Object.assign(S,M.fixed);else{const L=LEVELS[curLevel];S.len=L.len;S.per=L.per;S.colors=L.colors;S.size=0;}}
+function renderSettings(){
+  const T=TH[S.theme],p=presetOf(S);
+  seg($("#setMode"),MODES.map(M=>({html:`${M.name[0]}<small>${M.ex}</small><span class="ja">${M.name[1]}</span>`})),(o,i)=>!!p&&p.m===i,(o,i)=>applyMode(i));
+  $("#levelRow").hidden=!!(p&&MODES[p.m].fixed);
+  seg($("#setLevel"),LEVELS.map(L=>({html:bi(L.name)})),(o,i)=>!!p&&p.l===i,(o,i)=>{curLevel=i;const m=p?p.m:MODES.findIndex(M=>M.mask===S.mask);applyMode(m>=0&&!MODES[m].fixed?m:0);});
+  seg($("#setTheme"),[{html:bi(["Bomb","ばくだん"])},{html:bi(["Bank vault","銀行の金庫"])}],(o,i)=>S.theme===i,(o,i)=>{S.theme=i;});
+  $("#roundsLbl").innerHTML=bi(T.objsP);$("#perLbl").innerHTML=bi([T.objs[0]+"s per codebook page","1ページの"+T.objs[1]+"の数"]);
+  seg($("#setRounds"),[1,2,3,4,5].map(n=>({html:String(n),n})),o=>S.rounds===o.n,o=>{S.rounds=o.n;});
+  seg($("#setTypes"),TYPES.map(t=>({html:bi(t.name),t})),o=>!!(S.mask&o.t.bit),o=>{const m=S.mask^o.t.bit;if(m)S.mask=m;});
+  seg($("#setColors"),COLOR_COUNTS.map((n,i)=>({html:String(n),i})),o=>S.colors===o.i,o=>{S.colors=o.i;});
+  seg($("#setLen"),[3,4,5,6].map(n=>({html:String(n),n})),o=>S.len===o.n,o=>{S.len=o.n;});
+  seg($("#setPer"),[3,4,5,6].map(n=>({html:String(n),n})),o=>S.per===o.n,o=>{S.per=o.n;});
+  seg($("#setSize"),[{html:bi(["Off","なし"]),v:0},{html:bi(["On","あり"]),v:1}],o=>S.size===o.v,o=>{S.size=o.v;});
+  seg($("#setEd"),["A","B","C"].map((n,i)=>({html:n,i})),o=>S.ed===o.i,o=>{S.ed=o.i;});
+  const code=encodeS(S),nm=nameOf(S);
+  $$(".ccBadge").forEach(e=>e.textContent=code);
+  $("#ccName").innerHTML=bi(nm);$("#tName").innerHTML=bi(nm);$("#bigName").innerHTML=bi(nm);
+  renderTheme();refreshQR();
+}
+$("#ccIn").addEventListener("input",e=>{e.target.value=e.target.value.toUpperCase().replace(/[^0-9A-Z]/g,"").slice(0,4);$("#ccErr").innerHTML="";});
+$("#ccForm").addEventListener("submit",e=>{e.preventDefault();const d=decodeS($("#ccIn").value);
+  if(!d){$("#ccErr").innerHTML=bi(["That code doesn't work. Check each letter and number.","そのコードは使えません。文字と数字をもう一度確認しよう。"]);sfx("nope");return;}
+  S=d;$("#ccIn").value="";ac();sfx("ok");setChanged();toast(bi(["Class code "+encodeS(S)+" is ready!","クラスコード "+encodeS(S)+" にしました！"]));});
+
+function renderTheme(){
+  const T=TH[S.theme];document.body.dataset.th=T.key;
+  $("#heroTitle").textContent=T.title[0];$("#heroLead").textContent=T.lead[0];$("#heroLeadJa").textContent=T.title[1]+" "+T.lead[1];
+  $("#heroPic").innerHTML=objSVG({color:S.theme?"blue":"red",sticker:"star",big:true});
+  $("#r1name").textContent=T.r1[0];$("#r1ja").textContent=T.r1[1];$("#r2name").textContent=T.r2[0];$("#r2ja").textContent=T.r2[1];
+  $("#r1who").innerHTML=bi([`Sees the ${T.obj}. Clicks the keypad.`,`${T.objs[1]}を見て、キーパッドをクリック。`]);
+  $("#r2who").innerHTML=bi(["Has the codebook. Reads the codes.","コードブックを持っていて、コードを読む。"]);
+  $("#r1say").innerHTML=kpPhrases().map(p=>`<li>${p}</li>`).join("");
+  $("#r2say").innerHTML=bookPhrases().map(p=>`<li>${p}</li>`).join("");
+  $("#playRole").textContent=T.r1[0];$("#bookRole").textContent=T.r2[0];
+  $("#kGo").innerHTML=bi(T.go);
+}
+function kpPhrases(){const T=TH[S.theme],a=["Page 12.","It's red.",`It has a star.`];if(S.size)a.push("It's big.");a.push("Say it again, please.");return a;}
+function bookPhrases(){const T=TH[S.theme],a=["What page?","What color is it?",`What's on the ${T.mark}?`];if(S.size)a.push("Is it big or small?");a.push(exampleCode());return a;}
+function exampleCode(){const ts=typesOf(S),bits={U:"B",L:"r",S:"red star"};return ts.map(t=>t==="S"?"Red star.":t==="U"?(S.mask&2?"Capital B.":"B."):(S.mask&1?"Small r.":"r.")).join(" ");}
+
+/* ---------- sound ---------- */
+let AC=null;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){AC=null;}}if(AC&&AC.state==="suspended")AC.resume().catch(()=>{});return AC;}
+function tone(f,dur,type,vol,f2,delay){
+  const a=SND&&ac();if(!a)return;
+  const t=a.currentTime+(delay||0),o=a.createOscillator(),g=a.createGain();
+  o.type=type||"square";o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+  g.gain.setValueAtTime(vol||0.05,t);g.gain.exponentialRampToValueAtTime(0.0008,t+dur);
+  o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+0.02);
+}
+function noise(dur,vol,delay){const a=SND&&ac();if(!a)return;try{const len=Math.floor(a.sampleRate*dur),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);
+  const src=a.createBufferSource(),g=a.createGain();src.buffer=buf;g.gain.value=vol;src.connect(g);g.connect(a.destination);src.start(a.currentTime+(delay||0));}catch(e){}}
+function sfx(n){
+  if(n==="click")tone(900,0.04,"triangle",0.04,700);
+  else if(n==="key")tone(660,0.05,"square",0.03,520);
+  else if(n==="bump")tone(110,0.12,"sawtooth",0.04,80);
+  else if(n==="ok"){tone(523,0.12,"triangle",0.05);tone(784,0.2,"triangle",0.05,null,0.1);}
+  else if(n==="nope"){tone(330,0.15,"square",0.04,300);tone(220,0.25,"square",0.04,200,0.15);}
+  else if(n==="boing"){tone(140,0.45,"sine",0.12,700);tone(700,0.4,"sine",0.08,180,0.3);}
+  else if(n==="bawk"){[0,0.22,0.44].forEach(d=>tone(760,0.16,"sawtooth",0.04,520,d));}
+  else if(n==="achoo"){tone(500,0.3,"triangle",0.05,700);noise(0.4,0.12,0.35);}
+  else if(n==="wipe")noise(0.12,0.05);
+  else if(n==="splash"){noise(0.6,0.12);tone(900,0.3,"sine",0.03,300,0.05);}
+  else if(n==="quack"){[0,0.35,0.7,1.05].forEach(d=>tone(330,0.14,"square",0.05,240,d));}
+  else if(n==="snore"){tone(70,0.9,"sawtooth",0.06,95);tone(95,0.9,"sawtooth",0.05,70,1.1);}
+  else if(n==="boo"){tone(180,0.7,"sine",0.07,90);tone(240,0.7,"triangle",0.04,120,0.05);}
+  else if(n==="meow")tone(650,0.45,"triangle",0.06,900);
+  else if(n==="purr")tone(60,0.35,"sawtooth",0.04,55);
+  else if(n==="done"){[523,659,784].forEach((f,i)=>tone(f,0.18,"triangle",0.05,null,i*0.09));}
+  else if(n==="win"){[523,659,784,1046].forEach((f,i)=>tone(f,0.22,"square",0.04,null,i*0.11));tone(1318,0.5,"triangle",0.05,null,0.46);}
+}
+const CAN_SPEAK=(()=>{try{return "speechSynthesis" in window&&typeof SpeechSynthesisUtterance==="function";}catch(e){return false;}})();
+let VOICE=null;
+function pickVoice(){try{const vs=speechSynthesis.getVoices();VOICE=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/google|samantha|natural/i.test(v.name))||vs.find(v=>/^en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}catch(e){}}
+if(CAN_SPEAK){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}}
+function say(t,rate){if(!CAN_SPEAK)return;try{const u=new SpeechSynthesisUtterance(t);u.lang="en-US";if(VOICE)u.voice=VOICE;u.rate=rate||0.85;speechSynthesis.speak(u);}catch(e){}}
+function hush(){try{CAN_SPEAK&&speechSynthesis.cancel();}catch(e){}}
+
+/* ---------- screens ---------- */
+let screen="home";
+function show(id){
+  $$(".screen").forEach(el=>el.hidden=el.id!==id);screen=id;
+  if(id!=="play"){stopTimer();hush();clearTraps();}
+  if(id==="home")$("#homeSlot").appendChild(panel);
+  if(id==="teacher")$("#teacherSlot").appendChild(panel);
+  window.scrollTo(0,0);
+}
+$("#goHome").onclick=()=>show("home");
+
+/* =====================================================================
+   KEYPAD PLAYER
+   ===================================================================== */
+const G={};
+let timerI=0;
+function stopTimer(){clearInterval(timerI);timerI=0;}
+const fmtTime=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");
+function startGame(solo){
+  ac();Object.assign(G,{solo,round:0,oops:0,t0:performance.now(),elapsed:0,busy:false,lastPage:0,bag:[],won:false});
+  $("#partner").hidden=!solo;$("#pageBox").hidden=solo;
+  $("#playRole").textContent=solo?"Solo practice":TH[S.theme].r1[0];
+  $("#playPhrases").innerHTML=`<b>Say:<span class="ja inl">言ってみよう</span></b>`+kpPhrases().map(p=>`<span class="p">${p}</span>`).join("");
+  show("play");newRound();
+  stopTimer();timerI=setInterval(()=>{if(G.won)return;G.elapsed=(performance.now()-G.t0)/1000;$("#tTime").textContent=fmtTime(G.elapsed);},250);
+  $("#tOops").textContent="0";$("#tTime").textContent="0:00";
+}
+function newRound(){
+  const T=TH[S.theme];let p;do{p=1+ri(RND,PAGES);}while(p===G.lastPage);G.lastPage=p;
+  const pg=pageOf(S,p);G.page=p;G.bomb=pg.bombs[ri(RND,pg.bombs.length)];G.code=G.bomb.code;G.entered=[];G.mustache=false;
+  G.keys=buildKeys(S,G.code,RND);
+  $("#pageNum").textContent=p;
+  $("#roundLbl").innerHTML=`${T.objs[0]} ${G.round+1} of ${S.rounds}<span class="ja inl">${T.objs[1]} ${G.round+1} / ${S.rounds}</span>`;
+  $("#lights").innerHTML=Array.from({length:S.rounds},(_,i)=>`<i class="${i<G.round?"on":i===G.round?"now":""}"></i>`).join("");
+  drawBomb();renderKeys();renderDisplay();
+  if(G.solo){$("#partnerBub").innerHTML=bi(["Listen to the code!","コードを聞こう！"]);setTimeout(()=>{if(screen==="play"&&G.solo)speakCode();},700);}
+}
+function drawBomb(o){$("#bombBox").className="bombbox";$("#bombBox").innerHTML=objSVG(G.bomb,Object.assign({mustache:G.mustache},o));}
+function renderKeys(){
+  $("#keys").innerHTML=G.keys.map(id=>{const s=parse(id);return `<button class="key" type="button" data-id="${id}" aria-label="${wordOf(id,S,true)}">${glyph(id)}${s.t==="S"?`<small>${s.color}</small>`:""}</button>`;}).join("");
+  $$("#keys .key").forEach(b=>b.onclick=()=>press(b.dataset.id,b));
+}
+function renderDisplay(){
+  $("#display").innerHTML=Array.from({length:S.len},(_,i)=>{const id=G.entered[i];return `<div class="slot${id?" full":""}">${id?glyph(id):""}</div>`;}).join("");
+  $("#kGo").disabled=G.entered.length<S.len;
+}
+function press(id,btn){
+  if(G.busy||G.won)return;ac();
+  if(G.entered.length>=S.len){sfx("bump");$("#display").classList.remove("shake");void $("#display").offsetWidth;$("#display").classList.add("shake");return;}
+  G.entered.push(id);sfx("key");renderDisplay();
+}
+$("#kBack").onclick=()=>{if(G.busy)return;G.entered.pop();sfx("click");renderDisplay();};
+$("#kClear").onclick=()=>{if(G.busy)return;G.entered=[];sfx("click");renderDisplay();};
+$("#kGo").onclick=()=>{
+  if(G.busy||G.won||G.entered.length<S.len)return;
+  if(G.entered.join()===G.code.join())roundWon();else wrong();
+};
+function roundWon(){
+  const T=TH[S.theme];G.busy=true;sfx("done");hush();
+  drawBomb({asleep:true});
+  if(S.theme){const it=nextInside();G.lastInside=it;const d=document.createElement("div");d.className="inside"+(G.bomb.big||!S.size?"":" sm");d.textContent=it.em;$("#bombBox").appendChild(d);
+    $("#bombBox").classList.add("opened");later(()=>{word(it.say,"50%","10%");sfx(it.k==="scary"?"boo":it.k==="treasure"?"win":"boing");},700);}
+  else{$("#bombBox").classList.add("done");word(T.done,"50%","12%");}
+  G.round++;$("#lights").innerHTML=Array.from({length:S.rounds},(_,i)=>`<i class="${i<G.round?"on":""}"></i>`).join("");
+  setTimeout(()=>{clearTraps();G.busy=false;if(screen!=="play")return;if(G.round>=S.rounds)finish();else newRound();},S.theme?2900:1700);
+}
+function wrong(){
+  G.oops++;$("#tOops").textContent=G.oops;hush();
+  const T=TH[S.theme];
+  if(!G.bag.length)G.bag=shuffle(T.traps.slice(),RND);
+  let t=G.bag.shift();if(t==="mustache"&&G.mustache){if(!G.bag.length)G.bag=shuffle(T.traps.filter(x=>x!=="mustache"),RND);t=G.bag.shift();}
+  G.busy=true;
+  TRAPS[t](()=>{G.busy=false;G.entered=[];renderDisplay();if(G.solo&&screen==="play")$("#partnerBub").innerHTML=bi(["Try again! Listen carefully.","もう一度！よく聞いてね。"]);});
+}
+
+/* ---------- traps: funny, about 2-3 seconds, no flashing ---------- */
+const layer=$("#trapLayer");let trapTimers=[];
+function later(fn,ms){trapTimers.push(setTimeout(fn,ms));}
+function clearTraps(){trapTimers.forEach(clearTimeout);trapTimers=[];layer.innerHTML="";layer.classList.remove("block");}
+function el(cls,html,css){const d=document.createElement("div");d.className="tr "+cls;d.innerHTML=html;Object.assign(d.style,css||{});layer.appendChild(d);return d;}
+function word(w,left,top){return el("wordwrap",`<div class="word">${w[0]}<span class="ja">${w[1]}</span></div>`,{left,top});}
+function bombCenter(){const s=$("#stage").getBoundingClientRect(),b=$("#bombBox").getBoundingClientRect();return {x:b.left-s.left+b.width/2,y:b.top-s.top+b.height*0.58};}
+function keysRect(){const s=$("#stage").getBoundingClientRect(),k=$("#keys").getBoundingClientRect();return {x:k.left-s.left,y:k.top-s.top,w:k.width,h:k.height};}
+const TRAPS={
+  glove(done){const c=bombCenter();layer.classList.add("block");sfx("boing");el("glove","\u{1F94A}",{left:c.x+"px",top:c.y+"px"});word(["BOING!","ボヨーン！"],"50%","8%");later(()=>{clearTraps();done();},2100);},
+  chicken(done){layer.classList.add("block");sfx("bawk");const k=keysRect();el("chicken","\u{1F414}",{left:(k.x+k.w/2-60)+"px"});word(["BAWK!","コケーッ！"],"50%","8%");later(()=>{clearTraps();done();},2500);},
+  soot(done){
+    sfx("achoo");const c=bombCenter();word(["ACHOO!","ハックション！"],c.x+"px","6%");layer.classList.add("block");
+    later(()=>{const k=keysRect();let left=0;const n=6;
+      for(let i=0;i<n;i++){const d=el("soot","",{left:(k.x+(i%3)*k.w/3+ri(RND,30))+"px",top:(k.y+Math.floor(i/3)*k.h/2+ri(RND,20))+"px"});left++;
+        d.onclick=()=>{if(d.classList.contains("gone"))return;d.classList.add("gone");sfx("wipe");left--;if(!left)finishSoot();};}
+      el("hint",bi(["Click the soot to wipe it off!","すすをクリックしてふき取ろう！"]),{});
+      later(finishSoot,10000);},700);
+    let fin=false;function finishSoot(){if(fin)return;fin=true;clearTraps();done();}
+  },
+  mustache(done){G.mustache=true;drawBomb();sfx("nope");const c=bombCenter();word(["NOPE!","ちがうよ〜！"],c.x+"px","8%");later(()=>{clearTraps();done();},1800);},
+  water(done){layer.classList.add("block");sfx("splash");const k=keysRect();
+    for(let i=0;i<16;i++){const d=el("drop","\u{1F4A7}",{left:(10+ri(RND,60))+"px",top:(10+ri(RND,60))+"px",animationDelay:(i*0.05)+"s"});d.style.setProperty("--dx",(k.x+ri(RND,Math.max(40,k.w)))+"px");d.style.setProperty("--dy",(k.y+ri(RND,Math.max(40,k.h)))+"px");}
+    word(["SPLASH!","バシャッ！"],"50%","8%");later(()=>{clearTraps();done();},2200);},
+  duck(done){layer.classList.add("block");sfx("quack");el("duck","\u{1F986}",{});word(["QUACK! QUACK!","ガーガー！"],"50%","8%");later(()=>{clearTraps();done();},3000);},
+  bear(done){layer.classList.add("block");sfx("snore");el("bear","\u{1F43B}",{});
+    for(let i=0;i<3;i++)el("zz","Z",{left:"55%",top:"40%",animationDelay:(i*0.6)+"s"});
+    word(["ZZZ... SNORE!","グーグー…"],"50%","8%");later(()=>{clearTraps();done();},2800);},
+  cat(done){
+    sfx("meow");const k=keysRect();layer.classList.add("block");let pets=0,fin=false;
+    const cat=el("cat","\u{1F431}",{left:(k.x+k.w/2-65)+"px",top:(k.y+k.h/2-75)+"px"});
+    const hint=el("hint",bi(["Pet the cat 3 times to move it!","ネコを3回なでて、どいてもらおう！"]),{});
+    cat.onclick=()=>{if(fin)return;pets++;sfx("purr");el("heart","\u{1F497}",{left:(k.x+k.w/2+ri(RND,40)-20)+"px",top:(k.y+k.h/2-80)+"px"});if(pets>=3)bye();};
+    function bye(){if(fin)return;fin=true;sfx("meow");cat.classList.add("bye");hint.remove();later(()=>{clearTraps();done();},650);}
+    later(bye,12000);
+  }
+};
+
+/* ---------- what's inside each vault door: random, no repeats until the bag is empty ---------- */
+const INSIDE=[
+ ["treasure","\u{1F4B0}","A big bag of gold!","金貨がいっぱい！"],["treasure","\u{1F48E}","A giant diamond!","大きなダイヤ！"],["treasure","\u{1F451}","A golden crown!","金のかんむり！"],
+ ["treasure","\u{1F3C6}","A gold trophy!","金のトロフィー！"],["treasure","\u{1F48D}","A shiny ring!","キラキラの指輪！"],["treasure","\u{1FA99}","Just one tiny coin...","小さなコインが1まいだけ…"],
+ ["silly","\u{1F439}","A hamster on a pile of gold!","金貨の上にハムスター！"],["silly","\u{1F34C}","Just one banana.","バナナが1本だけ。"],["silly","\u{1F9E6}","Lots of smelly socks!","くさいくつ下がいっぱい！"],
+ ["silly","\u{1F986}","A rubber duck!","アヒルのおもちゃ！"],["silly","\u{1F359}","The manager's lunch!","銀行の人のお昼ごはん！"],["silly","\u{1FA72}","Underpants?!","パンツ！？"],
+ ["silly","\u{1F414}","A chicken. Why?","ニワトリ。なんで？"],["silly","\u{1F382}","A birthday cake!","誕生日ケーキ！"],
+ ["weird","\u{1F47D}","An alien says hello!","宇宙人がこんにちは！"],["weird","\u{1F996}","A tiny dinosaur!","小さな恐竜！"],["weird","\u{1F6F8}","A UFO!","UFO！"],
+ ["weird","\u{1F952}","100 cucumbers.","きゅうりが100本。"],["weird","\u{1F419}","An octopus counting money!","お金を数えるタコ！"],["weird","\u{1F916}","A sleeping robot.","ねむっているロボット。"],["weird","\u{1F5FF}","A big stone head.","大きな石の顔。"],
+ ["scary","\u{1F47B}","A ghost! BOO!","おばけだー！"],["scary","\u{1F480}","A skeleton guard!","ガイコツのガードマン！"],["scary","\u{1F577}\uFE0F","A giant spider!","大きなクモ！"],
+ ["scary","\u{1F9DF}","A zombie banker!","ゾンビの銀行員！"],["scary","\u{1F987}","Bats!","コウモリだ！"],["scary","\u{1F9DB}","A sleeping vampire...","ねむっている吸血鬼…"]
+].map(([k,em,en,ja])=>({k,em,say:[en,ja]}));
+let insideBag=[];
+function nextInside(){if(!insideBag.length)insideBag=shuffle(INSIDE.slice(),RND);return insideBag.shift();}
+
+/* ---------- solo: the computer reads the code ---------- */
+function speakCode(slow){
+  const words=G.code.map(id=>speakOf(id,S)),shown=G.code.map(id=>wordOf(id,S)).join(", ");
+  if(!CAN_SPEAK||!SND){$("#partnerBub").innerHTML=bi(["Read it: "+shown,"読んでみよう: "+shown]);return;}
+  hush();$("#partnerBub").innerHTML=bi(["Listen to the code!","コードを聞こう！"]);
+  if(slow)words.forEach((w,i)=>later(()=>say(w,0.75),i*1300));else say(words.join(" "),0.8);
+}
+$("#sayAgain").onclick=()=>{ac();speakCode(false);};
+$("#saySlow").onclick=()=>{ac();speakCode(true);};
+
+/* ---------- finishing ---------- */
+function scoreOf(){
+  const par=S.rounds*(20+7*S.len+(S.per>3?8:0)+(S.size?6:0)),over=Math.max(0,G.elapsed-par);
+  const sc=Math.max(100,Math.round((1000-G.oops*100-over*4)/10)*10);
+  return {sc,stars:sc>=850?3:sc>=600?2:1};
+}
+function finish(){
+  G.won=true;stopTimer();G.elapsed=(performance.now()-G.t0)/1000;sfx("win");
+  const T=TH[S.theme],{sc,stars}=scoreOf();
+  $("#endArt").innerHTML=S.theme
+    ?(()=>{const it=nextInside();return `<div class="prize"><small class="note">The big vault had...<span class="ja">大きな金庫の中には…</span></small><div class="em">${it.em}</div><b>${it.say[0]}</b><span class="ja">${it.say[1]}</span></div>`;})()
+    :bombSVG({color:G.bomb.color,sticker:G.bomb.sticker,big:true},{asleep:true,hat:true,cls:"endart"});
+  const msg=stars===3?["Amazing teamwork!","すごいチームワーク！"]:stars===2?["Great job!","よくできました！"]:["You did it!","クリア！"];
+  $("#resMsg").textContent=T.win[0]+" "+msg[0];$("#resMsgJa").textContent=T.win[1]+" "+msg[1];
+  $("#resStars").innerHTML=STAR(stars>=1)+STAR(stars>=2)+STAR(stars>=3);
+  $("#resTime").textContent=fmtTime(G.elapsed);$("#resOops").textContent=G.oops;$("#resScore").textContent=sc;
+  $("#swapCard").hidden=G.solo;$("#resBook").hidden=G.solo;
+  show("result");
+}
+$("#resAgain").onclick=()=>startGame(G.solo);
+$("#resBook").onclick=()=>openBook();
+$("#resHome").onclick=()=>show("home");
+$("#playQuit").onclick=()=>show("home");
+$("#startKeypad").onclick=()=>startGame(false);
+$("#startSolo").onclick=()=>startGame(true);
+
+/* =====================================================================
+   CODEBOOK PLAYER
+   ===================================================================== */
+let curPage=0;
+function openBook(){ac();curPage=0;
+  $("#tabs").innerHTML=Array.from({length:PAGES},(_,i)=>`<button type="button" data-p="${i+1}" aria-pressed="false">${i+1}</button>`).join("");
+  $$("#tabs button").forEach(b=>b.onclick=()=>{curPage=+b.dataset.p;sfx("click");renderPage();});
+  const T=TH[S.theme];
+  $("#askList").innerHTML=`<b>Ask:<span class="ja inl">聞いてみよう</span></b>`+bookPhrases().slice(0,-1).map(p=>`<span class="p">${p}</span>`).join("");
+  show("bookScr");renderPage();
+}
+function renderPage(){
+  if(screen!=="bookScr")return;
+  $$("#tabs button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.p===curPage)));
+  const T=TH[S.theme];
+  if(!curPage){$("#pageView").innerHTML=`<div class="empty"><b>What page?</b><p>Ask your partner for the page number, then click it.</p><p class="ja">パートナーにページ番号を聞いて、クリックしよう。</p></div>`;return;}
+  const pg=pageOf(S,curPage);
+  $("#pageView").innerHTML=`<h2>Page ${curPage}<small>Find your partner's ${T.obj}. Then read its code.</small></h2><p class="ja" style="color:#7a7266">パートナーの${T.objs[1]}を見つけて、コードを読もう。</p>
+   <div class="cards">${pg.bombs.map(b=>`<div class="card">${objSVG(b,{cls:"mini"})}
+     <div class="desc">${S.size?(b.big?"big ":"small "):""}${b.color} · ${b.sticker}</div>
+     <div class="code">${b.code.map(id=>`<div class="g">${glyph(id)}${HINTS&&hintUseful(id)?`<small>${wordOf(id,S)}</small>`:""}</div>`).join("")}</div></div>`).join("")}</div>`;
+}
+function hintUseful(id){const t=parse(id).t;return t==="S"||mixedLetters(S);}
+$("#startBook").onclick=openBook;
+$("#bookQuit").onclick=()=>show("home");
+$("#bookSwap").onclick=()=>startGame(false);
+
+/* =====================================================================
+   TEACHER PAGE: class code, link and QR
+   ===================================================================== */
+function pageLink(){
+  try{const h=location.hostname||"";if(/^https?:$/.test(location.protocol)&&h&&!/claude|anthropic|claudeusercontent/i.test(h))return location.origin+location.pathname;}catch(e){}
+  return ARTIFACT_URL;
+}
+let LINK=store.get("kp_link","")||pageLink();
+const fullLink=()=>LINK?LINK.replace(/#.*$/,"")+"#"+encodeS(S):"";
+function drawQR(cv,text,px){
+  if(typeof window.qrcode!=="function"||!text)return false;
+  const q=window.qrcode(0,"M");q.addData(text);q.make();
+  const n=q.getModuleCount(),size=n+8,scale=Math.max(2,Math.floor(px/size));
+  cv.width=cv.height=size*scale;const g=cv.getContext("2d");
+  g.fillStyle="#fff";g.fillRect(0,0,cv.width,cv.height);g.fillStyle="#000";
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))g.fillRect((c+4)*scale,(r+4)*scale,scale,scale);
+  return true;
+}
+function refreshQR(){
+  if(screen!=="teacher"&&$("#bigVeil").hidden)return;
+  $("#tLink").value=fullLink();
+  let ok=false;try{ok=drawQR($("#qrSmall"),fullLink(),440);}catch(e){ok=false;}
+  $(".qr").hidden=!ok;$("#qrErr").innerHTML=ok?"":(LINK?bi(["The QR code tool couldn't load. Check the internet connection, then reopen this page.","QRコードを作れませんでした。インターネット接続を確認してください。"]):bi(["Paste the game's link below to make a QR code.","QRコードを作るには、下にゲームのリンクを貼り付けてください。"]));
+}
+$("#tLink").addEventListener("change",e=>{LINK=e.target.value.trim().replace(/#.*$/,"")||pageLink();store.set("kp_link",LINK===pageLink()?"":LINK);refreshQR();});
+$("#btnLinkReset").onclick=()=>{LINK=pageLink();store.set("kp_link","");refreshQR();};
+$("#btnCopy").onclick=()=>{const t=fullLink();try{navigator.clipboard.writeText(t).then(()=>toast(bi(["Link copied","コピーしました"])),()=>{$("#tLink").select();});}catch(e){$("#tLink").select();}};
+$("#btnBig").onclick=()=>{$("#bigVeil").hidden=false;try{drawQR($("#qrLarge"),fullLink(),600);}catch(e){}$("#bigClose").focus();};
+$("#bigClose").onclick=()=>{$("#bigVeil").hidden=true;};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#bigVeil").hidden)$("#bigVeil").hidden=true;});
+$("#toTeacher").onclick=()=>{show("teacher");refreshQR();};
+
+applyToggles();renderSettings();show("home");
+window.KP={encodeS,decodeS,pageOf,buildKeys,genCode,get S(){return S;},G};
+})();
+</script>

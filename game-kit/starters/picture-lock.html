@@ -1,0 +1,1146 @@
+<title>Picture Lock</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Bungee&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<!--
+  STARTER GAME built on the Classroom Game Kit. Copy this file to start a new game.
+  The kit lives between the KIT:CSS / KIT:JS markers and the word bank in <script id="kit-wordbank">.
+  Do not edit inside those blocks: run  python3 game-kit/update-kit.py "<game>.html"  to refresh them.
+  Everything after "GAME" below is this game's own code.
+-->
+<style>
+/*KIT:CSS START*/
+/* =====================================================================
+   CLASSROOM GAME KIT  v1  styles
+   Paste between the KIT:CSS markers (or run update-kit.py).
+   A game restyles itself by changing the tokens below in its own :root block AFTER the kit.
+   One dark "game console" look on purpose, like The Keypad Game.
+   ===================================================================== */
+:root{
+  --bg:#14161d; --panel:#1e212b; --panel2:#272b37; --edge:#3a3f50; --text:#f2eee5; --muted:#aeacba; --dim:#7d7b8c;
+  --accent:#ff7a3d; --ink:#1b1a17; --go:#7fd18b; --oops:#ff8f6b; --paper:#fffaf0;
+  --f-display:"Bungee","Arial Black",Impact,sans-serif;
+  --f-body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans",system-ui,sans-serif;
+  --f-letter:"Andika","Century Gothic","Trebuchet MS",sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+html,body{height:100%}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);background-image:radial-gradient(1000px 480px at 50% -10%,#262a3a 0%,rgba(20,22,29,0) 65%);color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.app{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 40px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;margin:0;line-height:1.15;text-wrap:balance}
+h3{font-size:15px;letter-spacing:.04em}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Japanese support: <span class="ja"> shows only when body.jp */
+.ja{display:none}
+body.jp .ja{display:block;font-size:.82em;color:var(--muted);line-height:1.45;font-weight:500;letter-spacing:0;font-family:var(--f-body)}
+body.jp .ja.inl{display:inline;margin-left:6px}
+
+/* buttons + switches */
+.btn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font:700 15px/1.25 var(--f-body);color:var(--text);background:var(--panel2);border:2px solid var(--edge);border-radius:8px;padding:9px 16px;cursor:pointer;box-shadow:0 3px 0 #07080b;text-align:center}
+.btn:hover{border-color:var(--dim)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #07080b}
+.btn.primary{background:var(--accent);color:var(--ink);border-color:color-mix(in srgb,var(--accent) 60%,#000)}
+.btn.primary .ja{color:inherit;opacity:.78}
+.btn.small{font-size:13px;padding:6px 10px}
+.btn.big{font-size:18px;padding:13px 24px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.tog{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:2px solid var(--edge);border-radius:20px;padding:5px 12px 5px 8px;cursor:pointer;font-size:13px;font-weight:700}
+.tog::before{content:"";width:28px;height:16px;border-radius:9px;background:var(--edge);flex:none}
+.tog[aria-pressed="true"]::before{background:var(--go);background-image:radial-gradient(circle at 21px 8px,#fff 5px,transparent 5.5px)}
+.tog[aria-pressed="false"]::before{background-image:radial-gradient(circle at 7px 8px,#cfc8de 5px,transparent 5.5px)}
+.rowbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:4px 8px;border-bottom:2px dashed var(--edge);margin-bottom:12px}
+.brand{background:none;border:0;cursor:pointer;display:flex;align-items:baseline;gap:10px;padding:4px 0;font-family:var(--f-display);font-size:22px;color:var(--accent)}
+.brand span{font:700 13px var(--f-body);color:var(--muted)}
+.tb-tools{display:flex;gap:8px;flex-wrap:wrap}
+
+/* home */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:center;margin-bottom:20px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:6px}
+.hero h1{font-size:clamp(38px,6vw,64px);text-shadow:0 4px 0 #000}
+.hero .lead{font-size:18px;margin-top:10px;max-width:34em}
+.hero-pic{display:flex;justify-content:center}
+.hero-pic svg{width:min(260px,100%);height:auto}
+.panel{background:var(--panel);border:2px solid var(--edge);border-radius:12px;padding:16px 18px;box-shadow:0 4px 0 #07080b;min-width:0}
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.role{display:flex;flex-direction:column;gap:8px}
+.role h2{font-size:22px;color:var(--accent)}
+.role .who{font-weight:800;color:var(--muted);font-size:14px}
+.role .btn{align-self:flex-start}
+.say{list-style:none;padding:0;margin:2px 0 4px;display:flex;flex-wrap:wrap;gap:6px}
+.say li{background:var(--panel2);border-radius:6px;padding:4px 10px;font-weight:700;font-size:15px}
+.say li::before{content:"\201C";color:var(--accent);margin-right:2px}.say li::after{content:"\201D";color:var(--accent);margin-left:2px}
+.more{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.note{color:var(--muted);font-size:14px}
+
+/* settings rows (Kit.seg) */
+.settings{display:flex;flex-direction:column;gap:12px}
+.set-row{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
+.set-row h3{min-width:140px;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{display:flex;flex-direction:column;align-items:center;background:var(--panel2);border:2px solid var(--edge);border-radius:8px;padding:6px 12px;font-weight:700;font-size:14px;cursor:pointer;line-height:1.2}
+.seg button .ja{font-size:11px}
+.seg button small{font:400 12px var(--f-letter);opacity:.85;max-width:12em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.seg button[aria-pressed="true"] .ja{color:inherit;opacity:.78}
+details.custom{border-top:2px dashed var(--edge);padding-top:10px}
+details.custom summary{cursor:pointer;font-weight:800;color:var(--accent);font-size:15px;margin-bottom:6px}
+
+/* class code */
+.classcode{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;border-top:2px dashed var(--edge);padding-top:12px}
+.cc{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.cc b{font-family:var(--f-display);font-size:30px;letter-spacing:.12em;color:var(--accent);font-weight:400}
+.kit-cname,.cc-name{color:var(--muted);font-weight:700;font-size:14px}
+.kit-entry{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto}
+.kit-entry input{width:9em;font:400 18px var(--f-display);letter-spacing:.12em;text-transform:uppercase;background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px;padding:6px 10px}
+.kit-err{color:var(--oops);font-weight:700;font-size:14px;width:100%}
+.kit-err:empty{display:none}
+
+/* HUD */
+.hud{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;background:var(--panel);border:2px solid var(--edge);border-radius:12px;padding:6px 12px;margin-bottom:8px}
+.rolechip{font:800 13px var(--f-body);background:var(--accent);color:var(--ink);border-radius:14px;padding:3px 12px;text-transform:uppercase;letter-spacing:.05em}
+.lights{display:flex;gap:6px;align-items:center}
+.lights i{width:18px;height:18px;border-radius:50%;background:#3d2a26;border:2px solid #000;box-shadow:inset 0 -3px 0 rgba(0,0,0,.35)}
+.lights i.on{background:var(--go)}
+.lights i.now{background:var(--oops)}
+.stat{font:700 15px var(--f-body);color:var(--muted);font-variant-numeric:tabular-nums}
+.stat b{color:var(--text);font-family:var(--f-display);font-weight:400;font-size:18px;margin-left:4px}
+.hud .badge{margin-left:auto;font-size:13px;color:var(--muted);font-weight:700}
+.hud .badge b{font-family:var(--f-display);font-weight:400;color:var(--accent);letter-spacing:.1em;font-size:16px}
+.phrases{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.phrases b{font-size:13px;color:var(--muted);margin-right:4px}
+.phrases span.p{background:var(--panel2);border-radius:6px;padding:3px 9px;font-weight:700;font-size:14px}
+.display.shake,.kit-shake{animation:kit-shake .4s}
+@keyframes kit-shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+
+/* solo partner */
+.kit-partner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel2);border:2px solid var(--edge);border-radius:10px;padding:8px 12px}
+.kit-robot{font-size:30px;line-height:1}
+.kit-bub{flex:1;min-width:0;font-weight:800;font-size:17px}
+.kit-bub .ja{font-weight:500}
+
+/* traps (no flashing: movement and sound only) */
+.kit-trap-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5;border-radius:12px}
+.kit-trap-layer.block{pointer-events:auto;cursor:default}
+.kt{position:absolute;line-height:1;user-select:none}
+.kt-wordwrap{transform:translateX(-50%);z-index:2}
+.kt-word{display:flex;flex-direction:column;align-items:center;font-family:var(--f-display);font-size:40px;color:#fff;-webkit-text-stroke:2px #000;text-shadow:0 4px 0 #000;white-space:nowrap;animation:kt-pop .35s ease-out both}
+body.jp .kt-word .ja{-webkit-text-stroke:0;text-shadow:none;font-size:16px;color:#fff;background:rgba(0,0,0,.6);border-radius:6px;padding:2px 8px;text-align:center}
+@keyframes kt-pop{from{transform:scale(.3)}70%{transform:scale(1.12)}to{transform:scale(1)}}
+.kt-glove{font-size:90px;animation:kt-glove 2s ease-in-out both}
+@keyframes kt-glove{0%{transform:translate(-50%,-50%) scale(.2)}35%{transform:translate(-50%,-50%) scale(2.4)}50%{transform:translate(-50%,-50%) scale(1.9)}65%{transform:translate(-50%,-50%) scale(2.3)}85%{transform:translate(-50%,-50%) scale(2.2);opacity:1}100%{transform:translate(-50%,-50%) scale(.2);opacity:0}}
+.kt-chicken{font-size:120px;bottom:-140px;animation:kt-chick 2.4s ease-in-out both}
+@keyframes kt-chick{0%{transform:translateY(0)}25%{transform:translateY(-180px) rotate(-8deg)}40%{transform:translateY(-170px) rotate(8deg)}55%{transform:translateY(-180px) rotate(-8deg)}75%{transform:translateY(-175px) rotate(6deg)}100%{transform:translateY(0)}}
+.kt-soot{width:120px;height:110px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#3b3b3f,#141416 70%,rgba(20,20,22,0) 72%);cursor:pointer;pointer-events:auto;transition:opacity .35s,transform .35s}
+.kt-soot.gone{opacity:0;transform:scale(.4);pointer-events:none}
+.kt-hint{left:50%;transform:translateX(-50%);bottom:10px;background:rgba(0,0,0,.78);border-radius:8px;padding:6px 14px;font-weight:800;text-align:center;white-space:nowrap}
+.kt-duck{font-size:100px;bottom:20px;left:-130px;animation:kt-duck 3s linear both}
+@keyframes kt-duck{0%{transform:translateX(0) rotate(-5deg)}12%{transform:translateX(120px) rotate(5deg)}25%{transform:translateX(250px) rotate(-5deg)}37%{transform:translateX(370px) rotate(5deg)}50%{transform:translateX(500px) rotate(-5deg)}62%{transform:translateX(620px) rotate(5deg)}75%{transform:translateX(750px) rotate(-5deg)}87%{transform:translateX(870px) rotate(5deg)}100%{transform:translateX(1000px)}}
+.kt-drop{font-size:38px;animation:kt-drop 1.4s ease-in both}
+@keyframes kt-drop{from{transform:translate(0,0)}to{transform:translate(var(--dx),var(--dy));opacity:.2}}
+.kt-bear{font-size:130px;left:50%;bottom:-150px;animation:kt-bear 2.8s ease-in-out both}
+@keyframes kt-bear{0%{transform:translate(-50%,0)}25%,75%{transform:translate(-50%,-190px)}50%{transform:translate(-50%,-182px)}100%{transform:translate(-50%,0)}}
+.kt-zz{font:400 34px var(--f-display);color:#cfe3ff;animation:kt-zz 2.4s ease-out both}
+@keyframes kt-zz{from{transform:translate(0,0);opacity:0}20%{opacity:1}to{transform:translate(40px,-110px);opacity:0}}
+.kt-cat{font-size:130px;cursor:pointer;pointer-events:auto;animation:kt-catin .5s ease-out both}
+@keyframes kt-catin{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
+.kt-cat.bye{animation:kt-catout .6s ease-in both}
+@keyframes kt-catout{to{transform:translateX(400px)}}
+.kt-heart{font-size:34px;animation:kt-zz 1.2s ease-out both}
+
+/* end screen */
+.kit-result{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.kit-rtitle{font-size:clamp(30px,5vw,48px)}
+.kit-stars{display:flex;gap:6px}.kit-stars svg{width:46px;height:46px}
+.kit-nums{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.kit-nums div{background:var(--panel);border:2px solid var(--edge);border-radius:10px;padding:8px 16px;min-width:110px}
+.kit-nums small{display:block;color:var(--muted);font-weight:700;font-size:13px}
+.kit-nums b{font-family:var(--f-display);font-weight:400;font-size:26px;font-variant-numeric:tabular-nums}
+.kit-swap{display:flex;align-items:center;gap:14px;background:var(--accent);color:var(--ink);border-radius:12px;padding:12px 20px;font-family:var(--f-display);font-size:26px}
+.kit-swap .ja{color:inherit;opacity:.78}
+.kit-swap svg{width:54px;height:54px;flex:none}
+
+/* teacher page */
+.kit-teacher{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+.kit-tcol{display:flex;flex-direction:column;gap:14px;min-width:0}
+.kit-th{font-size:24px;color:var(--accent);margin-bottom:8px}
+.kit-steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.kit-share{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.kit-bigcode{font-family:var(--f-display);font-size:54px;letter-spacing:.14em;color:var(--accent);line-height:1}
+.kit-qr{background:#fff;border-radius:8px;padding:6px;line-height:0}
+.kit-qr canvas{width:220px;height:220px;image-rendering:pixelated}
+.kit-link{width:100%;box-sizing:border-box;font:13px var(--f-body);background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px;padding:6px 8px}
+.kit-pairs h3{margin-bottom:8px}
+.kit-pairrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.kit-npairs{width:4.5em;font:700 16px var(--f-body);background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px;padding:4px 8px}
+.kit-codes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.kit-codecard{background:var(--panel2);border-radius:8px;padding:6px 10px;display:flex;flex-direction:column}
+.kit-codecard b{font-family:var(--f-display);font-weight:400;font-size:20px;letter-spacing:.08em;color:var(--accent)}
+.kit-copyarea{width:100%;box-sizing:border-box;margin-top:8px;background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px}
+.kit-veil{position:fixed;inset:0;background:rgba(8,9,12,.92);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.kit-veil-card{background:var(--panel);border:2px solid var(--edge);border-radius:14px;padding:22px;max-width:720px;width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.kit-veil .kit-bigcode{font-size:clamp(60px,14vw,150px)}
+.kit-vurl{word-break:break-all}
+.kit-toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--go);color:var(--ink);font-weight:800;border-radius:10px;padding:8px 16px;z-index:60;box-shadow:0 4px 0 #000}
+.kit-toast .ja{color:#1f3b24}
+
+/* ===== other game styles ===== */
+/* countdown ring */
+.kit-count{position:relative;width:96px;height:96px;flex:none}
+.kit-count svg{width:100%;height:100%;transform:rotate(-90deg)}
+.kit-count circle{fill:none;stroke-width:9}
+.kc-bg{stroke:var(--panel2)}
+.kc-fg{stroke:var(--go);stroke-dasharray:100;stroke-linecap:round;transition:stroke-dashoffset .1s linear}
+.kit-count.low .kc-fg{stroke:var(--oops)}
+.kit-count b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:400 34px var(--f-display);font-variant-numeric:tabular-nums}
+/* team scoreboard */
+.kit-teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kit-team{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-items:center;gap:2px 10px;background:var(--panel);border:3px solid var(--tc);border-radius:12px;padding:8px 12px}
+.kit-team .kt-em{font-size:40px;line-height:1;grid-row:span 2}
+.kit-team .kt-nm{font-weight:800;color:var(--tc)}
+.kit-team b{font:400 42px/1 var(--f-display);grid-row:span 2;font-variant-numeric:tabular-nums}
+.kit-team .kt-btns{display:flex;gap:6px}
+.kit-team.bump b{animation:kt-pop .35s ease-out}
+/* quiz */
+.kq{display:flex;flex-direction:column;gap:14px;align-items:stretch}
+.kq-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;background:var(--paper);color:var(--ink);border-radius:14px;padding:14px;text-align:center}
+.kq-em{font-size:110px;line-height:1.05}
+.kq-ear{font-size:80px;line-height:1}
+.kq-listen{font:400 26px var(--f-display)}
+.kq-word{font:700 clamp(44px,8vw,84px)/1.1 var(--f-letter)}
+.kq-ja{font:800 clamp(40px,7vw,72px)/1.2 var(--f-body)}
+body.jp .kq-prompt .ja{color:#6b6358}
+.kq-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kq-c{display:flex;align-items:center;gap:12px;min-height:76px;background:var(--key,#f6f1e3);color:var(--ink);border:3px solid transparent;border-radius:12px;box-shadow:0 5px 0 #8f8873,0 6px 0 #000;cursor:pointer;padding:8px 14px;font:700 clamp(20px,3vw,32px)/1.15 var(--f-letter);text-align:left;overflow-wrap:anywhere}
+.kq-c:active{transform:translateY(4px);box-shadow:0 1px 0 #8f8873,0 2px 0 #000}
+.kq-c i{font:400 22px var(--f-display);font-style:normal;color:#8a8270;flex:none;width:1.2em}
+.kq-c span{flex:1;min-width:0}
+.kq-cem{font-size:52px;line-height:1}
+.kq-c.picked{border-color:var(--accent)}
+.kq-c.right{background:#c9f0cf;border-color:#2f8a4a}
+.kq-c.wrong{background:#ffe0d4;border-color:var(--oops)}
+.kq-c.dim{opacity:.4}
+/* bingo card */
+.kit-bingo{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));gap:6px;max-width:620px;margin:0 auto}
+.kit-bingo button{position:relative;aspect-ratio:1;max-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--paper);color:var(--ink);border:3px solid #d9d0bd;border-radius:10px;cursor:pointer;padding:4px;font:700 14px/1.1 var(--f-letter);overflow:hidden;overflow-wrap:anywhere;text-align:center}
+.kit-bingo .bem{font-size:clamp(28px,6vw,52px);line-height:1}
+.kit-bingo .bja{font:800 clamp(14px,2.6vw,22px)/1.2 var(--f-body)}
+.kit-bingo button.on{border-color:var(--accent)}
+.kit-bingo button.on::after{content:"";position:absolute;inset:12%;border-radius:50%;background:color-mix(in srgb,var(--accent) 45%,transparent);border:4px solid var(--accent);animation:kt-pop .25s ease-out}
+.kit-bingo button.free{background:var(--accent);font-family:var(--f-display);font-weight:400}
+.kit-bingo button.called{box-shadow:inset 0 0 0 4px var(--go)}
+
+@media (max-width:820px){
+  .hero,.roles,.kit-teacher{grid-template-columns:minmax(0,1fr)}
+  .hero-pic{display:none}
+  .kit-entry{margin-left:0}
+  .set-row h3{min-width:0;width:100%}
+  .kq-choices{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  .kt-glove,.kt-chicken,.kt-duck,.kt-bear{animation-duration:2.2s}
+}
+/*KIT:CSS END*/
+</style>
+<style>
+/* GAME: Picture Lock. Lock screen = chest on the left, word keys on the right. Card screen = card tabs left, card right. */
+:root{--accent:#ffb63d;--key:#f6f1e3}
+.stage{position:relative;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:16px;align-items:start}
+.chestside{display:flex;flex-direction:column;align-items:center;gap:10px}
+.chestbox{position:relative;width:100%;max-width:230px}
+.chestbox svg{width:100%;height:auto;display:block}
+.chestbox.open svg .lid{transform:translateY(-14px) rotate(-14deg);transition:transform .5s ease-out}
+.chestbox .lid{transform-box:fill-box;transform-origin:0% 100%}
+.item{position:absolute;left:50%;top:6%;transform:translateX(-50%);font-size:70px;line-height:1;animation:rise .7s ease-out both}
+@keyframes rise{from{transform:translate(-50%,40px) scale(.4);opacity:0}to{transform:translate(-50%,0) scale(1);opacity:1}}
+.cardbox{background:#2a1d0c;border:4px solid #0d0904;border-radius:10px;padding:8px 18px;text-align:center}
+.cardbox small{display:block;font:800 12px var(--f-body);color:#ffcf7a;letter-spacing:.08em;text-transform:uppercase}
+.cardbox b{font:400 44px/1 var(--f-display);color:#ffe2a8}
+.roundlbl{font-family:var(--f-display);font-size:16px;color:var(--muted)}
+.keyside{display:flex;flex-direction:column;gap:10px;min-width:0}
+.display{width:100%;max-width:560px;margin:0 auto;display:flex;gap:6px;justify-content:center;background:#0d0f14;border:3px solid #000;border-radius:10px;padding:7px;min-height:58px}
+.slot{flex:1 1 0;min-width:0;max-width:150px;border-radius:6px;background:var(--paper);color:var(--ink);display:flex;align-items:center;justify-content:center;border:2px dashed #b9b2a0;font:700 17px var(--f-letter);padding:4px;text-align:center;overflow-wrap:anywhere}
+.slot.full{border-style:solid;border-color:#8a8270}
+.keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;max-width:560px;margin:0 auto}
+.key{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:68px;background:var(--key);border:0;border-radius:10px;box-shadow:0 5px 0 #8f8873,0 6px 0 #000;cursor:pointer;color:var(--ink);padding:6px 4px;font:700 17px/1.15 var(--f-letter);overflow-wrap:anywhere;text-align:center}
+.key:hover{background:#fffdf5}
+.key:active{transform:translateY(4px);box-shadow:0 1px 0 #8f8873,0 2px 0 #000}
+.key .em{font-size:30px;line-height:1.1}
+.controls{display:flex;gap:10px;width:100%;max-width:560px;margin:0 auto}
+.controls .btn{flex:1}
+.controls .go{flex:1.6;font-family:var(--f-display);font-weight:400;font-size:22px;background:#2f8a4a;color:#fff;border-color:#174a26}
+.controls .go .ja{color:#dff5e4}
+.book{display:grid;grid-template-columns:268px minmax(0,1fr);gap:16px;align-items:start}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tabs button{aspect-ratio:1;border-radius:8px;border:2px solid var(--edge);background:var(--panel2);font:400 17px var(--f-display);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.ask{margin-top:12px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.ask b{font-size:13px;color:var(--muted)}
+.ask span.p{background:var(--panel2);border-radius:6px;padding:4px 10px;font-weight:700;font-size:15px}
+.cardview{background:var(--paper);color:var(--ink);border-radius:12px;padding:14px 16px 18px;box-shadow:0 4px 0 #07080b;min-height:300px}
+.cardview h2{font-size:26px;color:#3b3530}
+.cardview .ja{color:#7a7266}
+.pics{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.pic{display:flex;flex-direction:column;align-items:center;gap:4px;background:#fff;border:2px solid #d9d0bd;border-radius:12px;padding:10px 12px;min-width:120px}
+.pic i{font:400 18px var(--f-display);font-style:normal;color:#a0968a}
+.pic .em{font-size:76px;line-height:1.1}
+.pic .jw{font:800 26px var(--f-body);color:#3b3530;min-height:84px;display:flex;align-items:center}
+.pic small{font:700 15px var(--f-letter);color:#6b6358}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:260px;text-align:center;color:#6b6358}
+.empty b{font-family:var(--f-display);font-weight:400;font-size:30px;color:#3b3530}
+body.jp .empty .ja{color:#7a7266}
+.warn{background:#3a2412;border:2px solid var(--oops);border-radius:10px;padding:8px 12px;font-weight:700}
+@media (max-width:820px){.stage,.book{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="app">
+  <header class="topbar">
+    <button class="brand" id="goHome" type="button">Picture Lock <span>ピクチャーロック</span></button>
+    <div class="tb-tools">
+      <button class="tog" id="jpToggle" type="button" aria-pressed="true">日本語サポート</button>
+      <button class="tog" id="sndToggle" type="button" aria-pressed="true">Sound</button>
+    </div>
+  </header>
+
+  <main>
+  <section class="screen" id="home">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">A two-player English speaking game</p>
+        <h1>Open the treasure chest!</h1>
+        <p class="lead">One partner sees the pictures on a secret card. The other partner has the lock. Say the words in order to open it.</p>
+        <p class="ja">ひとりはカードの絵を見て、英語で言います。もうひとりはその順番でロックのボタンを押します。</p>
+      </div>
+      <div class="hero-pic" id="heroPic"></div>
+    </div>
+    <div class="roles">
+      <div class="panel role">
+        <p class="who">Sees the chest. Clicks the words.</p>
+        <h2>Lock Opener</h2><p class="ja">ロック係：聞いて、ことばをクリック</p>
+        <ul class="say"><li>What card?</li><li>Say it again, please.</li><li>Number two?</li></ul>
+        <button class="btn primary big" id="startLock" type="button">Open the Lock<span class="ja">ロックを担当</span></button>
+      </div>
+      <div class="panel role">
+        <p class="who">Has the picture cards. Says the words.</p>
+        <h2>Card Reader</h2><p class="ja">カード係：絵を見て、英語で言う</p>
+        <ul class="say"><li>Card 12.</li><li>Number one is apple.</li><li>Next is…</li></ul>
+        <button class="btn primary big" id="startCards" type="button">Open the Cards<span class="ja">カードを担当</span></button>
+      </div>
+    </div>
+    <div class="more">
+      <button class="btn" id="startSolo" type="button">Solo practice (computer voice)<span class="ja">ひとりで練習（コンピューターの声）</span></button>
+      <button class="btn" id="toTeacher" type="button">Teacher page<span class="ja">先生用ページ</span></button>
+    </div>
+    <div class="panel" id="homeSlot"></div>
+  </section>
+
+  <section class="screen" id="play" hidden>
+    <div class="hud">
+      <span class="rolechip" id="playRole">Lock Opener</span>
+      <div class="lights" id="lights"></div>
+      <span class="stat">Time<b id="tTime">0:00</b></span>
+      <span class="stat">Oops<b id="tOops">0</b></span>
+      <span class="badge">Class code <b class="kitCode">----</b></span>
+      <button class="btn small" id="playQuit" type="button">Quit<span class="ja">やめる</span></button>
+    </div>
+    <div class="stage" id="stage">
+      <div class="chestside">
+        <div class="roundlbl" id="roundLbl"></div>
+        <div class="chestbox" id="chest"></div>
+        <div class="cardbox" id="cardBox"><small>Card<span class="ja">カード</span></small><b id="cardNum">1</b></div>
+      </div>
+      <div class="keyside">
+        <div id="partner" hidden></div>
+        <div class="display" id="display" aria-live="polite"></div>
+        <div class="keys" id="keys"></div>
+        <div class="controls">
+          <button class="btn" id="kBack" type="button">Back<span class="ja">1つ消す</span></button>
+          <button class="btn" id="kClear" type="button">Clear<span class="ja">全部消す</span></button>
+          <button class="btn go" id="kGo" type="button">OPEN!<span class="ja">開ける！</span></button>
+        </div>
+      </div>
+      <div class="kit-trap-layer" id="trapLayer"></div>
+    </div>
+  </section>
+
+  <section class="screen" id="cards" hidden>
+    <div class="hud">
+      <span class="rolechip">Card Reader</span>
+      <button class="tog" id="hintToggle" type="button" aria-pressed="false">Word hints<span class="ja inl">ことばヒント</span></button>
+      <span class="badge">Class code <b class="kitCode">----</b></span>
+      <button class="btn small" id="cardsSwap" type="button">Switch to Lock<span class="ja">ロックに交代</span></button>
+      <button class="btn small" id="cardsQuit" type="button">Home<span class="ja">ホーム</span></button>
+    </div>
+    <div class="book">
+      <div class="panel">
+        <h3 style="margin-bottom:8px">Cards<span class="ja inl">カード</span></h3>
+        <div class="tabs" id="tabs"></div>
+        <div class="ask" id="askList"></div>
+      </div>
+      <div class="cardview" id="cardView"></div>
+    </div>
+  </section>
+
+  <section class="screen" id="result" hidden></section>
+  <section class="screen" id="teacher" hidden></section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script type="application/json" id="kit-wordbank">{"books":[{"book":"Let's Try! 1","publisher":"MEXT","grade":"ES3","edition":"current (2018 text)","units":[{"unit":1,"page":2,"title":"Hello!","topic":"Greetings, names","verified":false,"phrases":["Hello.","Hi.","I'm (Sakura).","Goodbye.","See you."],"words":[{"en":"hello","ja":"こんにちは","emoji":"👋"},{"en":"goodbye","ja":"さようなら","emoji":"👋"},{"en":"see you","ja":"またね","emoji":"🙌"},{"en":"name","ja":"名前","emoji":"📛"}]},{"unit":2,"page":6,"title":"How are you?","topic":"Feelings","verified":false,"phrases":["How are you?","I'm (happy).","I'm fine, thank you.","And you?"],"words":[{"en":"fine","ja":"元気","emoji":"🙂"},{"en":"happy","ja":"うれしい","emoji":"😄"},{"en":"good","ja":"よい","emoji":"👍"},{"en":"great","ja":"すごくよい","emoji":"🤩"},{"en":"sad","ja":"悲しい","emoji":"😢"},{"en":"sleepy","ja":"ねむい","emoji":"😪"},{"en":"tired","ja":"つかれた","emoji":"😩"},{"en":"hungry","ja":"おなかがすいた","emoji":"🍽️"},{"en":"angry","ja":"おこっている","emoji":"😠"},{"en":"sick","ja":"具合が悪い","emoji":"🤒"}]},{"unit":3,"page":10,"title":"How many?","topic":"Numbers 1-20","verified":false,"phrases":["How many (apples)?","(Ten) (apples).","Yes. / No. / That's right."],"words":[{"en":"one","ja":"1","emoji":"1️⃣"},{"en":"two","ja":"2","emoji":"2️⃣"},{"en":"three","ja":"3","emoji":"3️⃣"},{"en":"four","ja":"4","emoji":"4️⃣"},{"en":"five","ja":"5","emoji":"5️⃣"},{"en":"six","ja":"6","emoji":"6️⃣"},{"en":"seven","ja":"7","emoji":"7️⃣"},{"en":"eight","ja":"8","emoji":"8️⃣"},{"en":"nine","ja":"9","emoji":"9️⃣"},{"en":"ten","ja":"10","emoji":"🔟"},{"en":"eleven","ja":"11"},{"en":"twelve","ja":"12"},{"en":"thirteen","ja":"13"},{"en":"fourteen","ja":"14"},{"en":"fifteen","ja":"15"},{"en":"sixteen","ja":"16"},{"en":"seventeen","ja":"17"},{"en":"eighteen","ja":"18"},{"en":"nineteen","ja":"19"},{"en":"twenty","ja":"20"},{"en":"apple","ja":"りんご","emoji":"🍎"},{"en":"pencil","ja":"えんぴつ","emoji":"✏️"},{"en":"ball","ja":"ボール","emoji":"⚽"},{"en":"strawberry","ja":"いちご","emoji":"🍓"}]},{"unit":4,"page":14,"title":"I like blue.","topic":"Colors, likes","verified":false,"phrases":["I like (blue).","Do you like (blue)?","Yes, I do.","No, I don't.","I don't like (green)."],"words":[{"en":"red","ja":"赤","emoji":"🔴"},{"en":"blue","ja":"青","emoji":"🔵"},{"en":"yellow","ja":"黄色","emoji":"🟡"},{"en":"green","ja":"緑","emoji":"🟢"},{"en":"orange","ja":"オレンジ","emoji":"🟠"},{"en":"purple","ja":"むらさき","emoji":"🟣"},{"en":"pink","ja":"ピンク","emoji":"🩷"},{"en":"white","ja":"白","emoji":"⚪"},{"en":"black","ja":"黒","emoji":"⚫"},{"en":"brown","ja":"茶色","emoji":"🟤"}]},{"unit":5,"page":18,"title":"What do you like?","topic":"Food, sports, colors","verified":false,"phrases":["What do you like?","I like (soccer).","What (sport) do you like?","What (food) do you like?","What (color) do you like?"],"words":[{"en":"soccer","ja":"サッカー","emoji":"⚽"},{"en":"baseball","ja":"野球","emoji":"⚾"},{"en":"basketball","ja":"バスケットボール","emoji":"🏀"},{"en":"volleyball","ja":"バレーボール","emoji":"🏐"},{"en":"tennis","ja":"テニス","emoji":"🎾"},{"en":"swimming","ja":"水泳","emoji":"🏊"},{"en":"dodgeball","ja":"ドッジボール","emoji":"🤾"},{"en":"ice cream","ja":"アイスクリーム","emoji":"🍨"},{"en":"cake","ja":"ケーキ","emoji":"🍰"},{"en":"pudding","ja":"プリン","emoji":"🍮"},{"en":"milk","ja":"牛乳","emoji":"🥛"},{"en":"banana","ja":"バナナ","emoji":"🍌"},{"en":"tomato","ja":"トマト","emoji":"🍅"},{"en":"carrot","ja":"にんじん","emoji":"🥕"},{"en":"onion","ja":"たまねぎ","emoji":"🧅"},{"en":"green pepper","ja":"ピーマン","emoji":"🫑"},{"en":"cucumber","ja":"きゅうり","emoji":"🥒"}]},{"unit":6,"page":22,"title":"ALPHABET","topic":"Uppercase letters","verified":false,"phrases":["What do you want?","The \"A\" card, please.","Here you are.","Thank you."],"words":[{"en":"A–Z (uppercase)","ja":"大文字"},{"en":"STOP","ja":"とまれ","emoji":"🛑"},{"en":"BUS","ja":"バス","emoji":"🚌"},{"en":"TAXI","ja":"タクシー","emoji":"🚕"},{"en":"WC","ja":"トイレ","emoji":"🚻"}]},{"unit":7,"page":26,"title":"This is for you.","topic":"Shapes, giving cards","verified":false,"phrases":["What do you want?","A (star), please.","How many?","Here you are.","This is for you.","Thank you.","You're welcome."],"words":[{"en":"circle","ja":"丸","emoji":"⚪"},{"en":"triangle","ja":"三角","emoji":"🔺"},{"en":"square","ja":"四角","emoji":"🟥"},{"en":"rectangle","ja":"長方形","emoji":"▭"},{"en":"star","ja":"星","emoji":"⭐"},{"en":"heart","ja":"ハート","emoji":"❤️"},{"en":"diamond","ja":"ひし形","emoji":"🔷"}]},{"unit":8,"page":30,"title":"What's this?","topic":"Quiz: what is it?","verified":false,"phrases":["What's this?","Hint, please.","It's (a fish).","That's right."],"words":[{"en":"fish","ja":"魚","emoji":"🐟"},{"en":"octopus","ja":"たこ","emoji":"🐙"},{"en":"insect","ja":"虫","emoji":"🐞"},{"en":"fruit","ja":"果物","emoji":"🍇"},{"en":"vegetable","ja":"野菜","emoji":"🥦"},{"en":"animal","ja":"動物","emoji":"🐾"}]},{"unit":9,"page":34,"title":"Who are you?","topic":"Animal story, describing","verified":false,"phrases":["Who are you?","I'm (a dog).","Are you (a cat)?","Yes, I am. / No, I'm not."],"words":[{"en":"dog","ja":"犬","emoji":"🐶"},{"en":"cat","ja":"ねこ","emoji":"🐱"},{"en":"rabbit","ja":"うさぎ","emoji":"🐰"},{"en":"mouse","ja":"ねずみ","emoji":"🐭"},{"en":"pig","ja":"ぶた","emoji":"🐷"},{"en":"cow","ja":"牛","emoji":"🐮"},{"en":"big","ja":"大きい"},{"en":"small","ja":"小さい"},{"en":"long","ja":"長い"},{"en":"short","ja":"短い"},{"en":"head","ja":"頭"},{"en":"eyes","ja":"目","emoji":"👀"},{"en":"ears","ja":"耳","emoji":"👂"},{"en":"nose","ja":"鼻","emoji":"👃"},{"en":"mouth","ja":"口","emoji":"👄"}]}]},{"book":"Let's Try! 2","publisher":"MEXT","grade":"ES4","edition":"current (2018 text)","units":[{"unit":1,"page":2,"title":"Hello, world!","topic":"Greetings around the world","verified":false,"phrases":["Hello!","Good morning.","Good afternoon.","Good night.","Nice to meet you."],"words":[{"en":"hello","ja":"こんにちは","emoji":"👋"},{"en":"good morning","ja":"おはよう","emoji":"🌅"},{"en":"good afternoon","ja":"こんにちは","emoji":"☀️"},{"en":"good night","ja":"おやすみ","emoji":"🌙"},{"en":"world","ja":"世界","emoji":"🌍"}]},{"unit":2,"page":6,"title":"Let's play cards.","topic":"Weather, play outside / inside","grammar":"Let's ~ / imperatives","verified":false,"phrases":["How's the weather?","It's (sunny).","Let's (play cards).","Yes, let's.","Sorry."],"words":[{"en":"sunny","ja":"晴れ","emoji":"☀️"},{"en":"rainy","ja":"雨","emoji":"🌧️"},{"en":"cloudy","ja":"くもり","emoji":"☁️"},{"en":"snowy","ja":"雪","emoji":"❄️"},{"en":"hot","ja":"暑い","emoji":"🥵"},{"en":"cold","ja":"寒い","emoji":"🥶"},{"en":"tag","ja":"おにごっこ","emoji":"🏃"},{"en":"cards","ja":"トランプ","emoji":"🃏"},{"en":"jump rope","ja":"なわとび","emoji":"🪢"},{"en":"dodgeball","ja":"ドッジボール","emoji":"🤾"},{"en":"stand up","ja":"立って"},{"en":"sit down","ja":"座って"},{"en":"turn around","ja":"回って"}]},{"unit":3,"page":10,"title":"I like Mondays.","topic":"Days of the week","verified":false,"phrases":["What day is it?","It's (Monday).","Do you like (Mondays)?","I like (Mondays)."],"words":[{"en":"Sunday","ja":"日曜日"},{"en":"Monday","ja":"月曜日"},{"en":"Tuesday","ja":"火曜日"},{"en":"Wednesday","ja":"水曜日"},{"en":"Thursday","ja":"木曜日"},{"en":"Friday","ja":"金曜日"},{"en":"Saturday","ja":"土曜日"}]},{"unit":4,"page":14,"title":"What time is it?","topic":"Time, daily schedule","verified":false,"phrases":["What time is it?","It's (8 a.m.).","It's (homework) time.","How about you?"],"words":[{"en":"wake-up time","ja":"起きる時間","emoji":"⏰"},{"en":"breakfast time","ja":"朝ごはんの時間","emoji":"🍳"},{"en":"study time","ja":"勉強の時間","emoji":"📚"},{"en":"lunch time","ja":"昼ごはんの時間","emoji":"🍱"},{"en":"snack time","ja":"おやつの時間","emoji":"🍪"},{"en":"homework time","ja":"宿題の時間","emoji":"📝"},{"en":"TV time","ja":"テレビの時間","emoji":"📺"},{"en":"bath time","ja":"おふろの時間","emoji":"🛁"},{"en":"dream time","ja":"ねる時間","emoji":"💤"},{"en":"a.m.","ja":"午前"},{"en":"p.m.","ja":"午後"}]},{"unit":5,"page":18,"title":"Do you have a pen?","topic":"Stationery","verified":false,"phrases":["Do you have (a pen)?","Yes, I do. / No, I don't.","I have (a ruler).","I don't have (a stapler)."],"words":[{"en":"pen","ja":"ペン","emoji":"🖊️"},{"en":"pencil","ja":"えんぴつ","emoji":"✏️"},{"en":"eraser","ja":"消しゴム"},{"en":"ruler","ja":"定規","emoji":"📏"},{"en":"crayon","ja":"クレヨン","emoji":"🖍️"},{"en":"marker","ja":"マーカー"},{"en":"glue stick","ja":"のり"},{"en":"scissors","ja":"はさみ","emoji":"✂️"},{"en":"stapler","ja":"ホッチキス"},{"en":"notebook","ja":"ノート","emoji":"📓"},{"en":"pencil case","ja":"筆箱"},{"en":"pencil sharpener","ja":"えんぴつけずり"},{"en":"calendar","ja":"カレンダー","emoji":"📅"},{"en":"magnet","ja":"磁石","emoji":"🧲"},{"en":"bag","ja":"かばん","emoji":"🎒"},{"en":"desk","ja":"机"},{"en":"chair","ja":"いす","emoji":"🪑"}]},{"unit":6,"page":22,"title":"Alphabet","topic":"Lowercase letters, signs","verified":false,"phrases":["Look.","What's this?","Hint, please.","How many letters?","I have (six)."],"words":[{"en":"a–z (lowercase)","ja":"小文字"},{"en":"bus stop","ja":"バス停","emoji":"🚏"},{"en":"hospital","ja":"病院","emoji":"🏥"},{"en":"station","ja":"駅","emoji":"🚉"},{"en":"library","ja":"図書館","emoji":"📚"}]},{"unit":7,"page":26,"title":"What do you want?","topic":"Food, making a parfait/pizza","verified":false,"phrases":["What do you want?","(Potatoes), please.","How many?","(Two), please.","Here you are.","Thank you.","This is my (parfait)."],"words":[{"en":"apple","ja":"りんご","emoji":"🍎"},{"en":"banana","ja":"バナナ","emoji":"🍌"},{"en":"grapes","ja":"ぶどう","emoji":"🍇"},{"en":"lemon","ja":"レモン","emoji":"🍋"},{"en":"melon","ja":"メロン","emoji":"🍈"},{"en":"orange","ja":"オレンジ","emoji":"🍊"},{"en":"peach","ja":"もも","emoji":"🍑"},{"en":"pineapple","ja":"パイナップル","emoji":"🍍"},{"en":"strawberry","ja":"いちご","emoji":"🍓"},{"en":"kiwi fruit","ja":"キウイ","emoji":"🥝"},{"en":"cabbage","ja":"キャベツ","emoji":"🥬"},{"en":"carrot","ja":"にんじん","emoji":"🥕"},{"en":"cucumber","ja":"きゅうり","emoji":"🥒"},{"en":"mushroom","ja":"きのこ","emoji":"🍄"},{"en":"onion","ja":"たまねぎ","emoji":"🧅"},{"en":"potato","ja":"じゃがいも","emoji":"🥔"},{"en":"tomato","ja":"トマト","emoji":"🍅"},{"en":"sausage","ja":"ソーセージ","emoji":"🌭"},{"en":"cheese","ja":"チーズ","emoji":"🧀"},{"en":"parfait","ja":"パフェ","emoji":"🍨"},{"en":"pizza","ja":"ピザ","emoji":"🍕"}]},{"unit":8,"page":30,"title":"This is my favorite place.","topic":"School rooms, directions","verified":false,"phrases":["Go straight.","Turn right / left.","Stop.","This is my favorite place.","Why?","I like (music)."],"words":[{"en":"classroom","ja":"教室","emoji":"🏫"},{"en":"music room","ja":"音楽室","emoji":"🎵"},{"en":"science room","ja":"理科室","emoji":"🔬"},{"en":"library","ja":"図書室","emoji":"📚"},{"en":"gym","ja":"体育館","emoji":"🏀"},{"en":"playground","ja":"運動場","emoji":"⚽"},{"en":"school nurse's office","ja":"保健室","emoji":"🩹"},{"en":"teachers' office","ja":"職員室"},{"en":"principal's office","ja":"校長室"},{"en":"computer room","ja":"コンピューター室","emoji":"💻"},{"en":"cooking room","ja":"家庭科室","emoji":"🍳"},{"en":"toilet","ja":"トイレ","emoji":"🚻"},{"en":"entrance","ja":"げんかん","emoji":"🚪"},{"en":"go straight","ja":"まっすぐ進む","emoji":"⬆️"},{"en":"turn right","ja":"右に曲がる","emoji":"➡️"},{"en":"turn left","ja":"左に曲がる","emoji":"⬅️"}]},{"unit":9,"page":34,"title":"This is my day.","topic":"Picture book: daily routine","verified":false,"phrases":["I wake up.","I have breakfast.","I go to school.","I go home.","I take a bath.","I go to bed."],"words":[{"en":"wake up","ja":"起きる","emoji":"⏰"},{"en":"wash my face","ja":"顔を洗う"},{"en":"brush my teeth","ja":"歯をみがく","emoji":"🪥"},{"en":"have breakfast","ja":"朝ごはんを食べる","emoji":"🍳"},{"en":"go to school","ja":"学校へ行く","emoji":"🏫"},{"en":"study","ja":"勉強する","emoji":"📚"},{"en":"go home","ja":"家に帰る","emoji":"🏠"},{"en":"do my homework","ja":"宿題をする","emoji":"📝"},{"en":"take a bath","ja":"おふろに入る","emoji":"🛁"},{"en":"go to bed","ja":"ねる","emoji":"🛏️"}]}]},{"book":"Junior Sunshine 5","publisher":"Kairyudo","grade":"ES5","edition":"2020 outline (newest edition not on ALTopedia)","units":[{"unit":1,"page":6,"title":"Nice to meet you.","topic":"Self-introductions, alphabet, name tags","verified":false,"phrases":["Hello. I'm (Ken).","Nice to meet you.","Nice to meet you, too.","How do you spell your name?","K-E-N."],"words":[{"en":"name","ja":"名前","emoji":"📛"},{"en":"spell","ja":"つづる"},{"en":"nice to meet you","ja":"はじめまして","emoji":"🤝"},{"en":"one to twenty","ja":"1〜20"}]},{"unit":2,"page":12,"title":"When is your birthday?","topic":"Months, ordinal numbers, birthdays","verified":false,"phrases":["When is your birthday?","My birthday is (April 5th).","What do you want for your birthday?","I want (a bike)."],"words":[{"en":"January","ja":"1月"},{"en":"February","ja":"2月"},{"en":"March","ja":"3月"},{"en":"April","ja":"4月"},{"en":"May","ja":"5月"},{"en":"June","ja":"6月"},{"en":"July","ja":"7月"},{"en":"August","ja":"8月"},{"en":"September","ja":"9月"},{"en":"October","ja":"10月"},{"en":"November","ja":"11月"},{"en":"December","ja":"12月"},{"en":"first","ja":"1日"},{"en":"second","ja":"2日"},{"en":"third","ja":"3日"},{"en":"fifth","ja":"5日"},{"en":"tenth","ja":"10日"},{"en":"twentieth","ja":"20日"},{"en":"birthday","ja":"誕生日","emoji":"🎂"},{"en":"present","ja":"プレゼント","emoji":"🎁"}]},{"unit":3,"page":18,"title":"What do you have on Mondays?","topic":"School subjects, timetable","verified":false,"phrases":["What do you have on (Monday)?","I have (math) on (Monday).","What subject do you like?","I like (P.E.).","Why?"],"words":[{"en":"Japanese","ja":"国語","emoji":"🇯🇵"},{"en":"English","ja":"英語","emoji":"🔤"},{"en":"math","ja":"算数","emoji":"➕"},{"en":"science","ja":"理科","emoji":"🔬"},{"en":"social studies","ja":"社会","emoji":"🗾"},{"en":"music","ja":"音楽","emoji":"🎵"},{"en":"arts and crafts","ja":"図工","emoji":"🎨"},{"en":"P.E.","ja":"体育","emoji":"🏃"},{"en":"home economics","ja":"家庭科","emoji":"🍳"},{"en":"calligraphy","ja":"書写","emoji":"🖌️"},{"en":"moral education","ja":"道徳"},{"en":"period for integrated studies","ja":"総合"},{"en":"Monday","ja":"月曜日"},{"en":"Tuesday","ja":"火曜日"},{"en":"Wednesday","ja":"水曜日"},{"en":"Thursday","ja":"木曜日"},{"en":"Friday","ja":"金曜日"}]},{"unit":4,"page":26,"title":"Can you do this?","topic":"Can / can't, animals, weather","grammar":"can / can't","verified":false,"phrases":["Can you (swim)?","Yes, I can. / No, I can't.","I can (run fast).","(He/She) can (cook)."],"words":[{"en":"swim","ja":"泳ぐ","emoji":"🏊"},{"en":"run fast","ja":"速く走る","emoji":"🏃"},{"en":"jump high","ja":"高く跳ぶ"},{"en":"cook","ja":"料理する","emoji":"🍳"},{"en":"sing well","ja":"上手に歌う","emoji":"🎤"},{"en":"play the piano","ja":"ピアノをひく","emoji":"🎹"},{"en":"ride a unicycle","ja":"一輪車に乗る"},{"en":"skate","ja":"スケートをする","emoji":"⛸️"},{"en":"ski","ja":"スキーをする","emoji":"⛷️"},{"en":"fly","ja":"飛ぶ","emoji":"🦅"},{"en":"sunny","ja":"晴れ","emoji":"☀️"},{"en":"rainy","ja":"雨","emoji":"🌧️"},{"en":"cloudy","ja":"くもり","emoji":"☁️"},{"en":"snowy","ja":"雪","emoji":"❄️"}]},{"unit":5,"page":38,"title":"Where is your treasure?","topic":"Directions, prepositions, everyday objects","verified":false,"phrases":["Where is (the treasure)?","It's (on) the (desk).","Go straight.","Turn right / left.","You can see it on your (right)."],"words":[{"en":"on","ja":"〜の上に"},{"en":"in","ja":"〜の中に"},{"en":"under","ja":"〜の下に"},{"en":"by","ja":"〜のそばに"},{"en":"go straight","ja":"まっすぐ進む","emoji":"⬆️"},{"en":"turn right","ja":"右に曲がる","emoji":"➡️"},{"en":"turn left","ja":"左に曲がる","emoji":"⬅️"},{"en":"block","ja":"区画"},{"en":"treasure","ja":"宝物","emoji":"💎"},{"en":"box","ja":"箱","emoji":"📦"},{"en":"cup","ja":"カップ","emoji":"☕"},{"en":"cap","ja":"ぼうし","emoji":"🧢"}]},{"unit":6,"page":48,"title":"My Hero","topic":"Describing people (he/she)","grammar":"he / she is ~","verified":false,"phrases":["Who is your hero?","My hero is (my mother).","She is (kind).","She can (cook well).","He is good at (soccer)."],"words":[{"en":"hero","ja":"ヒーロー","emoji":"🦸"},{"en":"kind","ja":"やさしい"},{"en":"brave","ja":"勇敢な"},{"en":"strong","ja":"強い","emoji":"💪"},{"en":"cool","ja":"かっこいい","emoji":"😎"},{"en":"funny","ja":"おもしろい","emoji":"😂"},{"en":"smart","ja":"かしこい"},{"en":"friendly","ja":"親しみやすい"},{"en":"he","ja":"彼"},{"en":"she","ja":"彼女"},{"en":"good at","ja":"〜が得意"}]},{"unit":7,"page":56,"title":"Happy New Year","topic":"New Year traditions","verified":false,"phrases":["Happy New Year!","What do you do at New Year?","I (eat osechi)."],"words":[{"en":"New Year","ja":"お正月","emoji":"🎍"},{"en":"New Year's card","ja":"年賀状","emoji":"💌"},{"en":"rice cake","ja":"もち","emoji":"🍡"},{"en":"otoshidama","ja":"お年玉","emoji":"🧧"},{"en":"shrine","ja":"神社","emoji":"⛩️"}]},{"unit":8,"page":60,"title":"What would you like?","topic":"Ordering food, prices","grammar":"I'd like ~","verified":false,"phrases":["What would you like?","I'd like (spaghetti).","How much is it?","It's (500) yen.","Here you are."],"words":[{"en":"spaghetti","ja":"スパゲッティ","emoji":"🍝"},{"en":"pizza","ja":"ピザ","emoji":"🍕"},{"en":"hamburger","ja":"ハンバーガー","emoji":"🍔"},{"en":"French fries","ja":"フライドポテト","emoji":"🍟"},{"en":"salad","ja":"サラダ","emoji":"🥗"},{"en":"soup","ja":"スープ","emoji":"🥣"},{"en":"rice ball","ja":"おにぎり","emoji":"🍙"},{"en":"curry and rice","ja":"カレーライス","emoji":"🍛"},{"en":"fried chicken","ja":"からあげ","emoji":"🍗"},{"en":"ice cream","ja":"アイスクリーム","emoji":"🍨"},{"en":"cake","ja":"ケーキ","emoji":"🍰"},{"en":"juice","ja":"ジュース","emoji":"🧃"},{"en":"milk","ja":"牛乳","emoji":"🥛"},{"en":"hundred","ja":"百"},{"en":"thousand","ja":"千"},{"en":"yen","ja":"円","emoji":"💴"}]},{"unit":9,"page":68,"title":"I love my town.","topic":"Hometown, places, adjectives","verified":false,"phrases":["I love my town.","We have (a big park).","We don't have (a zoo).","I want (a library).","My town is (beautiful)."],"words":[{"en":"park","ja":"公園","emoji":"🌳"},{"en":"zoo","ja":"動物園","emoji":"🦁"},{"en":"aquarium","ja":"水族館","emoji":"🐠"},{"en":"museum","ja":"博物館","emoji":"🏛️"},{"en":"library","ja":"図書館","emoji":"📚"},{"en":"station","ja":"駅","emoji":"🚉"},{"en":"hospital","ja":"病院","emoji":"🏥"},{"en":"supermarket","ja":"スーパー","emoji":"🛒"},{"en":"convenience store","ja":"コンビニ","emoji":"🏪"},{"en":"swimming pool","ja":"プール","emoji":"🏊"},{"en":"beach","ja":"海辺","emoji":"🏖️"},{"en":"mountain","ja":"山","emoji":"⛰️"},{"en":"river","ja":"川","emoji":"🏞️"},{"en":"famous","ja":"有名な"},{"en":"beautiful","ja":"美しい"},{"en":"big","ja":"大きい"},{"en":"small","ja":"小さい"},{"en":"old","ja":"古い"},{"en":"new","ja":"新しい"},{"en":"mango","ja":"マンゴー","emoji":"🥭"},{"en":"chicken nanban","ja":"チキン南蛮","emoji":"🍗"}]}]},{"book":"Junior Sunshine 6","publisher":"Kairyudo","grade":"ES6","edition":"2020 outline (newest edition not on ALTopedia)","units":[{"unit":1,"page":4,"title":"We are friends.","topic":"Self-introduction, daily routine, time","verified":false,"phrases":["What time do you get up?","I usually get up at (6:30).","I always (walk my dog).","I sometimes (help my mother)."],"words":[{"en":"get up","ja":"起きる","emoji":"⏰"},{"en":"go to bed","ja":"ねる","emoji":"🛏️"},{"en":"eat breakfast","ja":"朝ごはんを食べる","emoji":"🍳"},{"en":"go to school","ja":"学校へ行く","emoji":"🏫"},{"en":"do my homework","ja":"宿題をする","emoji":"📝"},{"en":"take a bath","ja":"おふろに入る","emoji":"🛁"},{"en":"walk my dog","ja":"犬の散歩をする","emoji":"🐕"},{"en":"always","ja":"いつも"},{"en":"usually","ja":"たいてい"},{"en":"sometimes","ja":"ときどき"},{"en":"never","ja":"決して〜ない"}]},{"unit":2,"page":12,"title":"Where do you want to go?","topic":"Countries, things to do","grammar":"want to ~","verified":false,"phrases":["Where do you want to go?","I want to go to (Italy).","Why?","I want to (eat pizza).","You can (see the Colosseum)."],"words":[{"en":"Japan","ja":"日本","emoji":"🇯🇵"},{"en":"America","ja":"アメリカ","emoji":"🇺🇸"},{"en":"Australia","ja":"オーストラリア","emoji":"🇦🇺"},{"en":"Brazil","ja":"ブラジル","emoji":"🇧🇷"},{"en":"Canada","ja":"カナダ","emoji":"🇨🇦"},{"en":"China","ja":"中国","emoji":"🇨🇳"},{"en":"Egypt","ja":"エジプト","emoji":"🇪🇬"},{"en":"France","ja":"フランス","emoji":"🇫🇷"},{"en":"India","ja":"インド","emoji":"🇮🇳"},{"en":"Italy","ja":"イタリア","emoji":"🇮🇹"},{"en":"Korea","ja":"韓国","emoji":"🇰🇷"},{"en":"the U.K.","ja":"イギリス","emoji":"🇬🇧"},{"en":"Spain","ja":"スペイン","emoji":"🇪🇸"},{"en":"see","ja":"見る","emoji":"👀"},{"en":"eat","ja":"食べる","emoji":"🍽️"},{"en":"visit","ja":"訪れる"},{"en":"buy","ja":"買う","emoji":"🛍️"}]},{"unit":3,"page":18,"title":"Welcome to Japan.","topic":"Japanese culture, seasons, events","verified":false,"phrases":["Welcome to Japan.","We have (Tanabata) in (summer).","You can (enjoy fireworks).","It's (fun)."],"words":[{"en":"spring","ja":"春","emoji":"🌸"},{"en":"summer","ja":"夏","emoji":"🌻"},{"en":"fall","ja":"秋","emoji":"🍁"},{"en":"winter","ja":"冬","emoji":"⛄"},{"en":"festival","ja":"祭り","emoji":"🏮"},{"en":"fireworks","ja":"花火","emoji":"🎆"},{"en":"cherry blossom viewing","ja":"花見","emoji":"🌸"},{"en":"snow festival","ja":"雪まつり","emoji":"❄️"},{"en":"hot spring","ja":"温泉","emoji":"♨️"},{"en":"sushi","ja":"すし","emoji":"🍣"},{"en":"tempura","ja":"てんぷら","emoji":"🍤"},{"en":"kimono","ja":"着物","emoji":"👘"}]},{"unit":4,"page":24,"title":"I want to see the Milky Way.","topic":"Summer plans","grammar":"want to ~","verified":false,"phrases":["What do you want to do in summer?","I want to (go camping).","I want to see (the Milky Way)."],"words":[{"en":"go camping","ja":"キャンプに行く","emoji":"🏕️"},{"en":"go to the sea","ja":"海に行く","emoji":"🏖"},{"en":"go to the zoo","ja":"動物園に行く","emoji":"🦁"},{"en":"see the Milky Way","ja":"天の川を見る","emoji":"🌌"},{"en":"eat shaved ice","ja":"かき氷を食べる","emoji":"🍧"},{"en":"swim","ja":"泳ぐ","emoji":"🏊"}]},{"unit":5,"page":28,"title":"My Summer Vacation","topic":"Past tense: summer memories","grammar":"past tense (went, ate, saw, was)","verified":false,"phrases":["How was your summer vacation?","I went to (the beach).","I enjoyed (swimming).","I ate (watermelon).","It was (fun)."],"words":[{"en":"went","ja":"行った"},{"en":"ate","ja":"食べた"},{"en":"saw","ja":"見た"},{"en":"enjoyed","ja":"楽しんだ"},{"en":"was","ja":"〜だった"},{"en":"fun","ja":"楽しい","emoji":"😄"},{"en":"exciting","ja":"わくわくする","emoji":"🤩"},{"en":"delicious","ja":"おいしい","emoji":"😋"},{"en":"beautiful","ja":"美しい"},{"en":"watermelon","ja":"すいか","emoji":"🍉"},{"en":"beach","ja":"海辺","emoji":"🏖️"},{"en":"mountain","ja":"山","emoji":"⛰️"},{"en":"grandparents' house","ja":"祖父母の家","emoji":"🏡"}]},{"unit":6,"page":39,"title":"See the world.","topic":"Sports, famous athletes","verified":false,"phrases":["What sport do you like?","I like (tennis).","Who is your favorite sports player?","My favorite player is (Ohtani Shohei).","He can (hit a home run)."],"words":[{"en":"baseball","ja":"野球","emoji":"⚾"},{"en":"soccer","ja":"サッカー","emoji":"⚽"},{"en":"basketball","ja":"バスケットボール","emoji":"🏀"},{"en":"tennis","ja":"テニス","emoji":"🎾"},{"en":"table tennis","ja":"卓球","emoji":"🏓"},{"en":"volleyball","ja":"バレーボール","emoji":"🏐"},{"en":"badminton","ja":"バドミントン","emoji":"🏸"},{"en":"rugby","ja":"ラグビー","emoji":"🏉"},{"en":"swimming","ja":"水泳","emoji":"🏊"},{"en":"wheelchair basketball","ja":"車いすバスケ","emoji":"🏀"},{"en":"skateboarding","ja":"スケートボード","emoji":"🛹"},{"en":"player","ja":"選手"},{"en":"Olympics","ja":"オリンピック","emoji":"🏅"},{"en":"Paralympics","ja":"パラリンピック","emoji":"🏅"}]},{"unit":7,"page":52,"title":"My Favorite Memory","topic":"School memories","grammar":"My best memory is ~ / past tense","verified":false,"phrases":["What's your best memory?","My best memory is (the sports day).","We (ran a relay).","It was (exciting)."],"words":[{"en":"sports day","ja":"運動会","emoji":"🏃"},{"en":"school trip","ja":"修学旅行","emoji":"🚌"},{"en":"field trip","ja":"遠足","emoji":"🎒"},{"en":"music festival","ja":"音楽会","emoji":"🎵"},{"en":"drama festival","ja":"学芸会","emoji":"🎭"},{"en":"swimming meet","ja":"水泳大会","emoji":"🏊"},{"en":"volunteer day","ja":"ボランティア活動"},{"en":"graduation ceremony","ja":"卒業式","emoji":"🎓"},{"en":"entrance ceremony","ja":"入学式","emoji":"🌸"},{"en":"memory","ja":"思い出"}]},{"unit":8,"page":60,"title":"I have a dream.","topic":"Jobs and dreams","grammar":"want to be ~","verified":false,"phrases":["What do you want to be?","I want to be (a teacher).","Why?","I like (children)."],"words":[{"en":"teacher","ja":"先生","emoji":"👩‍🏫"},{"en":"doctor","ja":"医者","emoji":"👨‍⚕️"},{"en":"nurse","ja":"看護師","emoji":"🩺"},{"en":"vet","ja":"獣医","emoji":"🐾"},{"en":"cook","ja":"料理人","emoji":"👨‍🍳"},{"en":"baker","ja":"パン屋","emoji":"🥖"},{"en":"florist","ja":"花屋","emoji":"💐"},{"en":"pilot","ja":"パイロット","emoji":"✈️"},{"en":"flight attendant","ja":"客室乗務員"},{"en":"police officer","ja":"警察官","emoji":"👮"},{"en":"firefighter","ja":"消防士","emoji":"🚒"},{"en":"farmer","ja":"農家","emoji":"🧑‍🌾"},{"en":"scientist","ja":"科学者","emoji":"🔬"},{"en":"astronaut","ja":"宇宙飛行士","emoji":"🧑‍🚀"},{"en":"soccer player","ja":"サッカー選手","emoji":"⚽"},{"en":"singer","ja":"歌手","emoji":"🎤"},{"en":"comedian","ja":"お笑い芸人","emoji":"😂"},{"en":"YouTuber","ja":"ユーチューバー","emoji":"📹"},{"en":"game creator","ja":"ゲームクリエイター","emoji":"🎮"}]},{"unit":9,"page":68,"title":"Junior High School Life","topic":"Clubs, JHS subjects, events","verified":false,"phrases":["What club do you want to join?","I want to join the (computer club).","What do you want to do in junior high school?","I want to (study English hard)."],"words":[{"en":"baseball team","ja":"野球部","emoji":"⚾"},{"en":"soccer team","ja":"サッカー部","emoji":"⚽"},{"en":"tennis team","ja":"テニス部","emoji":"🎾"},{"en":"track and field team","ja":"陸上部","emoji":"🏃"},{"en":"brass band","ja":"吹奏楽部","emoji":"🎺"},{"en":"art club","ja":"美術部","emoji":"🎨"},{"en":"computer club","ja":"コンピューター部","emoji":"💻"},{"en":"science club","ja":"科学部","emoji":"🔬"},{"en":"chorus","ja":"合唱部","emoji":"🎤"},{"en":"kendo club","ja":"剣道部"},{"en":"club","ja":"部活"},{"en":"uniform","ja":"制服"},{"en":"geography","ja":"地理","emoji":"🗺️"},{"en":"history","ja":"歴史","emoji":"📜"},{"en":"technology","ja":"技術"},{"en":"homework","ja":"宿題","emoji":"📝"},{"en":"test","ja":"テスト","emoji":"📄"}]}]},{"book":"Sunshine English Course 1","publisher":"Kairyudo","grade":"JHS1","edition":"2025","units":[{"unit":1,"page":8,"title":"Getting started: town, friends, alphabet","topic":"Greetings, alphabet review","grammar":"Greetings, alphabet review","verified":false,"phrases":["Hello. I'm (Mao).","Nice to meet you.","How do you spell it?"],"words":[{"en":"station","ja":"駅","emoji":"🚉"},{"en":"park","ja":"公園","emoji":"🌳"},{"en":"library","ja":"図書館","emoji":"📚"},{"en":"hospital","ja":"病院","emoji":"🏥"},{"en":"post office","ja":"郵便局","emoji":"🏤"},{"en":"bookstore","ja":"書店","emoji":"📖"},{"en":"restaurant","ja":"レストラン","emoji":"🍽️"},{"en":"convenience store","ja":"コンビニ","emoji":"🏪"}]},{"unit":2,"page":22,"title":"Hi, Mao. I'm Felipe.","topic":"be verb (am / are)","grammar":"be verb (am / are)","verified":false,"phrases":["I'm (Felipe).","Are you from (Australia)?","Yes, I am. / No, I'm not.","I'm not (a fan of natto)."],"words":[{"en":"from","ja":"〜出身"},{"en":"Australia","ja":"オーストラリア","emoji":"🇦🇺"},{"en":"Brazil","ja":"ブラジル","emoji":"🇧🇷"},{"en":"fan","ja":"ファン"},{"en":"new","ja":"新しい"},{"en":"friend","ja":"友だち"}]},{"unit":3,"page":30,"title":"I have a dog at home.","topic":"General verbs, plurals","grammar":"General verbs, plurals","verified":false,"phrases":["I have (a dog).","Do you (like cats)?","Yes, I do. / No, I don't.","I have five (frogs)."],"words":[{"en":"have","ja":"持っている"},{"en":"like","ja":"好き"},{"en":"play","ja":"する・演奏する"},{"en":"want","ja":"ほしい"},{"en":"eat","ja":"食べる"},{"en":"dog","ja":"犬","emoji":"🐶"},{"en":"cat","ja":"ねこ","emoji":"🐱"},{"en":"frog","ja":"カエル","emoji":"🐸"},{"en":"bird","ja":"鳥","emoji":"🐦"},{"en":"pet","ja":"ペット"}]},{"unit":4,"page":38,"title":"I can make sushi.","topic":"can","grammar":"can","verified":false,"phrases":["I can (make sushi).","Can you (play the guitar)?","Yes, I can. / No, I can't."],"words":[{"en":"make","ja":"作る"},{"en":"cook","ja":"料理する"},{"en":"play the guitar","ja":"ギターをひく","emoji":"🎸"},{"en":"dance","ja":"おどる","emoji":"💃"},{"en":"draw","ja":"描く","emoji":"✏️"},{"en":"sushi","ja":"すし","emoji":"🍣"},{"en":"well","ja":"上手に"}]},{"unit":5,"page":50,"title":"Power Up 1: Hamburger shop","topic":"Ordering food","grammar":"Ordering food","verified":false,"phrases":["Can I help you?","I'd like (a hamburger).","For here or to go?","That'll be (600) yen."],"words":[{"en":"hamburger","ja":"ハンバーガー","emoji":"🍔"},{"en":"French fries","ja":"フライドポテト","emoji":"🍟"},{"en":"drink","ja":"飲み物","emoji":"🥤"},{"en":"small","ja":"S"},{"en":"medium","ja":"M"},{"en":"large","ja":"L"}]},{"unit":6,"page":52,"title":"Who is this woman?","topic":"who, he / she, this / that","grammar":"who, he / she, this / that","verified":false,"phrases":["Who is this woman?","She is (Rami), a famous cook.","This is (yokan).","What's that?"],"words":[{"en":"who","ja":"だれ"},{"en":"woman","ja":"女性"},{"en":"man","ja":"男性"},{"en":"famous","ja":"有名な"},{"en":"cook","ja":"料理人"},{"en":"he","ja":"彼"},{"en":"she","ja":"彼女"},{"en":"this","ja":"これ"},{"en":"that","ja":"あれ"}]},{"unit":7,"page":62,"title":"My brother likes home economics.","topic":"3rd person singular -s","grammar":"3rd person singular -s","verified":false,"phrases":["My brother likes (home economics).","Does he (play soccer)?","Yes, he does. / No, he doesn't.","He doesn't (like math)."],"words":[{"en":"brother","ja":"兄弟"},{"en":"sister","ja":"姉妹"},{"en":"mother","ja":"母"},{"en":"father","ja":"父"},{"en":"home economics","ja":"家庭科","emoji":"🍳"},{"en":"math","ja":"数学","emoji":"➕"},{"en":"science","ja":"理科","emoji":"🔬"},{"en":"P.E.","ja":"保健体育","emoji":"🏃"},{"en":"art","ja":"美術","emoji":"🎨"},{"en":"music","ja":"音楽","emoji":"🎵"}]},{"unit":8,"page":70,"title":"Power Up 2: Asking about belongings","topic":"Whose ~? / Which ~?","grammar":"Whose ~? / Which ~?","verified":false,"phrases":["Whose (pen) is this?","It's (mine).","Which (bag) is yours?"],"words":[{"en":"whose","ja":"だれの"},{"en":"mine","ja":"私のもの"},{"en":"yours","ja":"あなたのもの"},{"en":"his","ja":"彼のもの"},{"en":"hers","ja":"彼女のもの"},{"en":"umbrella","ja":"かさ","emoji":"☂️"}]},{"unit":9,"page":72,"title":"I don't know her.","topic":"Object pronouns","grammar":"Object pronouns","verified":false,"phrases":["I don't know her.","Do you know (him)?","Please tell (me)."],"words":[{"en":"me","ja":"私を"},{"en":"you","ja":"あなたを"},{"en":"him","ja":"彼を"},{"en":"her","ja":"彼女を"},{"en":"us","ja":"私たちを"},{"en":"them","ja":"彼らを"}]},{"unit":10,"page":82,"title":"There is a steak restaurant over there.","topic":"There is / There are","grammar":"There is / There are","verified":false,"phrases":["There is (a steak restaurant) over there.","There are (two parks) in my town.","Is there (a bank) near here?"],"words":[{"en":"over there","ja":"あそこに"},{"en":"near","ja":"〜の近くに"},{"en":"steak","ja":"ステーキ","emoji":"🥩"},{"en":"bank","ja":"銀行","emoji":"🏦"},{"en":"shrine","ja":"神社","emoji":"⛩️"},{"en":"temple","ja":"寺","emoji":"🛕"}]},{"unit":11,"page":91,"title":"Power Up 3: Directions at school","topic":"Asking the way","grammar":"Asking the way","verified":false,"phrases":["Where is the (music room)?","Go up the stairs.","It's next to the (library)."],"words":[{"en":"stairs","ja":"階段"},{"en":"floor","ja":"階"},{"en":"next to","ja":"〜のとなり"},{"en":"between","ja":"〜の間"},{"en":"teachers' room","ja":"職員室"},{"en":"nurse's office","ja":"保健室"}]},{"unit":12,"page":100,"title":"Sorry, I'm studying now.","topic":"Present continuous","grammar":"Present continuous","verified":false,"phrases":["I'm (studying) now.","What are you doing?","Are you (watching TV)?"],"words":[{"en":"studying","ja":"勉強している"},{"en":"cooking","ja":"料理している"},{"en":"watching","ja":"見ている"},{"en":"running","ja":"走っている"},{"en":"sleeping","ja":"寝ている"},{"en":"now","ja":"今"}]},{"unit":13,"page":110,"title":"I stayed home and watched TV.","topic":"Past tense (regular / irregular)","grammar":"Past tense (regular / irregular)","verified":false,"phrases":["I (stayed) home and (watched) TV.","Did you (go out)?","Yes, I did. / No, I didn't.","What did you do yesterday?"],"words":[{"en":"stayed","ja":"とどまった"},{"en":"watched","ja":"見た"},{"en":"played","ja":"した"},{"en":"went","ja":"行った"},{"en":"ate","ja":"食べた"},{"en":"saw","ja":"見た"},{"en":"made","ja":"作った"},{"en":"yesterday","ja":"昨日"},{"en":"last week","ja":"先週"}]},{"unit":14,"page":124,"title":"I was a student thirty years ago.","topic":"was / were, past continuous","grammar":"was / were, past continuous","verified":false,"phrases":["I was (a student) thirty years ago.","Were you (busy)?","I was (sleeping) then."],"words":[{"en":"was","ja":"〜だった"},{"en":"were","ja":"〜だった"},{"en":"ago","ja":"〜前"},{"en":"then","ja":"そのとき"},{"en":"busy","ja":"忙しい"}]}]},{"book":"Sunshine English Course 2","publisher":"Kairyudo","grade":"JHS2","edition":"2025","units":[{"unit":1,"page":8,"title":"I'm going to practice with Ken this Sunday.","topic":"be going to, will, gerund (enjoy ~ing)","grammar":"be going to, will, gerund (enjoy ~ing)","verified":false,"phrases":["I'm going to (practice) this Sunday.","I'll be late.","I enjoyed (singing) with you."],"words":[{"en":"practice","ja":"練習する"},{"en":"this Sunday","ja":"今度の日曜日"},{"en":"late","ja":"遅れて"},{"en":"enjoy","ja":"楽しむ"},{"en":"tomorrow","ja":"明日"},{"en":"next week","ja":"来週"}]},{"unit":2,"page":20,"title":"When I was a kid, I enjoyed sewing.","topic":"that-clause, when, if","grammar":"that-clause, when, if","verified":false,"phrases":["I hear that (Anya will play in a game).","When I was a kid, I (enjoyed sewing).","If you (hit a home run), I'll (make cookies)."],"words":[{"en":"hear","ja":"聞く"},{"en":"think","ja":"思う"},{"en":"know","ja":"知っている"},{"en":"kid","ja":"子ども"},{"en":"sew","ja":"ぬう","emoji":"🧵"},{"en":"home run","ja":"ホームラン","emoji":"⚾"},{"en":"cookie","ja":"クッキー","emoji":"🍪"}]},{"unit":3,"page":29,"title":"Weather forecast","topic":"Weather","grammar":"Weather","verified":false,"phrases":["It will be (sunny) tomorrow.","How's the weather?"],"words":[{"en":"sunny","ja":"晴れ","emoji":"☀️"},{"en":"cloudy","ja":"くもり","emoji":"☁️"},{"en":"rainy","ja":"雨","emoji":"🌧️"},{"en":"snowy","ja":"雪","emoji":"❄️"},{"en":"windy","ja":"風が強い","emoji":"🌬️"},{"en":"typhoon","ja":"台風","emoji":"🌀"},{"en":"temperature","ja":"気温","emoji":"🌡️"}]},{"unit":4,"page":32,"title":"I want to go!","topic":"Infinitives (noun, adverb, adjective uses)","grammar":"Infinitives (noun, adverb, adjective uses)","verified":false,"phrases":["I want (to go)!","You use it (to scoop up fish).","I need a bowl (to keep it in)."],"words":[{"en":"want to","ja":"〜したい"},{"en":"need","ja":"必要とする"},{"en":"bowl","ja":"おわん","emoji":"🥣"},{"en":"scoop","ja":"すくう"},{"en":"goldfish scooping","ja":"金魚すくい","emoji":"🐟"},{"en":"festival","ja":"祭り","emoji":"🏮"}]},{"unit":5,"page":46,"title":"Reading 1: The Three Dolls","topic":"Story reading","grammar":"Story reading","verified":false,"phrases":["Once upon a time, ..."],"words":[{"en":"doll","ja":"人形","emoji":"🪆"},{"en":"king","ja":"王","emoji":"🤴"},{"en":"wise","ja":"賢い"}]},{"unit":6,"page":50,"title":"Power Up 2: Let's make a phone call","topic":"Phone conversations","grammar":"Phone conversations","verified":false,"phrases":["Hello. This is (Ken).","May I speak to (Daniel)?","Just a moment.","Can I leave a message?"],"words":[{"en":"phone","ja":"電話","emoji":"📞"},{"en":"message","ja":"伝言"}]},{"unit":7,"page":52,"title":"You must turn down the volume.","topic":"must, have to, infinitive (emotion)","grammar":"must, have to, infinitive (emotion)","verified":false,"phrases":["You must (turn down the volume).","I have to (be careful).","I'm surprised to hear that.","You don't have to (hurry)."],"words":[{"en":"must","ja":"〜しなければならない"},{"en":"have to","ja":"〜しなければならない"},{"en":"volume","ja":"音量","emoji":"🔊"},{"en":"careful","ja":"注意深い"},{"en":"surprised","ja":"驚いた","emoji":"😲"},{"en":"quiet","ja":"静かな"}]},{"unit":8,"page":61,"title":"Power Up 3: Let's eat at a restaurant","topic":"Ordering","grammar":"Ordering","verified":false,"phrases":["Are you ready to order?","I'll have (the steak).","Anything else?","Check, please."],"words":[{"en":"menu","ja":"メニュー"},{"en":"order","ja":"注文する"},{"en":"dessert","ja":"デザート","emoji":"🍰"},{"en":"check","ja":"お会計"}]},{"unit":9,"page":66,"title":"You'll become a good athlete.","topic":"become/look, how to, SVOO","grammar":"become/look, how to, SVOO","verified":false,"phrases":["You'll become (a good athlete).","I don't know how to (use it).","I'll lend you (this apron)."],"words":[{"en":"become","ja":"〜になる"},{"en":"look","ja":"〜に見える"},{"en":"athlete","ja":"運動選手"},{"en":"how to","ja":"〜の仕方"},{"en":"lend","ja":"貸す"},{"en":"give","ja":"あげる"},{"en":"show","ja":"見せる"},{"en":"apron","ja":"エプロン"}]},{"unit":10,"page":76,"title":"This cafe is cuter than that one.","topic":"Comparatives and superlatives","grammar":"Comparatives and superlatives","verified":false,"phrases":["This umbrella is as light as that one.","This cafe is cuter than that one.","The parfaits are the most popular here."],"words":[{"en":"light","ja":"軽い"},{"en":"heavy","ja":"重い"},{"en":"cute","ja":"かわいい"},{"en":"popular","ja":"人気のある"},{"en":"than","ja":"〜より"},{"en":"the most","ja":"いちばん"},{"en":"cafe","ja":"カフェ","emoji":"☕"},{"en":"parfait","ja":"パフェ","emoji":"🍨"}]},{"unit":11,"page":85,"title":"Power Up 4: Email update","topic":"Writing an email","grammar":"Writing an email","verified":false,"phrases":["Dear (Ms. Brown),","How are you?","Best wishes,"],"words":[{"en":"email","ja":"メール","emoji":"📧"},{"en":"subject","ja":"件名"},{"en":"attach","ja":"添付する"}]},{"unit":12,"page":92,"title":"Reading 2: Friendship beyond Time and Borders","topic":"Story reading","grammar":"Story reading","verified":false,"phrases":[],"words":[{"en":"friendship","ja":"友情"},{"en":"border","ja":"国境"},{"en":"ship","ja":"船","emoji":"🚢"}]},{"unit":13,"page":98,"title":"Which design do you like the best?","topic":"like ~ better / the best, teach how to","grammar":"like ~ better / the best, teach how to","verified":false,"phrases":["Which (design) do you like the best?","I like aquariums better than zoos.","I'll teach you how to (cook)."],"words":[{"en":"design","ja":"デザイン"},{"en":"aquarium","ja":"水族館","emoji":"🐠"},{"en":"zoo","ja":"動物園","emoji":"🦁"},{"en":"better","ja":"よりよく"},{"en":"best","ja":"いちばんよく"}]},{"unit":14,"page":108,"title":"Where was it taken?","topic":"Passive voice","grammar":"Passive voice","verified":false,"phrases":["Where was it taken?","It's visited by many tourists every year.","Momiji manju is known to many people."],"words":[{"en":"taken","ja":"撮られた"},{"en":"visited","ja":"訪れられた"},{"en":"known","ja":"知られている"},{"en":"made","ja":"作られた"},{"en":"tourist","ja":"観光客"},{"en":"photo","ja":"写真","emoji":"📷"},{"en":"world heritage site","ja":"世界遺産"}]},{"unit":15,"page":117,"title":"Power Up 5: Airplane announcements","topic":"Travel listening","grammar":"Travel listening","verified":false,"phrases":["Please fasten your seat belt.","We will arrive at (Narita) in (30 minutes)."],"words":[{"en":"airport","ja":"空港","emoji":"🛫"},{"en":"seat belt","ja":"シートベルト"},{"en":"gate","ja":"搭乗口"},{"en":"passport","ja":"パスポート","emoji":"🛂"}]}]},{"book":"Sunshine English Course 3","publisher":"Kairyudo","grade":"JHS3","edition":"2025","units":[{"unit":1,"page":8,"title":"I've eaten it before.","topic":"Present perfect (experience), ask ~ to, It's ~ for ~ to","grammar":"Present perfect (experience), ask ~ to, It's ~ for ~ to","verified":false,"phrases":["I've eaten it before.","Have you ever (been to Kyoto)?","I'll ask someone to make them.","It's hard for me to read this kanji."],"words":[{"en":"ever","ja":"今までに"},{"en":"never","ja":"一度も〜ない"},{"en":"before","ja":"以前に"},{"en":"once","ja":"一度"},{"en":"twice","ja":"二度"},{"en":"ask","ja":"頼む"},{"en":"hard","ja":"難しい"},{"en":"kanji","ja":"漢字"}]},{"unit":2,"page":18,"title":"I've been playing it for only four hours.","topic":"Present perfect (continuation, completion), perfect continuous","grammar":"Present perfect (continuation, completion), perfect continuous","verified":false,"phrases":["I've known it for years.","I've just gotten a new video game.","I've been playing it for (four hours).","Have you finished (your homework) yet?"],"words":[{"en":"for","ja":"〜の間"},{"en":"since","ja":"〜以来"},{"en":"just","ja":"ちょうど"},{"en":"already","ja":"すでに"},{"en":"yet","ja":"もう・まだ"},{"en":"video game","ja":"テレビゲーム","emoji":"🎮"}]},{"unit":3,"page":30,"title":"Warm milk makes you sleep well.","topic":"make + O + C / make + O + verb, tell + O + that","grammar":"make + O + C / make + O + verb, tell + O + that","verified":false,"phrases":["The morning practice made you sleepy.","Warm milk makes you sleep well.","I'll tell him that you want to come."],"words":[{"en":"make","ja":"〜にする"},{"en":"sleepy","ja":"ねむい","emoji":"😪"},{"en":"warm","ja":"温かい"},{"en":"tell","ja":"伝える"},{"en":"happy","ja":"うれしい"},{"en":"let","ja":"〜させる"},{"en":"help","ja":"手伝う"}]},{"unit":4,"page":39,"title":"Power Up 1: Explain a train change","topic":"Travel directions","grammar":"Travel directions","verified":false,"phrases":["Take the (Nippo Line) to (Miyazaki).","Change trains at (Oita).","It takes about (one hour)."],"words":[{"en":"train","ja":"電車","emoji":"🚆"},{"en":"change","ja":"乗りかえる"},{"en":"line","ja":"路線"},{"en":"platform","ja":"ホーム"}]},{"unit":5,"page":48,"title":"Reading 1: The Meaning of Life","topic":"Story reading","grammar":"Story reading","verified":false,"phrases":[],"words":[{"en":"meaning","ja":"意味"},{"en":"life","ja":"人生"}]},{"unit":6,"page":56,"title":"I mean the man wearing glasses.","topic":"Indirect questions, participle modifiers","grammar":"Indirect questions, participle modifiers","verified":false,"phrases":["Do you understand what they're talking about?","I mean the man wearing glasses.","This is a straw made of paper."],"words":[{"en":"understand","ja":"理解する"},{"en":"wearing","ja":"身につけている"},{"en":"glasses","ja":"めがね","emoji":"👓"},{"en":"straw","ja":"ストロー"},{"en":"paper","ja":"紙"},{"en":"made of","ja":"〜でできた"}]},{"unit":7,"page":66,"title":"He is the manga artist who drew Black Jack.","topic":"Relative pronouns (who / which / that, subject)","grammar":"Relative pronouns (who / which / that, subject)","verified":false,"phrases":["He is the manga artist who drew (Black Jack).","They're chocolates which look like stones.","It's a movie that has dramatic scenes."],"words":[{"en":"manga artist","ja":"漫画家"},{"en":"chocolate","ja":"チョコレート","emoji":"🍫"},{"en":"stone","ja":"石","emoji":"🪨"},{"en":"movie","ja":"映画","emoji":"🎬"},{"en":"dramatic","ja":"劇的な"},{"en":"scene","ja":"場面"}]},{"unit":8,"page":81,"title":"This is the drink that I like the best.","topic":"Relative pronouns (object), contact clauses","grammar":"Relative pronouns (object), contact clauses","verified":false,"phrases":["That's one thing we can do for the environment.","I have a bottle which I bought yesterday.","This is the drink that I like the best."],"words":[{"en":"environment","ja":"環境","emoji":"🌏"},{"en":"bottle","ja":"ボトル","emoji":"🍶"},{"en":"reuse","ja":"再利用する","emoji":"♻️"},{"en":"plastic","ja":"プラスチック"},{"en":"reduce","ja":"減らす"},{"en":"recycle","ja":"リサイクルする","emoji":"♻️"}]},{"unit":9,"page":96,"title":"If I were you, I would use a robot vacuum cleaner.","topic":"Subjunctive (if / wish)","grammar":"Subjunctive (if / wish)","verified":false,"phrases":["If you had a robot, you wouldn't do anything.","I wish the robot would take me to school.","If I were you, I would (use a robot vacuum cleaner)."],"words":[{"en":"robot","ja":"ロボット","emoji":"🤖"},{"en":"vacuum cleaner","ja":"掃除機"},{"en":"wish","ja":"〜ならいいのに"},{"en":"if I were you","ja":"もし私があなたなら"},{"en":"future","ja":"未来"}]},{"unit":10,"page":106,"title":"Reading 2: Malala's Voice for the Future","topic":"Story reading","grammar":"Story reading","verified":false,"phrases":[],"words":[{"en":"education","ja":"教育","emoji":"📚"},{"en":"voice","ja":"声"},{"en":"right","ja":"権利"},{"en":"peace","ja":"平和","emoji":"🕊️"}]},{"unit":11,"page":112,"title":"Special Project: JHS Memories","topic":"Speech","grammar":"Speech","verified":false,"phrases":["My best memory of junior high school is (the chorus contest).","I'll never forget (it)."],"words":[{"en":"memory","ja":"思い出"},{"en":"chorus contest","ja":"合唱コンクール","emoji":"🎤"},{"en":"graduation","ja":"卒業","emoji":"🎓"},{"en":"school trip","ja":"修学旅行","emoji":"🚌"}]}]}]}</script>
+<script>
+/*KIT:JS START*/
+/* =====================================================================
+   CLASSROOM GAME KIT  v1
+   Shared parts for Wyatt's English classroom games (pair, team, whole-class or solo) (single-file HTML, Chromebooks, no server).
+   Everything lives on window.Kit. Paste this file between the KIT:JS markers of a game
+   (or run update-kit.py). Read README.md for the how-to.
+
+   Parts
+     Kit.$ / $$ / esc / bi / store(prefix)          DOM helpers, English+Japanese pairs, localStorage
+     Kit.mulberry32 / hash32 / hashStr / rng / ri / shuffle / pickN / RND / randomSeeds
+     Kit.codec({...})                                short class codes or pair codes, link#CODE
+     Kit.link                                        the game's share link (handles the artifact URL)
+     Kit.qr(canvas, text, px)                        QR code (needs the qrcode-generator script tag)
+     Kit.sound / Kit.speech                          beeps and funny sounds, computer voice
+     Kit.toggle / Kit.setupToggles                   日本語サポート and Sound switches (body.jp)
+     Kit.seg                                         a row of pick-one buttons for settings
+     Kit.screens                                     one <section class="screen"> at a time
+     Kit.toast                                       small message at the bottom
+     Kit.timer / fmtTime / score                     time + mistakes scoring and stars
+     Kit.traps({...})                                funny traps for wrong answers (no flashing)
+     Kit.codeEntry / Kit.badges                      "type the class code" box, code badges
+     Kit.teacher({...})                              teacher page: code, QR, link, projector, pair codes
+     Kit.result({...})                               end screen: stars, numbers, optional Swap roles!
+     Kit.soloPartner({...})                          the computer partner bubble for solo practice
+     Kit.words                                       textbook word bank (grade / book / unit picker)
+   Other game styles (whole class, teams, solo drills)
+     Kit.keys / Kit.fullscreen                       keyboard shortcuts and fullscreen for the projector
+     Kit.countdown({...})                            countdown ring (no flashing)
+     Kit.teams({...})                                team scoreboard with big +1 buttons
+     Kit.quiz                                        multiple-choice questions from the word bank (5 types)
+     Kit.bingo                                       bingo cards, calling order, line check
+   ===================================================================== */
+(function(){
+"use strict";
+const Kit={version:1};
+
+/* ---------- DOM + text ---------- */
+Kit.$=(s,r=document)=>r.querySelector(s);
+Kit.$$=(s,r=document)=>[...r.querySelectorAll(s)];
+Kit.esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+/* bi(["English","日本語"]) -> English with Japanese under it (shown only when body.jp). inline=true keeps it on one line. */
+Kit.bi=(p,inline)=>`<span class="en">${p[0]}</span><span class="ja${inline?" inl":""}">${p[1]||""}</span>`;
+Kit.store=prefix=>({
+  get(k,d){try{const v=localStorage.getItem(prefix+"_"+k);return v==null?d:JSON.parse(v);}catch(e){return d;}},
+  set(k,v){try{localStorage.setItem(prefix+"_"+k,JSON.stringify(v));}catch(e){}}
+});
+const $=Kit.$,$$=Kit.$$,bi=Kit.bi;
+
+/* ---------- seeded random ----------
+   rng(seed, salt) gives the same numbers on every Chromebook, so partners' screens match.
+   RND is for things that should differ (which page a bomb picks, key order). */
+Kit.mulberry32=function(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};};
+Kit.hash32=function(x){x|=0;x=Math.imul(x^(x>>>16),0x7feb352d);x=Math.imul(x^(x>>>15),0x846ca68b);return(x^(x>>>16))>>>0;};
+Kit.hashStr=function(s){let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return Kit.hash32(h);};
+Kit.rng=(...parts)=>{let h=0x51ed27;for(const p of parts)h=Kit.hash32(h^(typeof p==="number"?Kit.hash32(p):Kit.hashStr(String(p))));return Kit.mulberry32(h);};
+Kit.ri=(r,n)=>Math.floor(r()*n);
+Kit.shuffle=(a,r)=>{for(let i=a.length-1;i>0;i--){const j=Kit.ri(r,i+1);[a[i],a[j]]=[a[j],a[i]];}return a;};
+Kit.pickN=(r,arr,n)=>Kit.shuffle(arr.slice(),r).slice(0,n);
+Kit.RND=Kit.mulberry32((Date.now()^(Math.random()*4294967296))>>>0);
+Kit.randomSeeds=function(n,max){const a=new Uint32Array(n),used=new Set(),out=[];
+  try{crypto.getRandomValues(a);}catch(e){for(let i=0;i<n;i++)a[i]=(Math.random()*4294967296)>>>0;}
+  for(let i=0;i<n;i++){let s=a[i]%max;while(used.has(s))s=(s+1)%max;used.add(s);out.push(s);}return out;};
+/* a bag: hands out items in random order with no repeats until all are used */
+Kit.bag=(items,r)=>{let b=[];return ()=>{if(!b.length)b=Kit.shuffle(items.slice(),r||Kit.RND);return b.shift();};};
+
+/* ---------- codes ----------
+   Kit.codec({game:"pl", fields:[{k:"level",n:3},{k:"rounds",n:5,min:1}], seed:0, check:32})
+     game    a short id; codes from one game never load in another
+     fields  settings, each with n possible values (min..min+n-1). Order matters: only ever ADD fields at the END,
+             and give them a default (def) so old codes keep working is NOT possible; adding a field changes codes.
+             So pick generous n up front (e.g. n:16 for "unit").
+     seed    0 for a class code (settings only, everyone in class types the same code, like The Keypad Game);
+             a number like 262144 for pair codes (each pair gets its own puzzle, like The Maze Game).
+     check   how many checksum values (32 = one typo in 32 slips through)
+   Returns {encode(S, seed) -> "K7QM", decode(str) -> {S, seed, code} | null, fmt(code), length, fromHash()} */
+const ALPH="23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+Kit.ALPH=ALPH;
+Kit.codec=function(o){
+  const fields=o.fields||[],SEEDS=BigInt(o.seed||1),C=BigInt(o.check||32),gid=Kit.hashStr("kit:"+(o.game||"game"));
+  let N=1n;for(const f of fields)N*=BigInt(f.n);
+  const M=N*SEEDS;let L=1;while(32n**BigInt(L)<M*C)L++;
+  if(o.length&&o.length>L)L=o.length;
+  const big=x=>{const lo=Number(x&0xFFFFFFFFn),hi=Number((x>>32n)&0xFFFFFFFFn);return Kit.hash32(lo^Kit.hash32(hi^gid));};
+  const mix=c=>((BigInt(Kit.hash32(gid^(Number(c)*7919+101)))<<32n)|BigInt(Kit.hash32(gid+Number(c)*104729)))%M;
+  function encode(S,seed){
+    let x=0n;for(const f of fields){const v=(S[f.k]??f.def??f.min??0)-(f.min||0);if(!(v>=0&&v<f.n))throw new Error("Kit.codec: "+f.k+" out of range");x=x*BigInt(f.n)+BigInt(v);}
+    x=x*SEEDS+BigInt(seed||0)%SEEDS;
+    const c=BigInt(big(x))%C;let v=c*M+(x+mix(c))%M,out="";
+    for(let i=0;i<L;i++){out=ALPH[Number(v%32n)]+out;v/=32n;}return out;
+  }
+  function clean(str){return (str||"").toUpperCase().replace(/[\s\-_.]/g,"").replace(/O/g,"0").replace(/I/g,"1");}
+  function decode(str){
+    const s=clean(str);if(s.length!==L)return null;
+    let v=0n;for(const ch of s){const i=ALPH.indexOf(ch);if(i<0)return null;v=v*32n+BigInt(i);}
+    if(v>=C*M)return null;
+    const c=v/M,x=((v%M)-mix(c)+M)%M;if(BigInt(big(x))%C!==c)return null;
+    let rest=x;const seed=Number(rest%SEEDS);rest/=SEEDS;const vals=[],S={};
+    for(let i=fields.length-1;i>=0;i--){const n=BigInt(fields[i].n);vals[i]=Number(rest%n)+(fields[i].min||0);rest/=n;}
+    fields.forEach((f,i)=>S[f.k]=vals[i]);
+    if(o.valid&&!o.valid(S))return null;
+    return {S,seed,code:s};
+  }
+  const fmt=c=>c.length>=6?c.slice(0,Math.ceil(c.length/2)-(c.length===7?1:0))+"-"+c.slice(Math.ceil(c.length/2)-(c.length===7?1:0)):c;
+  function fromHash(){try{return decode(decodeURIComponent((location.hash||"").replace(/^#/,"")));}catch(e){return null;}}
+  return {encode,decode,fmt,fromHash,length:L,fields};
+};
+
+/* ---------- the game's share link ----------
+   Inside claude.ai the page runs in a sandbox, so we use the artifact URL you pass in.
+   Hosted anywhere else (GitHub Pages later), it uses its own address. */
+Kit.link={
+  base(artifactUrl){try{const h=location.hostname||"";if(/^https?:$/.test(location.protocol)&&h&&!/claude|anthropic|claudeusercontent/i.test(h))return location.origin+location.pathname;}catch(e){}return artifactUrl||"";},
+  withCode(base,code){return base?base.replace(/#.*$/,"")+(code?"#"+code:""):"";}
+};
+
+/* ---------- QR code (needs <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js">) ---------- */
+Kit.qr=function(cv,text,px){
+  if(typeof window.qrcode!=="function"||!text||!cv)return false;
+  try{const q=window.qrcode(0,"M");q.addData(text);q.make();
+    const n=q.getModuleCount(),size=n+8,scale=Math.max(2,Math.floor(px/size));
+    cv.width=cv.height=size*scale;const g=cv.getContext("2d");
+    g.fillStyle="#fff";g.fillRect(0,0,cv.width,cv.height);g.fillStyle="#000";
+    for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))g.fillRect((c+4)*scale,(r+4)*scale,scale,scale);
+    return true;}catch(e){return false;}
+};
+
+/* ---------- sound ----------
+   Kit.sound.play("boing"). Add your own with Kit.sound.add("name", ()=>{tone(...)}).
+   Built in: click key bump ok nope boing bawk achoo wipe splash quack snore boo meow purr done win */
+const sound={on:true,_ac:null};
+sound.ac=function(){if(!sound._ac){try{sound._ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){sound._ac=null;}}const a=sound._ac;if(a&&a.state==="suspended")a.resume().catch(()=>{});return a;};
+sound.tone=function(f,dur,type,vol,f2,delay){
+  const a=sound.on&&sound.ac();if(!a)return;
+  try{const t=a.currentTime+(delay||0),o=a.createOscillator(),g=a.createGain();
+  o.type=type||"square";o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+  g.gain.setValueAtTime(vol||0.05,t);g.gain.exponentialRampToValueAtTime(0.0008,t+dur);
+  o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+0.02);}catch(e){}
+};
+sound.noise=function(dur,vol,delay){const a=sound.on&&sound.ac();if(!a)return;try{const len=Math.floor(a.sampleRate*dur),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);
+  const src=a.createBufferSource(),g=a.createGain();src.buffer=buf;g.gain.value=vol;src.connect(g);g.connect(a.destination);src.start(a.currentTime+(delay||0));}catch(e){}};
+const tone=sound.tone,noise=sound.noise;
+const SFX={
+  click:()=>tone(900,0.04,"triangle",0.04,700),
+  key:()=>tone(660,0.05,"square",0.03,520),
+  bump:()=>tone(110,0.12,"sawtooth",0.04,80),
+  ok:()=>{tone(523,0.12,"triangle",0.05);tone(784,0.2,"triangle",0.05,null,0.1);},
+  nope:()=>{tone(330,0.15,"square",0.04,300);tone(220,0.25,"square",0.04,200,0.15);},
+  boing:()=>{tone(140,0.45,"sine",0.12,700);tone(700,0.4,"sine",0.08,180,0.3);},
+  bawk:()=>[0,0.22,0.44].forEach(d=>tone(760,0.16,"sawtooth",0.04,520,d)),
+  achoo:()=>{tone(500,0.3,"triangle",0.05,700);noise(0.4,0.12,0.35);},
+  wipe:()=>noise(0.12,0.05),
+  splash:()=>{noise(0.6,0.12);tone(900,0.3,"sine",0.03,300,0.05);},
+  quack:()=>[0,0.35,0.7,1.05].forEach(d=>tone(330,0.14,"square",0.05,240,d)),
+  snore:()=>{tone(70,0.9,"sawtooth",0.06,95);tone(95,0.9,"sawtooth",0.05,70,1.1);},
+  boo:()=>{tone(180,0.7,"sine",0.07,90);tone(240,0.7,"triangle",0.04,120,0.05);},
+  meow:()=>tone(650,0.45,"triangle",0.06,900),
+  purr:()=>tone(60,0.35,"sawtooth",0.04,55),
+  done:()=>[523,659,784].forEach((f,i)=>tone(f,0.18,"triangle",0.05,null,i*0.09)),
+  win:()=>{[523,659,784,1046].forEach((f,i)=>tone(f,0.22,"square",0.04,null,i*0.11));tone(1318,0.5,"triangle",0.05,null,0.46);}
+};
+sound.play=n=>{if(SFX[n])SFX[n]();};
+sound.add=(n,fn)=>{SFX[n]=fn;};
+Kit.sound=sound;
+
+/* ---------- computer voice ---------- */
+const speech={can:(()=>{try{return "speechSynthesis" in window&&typeof SpeechSynthesisUtterance==="function";}catch(e){return false;}})(),voice:null,_t:[]};
+speech.pick=function(){try{const vs=speechSynthesis.getVoices();speech.voice=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/google|samantha|natural/i.test(v.name))||vs.find(v=>/^en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}catch(e){}};
+if(speech.can){speech.pick();try{speechSynthesis.onvoiceschanged=speech.pick;}catch(e){}}
+speech.say=function(t,rate){if(!speech.can||!sound.on)return false;try{const u=new SpeechSynthesisUtterance(t);u.lang="en-US";if(speech.voice)u.voice=speech.voice;u.rate=rate||0.85;speechSynthesis.speak(u);return true;}catch(e){return false;}};
+/* say each item with a pause between (for "Slowly") */
+speech.sayEach=function(list,gap,rate){speech.hush();list.forEach((w,i)=>speech._t.push(setTimeout(()=>speech.say(w,rate||0.75),i*(gap||1300))));return speech.can&&sound.on;};
+speech.hush=function(){speech._t.forEach(clearTimeout);speech._t=[];try{speech.can&&speechSynthesis.cancel();}catch(e){}};
+Kit.speech=speech;
+
+/* ---------- switches ----------
+   Kit.toggle(button, store, "jp", true, on=>{...}) keeps aria-pressed and the saved value in step.
+   Kit.setupToggles(store, {jp:"#jpToggle", snd:"#sndToggle"}) wires the two standard ones. */
+Kit.toggle=function(btn,st,key,def,onChange){
+  if(typeof btn==="string")btn=$(btn);let v=st.get(key,def);
+  const apply=()=>{if(btn)btn.setAttribute("aria-pressed",String(v));onChange&&onChange(v);};
+  if(btn)btn.addEventListener("click",()=>{v=!v;st.set(key,v);sound.play("click");apply();});
+  apply();return {get value(){return v;},set(x){v=!!x;st.set(key,v);apply();}};
+};
+Kit.setupToggles=function(st,sel){
+  const out={};
+  out.jp=Kit.toggle(sel.jp||"#jpToggle",st,"jp",sel.jpDefault??true,on=>document.body.classList.toggle("jp",on));
+  out.snd=Kit.toggle(sel.snd||"#sndToggle",st,"snd",true,on=>{sound.on=on;if(!on)speech.hush();});
+  return out;
+};
+
+/* ---------- pick-one buttons: Kit.seg(el, [{html, ...}], (o,i)=>isOn, (o,i)=>onPick) ---------- */
+Kit.seg=function(el,opts,isOn,onPick){
+  if(typeof el==="string")el=$(el);
+  el.innerHTML=opts.map((o,i)=>`<button type="button" data-i="${i}" aria-pressed="${!!isOn(o,i)}">${o.html}</button>`).join("");
+  $$("button",el).forEach(b=>b.onclick=()=>{sound.ac();sound.play("click");onPick(opts[+b.dataset.i],+b.dataset.i);});
+};
+
+/* ---------- screens: <section class="screen" id="home">. Kit.screens({onShow(id,prev)}) ---------- */
+Kit.screens=function(o){
+  const api={current:null,show(id){const prev=api.current;$$(".screen").forEach(el=>el.hidden=el.id!==id);api.current=id;
+    speech.hush();o&&o.onShow&&o.onShow(id,prev);window.scrollTo(0,0);}};
+  return api;
+};
+
+/* ---------- toast ---------- */
+let toastT=0;
+Kit.toast=function(html,ms){let el=$("#kitToast");if(!el){el=document.createElement("div");el.id="kitToast";el.className="kit-toast";el.setAttribute("role","status");document.body.appendChild(el);}
+  el.innerHTML=html;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,ms||2600);};
+
+/* ---------- time + mistakes ----------
+   Kit.score({elapsed, oops, par}) : 1000 points, minus 100 per oops, minus 4 per second over par. Never below 100.
+   Stars: 850+ = 3, 600+ = 2, otherwise 1. Every finished game gets at least one star. */
+Kit.fmtTime=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");
+Kit.timer=function(onTick){
+  let t0=0,iv=0,el=0,run=false;
+  const api={start(){t0=performance.now();el=0;run=true;clearInterval(iv);iv=setInterval(()=>{el=(performance.now()-t0)/1000;onTick&&onTick(el,Kit.fmtTime(el));},250);onTick&&onTick(0,"0:00");},
+    stop(){if(run)el=(performance.now()-t0)/1000;run=false;clearInterval(iv);iv=0;return el;},
+    get elapsed(){return run?(performance.now()-t0)/1000:el;},get running(){return run;}};
+  return api;
+};
+Kit.score=function(o){
+  const over=Math.max(0,(o.elapsed||0)-(o.par||60));
+  const score=Math.max(100,Math.round((1000-(o.oops||0)*(o.perOops??100)-over*(o.perSec??4))/10)*10);
+  return {score,stars:score>=850?3:score>=600?2:1};
+};
+Kit.STAR=on=>`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4l5.9 12.6 13.7 1.6-10.1 9.4 2.7 13.6L24 34.4l-12.2 6.8 2.7-13.6L4.4 18.2l13.7-1.6z" fill="${on?"#ffd23f":"none"}" stroke="${on?"#9a6f00":"#5b5f70"}" stroke-width="3" stroke-linejoin="round"/></svg>`;
+
+/* ---------- funny traps ----------
+   const T=Kit.traps({layer:"#trapLayer", target:"#chest", area:"#keys"});
+   T.next(done)   plays a random trap (no repeats until all used), then calls done()
+   T.run("cat",done) plays one by name.  T.clear() stops everything (call it when leaving the screen).
+   layer = an empty .kit-trap-layer placed inside a position:relative stage.
+   target = the thing being worked on (traps aim at it); area = the buttons (traps cover them for 2-3 seconds).
+   All movement and sound, nothing flashes. Names: glove chicken soot water duck bear cat (+ any you add with T.add). */
+Kit.traps=function(o){
+  const layer=typeof o.layer==="string"?$(o.layer):o.layer;
+  const R=o.rng||Kit.RND,ri=n=>Kit.ri(R,n);let timers=[];
+  const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
+  const clear=()=>{timers.forEach(clearTimeout);timers=[];layer.innerHTML="";layer.classList.remove("block");};
+  const el=(cls,html,css)=>{const d=document.createElement("div");d.className="kt "+cls;d.innerHTML=html;Object.assign(d.style,css||{});layer.appendChild(d);return d;};
+  const word=(w,left,top)=>el("kt-wordwrap",`<div class="kt-word">${w[0]}<span class="ja">${w[1]||""}</span></div>`,{left,top});
+  const box=sel=>{const s=layer.getBoundingClientRect(),e=(typeof sel==="string"?$(sel):sel);if(!e)return {x:s.width/4,y:s.height/4,w:s.width/2,h:s.height/2};const b=e.getBoundingClientRect();return {x:b.left-s.left,y:b.top-s.top,w:b.width,h:b.height};};
+  const tc=()=>{const b=box(o.target);return {x:b.x+b.w/2,y:b.y+b.h/2};},ar=()=>box(o.area);
+  const play=sound.play;
+  const T={
+    glove(done){const c=tc();layer.classList.add("block");play("boing");el("kt-glove","\u{1F94A}",{left:c.x+"px",top:c.y+"px"});word(["BOING!","ボヨーン！"],"50%","8%");later(()=>{clear();done();},2100);},
+    chicken(done){layer.classList.add("block");play("bawk");const k=ar();el("kt-chicken","\u{1F414}",{left:(k.x+k.w/2-60)+"px"});word(["BAWK!","コケーッ！"],"50%","8%");later(()=>{clear();done();},2500);},
+    soot(done){
+      play("achoo");const c=tc();word(["ACHOO!","ハックション！"],c.x+"px","6%");layer.classList.add("block");let fin=false;
+      const finish=()=>{if(fin)return;fin=true;clear();done();};
+      later(()=>{const k=ar();let left=0;
+        for(let i=0;i<6;i++){const d=el("kt-soot","",{left:(k.x+(i%3)*k.w/3+ri(30))+"px",top:(k.y+Math.floor(i/3)*k.h/2+ri(20))+"px"});left++;
+          d.onclick=()=>{if(d.classList.contains("gone"))return;d.classList.add("gone");play("wipe");left--;if(!left)finish();};}
+        el("kt-hint",bi(["Click the soot to wipe it off!","すすをクリックしてふき取ろう！"]),{});
+        later(finish,10000);},700);
+    },
+    water(done){layer.classList.add("block");play("splash");const k=ar();
+      for(let i=0;i<16;i++){const d=el("kt-drop","\u{1F4A7}",{left:(10+ri(60))+"px",top:(10+ri(60))+"px",animationDelay:(i*0.05)+"s"});d.style.setProperty("--dx",(k.x+ri(Math.max(40,k.w)))+"px");d.style.setProperty("--dy",(k.y+ri(Math.max(40,k.h)))+"px");}
+      word(["SPLASH!","バシャッ！"],"50%","8%");later(()=>{clear();done();},2200);},
+    duck(done){layer.classList.add("block");play("quack");el("kt-duck","\u{1F986}",{});word(["QUACK! QUACK!","ガーガー！"],"50%","8%");later(()=>{clear();done();},3000);},
+    bear(done){layer.classList.add("block");play("snore");el("kt-bear","\u{1F43B}",{});
+      for(let i=0;i<3;i++)el("kt-zz","Z",{left:"55%",top:"40%",animationDelay:(i*0.6)+"s"});
+      word(["ZZZ... SNORE!","グーグー…"],"50%","8%");later(()=>{clear();done();},2800);},
+    cat(done){
+      play("meow");const k=ar();layer.classList.add("block");let pets=0,fin=false;
+      const cat=el("kt-cat","\u{1F431}",{left:(k.x+k.w/2-65)+"px",top:(k.y+k.h/2-75)+"px"});
+      const hint=el("kt-hint",bi(["Pet the cat 3 times to move it!","ネコを3回なでて、どいてもらおう！"]),{});
+      const bye=()=>{if(fin)return;fin=true;play("meow");cat.classList.add("bye");hint.remove();later(()=>{clear();done();},650);};
+      cat.onclick=()=>{if(fin)return;pets++;play("purr");el("kt-heart","\u{1F497}",{left:(k.x+k.w/2+ri(40)-20)+"px",top:(k.y+k.h/2-80)+"px"});if(pets>=3)bye();};
+      later(bye,12000);
+    }
+  };
+  let names=o.names||Object.keys(T),bag=Kit.bag(names,R);
+  return {
+    run(n,done){clear();(T[n]||T.glove)(done||(()=>{}));},
+    next(done){this.run(bag(),done);},
+    add(n,fn){T[n]=(done)=>fn(done,{el,word,later,clear,tc,ar,layer,rng:R});names=names.concat(n);bag=Kit.bag(names,R);},
+    use(list){names=list;bag=Kit.bag(names,R);},
+    clear,word,el,later,get names(){return Object.keys(T);}
+  };
+};
+
+/* ---------- class code helpers ---------- */
+/* every element with class "kitCode" shows the current code */
+Kit.badges=function(code,fmt){$$(".kitCode").forEach(e=>e.textContent=fmt?fmt(code):code);};
+/* Kit.codeEntry(mount, {codec, onCode(decoded), label}) -> a "Type code / Use code" form */
+Kit.codeEntry=function(mount,o){
+  if(typeof mount==="string")mount=$(mount);
+  const f=document.createElement("form");f.className="kit-entry";f.autocomplete="off";
+  f.innerHTML=`<input maxlength="${o.codec.length+2}" placeholder="${o.placeholder||"Type code"}" aria-label="Type a code" spellcheck="false"><button class="btn small" type="submit">${bi(["Use code","このコードを使う"])}</button><p class="kit-err" aria-live="polite"></p>`;
+  const inp=$("input",f),err=$(".kit-err",f);
+  f.onsubmit=e=>{e.preventDefault();const d=o.codec.decode(inp.value);
+    if(!d){err.innerHTML=bi(["That code doesn't work. Check it with your partner or teacher.","そのコードは使えません。パートナーか先生に確認しよう。"]);sound.play("nope");return;}
+    err.innerHTML="";inp.value="";sound.play("ok");o.onCode(d);};
+  mount.appendChild(f);return f;
+};
+
+/* ---------- teacher page ----------
+   Kit.teacher({mount, title, steps:[[en,ja],...], note, artifactUrl, store,
+                getCode()->code, getName()->[en,ja], fmt,
+                pairs: {make(seed)->code, label:[en,ja], max, view(code)->{html} } })
+   Builds: steps + a settings slot on the left; big code, QR, link, copy, projector view on the right.
+   Returns {slot, refresh()}. Move your settings panel into .slot when the teacher screen opens.
+   With pairs, it also makes a numbered list of pair codes to read out or copy. */
+Kit.teacher=function(o){
+  const mount=typeof o.mount==="string"?$(o.mount):o.mount,st=o.store||Kit.store("kit");
+  const fmt=o.fmt||(c=>c);
+  mount.innerHTML=`<div class="kit-teacher">
+   <div class="kit-tcol">
+    <div class="panel"><h2 class="kit-th">${bi(o.title||["Teacher page","先生用ページ"],true)}</h2>
+     <ol class="kit-steps">${(o.steps||[]).map(s=>`<li>${bi(s)}</li>`).join("")}</ol>
+     ${o.note?`<p class="note" style="margin-top:8px">${o.note}</p>`:""}</div>
+    <div class="panel kit-slot"></div>
+    ${o.pairs?`<div class="panel kit-pairs"><h3>${bi(o.pairs.label||["Codes for each pair","ペアごとのコード"],true)}</h3>
+      <div class="kit-pairrow"><label>${bi(["Pairs","ペアの数"],true)} <input type="number" min="1" max="${o.pairs.max||40}" value="${st.get("pairs",16)}" class="kit-npairs"></label>
+      <button class="btn primary small kit-make" type="button">${bi(["Make codes","コードを作る"])}</button>
+      <button class="btn small kit-copycodes" type="button" hidden>${bi(["Copy list","リストをコピー"])}</button></div>
+      <div class="kit-codelist"></div><textarea class="kit-copyarea" hidden rows="6"></textarea></div>`:""}
+   </div>
+   <div class="panel kit-share">
+    <small class="note">${bi(o.pairs?["Game link","ゲームのリンク"]:["Class code","クラスコード"])}</small>
+    ${o.pairs?"":`<div class="kit-bigcode kitCode">----</div><div class="kit-cname"></div>`}
+    <div class="kit-qr"><canvas width="220" height="220"></canvas></div><p class="kit-err kit-qrerr"></p>
+    <input class="kit-link" type="text" aria-label="Game link">
+    <div class="rowbtns"><button class="btn small kit-copy" type="button">${bi(["Copy link","リンクをコピー"])}</button>
+      <button class="btn small kit-reset" type="button">${bi(["Reset link","リセット"])}</button></div>
+    <button class="btn primary kit-proj" type="button">${bi(["Show on the projector","大きく表示"])}</button>
+   </div></div>`;
+  let veil=$("#kitVeil");
+  if(!veil){veil=document.createElement("div");veil.id="kitVeil";veil.className="kit-veil";veil.hidden=true;veil.setAttribute("role","dialog");veil.setAttribute("aria-label","Class code");
+    veil.innerHTML=`<div class="kit-veil-card"><h2 class="kit-vtitle"></h2><div class="kit-bigcode kitCode kit-vcode">----</div><div class="kit-cname"></div><div class="kit-qr"><canvas width="300" height="300" style="width:300px;height:300px"></canvas></div><p class="note kit-vurl"></p><button class="btn kit-close" type="button">${bi(["Close","閉じる"])}</button></div>`;
+    document.body.appendChild(veil);
+    $(".kit-close",veil).onclick=()=>veil.hidden=true;
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")veil.hidden=true;});}
+  const auto=()=>Kit.link.base(o.artifactUrl);
+  let LINK=st.get("link","")||auto();
+  const full=()=>o.pairs?LINK:Kit.link.withCode(LINK,o.getCode());
+  const api={slot:$(".kit-slot",mount),codes:[],
+    refresh(){
+      if(!o.pairs){const code=o.getCode(),nm=o.getName?o.getName():null;Kit.badges(fmt(code));$$(".kit-cname").forEach(e=>e.innerHTML=nm?bi(nm):"");}
+      $(".kit-link",mount).value=full();
+      const ok=Kit.qr($(".kit-qr canvas",mount),full(),440);$(".kit-qr",mount).hidden=!ok;
+      $(".kit-qrerr",mount).innerHTML=ok?"":(LINK?bi(["The QR code tool couldn't load. Check the internet connection, then reopen this page.","QRコードを作れませんでした。インターネット接続を確認してください。"]):bi(["Paste the game's link below to make a QR code.","QRコードを作るには、下にゲームのリンクを貼り付けてください。"]));
+      if(!veil.hidden)drawBig();
+    }};
+  function drawBig(){$(".kit-vtitle",veil).innerHTML=bi(o.pairs?["Open the game","ゲームを開こう"]:["Class code","クラスコード"],true);$(".kit-vcode",veil).hidden=!!o.pairs;$(".kit-vurl",veil).textContent=full();Kit.qr($(".kit-qr canvas",veil),full(),600);}
+  $(".kit-link",mount).addEventListener("change",e=>{LINK=e.target.value.trim().replace(/#.*$/,"")||auto();st.set("link",LINK===auto()?"":LINK);api.refresh();});
+  $(".kit-reset",mount).onclick=()=>{LINK=auto();st.set("link","");api.refresh();};
+  $(".kit-copy",mount).onclick=()=>copyText(full(),$(".kit-link",mount));
+  $(".kit-proj",mount).onclick=()=>{veil.hidden=false;drawBig();$(".kit-close",veil).focus();};
+  if(o.pairs){
+    const list=$(".kit-codelist",mount),cp=$(".kit-copycodes",mount),area=$(".kit-copyarea",mount);
+    $(".kit-make",mount).onclick=()=>{const n=Math.max(1,Math.min(o.pairs.max||40,+$(".kit-npairs",mount).value||1));st.set("pairs",n);
+      api.codes=Kit.randomSeeds(n,o.pairs.seeds||262144).map(s=>o.pairs.make(s));
+      list.innerHTML=`<div class="kit-codes">${api.codes.map((c,i)=>`<div class="kit-codecard"><small>${bi(["Pair "+(i+1),"ペア "+(i+1)],true)}</small><b>${fmt(c)}</b>${o.pairs.view?o.pairs.view(c):""}</div>`).join("")}</div>`;
+      cp.hidden=false;area.hidden=true;sound.play("ok");};
+    cp.onclick=()=>copyText(api.codes.map((c,i)=>`Pair ${i+1}: ${fmt(c)}`).join("\n"),area);
+  }
+  function copyText(t,fallbackEl){const fb=()=>{if(fallbackEl){fallbackEl.hidden=false;if(fallbackEl.tagName==="TEXTAREA")fallbackEl.value=t;fallbackEl.focus();fallbackEl.select();}Kit.toast(bi(["Press Ctrl+C to copy","Ctrl+C でコピー"]));};
+    try{navigator.clipboard.writeText(t).then(()=>Kit.toast(bi(["Copied!","コピーしました"])),fb);}catch(e){fb();}}
+  return api;
+};
+
+/* ---------- end screen ----------
+   Kit.result(mount, {title:[en,ja], art:html, elapsed, oops, score, stars, swap, nums, labels, buttons})
+     stars   1-3, or leave out for no stars (e.g. a team game)
+     swap    true shows the "Swap roles!" card (pair games, not solo)
+     nums    replace the Time / Oops / Score boxes: [{label:[en,ja], value}]  ([] for none)
+     buttons [{label:[en,ja], primary, onClick, hidden}] */
+Kit.result=function(mount,o){
+  if(typeof mount==="string")mount=$(mount);
+  const lab=Object.assign({time:["Time","タイム"],oops:["Oops","ミス"],score:["Score","スコア"]},o.labels||{});
+  const msg=o.title||(o.stars===3?["Amazing!","すごい！"]:o.stars===2?["Great job!","よくできました！"]:["You did it!","クリア！"]);
+  const nums=o.nums||[{label:lab.time,value:Kit.fmtTime(o.elapsed||0)},{label:lab.oops,value:o.oops||0},{label:lab.score,value:o.score}];
+  mount.innerHTML=`<div class="kit-result">${o.art||""}
+    <h1 class="kit-rtitle">${msg[0]}</h1><p class="ja">${msg[1]||""}</p>
+    ${o.stars?`<div class="kit-stars">${[1,2,3].map(i=>Kit.STAR(o.stars>=i)).join("")}</div>`:""}
+    ${nums.length?`<div class="kit-nums">${nums.map(n=>`<div><small>${bi(n.label)}</small><b>${n.value}</b></div>`).join("")}</div>`:""}
+    ${o.swap?`<div class="kit-swap"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18h28l-7-7M40 30H12l7 7" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><div>${bi(["Swap roles!","役割を交代しよう！"])}</div></div>`:""}
+    <div class="rowbtns"></div></div>`;
+  const row=$(".rowbtns",mount);
+  (o.buttons||[]).forEach(b=>{if(b.hidden)return;const btn=document.createElement("button");btn.type="button";btn.className="btn big"+(b.primary?" primary":"");btn.innerHTML=bi(b.label);btn.onclick=b.onClick;row.appendChild(btn);});
+};
+
+/* ---------- solo practice partner ----------
+   const P=Kit.soloPartner({mount, speak(slow)}); P.tell(["Listen!","聞こう！"]); P.show(true/false)
+   speak(slow) should call Kit.speech.say / sayEach. If the Chromebook has no voice, call P.tell with the words to read. */
+Kit.soloPartner=function(o){
+  const m=typeof o.mount==="string"?$(o.mount):o.mount;m.classList.add("kit-partner");
+  m.innerHTML=`<span class="kit-robot" aria-hidden="true">\u{1F916}</span><div class="kit-bub"></div><button class="btn small" type="button" data-s="0">${bi(["Say it again","もう一度"])}</button><button class="btn small" type="button" data-s="1">${bi(["Slowly","ゆっくり"])}</button>`;
+  $$("button",m).forEach(b=>b.onclick=()=>{sound.ac();o.speak(b.dataset.s==="1");});
+  return {tell(p){$(".kit-bub",m).innerHTML=bi(p);},show(on){m.hidden=!on;}};
+};
+
+/* ---------- textbook word bank ----------
+   Data: the JSON script tag with id kit-wordbank (copied from textbook-db/all-books.json by update-kit.py).
+   Book order is the order in all-books.json. Codes store the book's position, so only ADD books at the end.
+     Kit.words.books()                     [{i, name, grade, gradeLabel:[en,ja], units:[...]}]
+     Kit.words.pick({book, from, to}, {needEmoji, minWords})  -> {words:[{en,ja,emoji}], phrases:[], units:[...]}
+     Kit.words.label(sel)                  ["Let's Try! 2 · Unit 4", "小4 Let's Try! 2 Unit 4"]
+     Kit.words.fields                      codec fields: book (8), from (16), to (16)
+     Kit.words.picker(mount, sel, onChange, {needEmoji})  grade + book + unit range controls */
+const GRADE=g=>{const m=/^(ES|JHS)(\d)$/.exec(g||"");if(!m)return [g||"",g||""];return m[1]==="ES"?["Grade "+m[2],"小"+m[2]]:["JHS "+m[2],"中"+m[2]];};
+const words={_d:null};
+words.load=function(){if(words._d)return words._d;let d={books:[]};try{const el=document.getElementById("kit-wordbank");if(el)d=JSON.parse(el.textContent);}catch(e){}
+  words._d=(d.books||[]).map((b,i)=>({i,name:b.book,grade:b.grade,gradeLabel:GRADE(b.grade),units:(b.units||[]).map(u=>Object.assign({},u,{words:(u.words||[]).filter(w=>w&&w.en)}))}));return words._d;};
+words.books=()=>words.load();
+words.book=i=>words.load()[i]||null;
+words.fields=[{k:"book",n:8,def:0},{k:"from",n:16,def:0},{k:"to",n:16,def:0}];
+words.clamp=function(sel){const bs=words.load();const b=bs[sel.book]?sel.book:0,n=bs[b]?bs[b].units.length:1;let f=Math.min(sel.from||0,n-1),t=Math.min(sel.to??f,n-1);if(t<f)t=f;return {book:b,from:f,to:t};};
+words.pick=function(sel,opt){opt=opt||{};const s=words.clamp(sel),b=words.book(s.book);if(!b)return {words:[],phrases:[],units:[]};
+  const units=b.units.slice(s.from,s.to+1),seen=new Set(),out=[];let phrases=[];
+  units.forEach(u=>{phrases=phrases.concat(u.phrases||[]);u.words.forEach(w=>{const k=w.en.toLowerCase();if(seen.has(k))return;if(opt.needEmoji&&!w.emoji)return;seen.add(k);out.push(w);});});
+  return {words:out,phrases,units,book:b};};
+words.label=function(sel){const s=words.clamp(sel),b=words.book(s.book);if(!b)return ["No word bank","単語データなし"];
+  const u=b.units,us=s.from===s.to?"Unit "+u[s.from].unit:"Units "+u[s.from].unit+"–"+u[s.to].unit;
+  return [b.name+" · "+us,b.gradeLabel[1]+" "+b.name+" "+us.replace("Units","Unit")];};
+words.picker=function(mount,sel,onChange,opt){
+  if(typeof mount==="string")mount=$(mount);opt=opt||{};const bs=words.load();
+  const cur=()=>words.clamp(sel);
+  function render(){
+    const s=cur(),b=bs[s.book];
+    mount.innerHTML=`<div class="set-row"><h3>${bi(["Book","教科書"])}</h3><div class="seg kw-book"></div></div>
+     <div class="set-row"><h3>${bi(["Unit","ユニット"])}</h3><div class="seg kw-unit"></div></div>
+     <p class="note kw-info"></p>`;
+    Kit.seg($(".kw-book",mount),bs.map(x=>({html:`${x.gradeLabel[0]}<small>${Kit.esc(x.name)}</small><span class="ja">${x.gradeLabel[1]}</span>`})),(o,i)=>i===s.book,(o,i)=>{sel.book=i;sel.from=0;sel.to=0;done();});
+    let anchor=null;
+    Kit.seg($(".kw-unit",mount),b.units.map((u,i)=>({html:`${u.unit}<small>${Kit.esc(u.title||"")}</small>`})),(o,i)=>i>=s.from&&i<=s.to,(o,i)=>{
+      /* click = one unit; shift-click (or click next to the current range) = a range */
+      if(window.event&&window.event.shiftKey){sel.from=Math.min(s.from,i);sel.to=Math.max(s.to,i);}else{sel.from=i;sel.to=i;}done();});
+    $$(".kw-unit button",mount).forEach((btn,i)=>{const u=b.units[i];btn.title=(u.topic||"")+(u.verified?"":" (not checked yet)");});
+    const p=words.pick(s,opt),n=p.words.length;
+    $(".kw-info",mount).innerHTML=`${n} words${opt.needEmoji?" with pictures":""}. Shift-click a second unit to mix several units.<span class="ja">${n}語${opt.needEmoji?"（絵あり）":""}。Shiftを押しながらクリックすると、複数のユニットを選べます。</span>`
+      +(opt.minWords&&n<opt.minWords?`<span class="kit-err" style="display:block">${bi(["Not enough words here. Add another unit.","単語が足りません。ユニットを追加してください。"])}</span>`:"");
+  }
+  function done(){Object.assign(sel,cur());render();onChange&&onChange(sel);}
+  render();return {render};
+};
+Kit.words=words;
+
+/* =====================================================================
+   PARTS FOR OTHER GAME STYLES
+   whole-class projector games, team games, quizzes, bingo, solo drills
+   ===================================================================== */
+
+/* ---------- keyboard shortcuts (projector games: Space = next, 1-4 = answer) ----------
+   const off=Kit.keys({" ":next, "ArrowRight":next, "1":()=>pick(0)}, ()=>scr.current==="quiz")
+   Ignored while typing in a box. The second argument decides when the keys are live. */
+Kit.keys=function(map,when){
+  const h=e=>{if(e.ctrlKey||e.metaKey||e.altKey)return;const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.isContentEditable))return;
+    if(when&&!when())return;const fn=map[e.key]||map[e.key.toLowerCase()];if(fn){e.preventDefault();fn(e);}};
+  document.addEventListener("keydown",h);return ()=>document.removeEventListener("keydown",h);
+};
+
+/* ---------- fullscreen for the projector: Kit.fullscreen(button) ---------- */
+Kit.fullscreen=function(btn){
+  if(typeof btn==="string")btn=$(btn);if(!btn)return;
+  const ok=!!(document.documentElement.requestFullscreen);if(!ok){btn.hidden=true;return;}
+  btn.onclick=()=>{try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>Kit.toast(bi(["Fullscreen isn't allowed here","ここでは全画面にできません"])));}catch(e){}};
+};
+
+/* ---------- countdown ring ----------
+   const C=Kit.countdown({mount, seconds:20, onEnd(){...}}); C.start(); C.pause(); C.reset(30); C.add(10)
+   Ticks quietly in the last 5 seconds. Time's up is a sound and a word, never a flash. seconds:0 hides it. */
+Kit.countdown=function(o){
+  const m=typeof o.mount==="string"?$(o.mount):o.mount;m.classList.add("kit-count");
+  m.innerHTML=`<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" class="kc-bg"/><circle cx="50" cy="50" r="44" class="kc-fg" pathLength="100"/></svg><b></b>`;
+  let total=o.seconds||0,left=total,iv=0,last=-1;
+  const fg=$(".kc-fg",m),num=$("b",m);
+  const draw=()=>{const s=Math.ceil(left);num.textContent=s;fg.style.strokeDashoffset=String(total?100-100*left/total:0);m.classList.toggle("low",s<=5&&left>0);m.hidden=!total;};
+  const api={
+    start(){if(!total)return;clearInterval(iv);let t0=performance.now(),l0=left;iv=setInterval(()=>{left=Math.max(0,l0-(performance.now()-t0)/1000);const s=Math.ceil(left);
+      if(s!==last&&s<=5&&s>0)sound.tone(880,0.06,"triangle",0.04);last=s;draw();if(left<=0){clearInterval(iv);iv=0;sound.play("nope");o.onEnd&&o.onEnd();}},100);},
+    pause(){clearInterval(iv);iv=0;},
+    reset(sec){api.pause();if(sec!=null)total=sec;left=total;last=-1;draw();},
+    add(sec){left=Math.min(left+sec,total=Math.max(total,left+sec));draw();},
+    get left(){return left;},get running(){return !!iv;}
+  };
+  draw();return api;
+};
+
+/* ---------- team scoreboard ----------
+   const TB=Kit.teams({mount, n:4, onChange(scores)}); TB.add(2, 1); TB.reset(); TB.scores; TB.leaders()
+   Big + and - buttons for each team, readable from the back of the room. Teams are animals, so no team is "last". */
+Kit.TEAMS=[{em:"\u{1F431}",name:["Cats","ネコ"],c:"#ff9f6b"},{em:"\u{1F436}",name:["Dogs","イヌ"],c:"#6bb8ff"},{em:"\u{1F43C}",name:["Pandas","パンダ"],c:"#c9c4d6"},
+  {em:"\u{1F438}",name:["Frogs","カエル"],c:"#7fd18b"},{em:"\u{1F427}",name:["Penguins","ペンギン"],c:"#9aa7ff"},{em:"\u{1F98A}",name:["Foxes","キツネ"],c:"#ffc35a"}];
+Kit.teams=function(o){
+  const m=typeof o.mount==="string"?$(o.mount):o.mount;m.classList.add("kit-teams");
+  let n=o.n||2,scores=Array(n).fill(0);
+  const api={
+    get scores(){return scores.slice();},get n(){return n;},
+    set(k){n=k;scores=Array(n).fill(0);render();},
+    add(i,pts){if(i<0||i>=n)return;scores[i]=Math.max(0,scores[i]+(pts??1));sound.play(pts<0?"click":"ok");render(i);o.onChange&&o.onChange(api.scores);},
+    reset(){scores=Array(n).fill(0);render();},
+    leaders(){const top=Math.max(...scores);return scores.map((s,i)=>s===top?i:-1).filter(i=>i>=0);},
+    team:i=>Kit.TEAMS[i]
+  };
+  function render(bump){
+    m.innerHTML=scores.map((s,i)=>{const T=Kit.TEAMS[i];return `<div class="kit-team${i===bump?" bump":""}" style="--tc:${T.c}"><span class="kt-em">${T.em}</span><span class="kt-nm">${bi(T.name)}</span><b>${s}</b>
+      <div class="kt-btns"><button type="button" class="btn small" data-t="${i}" data-p="-1" aria-label="Minus one for ${T.name[0]}">−</button><button type="button" class="btn small primary" data-t="${i}" data-p="1" aria-label="Plus one for ${T.name[0]}">+1</button></div></div>`;}).join("");
+    $$("button",m).forEach(b=>b.onclick=()=>api.add(+b.dataset.t,+b.dataset.p));
+  }
+  render();return api;
+};
+
+/* ---------- quiz questions from the word bank ----------
+   Kit.quiz.make(words, {type, choices:4, rng}) -> {type, item, prompt:{html, say}, choices:[...], answer}
+   Kit.quiz.types(words) -> which TYPES work for these words (picture types need emoji)
+   Kit.quiz.render(mount, q, {onAnswer(ok, choice, i), reveal:false, letters:true})
+     shows the prompt and A-D buttons. With reveal:false it only records the pick (projector games reveal later via .reveal()).
+   Kit.quiz.deck(words, n, rng) -> n items with no repeats until all are used */
+const QT={
+  picture:{name:["Picture → word","絵 → 英語"],needs:w=>!!w.emoji,prompt:w=>({html:`<span class="kq-em">${w.emoji}</span>`,say:""}),choice:w=>Kit.esc(w.en)},
+  listen:{name:["Listen → picture","聞いて → 絵"],needs:w=>!!w.emoji,prompt:w=>({html:`<span class="kq-ear" aria-hidden="true">\u{1F442}</span><span class="kq-listen">${bi(["Listen!","聞いて！"])}</span>`,say:w.en}),choice:w=>`<span class="kq-cem">${w.emoji}</span>`},
+  word:{name:["Word → picture","英語 → 絵"],needs:w=>!!w.emoji,prompt:w=>({html:`<span class="kq-word">${Kit.esc(w.en)}</span>`,say:w.en}),choice:w=>`<span class="kq-cem">${w.emoji}</span>`},
+  japanese:{name:["Japanese → English","日本語 → 英語"],needs:w=>!!w.ja,prompt:w=>({html:`<span class="kq-ja">${Kit.esc(w.ja)}</span>`,say:""}),choice:w=>Kit.esc(w.en)},
+  spell:{name:["Spelling","つづり"],needs:w=>/^[a-z]{3,}$/i.test(w.en),prompt:w=>({html:w.emoji?`<span class="kq-em">${w.emoji}</span>`:`<span class="kq-ja">${Kit.esc(w.ja||"")}</span>`,say:w.en}),choice:x=>Kit.esc(x)}
+};
+function misspell(word,r){
+  const out=new Set(),vow="aeiou",w=word.toLowerCase();let tries=0;
+  while(out.size<3&&tries++<60){const i=Kit.ri(r,w.length),k=Kit.ri(r,4);let x=w;
+    if(k===0&&i<w.length-1)x=w.slice(0,i)+w[i+1]+w[i]+w.slice(i+2);
+    else if(k===1)x=w.slice(0,i)+w[i]+w.slice(i);
+    else if(k===2&&w.length>3)x=w.slice(0,i)+w.slice(i+1);
+    else if(vow.includes(w[i]))x=w.slice(0,i)+vow[(vow.indexOf(w[i])+1+Kit.ri(r,4))%5]+w.slice(i+1);
+    if(x!==w)out.add(word[0]===word[0].toUpperCase()?x[0].toUpperCase()+x.slice(1):x);}
+  return [...out];
+}
+Kit.quiz={
+  TYPES:QT,
+  types(words){return Object.keys(QT).filter(t=>words.filter(QT[t].needs).length>=(t==="spell"?1:4));},
+  deck(words,n,r){const b=Kit.bag(words,r||Kit.RND);return Array.from({length:n},()=>b());},
+  make(words,o){
+    o=o||{};const r=o.rng||Kit.RND,T=QT[o.type]||QT.picture,pool=words.filter(T.needs),n=o.choices||4;
+    const item=o.item&&T.needs(o.item)?o.item:pool[Kit.ri(r,pool.length)];
+    if(o.type==="spell"){const opts=Kit.shuffle([item.en].concat(misspell(item.en,r)).slice(0,n),r);
+      return {type:"spell",item,prompt:T.prompt(item),choices:opts.map(x=>({html:T.choice(x),key:x})),answer:opts.indexOf(item.en)};}
+    const key=w=>(o.type==="listen"||o.type==="word")?w.emoji:w.en.toLowerCase();
+    const others=Kit.shuffle(pool.filter(w=>w!==item&&key(w)!==key(item)),r),seen=new Set([key(item)]),wrong=[];
+    for(const w of others){if(wrong.length>=n-1)break;if(seen.has(key(w)))continue;seen.add(key(w));wrong.push(w);}
+    const opts=Kit.shuffle([item].concat(wrong),r);
+    return {type:o.type||"picture",item,prompt:T.prompt(item),choices:opts.map(w=>({html:T.choice(w),key:w.en})),answer:opts.indexOf(item)};
+  },
+  render(mount,q,o){
+    if(typeof mount==="string")mount=$(mount);o=o||{};let picked=-1,done=false;
+    mount.innerHTML=`<div class="kq"><div class="kq-prompt">${q.prompt.html}</div>
+      <div class="kq-choices">${q.choices.map((c,i)=>`<button type="button" class="kq-c" data-i="${i}">${o.letters===false?"":`<i>${"ABCD"[i]||i+1}</i>`}<span>${c.html}</span></button>`).join("")}</div></div>`;
+    const btns=$$(".kq-c",mount);
+    const api={
+      pick(i){if(done||i<0||i>=btns.length)return;sound.ac();picked=i;btns.forEach((b,j)=>b.classList.toggle("picked",j===i));
+        if(o.reveal!==false){const ok=i===q.answer;if(ok){done=true;btns[i].classList.add("right");}else{btns[i].classList.add("wrong","kit-shake");setTimeout(()=>btns[i].classList.remove("kit-shake"),450);}
+          o.onAnswer&&o.onAnswer(ok,q.choices[i],i);}else o.onAnswer&&o.onAnswer(null,q.choices[i],i);},
+      reveal(){done=true;btns.forEach((b,j)=>{b.classList.toggle("right",j===q.answer);b.classList.toggle("dim",j!==q.answer);});},
+      say(rate){if(q.prompt.say)speech.say(q.prompt.say,rate||0.8);},
+      get picked(){return picked;},get done(){return done;}
+    };
+    btns.forEach((b,i)=>b.onclick=()=>api.pick(i));
+    return api;
+  }
+};
+
+/* ---------- bingo ----------
+   Kit.bingo.card(words, size, rng) -> size*size items (centre is FREE when size is odd)
+   Kit.bingo.calls(words, rng) -> the calling order (same on every screen with the same rng seed)
+   Kit.bingo.lines(marked:boolean[], size) -> how many full rows, columns and diagonals
+   Seed the card with the student's number and the caller with the game number, so a card can be checked on the projector. */
+Kit.bingo={
+  card(words,size,r){const n=size*size,mid=size%2?Math.floor(n/2):-1,pick=Kit.pickN(r,words,Math.min(words.length,n-(mid>=0?1:0)));
+    const cells=[];let k=0;for(let i=0;i<n;i++)cells.push(i===mid?{free:true}:(pick[k++]||{free:true}));return cells;},
+  calls(words,r){return Kit.shuffle(words.slice(),r);},
+  lines(m,size){let c=0;const at=(r,k)=>m[r*size+k];
+    for(let r=0;r<size;r++){let a=true,b=true;for(let k=0;k<size;k++){a=a&&at(r,k);b=b&&at(k,r);}c+=a+b;}
+    let d1=true,d2=true;for(let i=0;i<size;i++){d1=d1&&at(i,i);d2=d2&&at(i,size-1-i);}return c+d1+d2;}
+};
+
+window.Kit=Kit;
+})();
+/*KIT:JS END*/
+</script>
+<script>
+/* =====================================================================
+   GAME: Picture Lock
+   Class code = word bank choice + level + rounds + card edition. Every Chromebook with the same code
+   builds the same 30 cards, and each chest picks a random card, so neighbouring pairs differ.
+   ===================================================================== */
+(function(){
+"use strict";
+const {$,$$,bi}=Kit;
+const ARTIFACT_URL="https://claude.ai/artifact/1ysuzRH3Dk7gRoJ9y9VLq7";   /* this game's claude.ai artifact link (a new game: paste its own after publishing) */
+const st=Kit.store("pl");
+const CARDS=30;
+const LEVELS=[
+  {name:["Easy","かんたん"],len:2,keys:6,pics:true},
+  {name:["Normal","ふつう"],len:3,keys:8,pics:false},
+  {name:["Hard","むずかしい"],len:4,keys:12,pics:false}];
+const codec=Kit.codec({game:"picture-lock",fields:[...Kit.words.fields,{k:"level",n:3},{k:"rounds",n:5,min:1},{k:"ed",n:4}]});
+const DEFAULT={book:1,from:3,to:3,level:0,rounds:3,ed:0};
+let S=(codec.decode(st.get("code",""))||{}).S||Object.assign({},DEFAULT);
+const fromLink=codec.fromHash();
+if(fromLink){S=fromLink.S;setTimeout(()=>Kit.toast(bi(["Class code "+fromLink.code+" loaded","クラスコード "+fromLink.code+" を読み込みました"])),300);}
+Object.assign(S,Kit.words.clamp(S));
+const code=()=>codec.encode(S);
+const pool=()=>Kit.words.pick(S).words;
+
+/* ---------- cards: the same everywhere for the same class code ---------- */
+function cardOf(n){const L=LEVELS[S.level],r=Kit.rng("picture-lock",code(),n);return Kit.pickN(r,pool(),Math.min(L.len,pool().length));}
+const picOf=w=>w.emoji?`<span class="em">${w.emoji}</span>`:`<span class="jw">${Kit.esc(w.ja||w.en)}</span>`;
+
+/* ---------- switches + screens ---------- */
+const T=Kit.setupToggles(st,{});
+const scr=Kit.screens({onShow(id){
+  if(id!=="play"){timer.stop();traps.clear();}
+  if(id==="home")$("#homeSlot").appendChild(panel);
+  if(id==="teacher"){teach.slot.appendChild(panel);teach.refresh();}
+}});
+$("#goHome").onclick=()=>scr.show("home");
+const hints=Kit.toggle("#hintToggle",st,"hints",false,()=>renderCard());
+
+
+/* ---------- settings panel (one element, moved between home and teacher page) ---------- */
+const panel=document.createElement("div");panel.className="settings";
+panel.innerHTML=`<div id="wordPick"></div>
+ <div class="set-row"><h3>${bi(["Level","レベル"])}</h3><div class="seg" id="setLevel"></div></div>
+ <div class="set-row"><h3>${bi(["Chests per game","1ゲームの宝箱"])}</h3><div class="seg" id="setRounds"></div></div>
+ <details class="custom"><summary>${bi(["More settings","その他の設定"],true)}</summary>
+  <div class="set-row"><h3>${bi(["Card edition","カードの版"])}</h3><div class="seg" id="setEd"></div></div>
+  <p class="note">A new edition makes new cards with the same words.<span class="ja">版を変えると、同じ単語で新しいカードになります。</span></p></details>
+ <div class="classcode"><div class="cc">${bi(["Class code","クラスコード"],true)}<b class="kitCode">----</b><span class="kit-cname" id="ccName"></span></div><div id="ccEntry"></div>
+  <p class="note">Partners: check that your class codes match!<span class="ja">ペアでクラスコードが同じか確認しよう！</span></p></div>
+ <p class="warn" id="tooFew" hidden></p>`;
+const picker=Kit.words.picker($("#wordPick",panel),S,changed);
+Kit.codeEntry($("#ccEntry",panel),{codec,onCode(d){Object.assign(S,d.S,Kit.words.clamp(d.S));picker.render();changed();Kit.toast(bi(["Code "+d.code+" loaded","コード "+d.code+" を読み込みました"]));}});
+function changed(){st.set("code",code());renderSettings();if(scr.current==="teacher")teach.refresh();}
+function renderSettings(){
+  Kit.seg($("#setLevel",panel),LEVELS.map(L=>({html:bi(L.name)})),(o,i)=>S.level===i,(o,i)=>{S.level=i;changed();});
+  Kit.seg($("#setRounds",panel),[1,2,3,4,5].map(n=>({html:String(n),n})),o=>S.rounds===o.n,o=>{S.rounds=o.n;changed();});
+  Kit.seg($("#setEd",panel),["A","B","C","D"].map(x=>({html:x})),(o,i)=>S.ed===i,(o,i)=>{S.ed=i;changed();});
+  Kit.badges(code());$("#ccName",panel).innerHTML=bi(name());
+  const n=pool().length,need=LEVELS[S.level].len+2;
+  $("#tooFew",panel).hidden=n>=need;$("#tooFew",panel).innerHTML=bi([`Only ${n} words. Pick more units for this level.`,`単語が${n}個だけです。ユニットを増やしてください。`]);
+}
+const name=()=>{const w=Kit.words.label(S);return [w[0]+" · "+LEVELS[S.level].name[0],w[1]+"・"+LEVELS[S.level].name[1]];};
+function okToPlay(){if(pool().length>=LEVELS[S.level].len+2)return true;Kit.toast(bi(["Choose more units first","先にユニットを増やしてね"]));scr.show("home");return false;}
+
+/* ---------- lock player ---------- */
+const G={};
+const timer=Kit.timer((s,t)=>$("#tTime").textContent=t);
+const traps=Kit.traps({layer:"#trapLayer",target:"#chest",area:"#keys"});
+const partner=Kit.soloPartner({mount:"#partner",speak:slow=>speakCode(slow)});
+const ITEMS=Kit.bag([["\u{1F4B0}","Gold!","金貨！"],["\u{1F48E}","A diamond!","ダイヤ！"],["\u{1F34C}","One banana.","バナナ1本。"],["\u{1F9E6}","Smelly socks!","くさいくつ下！"],["\u{1F986}","A rubber duck!","アヒルのおもちゃ！"],["\u{1F47D}","An alien!","宇宙人！"],["\u{1F382}","A cake!","ケーキ！"],["\u{1F996}","A tiny dinosaur!","小さな恐竜！"],["\u{1FA72}","Underpants?!","パンツ！？"],["\u{1F419}","An octopus!","タコ！"]]);
+const chestSVG=()=>`<svg viewBox="0 0 200 170" aria-hidden="true"><rect x="22" y="78" width="156" height="84" rx="8" fill="#8a5a33" stroke="#000" stroke-width="5"/><rect x="22" y="104" width="156" height="12" fill="#e2b33a" stroke="#000" stroke-width="3"/>
+ <g class="lid"><path d="M22 80 V58 Q100 10 178 58 V80 Z" fill="#a46a3c" stroke="#000" stroke-width="5"/><rect x="22" y="66" width="156" height="12" fill="#e2b33a" stroke="#000" stroke-width="3"/></g>
+ <rect x="86" y="88" width="28" height="34" rx="5" fill="#ffd23f" stroke="#000" stroke-width="4"/><circle cx="100" cy="102" r="5" fill="#000"/><rect x="98" y="104" width="4" height="10" fill="#000"/></svg>`;
+function startLock(solo){
+  if(!okToPlay())return;
+  Object.assign(G,{solo,round:0,oops:0,busy:false,last:0});
+  partner.show(solo);$("#cardBox").hidden=solo;$("#playRole").textContent=solo?"Solo practice":"Lock Opener";
+  $("#tOops").textContent="0";scr.show("play");timer.start();newRound();
+}
+function newRound(){
+  let n;do{n=1+Kit.ri(Kit.RND,CARDS);}while(n===G.last);G.last=n;G.card=n;G.code=cardOf(n);G.entered=[];
+  const L=LEVELS[S.level],others=pool().filter(w=>!G.code.includes(w));
+  G.keys=Kit.shuffle(G.code.concat(Kit.pickN(Kit.RND,others,Math.max(0,L.keys-G.code.length))),Kit.RND);
+  $("#cardNum").textContent=n;
+  $("#roundLbl").innerHTML=bi(["Chest "+(G.round+1)+" of "+S.rounds,"宝箱 "+(G.round+1)+" / "+S.rounds],true);
+  $("#lights").innerHTML=Array.from({length:S.rounds},(_,i)=>`<i class="${i<G.round?"on":i===G.round?"now":""}"></i>`).join("");
+  $("#chest").className="chestbox";$("#chest").innerHTML=chestSVG();
+  $("#keys").innerHTML=G.keys.map((w,i)=>`<button class="key" type="button" data-i="${i}">${L.pics&&w.emoji?`<span class="em">${w.emoji}</span>`:""}${Kit.esc(w.en)}</button>`).join("");
+  $$("#keys .key").forEach(b=>b.onclick=()=>press(G.keys[+b.dataset.i]));
+  renderDisplay();
+  if(G.solo){partner.tell(["Listen to the words!","ことばを聞こう！"]);setTimeout(()=>{if(scr.current==="play"&&G.solo)speakCode(false);},700);}
+}
+function renderDisplay(){
+  $("#display").innerHTML=G.code.map((_,i)=>{const w=G.entered[i];return `<div class="slot${w?" full":""}">${w?Kit.esc(w.en):i+1}</div>`;}).join("");
+  $("#kGo").disabled=G.entered.length<G.code.length;
+}
+function press(w){
+  if(G.busy)return;Kit.sound.ac();
+  if(G.entered.length>=G.code.length){Kit.sound.play("bump");const d=$("#display");d.classList.remove("kit-shake");void d.offsetWidth;d.classList.add("kit-shake");return;}
+  G.entered.push(w);Kit.sound.play("key");renderDisplay();
+}
+$("#kBack").onclick=()=>{if(G.busy)return;G.entered.pop();Kit.sound.play("click");renderDisplay();};
+$("#kClear").onclick=()=>{if(G.busy)return;G.entered=[];Kit.sound.play("click");renderDisplay();};
+$("#kGo").onclick=()=>{
+  if(G.busy||G.entered.length<G.code.length)return;
+  if(G.entered.every((w,i)=>w===G.code[i]))opened();
+  else{G.oops++;$("#tOops").textContent=G.oops;Kit.speech.hush();G.busy=true;
+    traps.next(()=>{G.busy=false;G.entered=[];renderDisplay();if(G.solo)partner.tell(["Try again! Listen carefully.","もう一度！よく聞いてね。"]);});}
+};
+function opened(){
+  G.busy=true;Kit.sound.play("done");Kit.speech.hush();
+  const it=ITEMS();$("#chest").classList.add("open");
+  setTimeout(()=>{const d=document.createElement("div");d.className="item";d.textContent=it[0];$("#chest").appendChild(d);traps.word([it[1],it[2]],"50%","6%");Kit.sound.play("boing");},450);
+  G.round++;
+  setTimeout(()=>{traps.clear();G.busy=false;if(scr.current!=="play")return;if(G.round>=S.rounds)finish();else newRound();},2300);
+}
+function speakCode(slow){
+  const ws=G.code.map(w=>w.en);
+  const ok=slow?Kit.speech.sayEach(ws,1300):Kit.speech.say(ws.join(", "),0.8);
+  partner.tell(ok?["Listen to the words!","ことばを聞こう！"]:["Read it: "+ws.join(", "),"読んでみよう: "+ws.join(", ")]);
+}
+function finish(){
+  const elapsed=timer.stop();Kit.sound.play("win");
+  const par=S.rounds*(15+8*LEVELS[S.level].len),sc=Kit.score({elapsed,oops:G.oops,par});
+  Kit.result("#result",{elapsed,oops:G.oops,score:sc.score,stars:sc.stars,swap:!G.solo,title:sc.stars===3&&!G.solo?["Amazing teamwork!","すごいチームワーク！"]:null,art:`<div style="font-size:110px;line-height:1">\u{1F451}</div>`,
+    buttons:[{label:["Play again","もう一度"],primary:true,onClick:()=>startLock(G.solo)},
+             {label:["Switch to Cards","カードに交代"],hidden:G.solo,onClick:openCards},
+             {label:["Home","ホーム"],onClick:()=>scr.show("home")}]});
+  scr.show("result");
+}
+$("#playQuit").onclick=()=>scr.show("home");
+$("#startLock").onclick=()=>startLock(false);
+$("#startSolo").onclick=()=>startLock(true);
+
+/* ---------- card reader ---------- */
+let cur=0;
+function openCards(){
+  if(!okToPlay())return;cur=0;
+  $("#tabs").innerHTML=Array.from({length:CARDS},(_,i)=>`<button type="button" data-n="${i+1}" aria-pressed="false">${i+1}</button>`).join("");
+  $$("#tabs button").forEach(b=>b.onclick=()=>{cur=+b.dataset.n;Kit.sound.play("click");renderCard();});
+  const ph=Kit.words.pick(S).phrases.slice(0,4);
+  $("#askList").innerHTML=`<b>${bi(["Say:","言ってみよう"],true)}</b><span class="p">Card 12.</span><span class="p">Number one is…</span><span class="p">Next is…</span>`
+    +(ph.length?`<b style="margin-top:6px">${bi(["This unit:","このユニット"],true)}</b>`+ph.map(p=>`<span class="p">${Kit.esc(p)}</span>`).join(""):"");
+  scr.show("cards");renderCard();
+}
+function renderCard(){
+  if(scr.current!=="cards")return;
+  $$("#tabs button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.n===cur)));
+  if(!cur){$("#cardView").innerHTML=`<div class="empty"><b>What card?</b><p>Ask your partner for the card number, then click it.</p><p class="ja">パートナーにカード番号を聞いて、クリックしよう。</p></div>`;return;}
+  $("#cardView").innerHTML=`<h2>Card ${cur}</h2><p>Say the words in order.</p><p class="ja">順番に英語で言おう。</p>
+   <div class="pics">${cardOf(cur).map((w,i)=>`<div class="pic"><i>${i+1}</i>${picOf(w)}${hints.value?`<small>${Kit.esc(w.en)}</small>`:""}</div>`).join("")}</div>`;
+}
+$("#startCards").onclick=openCards;
+$("#cardsQuit").onclick=()=>scr.show("home");
+$("#cardsSwap").onclick=()=>startLock(false);
+
+/* ---------- teacher page ---------- */
+const teach=Kit.teacher({mount:"#teacher",artifactUrl:ARTIFACT_URL,store:st,getCode:code,getName:name,
+  steps:[["Choose the textbook unit and level below.","下で教科書のユニットとレベルを選びます。"],
+         ["Show the class code on the board, or let students scan the QR code.","クラスコードを黒板に書くか、QRコードを読み取らせます。"],
+         ["Students type the class code and pick a role. Partners check that their codes match.","クラスコードを入力して役割を選びます。ペアでコードが同じか確認します。"]],
+  note:"Every Chromebook builds the same 30 cards from the class code, so nothing needs internet syncing."});
+$("#toTeacher").onclick=()=>scr.show("teacher");
+
+$("#heroPic").innerHTML=chestSVG();
+scr.show("home");renderSettings();
+window.PL={codec,cardOf,get S(){return S;},G};
+})();
+</script>

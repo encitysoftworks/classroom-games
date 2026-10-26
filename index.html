@@ -1,0 +1,211 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><title>Classroom Games Hub</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<style>
+/* Layout: a teachers' shelf of game cartridges. Header, grade filter, then a grid of game cards.
+   Edit mode (editors only) swaps each card for a small form and saves the page for everyone.
+   Single dark look shared with the games themselves, so colors are set once on :root. */
+:root{
+  --bg:#14161d; --panel:#1e212b; --panel2:#272b37; --edge:#3a3f50; --text:#f2eee5; --muted:#aeacba; --dim:#7d7b8c;
+  --accent:#8ad1c2; --ink:#1b1a17; --warn:#ff8f6b;
+  --f-display:"Bungee","Arial Black",Impact,sans-serif;
+  --f-body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans",system-ui,sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+body{background:var(--bg);background-image:radial-gradient(1000px 480px at 50% -10%,#262a3a 0%,rgba(20,22,29,0) 65%);color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.app{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+h1,h2{font-family:var(--f-display);font-weight:400;margin:0;line-height:1.15;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;border-bottom:2px dashed var(--edge);padding-bottom:16px;margin-bottom:18px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:4px}
+header h1{font-size:clamp(32px,5vw,52px)}
+header .ja{color:var(--muted);font-weight:700}
+.lead{max-width:40em;color:var(--muted);margin-top:6px}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.filters button{background:var(--panel2);border:2px solid var(--edge);border-radius:20px;padding:5px 14px;font:700 14px var(--f-body);color:var(--text);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.card{display:flex;flex-direction:column;background:var(--panel);border:2px solid var(--edge);border-radius:12px;overflow:hidden;box-shadow:0 4px 0 #07080b;min-width:0}
+.label{background:var(--c);color:var(--ink);padding:14px 16px 12px;position:relative}
+.label::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 10px,transparent 10px 20px)}
+.label h2{font-size:24px}
+.label .jt{font-weight:800;font-size:14px;opacity:.8}
+.body{display:flex;flex-direction:column;gap:10px;padding:14px 16px 16px;flex:1}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;font-weight:800;background:var(--panel2);border:1px solid var(--edge);border-radius:12px;padding:2px 10px;color:var(--muted)}
+.desc{font-size:15px}
+.eng{font-size:14px;color:var(--muted)}
+.eng b{color:var(--text)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:700 15px/1.2 var(--f-body);color:var(--text);background:var(--panel2);border:2px solid var(--edge);border-radius:8px;padding:9px 14px;cursor:pointer;box-shadow:0 3px 0 #07080b;text-decoration:none}
+.btn:hover{border-color:var(--dim)}
+.btn.primary{background:var(--c,var(--accent));color:var(--ink);border-color:transparent}
+.btn.small{font-size:13px;padding:5px 10px}
+.btn.danger{color:var(--warn)}
+.btn[disabled]{opacity:.5;cursor:wait}
+.soon{border-style:dashed;box-shadow:none;background:transparent;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--muted);gap:6px}
+.soon b{font-family:var(--f-display);font-weight:400;font-size:20px;color:var(--text)}
+.veil{position:fixed;inset:0;background:rgba(8,9,12,.93);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.veil-card{background:var(--panel);border:2px solid var(--edge);border-radius:14px;padding:22px;max-width:560px;width:100%;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.veil-card h2{font-size:28px}
+.qr{background:#fff;border-radius:8px;padding:6px;line-height:0}
+.qr canvas{width:min(340px,70vw);height:auto;image-rendering:pixelated}
+.url{font-size:13px;color:var(--muted);word-break:break-all}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--accent);color:var(--ink);font-weight:800;border-radius:10px;padding:8px 16px;z-index:60}
+footer{margin-top:28px;color:var(--dim);font-size:13px}
+
+/* edit mode */
+.editbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel2);border:2px solid var(--accent);border-radius:12px;padding:10px 14px;margin-bottom:16px;box-shadow:0 4px 0 #07080b}
+.editbar b{flex:1;min-width:12em}
+.editbar .status{font-size:14px;color:var(--muted);width:100%}
+.form{display:flex;flex-direction:column;gap:10px;padding:14px 16px 16px}
+.field{display:flex;flex-direction:column;gap:3px;min-width:0}
+.field span{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.field input,.field textarea{font:15px var(--f-body);color:var(--text);background:var(--bg);border:2px solid var(--edge);border-radius:8px;padding:6px 9px;width:100%;box-sizing:border-box}
+.field textarea{min-height:64px;resize:vertical}
+.field input[type=color]{width:64px;height:36px;padding:2px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.checks{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:14px}
+.checks label{display:flex;gap:5px;align-items:center}
+.checks input{width:auto;margin:0}
+.head-form{background:var(--panel);border:2px dashed var(--accent);border-radius:12px;margin-bottom:16px}
+@media (max-width:520px){.pair{grid-template-columns:1fr}.grid{grid-template-columns:minmax(0,1fr)}}
+</style>
+<div id="root"></div>
+<script id="hubData" type="application/json">{"eyebrow":"Looks can be this evening...","heading":"En City Softworks","headingJa":"延シティソフトワークス","lead":"Co-op English speaking games for Chromebooks. Open a game, or show its QR code so students can scan it.","footer":"Each game runs in the browser. After a game loads, partners do not need the internet to stay in sync.","filters":[["all","All games"],["es34","Elementary 3–4"],["es56","Elementary 5–6"],["jhs","Junior high"]],"games":[{"title":"The Keypad Game","ja":"キーパッドゲーム","url":"https://claude.ai/artifact/7JtQVUWTzA3P3KHdtaYwFG","color":"#ff7a3d","grades":["es34"],"gradeLabel":"Elementary 3rd–4th","players":"Pairs, 2 Chromebooks · solo practice","desc":"Defuse a silly bomb or open a bank vault. One partner clicks the keypad, the other reads the code from the codebook. It's da bomb.","eng":"Alphabet (capital and small letters), colors, shapes, numbers 1–30, “What color is it?”"},{"title":"The Maze Game","ja":"迷路ゲーム","url":"https://claude.ai/artifact/NqCBsoYzsNTCg4mH9R5btw","color":"#f2c14e","grades":["es56"],"gradeLabel":"Junior Sunshine 5–6","players":"Pairs, 2 Chromebooks · solo practice","desc":"One player explores a maze and the other guides them in English. Lessons include Directions and Travel: Midnight Express. Will you wander these halls forever?","eng":"Directions (go straight, turn left/right), travel and countries"}]}</script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script id="hubMain">
+(function(){
+"use strict";
+/* All page text lives in the hubData JSON above. Edit mode changes a copy of it,
+   and "Save for everyone" republishes this page with the new JSON. */
+const DATA=JSON.parse(document.getElementById("hubData").textContent);
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const safeUrl=u=>/^https?:\/\//i.test(u||"")?u:"#";
+let F="all";try{F=localStorage.getItem("hub_f")||"all";}catch(e){}
+let editing=false,draft=null,canEdit=false,readOnly=false,saving=false,ART=null;
+
+function viewHTML(D){
+  if(!D.filters.some(f=>f[0]===F))F="all";
+  const list=D.games.filter(g=>F==="all"||(g.grades||[]).includes(F));
+  return `${canEdit&&!readOnly?`<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="btn small" id="editBtn" type="button">Edit page</button></div>`:""}
+  <header><div><p class="eyebrow">${esc(D.eyebrow)}</p><h1>${esc(D.heading)}</h1><p class="ja">${esc(D.headingJa)}</p><p class="lead">${esc(D.lead)}</p></div></header>
+  <div class="filters" role="group" aria-label="Filter by grade">${D.filters.map(([k,l])=>`<button type="button" data-k="${esc(k)}" aria-pressed="${F===k}">${esc(l)}</button>`).join("")}</div>
+  <div class="grid">${list.map(g=>{const i=D.games.indexOf(g);return `<article class="card" style="--c:${esc(g.color||"#8ad1c2")}">
+    <div class="label"><h2>${esc(g.title)}</h2><p class="jt">${esc(g.ja)}</p></div>
+    <div class="body">
+      <div class="meta">${g.gradeLabel?`<span class="chip">${esc(g.gradeLabel)}</span>`:""}${g.players?`<span class="chip">${esc(g.players)}</span>`:""}</div>
+      <p class="desc">${esc(g.desc)}</p>
+      ${g.eng?`<p class="eng"><b>English:</b> ${esc(g.eng)}</p>`:""}
+      <div class="acts">
+        <a class="btn primary" href="${esc(safeUrl(g.url))}" target="_blank" rel="noopener">Open game</a>
+        <button class="btn" type="button" data-qr="${i}">Show QR code</button>
+        <button class="btn" type="button" data-copy="${i}">Copy link</button>
+      </div></div></article>`;}).join("")}${list.length?"":`<div class="card soon"><b>No games here yet</b><p>New games for this grade will appear here.</p></div>`}</div>
+  <footer>${esc(D.footer)}</footer>`;
+}
+const fld=(label,path,val,type)=>type==="area"
+  ?`<label class="field"><span>${label}</span><textarea data-p="${path}">${esc(val)}</textarea></label>`
+  :`<label class="field"><span>${label}</span><input type="${type||"text"}" data-p="${path}" value="${esc(val)}"></label>`;
+function editHTML(D){
+  return `<div class="editbar"><b>Editing the hub page</b>
+    <button class="btn small" id="addGame" type="button">Add a game</button>
+    <button class="btn small" id="cancelEdit" type="button">Cancel</button>
+    <button class="btn small primary" id="saveEdit" type="button" ${saving?"disabled":""}>${saving?"Saving…":"Save for everyone"}</button>
+    <p class="status" id="editStatus">Changes show for everyone after you press Save. The grade filters use the keys es34, es56 and jhs.</p></div>
+  <div class="head-form form">
+    <div class="pair">${fld("Small heading","eyebrow",D.eyebrow)}${fld("Title","heading",D.heading)}</div>
+    ${fld("Title in Japanese","headingJa",D.headingJa)}
+    ${fld("Intro","lead",D.lead,"area")}
+    ${fld("Footer","footer",D.footer)}
+    <div class="pair">${D.filters.slice(1).map((f,j)=>fld("Filter name ("+esc(f[0])+")","filters."+(j+1)+".1",f[1])).join("")}</div>
+  </div>
+  <div class="grid">${D.games.map((g,i)=>`<article class="card" style="--c:${esc(g.color||"#8ad1c2")}">
+    <div class="label"><h2>${esc(g.title||"New game")}</h2></div>
+    <div class="form">
+      <div class="pair">${fld("Name","games."+i+".title",g.title)}${fld("Name in Japanese","games."+i+".ja",g.ja)}</div>
+      ${fld("Link","games."+i+".url",g.url,"url")}
+      <div class="pair">${fld("Grade label","games."+i+".gradeLabel",g.gradeLabel)}${fld("Players","games."+i+".players",g.players)}</div>
+      ${fld("Description","games."+i+".desc",g.desc,"area")}
+      ${fld("English","games."+i+".eng",g.eng,"area")}
+      <div class="field"><span>Show under</span><div class="checks">${D.filters.slice(1).map(f=>`<label><input type="checkbox" data-g="${i}" data-k="${esc(f[0])}" ${(g.grades||[]).includes(f[0])?"checked":""}>${esc(f[1])}</label>`).join("")}</div></div>
+      ${fld("Card color","games."+i+".color",g.color||"#8ad1c2","color")}
+      <div class="acts">
+        <button class="btn small" type="button" data-mv="${i}" data-d="-1" ${i===0?"disabled":""}>Move up</button>
+        <button class="btn small" type="button" data-mv="${i}" data-d="1" ${i===D.games.length-1?"disabled":""}>Move down</button>
+        <button class="btn small danger" type="button" data-rm="${i}">Remove</button>
+      </div></div></article>`).join("")}</div>`;
+}
+function setPath(obj,path,val){const ks=path.split(".");let o=obj;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=val;}
+function render(){
+  $("#root").innerHTML=`<div class="app">${editing?editHTML(draft):viewHTML(DATA)}</div>`;
+  if(editing){
+    document.querySelectorAll("[data-p]").forEach(el=>el.addEventListener("input",()=>setPath(draft,el.dataset.p,el.value)));
+    document.querySelectorAll("[data-g]").forEach(el=>el.onchange=()=>{const g=draft.games[+el.dataset.g];g.grades=(g.grades||[]).filter(k=>k!==el.dataset.k);if(el.checked)g.grades.push(el.dataset.k);});
+    document.querySelectorAll("[data-mv]").forEach(b=>b.onclick=()=>{const i=+b.dataset.mv,j=i+(+b.dataset.d);const a=draft.games;[a[i],a[j]]=[a[j],a[i]];render();});
+    document.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{const i=+b.dataset.rm;if(b.dataset.sure){draft.games.splice(i,1);render();}else{b.dataset.sure="1";b.textContent="Press again to remove";}});
+    $("#addGame").onclick=()=>{draft.games.push({title:"New game",ja:"",url:"https://",color:"#8ad1c2",grades:[],gradeLabel:"",players:"",desc:"",eng:""});render();window.scrollTo(0,document.body.scrollHeight);};
+    $("#cancelEdit").onclick=()=>{editing=false;draft=null;render();};
+    $("#saveEdit").onclick=save;
+    return;
+  }
+  document.querySelectorAll(".filters button").forEach(b=>b.onclick=()=>{F=b.dataset.k;try{localStorage.setItem("hub_f",F);}catch(e){}render();});
+  document.querySelectorAll("[data-qr]").forEach(b=>b.onclick=()=>openQR(DATA.games[+b.dataset.qr]));
+  document.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>{const u=DATA.games[+b.dataset.copy].url;try{navigator.clipboard.writeText(u).then(()=>toast("Link copied"),()=>toast(u));}catch(e){toast(u);}});
+  const eb=$("#editBtn");if(eb)eb.onclick=()=>{editing=true;draft=JSON.parse(JSON.stringify(DATA));render();};
+}
+
+/* ---------- saving: rebuild the whole page with the new JSON and publish it ---------- */
+const RESET=":root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}";
+function buildDoc(D){
+  const SC="script";
+  const styles=[...document.querySelectorAll("style")].map(s=>s.textContent).filter(t=>t.indexOf("Layout: a teachers")>=0)[0]||"";
+  const main=document.getElementById("hubMain").textContent;
+  const json=JSON.stringify(D).replace(/</g,"\\u003c");
+  return `<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>${RESET}</style></head><body>`+
+    `<title>Classroom Games Hub</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">\n<style>${styles}</style>\n<div id="root"></div>\n`+
+    `<${SC} id="hubData" type="application/json">${json}</${SC}>\n<${SC} src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></${SC}>\n<${SC} id="hubMain">${main}</${SC}>\n</body></html>`;
+}
+function status(t){const s=$("#editStatus");if(s)s.textContent=t;}
+async function save(){
+  if(saving)return;
+  if(!ART){status("Saving isn't available in this view. Open the hub from claude.ai to save.");return;}
+  draft.games.forEach(g=>{g.title=(g.title||"").trim()||"Untitled game";g.url=(g.url||"").trim();});
+  saving=true;render();status("Saving…");
+  try{await ART.publish(buildDoc(draft));saving=false;status("Saved. The page is reloading with your changes.");}
+  catch(e){saving=false;const c=e&&e.code;
+    if(c==="conflict"){status("Someone else saved first. The page is reloading with their version.");return;}
+    if(c==="not_writer"||c==="not_granted"){readOnly=true;editing=false;draft=null;render();toast("You can view this page but not edit it.");return;}
+    render();status(c==="rate_limited"?"Too many saves in a row. Wait a minute, then press Save again.":"The save didn't go through. Press Save again.");}
+}
+
+function openQR(g){
+  $("#vTitle").textContent=g.title;$("#vUrl").textContent=g.url;$("#veil").hidden=false;
+  const cv=$("#qr");
+  if(typeof window.qrcode==="function"&&g.url){const q=window.qrcode(0,"M");q.addData(g.url);q.make();const n=q.getModuleCount(),size=n+8,sc=Math.max(2,Math.floor(800/size));
+    cv.width=cv.height=size*sc;const x=cv.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,cv.width,cv.height);x.fillStyle="#000";
+    for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))x.fillRect((c+4)*sc,(r+4)*sc,sc,sc);}
+  $("#vClose").focus();
+}
+let tt=0;function toast(t){let el=$("#toast");if(!el){el=document.createElement("div");el.id="toast";el.className="toast";document.body.appendChild(el);}el.textContent=t;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,2400);}
+
+const veil=document.createElement("div");veil.className="veil";veil.id="veil";veil.hidden=true;veil.setAttribute("role","dialog");veil.setAttribute("aria-label","QR code");
+veil.innerHTML=`<div class="veil-card"><h2 id="vTitle">Scan to play!</h2><p>Scan to play!<br>QRコードを読み取ってね！</p><div class="qr"><canvas id="qr" width="400" height="400"></canvas></div><p class="url" id="vUrl"></p><button class="btn" id="vClose" type="button">Close</button></div>`;
+document.body.appendChild(veil);
+$("#vClose").onclick=()=>veil.hidden=true;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")veil.hidden=true;});
+
+render();
+/* editors see the Edit button once the viewer answers; everyone else just sees the hub */
+(async()=>{try{
+  if(!window.claude||!window.claude.use)return;
+  const [art,user]=await Promise.all([window.claude.use("artifact"),window.claude.use("user")]);
+  ART=art;canEdit=!!art&&(user?await user.canEdit():true);
+  if(!editing)render();
+}catch(e){}})();
+})();
+</script>
+</body></html>

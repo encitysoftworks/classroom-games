@@ -1,0 +1,703 @@
+{
+ "book": "Junior Sunshine 5",
+ "publisher": "Kairyudo",
+ "grade": "ES5",
+ "edition": "2020 outline (newest edition not on ALTopedia)",
+ "source": "Outline from ALTopedia, which only has the 2020 edition; Wyatt's books are the newest edition, so units and pages may differ. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "units": [
+  {
+   "unit": 1,
+   "page": 6,
+   "title": "Nice to meet you.",
+   "topic": "Self-introductions, alphabet, name tags",
+   "verified": false,
+   "phrases": [
+    "Hello. I'm (Ken).",
+    "Nice to meet you.",
+    "Nice to meet you, too.",
+    "How do you spell your name?",
+    "K-E-N."
+   ],
+   "words": [
+    {
+     "en": "name",
+     "ja": "名前",
+     "emoji": "📛"
+    },
+    {
+     "en": "spell",
+     "ja": "つづる"
+    },
+    {
+     "en": "nice to meet you",
+     "ja": "はじめまして",
+     "emoji": "🤝"
+    },
+    {
+     "en": "one to twenty",
+     "ja": "1〜20"
+    }
+   ]
+  },
+  {
+   "unit": 2,
+   "page": 12,
+   "title": "When is your birthday?",
+   "topic": "Months, ordinal numbers, birthdays",
+   "verified": false,
+   "phrases": [
+    "When is your birthday?",
+    "My birthday is (April 5th).",
+    "What do you want for your birthday?",
+    "I want (a bike)."
+   ],
+   "words": [
+    {
+     "en": "January",
+     "ja": "1月"
+    },
+    {
+     "en": "February",
+     "ja": "2月"
+    },
+    {
+     "en": "March",
+     "ja": "3月"
+    },
+    {
+     "en": "April",
+     "ja": "4月"
+    },
+    {
+     "en": "May",
+     "ja": "5月"
+    },
+    {
+     "en": "June",
+     "ja": "6月"
+    },
+    {
+     "en": "July",
+     "ja": "7月"
+    },
+    {
+     "en": "August",
+     "ja": "8月"
+    },
+    {
+     "en": "September",
+     "ja": "9月"
+    },
+    {
+     "en": "October",
+     "ja": "10月"
+    },
+    {
+     "en": "November",
+     "ja": "11月"
+    },
+    {
+     "en": "December",
+     "ja": "12月"
+    },
+    {
+     "en": "first",
+     "ja": "1日"
+    },
+    {
+     "en": "second",
+     "ja": "2日"
+    },
+    {
+     "en": "third",
+     "ja": "3日"
+    },
+    {
+     "en": "fifth",
+     "ja": "5日"
+    },
+    {
+     "en": "tenth",
+     "ja": "10日"
+    },
+    {
+     "en": "twentieth",
+     "ja": "20日"
+    },
+    {
+     "en": "birthday",
+     "ja": "誕生日",
+     "emoji": "🎂"
+    },
+    {
+     "en": "present",
+     "ja": "プレゼント",
+     "emoji": "🎁"
+    }
+   ]
+  },
+  {
+   "unit": 3,
+   "page": 18,
+   "title": "What do you have on Mondays?",
+   "topic": "School subjects, timetable",
+   "verified": false,
+   "phrases": [
+    "What do you have on (Monday)?",
+    "I have (math) on (Monday).",
+    "What subject do you like?",
+    "I like (P.E.).",
+    "Why?"
+   ],
+   "words": [
+    {
+     "en": "Japanese",
+     "ja": "国語",
+     "emoji": "🇯🇵"
+    },
+    {
+     "en": "English",
+     "ja": "英語",
+     "emoji": "🔤"
+    },
+    {
+     "en": "math",
+     "ja": "算数",
+     "emoji": "➕"
+    },
+    {
+     "en": "science",
+     "ja": "理科",
+     "emoji": "🔬"
+    },
+    {
+     "en": "social studies",
+     "ja": "社会",
+     "emoji": "🗾"
+    },
+    {
+     "en": "music",
+     "ja": "音楽",
+     "emoji": "🎵"
+    },
+    {
+     "en": "arts and crafts",
+     "ja": "図工",
+     "emoji": "🎨"
+    },
+    {
+     "en": "P.E.",
+     "ja": "体育",
+     "emoji": "🏃"
+    },
+    {
+     "en": "home economics",
+     "ja": "家庭科",
+     "emoji": "🍳"
+    },
+    {
+     "en": "calligraphy",
+     "ja": "書写",
+     "emoji": "🖌️"
+    },
+    {
+     "en": "moral education",
+     "ja": "道徳"
+    },
+    {
+     "en": "period for integrated studies",
+     "ja": "総合"
+    },
+    {
+     "en": "Monday",
+     "ja": "月曜日"
+    },
+    {
+     "en": "Tuesday",
+     "ja": "火曜日"
+    },
+    {
+     "en": "Wednesday",
+     "ja": "水曜日"
+    },
+    {
+     "en": "Thursday",
+     "ja": "木曜日"
+    },
+    {
+     "en": "Friday",
+     "ja": "金曜日"
+    }
+   ]
+  },
+  {
+   "unit": 4,
+   "page": 26,
+   "title": "Can you do this?",
+   "topic": "Can / can't, animals, weather",
+   "grammar": "can / can't",
+   "verified": false,
+   "phrases": [
+    "Can you (swim)?",
+    "Yes, I can. / No, I can't.",
+    "I can (run fast).",
+    "(He/She) can (cook)."
+   ],
+   "words": [
+    {
+     "en": "swim",
+     "ja": "泳ぐ",
+     "emoji": "🏊"
+    },
+    {
+     "en": "run fast",
+     "ja": "速く走る",
+     "emoji": "🏃"
+    },
+    {
+     "en": "jump high",
+     "ja": "高く跳ぶ"
+    },
+    {
+     "en": "cook",
+     "ja": "料理する",
+     "emoji": "🍳"
+    },
+    {
+     "en": "sing well",
+     "ja": "上手に歌う",
+     "emoji": "🎤"
+    },
+    {
+     "en": "play the piano",
+     "ja": "ピアノをひく",
+     "emoji": "🎹"
+    },
+    {
+     "en": "ride a unicycle",
+     "ja": "一輪車に乗る"
+    },
+    {
+     "en": "skate",
+     "ja": "スケートをする",
+     "emoji": "⛸️"
+    },
+    {
+     "en": "ski",
+     "ja": "スキーをする",
+     "emoji": "⛷️"
+    },
+    {
+     "en": "fly",
+     "ja": "飛ぶ",
+     "emoji": "🦅"
+    },
+    {
+     "en": "sunny",
+     "ja": "晴れ",
+     "emoji": "☀️"
+    },
+    {
+     "en": "rainy",
+     "ja": "雨",
+     "emoji": "🌧️"
+    },
+    {
+     "en": "cloudy",
+     "ja": "くもり",
+     "emoji": "☁️"
+    },
+    {
+     "en": "snowy",
+     "ja": "雪",
+     "emoji": "❄️"
+    }
+   ]
+  },
+  {
+   "unit": 5,
+   "page": 38,
+   "title": "Where is your treasure?",
+   "topic": "Directions, prepositions, everyday objects",
+   "verified": false,
+   "phrases": [
+    "Where is (the treasure)?",
+    "It's (on) the (desk).",
+    "Go straight.",
+    "Turn right / left.",
+    "You can see it on your (right)."
+   ],
+   "words": [
+    {
+     "en": "on",
+     "ja": "〜の上に"
+    },
+    {
+     "en": "in",
+     "ja": "〜の中に"
+    },
+    {
+     "en": "under",
+     "ja": "〜の下に"
+    },
+    {
+     "en": "by",
+     "ja": "〜のそばに"
+    },
+    {
+     "en": "go straight",
+     "ja": "まっすぐ進む",
+     "emoji": "⬆️"
+    },
+    {
+     "en": "turn right",
+     "ja": "右に曲がる",
+     "emoji": "➡️"
+    },
+    {
+     "en": "turn left",
+     "ja": "左に曲がる",
+     "emoji": "⬅️"
+    },
+    {
+     "en": "block",
+     "ja": "区画"
+    },
+    {
+     "en": "treasure",
+     "ja": "宝物",
+     "emoji": "💎"
+    },
+    {
+     "en": "box",
+     "ja": "箱",
+     "emoji": "📦"
+    },
+    {
+     "en": "cup",
+     "ja": "カップ",
+     "emoji": "☕"
+    },
+    {
+     "en": "cap",
+     "ja": "ぼうし",
+     "emoji": "🧢"
+    }
+   ]
+  },
+  {
+   "unit": 6,
+   "page": 48,
+   "title": "My Hero",
+   "topic": "Describing people (he/she)",
+   "grammar": "he / she is ~",
+   "verified": false,
+   "phrases": [
+    "Who is your hero?",
+    "My hero is (my mother).",
+    "She is (kind).",
+    "She can (cook well).",
+    "He is good at (soccer)."
+   ],
+   "words": [
+    {
+     "en": "hero",
+     "ja": "ヒーロー",
+     "emoji": "🦸"
+    },
+    {
+     "en": "kind",
+     "ja": "やさしい"
+    },
+    {
+     "en": "brave",
+     "ja": "勇敢な"
+    },
+    {
+     "en": "strong",
+     "ja": "強い",
+     "emoji": "💪"
+    },
+    {
+     "en": "cool",
+     "ja": "かっこいい",
+     "emoji": "😎"
+    },
+    {
+     "en": "funny",
+     "ja": "おもしろい",
+     "emoji": "😂"
+    },
+    {
+     "en": "smart",
+     "ja": "かしこい"
+    },
+    {
+     "en": "friendly",
+     "ja": "親しみやすい"
+    },
+    {
+     "en": "he",
+     "ja": "彼"
+    },
+    {
+     "en": "she",
+     "ja": "彼女"
+    },
+    {
+     "en": "good at",
+     "ja": "〜が得意"
+    }
+   ]
+  },
+  {
+   "unit": 7,
+   "page": 56,
+   "title": "Happy New Year",
+   "topic": "New Year traditions",
+   "verified": false,
+   "phrases": [
+    "Happy New Year!",
+    "What do you do at New Year?",
+    "I (eat osechi)."
+   ],
+   "words": [
+    {
+     "en": "New Year",
+     "ja": "お正月",
+     "emoji": "🎍"
+    },
+    {
+     "en": "New Year's card",
+     "ja": "年賀状",
+     "emoji": "💌"
+    },
+    {
+     "en": "rice cake",
+     "ja": "もち",
+     "emoji": "🍡"
+    },
+    {
+     "en": "otoshidama",
+     "ja": "お年玉",
+     "emoji": "🧧"
+    },
+    {
+     "en": "shrine",
+     "ja": "神社",
+     "emoji": "⛩️"
+    }
+   ]
+  },
+  {
+   "unit": 8,
+   "page": 60,
+   "title": "What would you like?",
+   "topic": "Ordering food, prices",
+   "grammar": "I'd like ~",
+   "verified": false,
+   "phrases": [
+    "What would you like?",
+    "I'd like (spaghetti).",
+    "How much is it?",
+    "It's (500) yen.",
+    "Here you are."
+   ],
+   "words": [
+    {
+     "en": "spaghetti",
+     "ja": "スパゲッティ",
+     "emoji": "🍝"
+    },
+    {
+     "en": "pizza",
+     "ja": "ピザ",
+     "emoji": "🍕"
+    },
+    {
+     "en": "hamburger",
+     "ja": "ハンバーガー",
+     "emoji": "🍔"
+    },
+    {
+     "en": "French fries",
+     "ja": "フライドポテト",
+     "emoji": "🍟"
+    },
+    {
+     "en": "salad",
+     "ja": "サラダ",
+     "emoji": "🥗"
+    },
+    {
+     "en": "soup",
+     "ja": "スープ",
+     "emoji": "🥣"
+    },
+    {
+     "en": "rice ball",
+     "ja": "おにぎり",
+     "emoji": "🍙"
+    },
+    {
+     "en": "curry and rice",
+     "ja": "カレーライス",
+     "emoji": "🍛"
+    },
+    {
+     "en": "fried chicken",
+     "ja": "からあげ",
+     "emoji": "🍗"
+    },
+    {
+     "en": "ice cream",
+     "ja": "アイスクリーム",
+     "emoji": "🍨"
+    },
+    {
+     "en": "cake",
+     "ja": "ケーキ",
+     "emoji": "🍰"
+    },
+    {
+     "en": "juice",
+     "ja": "ジュース",
+     "emoji": "🧃"
+    },
+    {
+     "en": "milk",
+     "ja": "牛乳",
+     "emoji": "🥛"
+    },
+    {
+     "en": "hundred",
+     "ja": "百"
+    },
+    {
+     "en": "thousand",
+     "ja": "千"
+    },
+    {
+     "en": "yen",
+     "ja": "円",
+     "emoji": "💴"
+    }
+   ]
+  },
+  {
+   "unit": 9,
+   "page": 68,
+   "title": "I love my town.",
+   "topic": "Hometown, places, adjectives",
+   "verified": false,
+   "phrases": [
+    "I love my town.",
+    "We have (a big park).",
+    "We don't have (a zoo).",
+    "I want (a library).",
+    "My town is (beautiful)."
+   ],
+   "words": [
+    {
+     "en": "park",
+     "ja": "公園",
+     "emoji": "🌳"
+    },
+    {
+     "en": "zoo",
+     "ja": "動物園",
+     "emoji": "🦁"
+    },
+    {
+     "en": "aquarium",
+     "ja": "水族館",
+     "emoji": "🐠"
+    },
+    {
+     "en": "museum",
+     "ja": "博物館",
+     "emoji": "🏛️"
+    },
+    {
+     "en": "library",
+     "ja": "図書館",
+     "emoji": "📚"
+    },
+    {
+     "en": "station",
+     "ja": "駅",
+     "emoji": "🚉"
+    },
+    {
+     "en": "hospital",
+     "ja": "病院",
+     "emoji": "🏥"
+    },
+    {
+     "en": "supermarket",
+     "ja": "スーパー",
+     "emoji": "🛒"
+    },
+    {
+     "en": "convenience store",
+     "ja": "コンビニ",
+     "emoji": "🏪"
+    },
+    {
+     "en": "swimming pool",
+     "ja": "プール",
+     "emoji": "🏊"
+    },
+    {
+     "en": "beach",
+     "ja": "海辺",
+     "emoji": "🏖️"
+    },
+    {
+     "en": "mountain",
+     "ja": "山",
+     "emoji": "⛰️"
+    },
+    {
+     "en": "river",
+     "ja": "川",
+     "emoji": "🏞️"
+    },
+    {
+     "en": "famous",
+     "ja": "有名な"
+    },
+    {
+     "en": "beautiful",
+     "ja": "美しい"
+    },
+    {
+     "en": "big",
+     "ja": "大きい"
+    },
+    {
+     "en": "small",
+     "ja": "小さい"
+    },
+    {
+     "en": "old",
+     "ja": "古い"
+    },
+    {
+     "en": "new",
+     "ja": "新しい"
+    },
+    {
+     "en": "mango",
+     "ja": "マンゴー",
+     "emoji": "🥭"
+    },
+    {
+     "en": "chicken nanban",
+     "ja": "チキン南蛮",
+     "emoji": "🍗"
+    }
+   ]
+  }
+ ]
+}

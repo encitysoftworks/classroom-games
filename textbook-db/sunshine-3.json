@@ -1,0 +1,416 @@
+{
+ "book": "Sunshine English Course 3",
+ "publisher": "Kairyudo",
+ "grade": "JHS3",
+ "edition": "2025",
+ "source": "Outline from ALTopedia Sunshine (2025) page, which matches Wyatt's newest edition. ALTopedia lists pages and grammar points, not program numbers; 'unit' here is our own grouping by page. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "units": [
+  {
+   "unit": 1,
+   "page": 8,
+   "title": "I've eaten it before.",
+   "topic": "Present perfect (experience), ask ~ to, It's ~ for ~ to",
+   "grammar": "Present perfect (experience), ask ~ to, It's ~ for ~ to",
+   "verified": false,
+   "phrases": [
+    "I've eaten it before.",
+    "Have you ever (been to Kyoto)?",
+    "I'll ask someone to make them.",
+    "It's hard for me to read this kanji."
+   ],
+   "words": [
+    {
+     "en": "ever",
+     "ja": "今までに"
+    },
+    {
+     "en": "never",
+     "ja": "一度も〜ない"
+    },
+    {
+     "en": "before",
+     "ja": "以前に"
+    },
+    {
+     "en": "once",
+     "ja": "一度"
+    },
+    {
+     "en": "twice",
+     "ja": "二度"
+    },
+    {
+     "en": "ask",
+     "ja": "頼む"
+    },
+    {
+     "en": "hard",
+     "ja": "難しい"
+    },
+    {
+     "en": "kanji",
+     "ja": "漢字"
+    }
+   ]
+  },
+  {
+   "unit": 2,
+   "page": 18,
+   "title": "I've been playing it for only four hours.",
+   "topic": "Present perfect (continuation, completion), perfect continuous",
+   "grammar": "Present perfect (continuation, completion), perfect continuous",
+   "verified": false,
+   "phrases": [
+    "I've known it for years.",
+    "I've just gotten a new video game.",
+    "I've been playing it for (four hours).",
+    "Have you finished (your homework) yet?"
+   ],
+   "words": [
+    {
+     "en": "for",
+     "ja": "〜の間"
+    },
+    {
+     "en": "since",
+     "ja": "〜以来"
+    },
+    {
+     "en": "just",
+     "ja": "ちょうど"
+    },
+    {
+     "en": "already",
+     "ja": "すでに"
+    },
+    {
+     "en": "yet",
+     "ja": "もう・まだ"
+    },
+    {
+     "en": "video game",
+     "ja": "テレビゲーム",
+     "emoji": "🎮"
+    }
+   ]
+  },
+  {
+   "unit": 3,
+   "page": 30,
+   "title": "Warm milk makes you sleep well.",
+   "topic": "make + O + C / make + O + verb, tell + O + that",
+   "grammar": "make + O + C / make + O + verb, tell + O + that",
+   "verified": false,
+   "phrases": [
+    "The morning practice made you sleepy.",
+    "Warm milk makes you sleep well.",
+    "I'll tell him that you want to come."
+   ],
+   "words": [
+    {
+     "en": "make",
+     "ja": "〜にする"
+    },
+    {
+     "en": "sleepy",
+     "ja": "ねむい",
+     "emoji": "😪"
+    },
+    {
+     "en": "warm",
+     "ja": "温かい"
+    },
+    {
+     "en": "tell",
+     "ja": "伝える"
+    },
+    {
+     "en": "happy",
+     "ja": "うれしい"
+    },
+    {
+     "en": "let",
+     "ja": "〜させる"
+    },
+    {
+     "en": "help",
+     "ja": "手伝う"
+    }
+   ]
+  },
+  {
+   "unit": 4,
+   "page": 39,
+   "title": "Power Up 1: Explain a train change",
+   "topic": "Travel directions",
+   "grammar": "Travel directions",
+   "verified": false,
+   "phrases": [
+    "Take the (Nippo Line) to (Miyazaki).",
+    "Change trains at (Oita).",
+    "It takes about (one hour)."
+   ],
+   "words": [
+    {
+     "en": "train",
+     "ja": "電車",
+     "emoji": "🚆"
+    },
+    {
+     "en": "change",
+     "ja": "乗りかえる"
+    },
+    {
+     "en": "line",
+     "ja": "路線"
+    },
+    {
+     "en": "platform",
+     "ja": "ホーム"
+    }
+   ]
+  },
+  {
+   "unit": 5,
+   "page": 48,
+   "title": "Reading 1: The Meaning of Life",
+   "topic": "Story reading",
+   "grammar": "Story reading",
+   "verified": false,
+   "phrases": [],
+   "words": [
+    {
+     "en": "meaning",
+     "ja": "意味"
+    },
+    {
+     "en": "life",
+     "ja": "人生"
+    }
+   ]
+  },
+  {
+   "unit": 6,
+   "page": 56,
+   "title": "I mean the man wearing glasses.",
+   "topic": "Indirect questions, participle modifiers",
+   "grammar": "Indirect questions, participle modifiers",
+   "verified": false,
+   "phrases": [
+    "Do you understand what they're talking about?",
+    "I mean the man wearing glasses.",
+    "This is a straw made of paper."
+   ],
+   "words": [
+    {
+     "en": "understand",
+     "ja": "理解する"
+    },
+    {
+     "en": "wearing",
+     "ja": "身につけている"
+    },
+    {
+     "en": "glasses",
+     "ja": "めがね",
+     "emoji": "👓"
+    },
+    {
+     "en": "straw",
+     "ja": "ストロー"
+    },
+    {
+     "en": "paper",
+     "ja": "紙"
+    },
+    {
+     "en": "made of",
+     "ja": "〜でできた"
+    }
+   ]
+  },
+  {
+   "unit": 7,
+   "page": 66,
+   "title": "He is the manga artist who drew Black Jack.",
+   "topic": "Relative pronouns (who / which / that, subject)",
+   "grammar": "Relative pronouns (who / which / that, subject)",
+   "verified": false,
+   "phrases": [
+    "He is the manga artist who drew (Black Jack).",
+    "They're chocolates which look like stones.",
+    "It's a movie that has dramatic scenes."
+   ],
+   "words": [
+    {
+     "en": "manga artist",
+     "ja": "漫画家"
+    },
+    {
+     "en": "chocolate",
+     "ja": "チョコレート",
+     "emoji": "🍫"
+    },
+    {
+     "en": "stone",
+     "ja": "石",
+     "emoji": "🪨"
+    },
+    {
+     "en": "movie",
+     "ja": "映画",
+     "emoji": "🎬"
+    },
+    {
+     "en": "dramatic",
+     "ja": "劇的な"
+    },
+    {
+     "en": "scene",
+     "ja": "場面"
+    }
+   ]
+  },
+  {
+   "unit": 8,
+   "page": 81,
+   "title": "This is the drink that I like the best.",
+   "topic": "Relative pronouns (object), contact clauses",
+   "grammar": "Relative pronouns (object), contact clauses",
+   "verified": false,
+   "phrases": [
+    "That's one thing we can do for the environment.",
+    "I have a bottle which I bought yesterday.",
+    "This is the drink that I like the best."
+   ],
+   "words": [
+    {
+     "en": "environment",
+     "ja": "環境",
+     "emoji": "🌏"
+    },
+    {
+     "en": "bottle",
+     "ja": "ボトル",
+     "emoji": "🍶"
+    },
+    {
+     "en": "reuse",
+     "ja": "再利用する",
+     "emoji": "♻️"
+    },
+    {
+     "en": "plastic",
+     "ja": "プラスチック"
+    },
+    {
+     "en": "reduce",
+     "ja": "減らす"
+    },
+    {
+     "en": "recycle",
+     "ja": "リサイクルする",
+     "emoji": "♻️"
+    }
+   ]
+  },
+  {
+   "unit": 9,
+   "page": 96,
+   "title": "If I were you, I would use a robot vacuum cleaner.",
+   "topic": "Subjunctive (if / wish)",
+   "grammar": "Subjunctive (if / wish)",
+   "verified": false,
+   "phrases": [
+    "If you had a robot, you wouldn't do anything.",
+    "I wish the robot would take me to school.",
+    "If I were you, I would (use a robot vacuum cleaner)."
+   ],
+   "words": [
+    {
+     "en": "robot",
+     "ja": "ロボット",
+     "emoji": "🤖"
+    },
+    {
+     "en": "vacuum cleaner",
+     "ja": "掃除機"
+    },
+    {
+     "en": "wish",
+     "ja": "〜ならいいのに"
+    },
+    {
+     "en": "if I were you",
+     "ja": "もし私があなたなら"
+    },
+    {
+     "en": "future",
+     "ja": "未来"
+    }
+   ]
+  },
+  {
+   "unit": 10,
+   "page": 106,
+   "title": "Reading 2: Malala's Voice for the Future",
+   "topic": "Story reading",
+   "grammar": "Story reading",
+   "verified": false,
+   "phrases": [],
+   "words": [
+    {
+     "en": "education",
+     "ja": "教育",
+     "emoji": "📚"
+    },
+    {
+     "en": "voice",
+     "ja": "声"
+    },
+    {
+     "en": "right",
+     "ja": "権利"
+    },
+    {
+     "en": "peace",
+     "ja": "平和",
+     "emoji": "🕊️"
+    }
+   ]
+  },
+  {
+   "unit": 11,
+   "page": 112,
+   "title": "Special Project: JHS Memories",
+   "topic": "Speech",
+   "grammar": "Speech",
+   "verified": false,
+   "phrases": [
+    "My best memory of junior high school is (the chorus contest).",
+    "I'll never forget (it)."
+   ],
+   "words": [
+    {
+     "en": "memory",
+     "ja": "思い出"
+    },
+    {
+     "en": "chorus contest",
+     "ja": "合唱コンクール",
+     "emoji": "🎤"
+    },
+    {
+     "en": "graduation",
+     "ja": "卒業",
+     "emoji": "🎓"
+    },
+    {
+     "en": "school trip",
+     "ja": "修学旅行",
+     "emoji": "🚌"
+    }
+   ]
+  }
+ ]
+}
