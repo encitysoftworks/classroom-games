@@ -38,6 +38,8 @@ header .ja{color:var(--muted);font-weight:700}
 .desc{font-size:15px}
 .eng{font-size:14px;color:var(--muted)}
 .eng b{color:var(--text)}
+.alt{color:var(--muted);font-size:13px}
+.alt:hover{color:var(--text)}
 .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:700 15px/1.2 var(--f-body);color:var(--text);background:var(--panel2);border:2px solid var(--edge);border-radius:8px;padding:9px 14px;cursor:pointer;box-shadow:0 3px 0 #07080b;text-decoration:none}
 .btn:hover{border-color:var(--dim)}
@@ -74,7 +76,7 @@ footer{margin-top:28px;color:var(--dim);font-size:13px}
 @media (max-width:520px){.pair{grid-template-columns:1fr}.grid{grid-template-columns:minmax(0,1fr)}}
 </style>
 <div id="root"></div>
-<script id="hubData" type="application/json">{"eyebrow":"Looks can be this evening...","heading":"En City Softworks","headingJa":"延シティソフトワークス","lead":"Co-op English speaking games for Chromebooks. Open a game, or show its QR code so students can scan it.","footer":"Each game runs in the browser. After a game loads, partners do not need the internet to stay in sync.","filters":[["all","All games"],["es34","Elementary 3–4"],["es56","Elementary 5–6"],["jhs","Junior high"]],"games":[{"title":"The Keypad Game","ja":"キーパッドゲーム","url":"https://claude.ai/artifact/7JtQVUWTzA3P3KHdtaYwFG","color":"#ff7a3d","grades":["es34"],"gradeLabel":"Elementary 3rd–4th","players":"Pairs, 2 Chromebooks · solo practice","desc":"Defuse a silly bomb or open a bank vault. One partner clicks the keypad, the other reads the code from the codebook. It's da bomb.","eng":"Alphabet (capital and small letters), colors, shapes, numbers 1–30, “What color is it?”"},{"title":"The Maze Game","ja":"迷路ゲーム","url":"https://claude.ai/artifact/NqCBsoYzsNTCg4mH9R5btw","color":"#f2c14e","grades":["es56"],"gradeLabel":"Junior Sunshine 5–6","players":"Pairs, 2 Chromebooks · solo practice","desc":"One player explores a maze and the other guides them in English. Lessons include Directions and Travel: Midnight Express. Will you wander these halls forever?","eng":"Directions (go straight, turn left/right), travel and countries"}]}</script>
+<script id="hubData" type="application/json">{"eyebrow":"Looks can be this evening...","heading":"En City Softworks","headingJa":"延シティソフトワークス","lead":"Co-op English speaking games for Chromebooks. Open a game, or show its QR code so students can scan it.","footer":"Each game runs in the browser. After a game loads, partners do not need the internet to stay in sync.","filters":[["all","All games"],["es34","Elementary 3–4"],["es56","Elementary 5–6"],["jhs","Junior high"]],"games":[{"title":"The Keypad Game","ja":"キーパッドゲーム","url":"https://claude.ai/artifact/7JtQVUWTzA3P3KHdtaYwFG","gh":"https://encitysoftworks.github.io/classroom-games/keypad.html","color":"#ff7a3d","grades":["es34"],"gradeLabel":"Elementary 3rd–4th","players":"Pairs, 2 Chromebooks · solo practice","desc":"Defuse a silly bomb or open a bank vault. One partner clicks the keypad, the other reads the code from the codebook. It's da bomb.","eng":"Alphabet (capital and small letters), colors, shapes, numbers 1–30, “What color is it?”"},{"title":"The Maze Game","ja":"迷路ゲーム","url":"https://claude.ai/artifact/NqCBsoYzsNTCg4mH9R5btw","gh":"https://encitysoftworks.github.io/classroom-games/maze.html","color":"#f2c14e","grades":["es56"],"gradeLabel":"Junior Sunshine 5–6","players":"Pairs, 2 Chromebooks · solo practice","desc":"One player explores a maze and the other guides them in English. Lessons include Directions and Travel: Midnight Express. Will you wander these halls forever?","eng":"Directions (go straight, turn left/right), travel and countries"}]}</script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script id="hubMain">
 (function(){
@@ -104,7 +106,8 @@ function viewHTML(D){
         <a class="btn primary" href="${esc(safeUrl(g.url))}" target="_blank" rel="noopener">Open game</a>
         <button class="btn" type="button" data-qr="${i}">Show QR code</button>
         <button class="btn" type="button" data-copy="${i}">Copy link</button>
-      </div></div></article>`;}).join("")}${list.length?"":`<div class="card soon"><b>No games here yet</b><p>New games for this grade will appear here.</p></div>`}</div>
+      </div>
+      ${g.gh?`<p class="eng"><a class="alt" href="${esc(safeUrl(g.gh))}" target="_blank" rel="noopener">Backup link (GitHub)</a></p>`:""}</div></article>`;}).join("")}${list.length?"":`<div class="card soon"><b>No games here yet</b><p>New games for this grade will appear here.</p></div>`}</div>
   <footer>${esc(D.footer)}</footer>`;
 }
 const fld=(label,path,val,type)=>type==="area"
@@ -128,6 +131,7 @@ function editHTML(D){
     <div class="form">
       <div class="pair">${fld("Name","games."+i+".title",g.title)}${fld("Name in Japanese","games."+i+".ja",g.ja)}</div>
       ${fld("Link","games."+i+".url",g.url,"url")}
+      ${fld("Backup link (GitHub, optional)","games."+i+".gh",g.gh||"","url")}
       <div class="pair">${fld("Grade label","games."+i+".gradeLabel",g.gradeLabel)}${fld("Players","games."+i+".players",g.players)}</div>
       ${fld("Description","games."+i+".desc",g.desc,"area")}
       ${fld("English","games."+i+".eng",g.eng,"area")}
@@ -147,7 +151,7 @@ function render(){
     document.querySelectorAll("[data-g]").forEach(el=>el.onchange=()=>{const g=draft.games[+el.dataset.g];g.grades=(g.grades||[]).filter(k=>k!==el.dataset.k);if(el.checked)g.grades.push(el.dataset.k);});
     document.querySelectorAll("[data-mv]").forEach(b=>b.onclick=()=>{const i=+b.dataset.mv,j=i+(+b.dataset.d);const a=draft.games;[a[i],a[j]]=[a[j],a[i]];render();});
     document.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{const i=+b.dataset.rm;if(b.dataset.sure){draft.games.splice(i,1);render();}else{b.dataset.sure="1";b.textContent="Press again to remove";}});
-    $("#addGame").onclick=()=>{draft.games.push({title:"New game",ja:"",url:"https://",color:"#8ad1c2",grades:[],gradeLabel:"",players:"",desc:"",eng:""});render();window.scrollTo(0,document.body.scrollHeight);};
+    $("#addGame").onclick=()=>{draft.games.push({title:"New game",ja:"",url:"https://",gh:"",color:"#8ad1c2",grades:[],gradeLabel:"",players:"",desc:"",eng:""});render();window.scrollTo(0,document.body.scrollHeight);};
     $("#cancelEdit").onclick=()=>{editing=false;draft=null;render();};
     $("#saveEdit").onclick=save;
     return;
@@ -173,7 +177,7 @@ function status(t){const s=$("#editStatus");if(s)s.textContent=t;}
 async function save(){
   if(saving)return;
   if(!ART){status("Saving isn't available in this view. Open the hub from claude.ai to save.");return;}
-  draft.games.forEach(g=>{g.title=(g.title||"").trim()||"Untitled game";g.url=(g.url||"").trim();});
+  draft.games.forEach(g=>{g.title=(g.title||"").trim()||"Untitled game";g.url=(g.url||"").trim();g.gh=(g.gh||"").trim();});
   saving=true;render();status("Saving…");
   try{await ART.publish(buildDoc(draft));saving=false;status("Saved. The page is reloading with your changes.");}
   catch(e){saving=false;const c=e&&e.code;
