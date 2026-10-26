@@ -394,6 +394,52 @@ body.jp .kq-prompt .ja{color:#6b6358}
 .modal-card.kaiju{background:linear-gradient(160deg,#2a1240,#1e212b)}
 .unlock{display:flex;gap:10px;align-items:center;justify-content:center;background:var(--panel2);border:2px solid var(--accent);border-radius:12px;padding:8px 14px;margin:8px auto;max-width:440px;font-weight:800}
 .resextra{max-width:560px;margin:10px auto 0;text-align:center}
+
+/* rank chip, shell shop */
+.rankchip{display:inline-flex;align-items:center;gap:8px;margin-top:10px;background:var(--panel2);border:2px solid var(--accent);border-radius:30px;padding:3px 14px 3px 6px;font-weight:800}
+.rankchip .ja{display:inline;margin-left:4px}
+.shop{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:14px;align-items:start}
+@media (max-width:820px){.shop{grid-template-columns:1fr}}
+.shopgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:10px}
+.shopitem{background:var(--panel2);border:2px solid var(--edge);border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.shopitem.sel{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+.shopitem.owned{background:#1f3a2a}
+.shopitem .look{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;width:100%}
+.shopitem .look:focus-visible{outline:3px solid var(--accent);border-radius:8px}
+.shopitem b{font-size:14px}
+.shopitem .sw{display:block;width:48px;height:48px;border-radius:10px;border:3px solid #000}
+.shopitem .own{color:var(--go);font-weight:800;font-size:14px}
+
+/* Word Kaiju fight: HP bar, sneeze, special-move cut-in. Movement only: nothing blinks or flashes. */
+.bossbar{position:absolute;left:10px;top:10px;z-index:4;width:min(300px,42%);background:rgba(20,8,34,.85);border:3px solid #000;border-radius:12px;padding:4px 12px 8px;color:#fff;text-align:left}
+.bossbar[hidden]{display:none}
+.bossbar b{font:400 clamp(16px,2.6vw,24px) var(--f-display);letter-spacing:.05em}
+.bossbar .ja{display:inline;margin-left:8px;color:#e6d4ff}
+.bossbar .hp{height:16px;background:#3a2a50;border:2px solid #000;border-radius:8px;overflow:hidden;margin-top:3px}
+.bossbar .hp i{display:block;height:100%;background:linear-gradient(#ff7a5a,#d2452f);transition:width .5s ease-out}
+.bang-band .bossart{margin:6px auto 0;width:max-content}
+.kt-kaiju{left:50%;bottom:0;animation:kt-kaiju 2.3s ease-in-out both}
+@keyframes kt-kaiju{0%{transform:translate(-50%,110%)}25%{transform:translate(-50%,0)}35%{transform:translate(-50%,0) scale(1.12,.9)}45%,70%{transform:translate(-50%,-10px) scale(.96,1.06)}100%{transform:translate(-50%,110%)}}
+.cutin{position:absolute;inset:0;z-index:7;overflow:hidden;border-radius:12px;pointer-events:none;display:flex;align-items:center}
+.cutin[hidden]{display:none}
+.cut-lines{position:absolute;left:0;top:50%;width:300%;aspect-ratio:1;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.28) 0deg 2deg,rgba(0,0,0,.18) 2deg 9deg)}
+.cut-band{position:relative;width:100%;height:46%;background:linear-gradient(90deg,#ff5a3c,#ffcf3f);border-block:6px solid #000;transform:skewY(-6deg);display:flex;align-items:center;gap:4%;padding:0 5%;box-shadow:0 10px 0 rgba(0,0,0,.4)}
+.cut-face{height:125%;aspect-ratio:1;transform:skewY(6deg);border:5px solid #000;border-radius:14px;overflow:hidden;background:#ffcf3f;flex:none}
+.cut-face img{width:100%;height:100%;image-rendering:pixelated;display:block}
+.cut-txt{transform:skewY(6deg)}
+.cut-txt b{display:block;font:400 clamp(24px,5.5vw,60px)/1 var(--f-display);color:#fff;-webkit-text-stroke:3px #000;paint-order:stroke fill;text-shadow:5px 5px 0 #000}
+.cut-txt .ja{display:block;font-weight:800;font-size:18px;color:#2a1000;opacity:1;margin-top:6px}
+.cutin.in .cut-band{animation:cut-in .32s cubic-bezier(.2,1.4,.4,1) both}
+.cutin.in .cut-face{animation:face-in .5s ease-out both}
+.cutin.out .cut-band{animation:cut-out .3s ease-in both}
+@keyframes cut-in{from{transform:skewY(-6deg) translateX(100%)}to{transform:skewY(-6deg)}}
+@keyframes face-in{from{transform:skewY(6deg) translateX(-220%)}to{transform:skewY(6deg)}}
+@keyframes cut-out{to{transform:skewY(-6deg) translateX(-110%)}}
+.rankup{position:relative;overflow:hidden;border-radius:12px;background:var(--kaiju);border:3px solid #000;padding:18px 10px;min-height:200px;display:flex;align-items:center;justify-content:center}
+.ru-in{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px}
+.ru-in small{font:400 22px var(--f-display);color:var(--accent);letter-spacing:.08em}
+.ru-in b{font:400 clamp(28px,6vw,48px)/1 var(--f-display);color:#fff;-webkit-text-stroke:3px #000;paint-order:stroke fill;text-shadow:4px 4px 0 #000}
+.ru-in .ja{color:#fff;font-weight:800;font-size:16px;opacity:1}
 </style>
 
 <div class="app">
@@ -413,12 +459,14 @@ body.jp .kq-prompt .ja{color:#6b6358}
       <div>
         <h1 class="logo-t">WORD<br>ISLAND</h1>
         <p class="logo-sub">The Word Kaiju swallowed every word on the islands. Get them back!<span class="ja">ワード怪獣が島のことばを全部のみこんだ！取りもどそう！</span></p>
+        <div class="rankchip" id="rankChip"></div>
       </div>
       <div class="hero-3d" id="heroStage"></div>
     </div>
     <div class="homebtns">
       <button class="btn primary big" id="goAdventure" type="button">Adventure<span class="ja">ぼうけん</span></button>
       <button class="btn big" id="goMaker" type="button">Critter Maker<span class="ja">キャラをつくる</span></button>
+      <button class="btn big" id="goShop" type="button">Shell Shop<span class="ja">貝のおみせ</span></button>
     </div>
     <div class="homegrid">
       <div class="panel">
@@ -455,7 +503,9 @@ body.jp .kq-prompt .ja{color:#6b6358}
       <div id="playStage"></div>
       <div class="bubble" id="bubble"></div>
       <div class="pops" id="pops"></div>
+      <div class="bossbar" id="bossBar" hidden></div>
       <div class="bang" id="bang" hidden></div>
+      <div class="cutin" id="cutin" hidden></div>
       <div class="kit-trap-layer" id="trapLayer"></div>
     </div>
     <p class="helpline"><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> or <kbd>WASD</kbd> walk · click the ground to walk there · <kbd>Space</kbd> hear it again<span class="ja">矢印キーで歩く・地面をクリック・スペースでもう一度聞く</span></p>
@@ -484,6 +534,21 @@ body.jp .kq-prompt .ja{color:#6b6358}
           <div><small class="note">Critter code (share it with friends!)<span class="ja">キャラコード（友だちに教えよう！）</span></small><div class="savecode" id="critCode">----</div></div>
           <div id="critEntry"></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="shop" hidden>
+    <div class="shop">
+      <div class="maker-left">
+        <div class="maker-stage" id="shopStage"></div>
+        <p class="note" id="shopNote" style="text-align:center"></p>
+        <div class="rowbtns"><button class="btn" id="shopBack" type="button">Back<span class="ja">もどる</span></button></div>
+      </div>
+      <div>
+        <div class="panel"><h3>Shell Shop<span class="ja">貝のおみせ</span></h3>
+          <p class="note">Spend the shells you banked. Things you buy are yours forever.<span class="ja">ためた貝で買い物しよう。買ったものはずっと自分のもの。</span></p></div>
+        <div class="shopgrid" id="shopGrid"></div>
       </div>
     </div>
   </section>
@@ -1667,7 +1732,7 @@ pics.addAll({
 "ui:seagull2":p=>{p.poly([4,24,9,20,14,17,10,22],C.white);p.poly([28,24,23,20,18,17,22,22],C.white);p.ell(16,17,6,4,C.white);p.circ(21,13,3,C.white);p.circ(22,12.5,0.8,O,null);p.poly([23.5,13,28,14,23.5,15],C.yellow);p.line([4,24,7,22],C.grey,1.2);p.line([28,24,25,22],C.grey,1.2);p.line([14,21,13,24],C.orange,0.8);p.line([18,21,19,24],C.orange,0.8);},
 "ui:shell":p=>{p.poly([16,27,3,14,6,8,11,5,16,4,21,5,26,8,29,14],"#ffc0c8");for(let i=-2;i<=2;i++)p.line([16,26,16+i*5.5,6+Math.abs(i)*1.6],"#e88a9a",0.8);p.poly([12,27,20,27,18,30,14,30],"#ffc0c8");p.line([8,9,10,8],C.white,1);},
 "ui:island":p=>{p.ell(16,24,15,5,C.water,null);p.ell(16,22,11,4,"#f0d890");p.line([16,22,14,9],C.brown,1.6);[[-0.3,7],[0.5,6],[2.6,7],[3.3,6]].forEach(([a,l])=>p.ell(14+Math.cos(a)*l/1.5,9+Math.sin(a)*l/3-1,l/1.2,1.8,C.leaf,O,a));},
-"ui:kaiju":p=>{p.poly([8,30,6,18,9,9,15,5,22,8,24,15,27,22,30,26,24,26,22,30],"#5bbf6a");p.poly([5,16,2,12,6,12,4,8,8,9],"#3d9a4a");p.circ(13,11,2.2,C.white);p.circ(19,11,2.2,C.white);p.dot(13.5,11.5);p.dot(19.5,11.5);p.line([11,8,14,9],O,1);p.line([21,8,18,9],O,1);p.line([12,16,14,17,16,16,18,17,20,16],O,0.8);p.poly([13,16.5,14,18.5,15,16.5],C.white,null);p.ell(15,24,5,4,"#c8f0c0",null);},
+"ui:kaiju":p=>{p.poly([8,30,6,18,9,9,15,5,22,8,24,15,27,22,30,26,24,26,22,30],"#8a4fe0");p.poly([5,16,2,12,6,12,4,8,8,9],"#4b2a78");p.circ(13,11,2.2,C.white);p.circ(19,11,2.2,C.white);p.dot(13.5,11.5);p.dot(19.5,11.5);p.line([11,8,14,9],O,1);p.line([21,8,18,9],O,1);p.line([12,16,14,17,16,16,18,17,20,16],O,0.8);p.poly([13,16.5,14,18.5,15,16.5],C.white,null);p.ell(15,24,5,4,"#d8c2ff",null);},
 "ui:chest":p=>{p.rect(4,14,24,14,C.wood);p.poly([4,14,6,6,26,6,28,14],"#d89a5a");p.rect(4,13,24,2,C.gold,null);p.rect(14,12,4,6,C.gold);p.rect(15.3,14.5,1.4,2,O,null);p.line([4,22,28,22],C.dark,0.6);},
 "ui:cart":p=>{p.line([2,6,7,6,10,22,26,22],O,1.4);p.poly([8,9,29,9,26,19,10,19],C.white);p.line([12,9,13,19],O,0.6);p.line([18,9,18,19],O,0.6);p.line([24,9,23,19],O,0.6);p.circ(12,26,2.2,C.dark);p.circ(24,26,2.2,C.dark);},
 "ui:ear":p=>{p.g.beginPath();p.g.ellipse(14,16,8,12,0,0,Math.PI*2);p.g.fillStyle=C.skin;p.g.fill();p.g.strokeStyle="#2a2630";p.g.lineWidth=1;p.g.stroke();p.arc(14,14,4,Math.PI*1.1,Math.PI*2.3,"#d8a080",1.4);p.arc(25,16,3,-0.9,0.9,C.blue,1.2);p.arc(25,16,6,-0.9,0.9,C.blue,1.2);},
@@ -1681,6 +1746,19 @@ pics.addAll({
 "ui:trophy":p=>{p.poly([8,4,24,4,22,16,10,16],C.gold);p.arc(8,9,4,Math.PI*0.5,Math.PI*1.5,C.gold,1.6);p.arc(24,9,4,-Math.PI*0.5,Math.PI*0.5,C.gold,1.6);p.rect(14,16,4,6,C.gold);p.rect(9,22,14,5,C.wood);},
 "ui:boat":p=>{p.poly([3,20,29,20,24,28,8,28],C.wood);p.line([16,4,16,20],C.dark,1);p.poly([17,5,27,17,17,17],C.white);p.poly([15,8,7,17,15,17],"#ffd6d6");},
 "ui:lock":p=>{p.arc(16,13,6,Math.PI,Math.PI*2,C.grey,2.4);p.line([10,13,10,16],C.grey,2.4);p.line([22,13,22,16],C.grey,2.4);p.rrect(7,15,18,14,2,C.gold);p.circ(16,21,2,O,null);p.rect(15.2,21,1.6,4,O,null);},
+/* shell shop sprites */
+"shop:pirate":p=>{p.poly([2,20,8,9,16,6,24,9,30,20,16,16],C.black);p.circ(16,12,2.4,C.white,null);p.line([13,15,19,15],C.white,1);p.line([2,20,16,16,30,20],C.gold,1.2);},
+"shop:chef":p=>{p.rect(9,19,14,8,C.white);[[10,13],[16,10],[22,13],[13,16],[19,16]].forEach(([x,y])=>p.circ(x,y,5,C.white));p.line([9,22,23,22],"#ddd",1);},
+"shop:kabuto":p=>{p.pie(16,22,11,Math.PI,Math.PI*2,"#1c2350");p.rect(3,21,26,4,"#1c2350");p.poly([13,15,6,2,10,3,15,13],C.gold);p.poly([19,15,26,2,22,3,17,13],C.gold);p.circ(16,15,2.5,C.gold);},
+"shop:ninja":p=>{p.rect(3,12,26,7,C.black);p.circ(16,15.5,2.6,"#d8dde6");p.poly([26,14,31,24,28,25,25,17],C.black);p.poly([25,15,27,27,24,27,23,17],C.black);},
+"shop:beret":p=>{p.ell(16,18,13,6,C.red);p.line([16,12,17,8],C.red,1.6);p.line([4,20,28,20],"#a02a22",1);},
+"shop:umbrella":p=>{p.bg("#f0d890");p.line([16,10,16,31],C.grey,1.4);p.pie(16,13,13,Math.PI,Math.PI*2,C.red);p.pie(16,13,13,Math.PI*1.33,Math.PI*1.66,C.white,null);p.pie(16,13,13,Math.PI,Math.PI*1.12,C.white,null);p.pie(16,13,13,Math.PI*1.88,Math.PI*2,C.white,null);p.line([3,13,29,13],O,1);},
+"shop:lantern":p=>{p.rect(13,1,6,3,C.black);p.ell(16,15,9,11,C.red);[9,13,17,21].forEach(y=>p.line([8,y,24,y],"#a02a22",0.8));p.rect(13,26,6,3,C.black);p.text("祭",16,15,8,C.white);},
+"shop:flags":p=>{p.bg(C.sky);p.line([2,6,16,12,30,6],O,0.8);[[4,7,C.red],[9,9,C.yellow],[14,11,C.blue],[19,10,C.green],[24,8,C.pink]].forEach(([x,y,c])=>p.poly([x,y,x+4,y+1.5,x+1,y+8],c));p.ground(C.green,27);},
+"shop:snowman":p=>{p.bg("#dfe8f7");p.circ(16,23,8,C.white);p.circ(16,11,6,C.white);p.rect(11,2,10,4,C.black);p.rect(9,5,14,2,C.black);p.dot(14,10);p.dot(18,10);p.poly([16,12,21,13,16,14],C.orange);p.line([10,17,22,17],C.red,1.6);},
+"shop:lighthouse":p=>{p.bg(C.sky);p.water(26);p.poly([11,26,13,8,19,8,21,26],C.white);p.rect(12,14,8,4,C.red,null);p.rect(12,21,9,3,C.red,null);p.rect(12,3,8,5,C.yellow);p.poly([11,3,16,0,21,3],C.red);p.line([20,5,30,2],C.yellow,1.2);p.line([20,5,30,8],C.yellow,1.2);},
+"ui:shop":p=>{p.rect(4,12,24,16,C.cream);p.poly([2,12,6,4,26,4,30,12],C.red);for(let i=0;i<4;i++)p.rect(4+i*7,4,3.5,8,C.white,null);p.rect(7,16,8,8,C.sky);p.door(19,17,6,11,C.wood);},
+"ui:crown":p=>{p.poly([4,24,4,8,10,15,16,5,22,15,28,8,28,24],C.gold);p.circ(16,19,2.2,C.red);p.circ(9,20,1.6,C.blue);p.circ(23,20,1.6,C.green);},
 /* trap sprites */
 "trap:glove":p=>{p.circ(14,16,10,C.red);p.ell(25,14,4.5,6,C.red,O,0.4);p.rect(5,22,14,8,C.white);p.line([10,12,16,10],"#ff8080",1.2);},
 "trap:chicken":p=>{p.ell(16,20,10,8,C.white);p.circ(21,10,5,C.white);p.poly([22,4,24,1,25,4,27,2,26,6],C.red);p.poly([25,10,30,11,25,13],C.yellow);p.dot(22,9);p.ell(25,15,1.2,2,C.red,null);p.line([13,28,12,31],C.orange,1);p.line([19,28,20,31],C.orange,1);},
@@ -1829,7 +1907,8 @@ Kit3D.follow=function(cam,target,offset,ease){const want=target.position.clone()
    so reordering would change students' saved critters. */
 Kit3D.PALETTE=[0xffa860,0xf4f0ff,0xb07a4f,0x7fd36b,0xffd84a,0xffffff,0x2a2630,0x9aa0aa,
   0xff9db5,0xe8483f,0x5aa0ff,0x9fe0ff,0xa77bff,0xd6c2ff,0x9fefd0,0x2fb5a5,
-  0x34407a,0xffd2b0,0xe0b07a,0x6b4a33,0xffc23a,0xc6f26b,0xe85ab0,0xfff3a0];
+  0x34407a,0xffd2b0,0xe0b07a,0x6b4a33,0xffc23a,0xc6f26b,0xe85ab0,0xfff3a0,
+  0xd8dde6,0xb0203a,0x1c2350,0xffc8dc,0xffb020,0x2e7d43];
 Kit3D.PARTS={
   body:["round","tall","chubby","tiny"],
   ears:["none","cat","bunny","bear","fox","pointy","floppy","mouse","frills"],
@@ -1840,7 +1919,7 @@ Kit3D.PARTS={
   back:["none","wings","bat","shell","spikes","cape","leaf"],
   head:["none","horn","horns","antenna","sprout","flame","crest","halo","tuft"],
   pattern:["none","stripes","spots","mask","panda","socks","tips"],
-  hat:["none","cap","crown","party","bow","straw","wizard","headband","flower"]
+  hat:["none","cap","crown","party","bow","straw","wizard","headband","flower","pirate","chef","kabuto","ninja","beret"]
 };
 /* English + Japanese names for the Critter Maker buttons */
 Kit3D.PART_NAMES={
@@ -1969,6 +2048,13 @@ Kit3D.critter=function(o){
   if(ht==="wizard"){sadd(Cyl(0.5,0.5,0.04,10),Kit3D.mat(0x34407a),0,1.12,0);sadd(Cone(0.3,0.75,6),Kit3D.mat(0x34407a),0,1.5,-0.05).rotation.x=-0.15;}
   if(ht==="headband"){const h=sadd(new THREE.TorusGeometry(0.56,0.05,4,12),Mw,0,0.98,0,1,1,1);h.rotation.x=Math.PI/2;h.scale.set(1.05,1.02,1);sadd(S(0.07,6,4),Mr,0,1.0,0.6,1,1,0.4);}
   if(ht==="flower"){const g=new THREE.Group();shell.add(g);g.position.set(0.3,1.1-0.62,0.15);for(let i=0;i<5;i++){const a=i/5*Math.PI*2;add(g,S(0.07,4,3),Mp,Math.cos(a)*0.09,Math.sin(a)*0.09,0);}add(g,S(0.05,4,3),Mg,0,0,0.03);}
+  if(ht==="pirate"){const Mb=Kit3D.mat(0x2a2630);sadd(Cyl(0.5,0.5,0.05,3),Mb,0,1.12,0.02).rotation.y=Math.PI;sadd(S(0.3,8,4),Mb,0,1.16,0,1,0.6,1);sadd(S(0.07,5,4),Mw,0,1.26,0.27,1,1,0.4);}
+  if(ht==="chef"){sadd(Cyl(0.27,0.27,0.18,8),Mw,0,1.18,0);[[-0.13,0],[0.13,0],[0,0.1],[0,-0.1],[0,0]].forEach(([x,z])=>sadd(S(0.18,6,4),Mw,x,1.38,z));}
+  if(ht==="kabuto"){const Mn=Kit3D.mat(0x1c2350);sadd(new THREE.SphereGeometry(0.5,10,5,0,Math.PI*2,0,Math.PI/2),Mn,0,1.0,0,1,0.75,1);sadd(Cyl(0.6,0.62,0.05,10),Mn,0,0.98,-0.05);
+    [-1,1].forEach(sg=>{const h=sadd(Cone(0.06,0.55,4),Mg,sg*0.26,1.42,0.34);h.rotation.z=-sg*0.75;});sadd(S(0.07,5,4),Mg,0,1.24,0.42);}
+  if(ht==="ninja"){const h=sadd(new THREE.TorusGeometry(0.56,0.06,4,12),Kit3D.mat(0x2a2630),0,0.98,0);h.rotation.x=Math.PI/2;h.scale.set(1.05,1.02,1);
+    [-1,1].forEach(sg=>{const t=sadd(Cone(0.05,0.3,3),Kit3D.mat(0x2a2630),sg*0.12,0.95,-0.66);t.rotation.x=Math.PI/2+0.4;t.rotation.z=sg*0.4;});sadd(Cyl(0.1,0.1,0.02,6),Kit3D.mat(0xd8dde6),0,1.0,0.6).rotation.x=Math.PI/2;}
+  if(ht==="beret"){const b=sadd(Cyl(0.42,0.38,0.12,10),Ma,0.06,1.2,0);b.rotation.z=-0.25;sadd(Cyl(0.02,0.02,0.08,4),Ma,0.1,1.3,0);}
   /* arms + feet */
   const LM=pat==="panda"?Ma:M,FM=(pat==="panda"||pat==="socks")?Ma:Md;
   const armL=add(body,S(0.13,6,4),LM,-0.58*BS[0],0.5,0.1),armR=add(body,S(0.13,6,4),LM,0.58*BS[0],0.5,0.1);
@@ -2033,6 +2119,8 @@ window.Kit3D=Kit3D;
         Let's Try (grades 3-4)  "Shopping list!"  hear 2-3 words, collect them in order
         Junior Sunshine (5-6)   "Spell it!"       collect the letters in order
         Sunshine (JHS)          "Build it!"       collect the words of a unit phrase in order
+   The last island of each book is the Word Kaiju's lair: a boss fight with words from the whole book.
+   Shells buy capsules (Critter Maker) and things in the Shell Shop; island stars give rank titles.
    Stakes: shells in your backpack can be stolen by a seagull when you make a mistake.
    Banked shells, stars, critters and parts are never lost.
    Saving: automatic on this computer + a save code to carry it to another computer.
@@ -2054,11 +2142,12 @@ const st=Kit.store("wia");
    --------------------------------------------------------------------- */
 Object.assign(Kit3D?Kit3D.CRITTERS:{},{
   koala:  {name:["Koala","コアラ"],      c:[7,5,6],   ears:"mouse", mouth:"snout", cheeks:"pink"},
-  axolotl:{name:["Axolotl","ウーパールーパー"],c:[8,17,22],ears:"frills",eyes:"dot",mouth:"smile",tail:"fish"}
+  axolotl:{name:["Axolotl","ウーパールーパー"],c:[8,17,22],ears:"frills",eyes:"dot",mouth:"smile",tail:"fish"},
+  kaiju:  {name:["Mini Kaiju","ミニ怪獣"],c:[12,13,20],eyes:"big",mouth:"fang",tail:"dragon",back:"spikes",head:"horns",body:"chubby"}
 });
 const STARTERS=["cat","bunny","bear","chick"];                /* free from the start */
 const UNLOCKS=[{at:1,kind:"shiba"},{at:2,kind:"frog"},{at:3,kind:"panda"},{at:4,kind:"koala"},
-  {at:5,kind:"penguin"},{at:6,kind:"axolotl"},{at:7,kind:"tanuki"},{at:9,kind:"dragon"}];   /* at = islands cleared */
+  {at:5,kind:"penguin"},{at:6,kind:"axolotl"},{at:7,kind:"tanuki"},{at:9,kind:"dragon"},{boss:1,kind:"kaiju"}];   /* at = islands cleared, boss = Word Kaiju beaten */
 
 /* Critter Maker parts. FREE = available at once. GACHA = what the capsule machine gives, in this order.
    A part in neither list is free. Only ever add to the END of GACHA (save codes count capsules opened). */
@@ -2074,6 +2163,42 @@ const GACHA=[["eyes","sparkle"],["color",8],["hat","crown"],["ears","fox"],["tai
   ["cheeks","accent"],["eyes","frog"],["color",21],["hat","flower"],["back","leaf"],["color",22],["head","tuft"],["color",23]];
 const CAPSULE=20;            /* shells per capsule */
 const MAXI=16;               /* islands per book that a save code can hold (units + boss) */
+/* ---------------------------------------------------------------------
+   WORD KAIJU: one boss per book, waiting at the end of its sea map. Names are eating sounds.
+   Beat it with words from the whole book. It never wins: a wrong answer only makes it sneeze.
+   --------------------------------------------------------------------- */
+const KAIJU=[{name:["MOGU-MOGU","モグモグ"],color:0x7b3fd1},{name:["PAKU-PAKU","パクパク"],color:0x2f9e6a},{name:["GABU-GABU","ガブガブ"],color:0xd2452f},
+  {name:["BAKU-BAKU","バクバク"],color:0x2f6fd1},{name:["MUSHA-MUSHA","ムシャムシャ"],color:0xd1802f},{name:["GATSU-GATSU","ガツガツ"],color:0x9e2f7a},
+  {name:["GOKKUN","ゴックン"],color:0x3a3348}];
+const kaijuOf=b=>KAIJU[(b<0?0:b)%KAIJU.length];
+const MOVES=[["WORD BEAM!!","ことばビーム！！"],["SUPER SHELL STORM!!","スーパー貝ストーム！！"],["FINAL KOTOBA BLAST!!!","ファイナル・コトバ・ブラスト！！！"]];
+
+/* ---------------------------------------------------------------------
+   SHELL SHOP. Only ever add to the END, 16 items at most (save codes remember what you bought by position).
+   type "part" unlocks a Critter Maker part or color; type "deco" puts a decoration on your home island.
+   --------------------------------------------------------------------- */
+const SHOP=[
+  {type:"part",part:"hat",val:"pirate",price:120,icon:"shop:pirate",name:["Pirate hat","かいぞくのぼうし"]},
+  {type:"part",part:"hat",val:"chef",price:100,icon:"shop:chef",name:["Chef hat","コックぼうし"]},
+  {type:"part",part:"hat",val:"kabuto",price:250,icon:"shop:kabuto",name:["Samurai helmet","かぶと"]},
+  {type:"part",part:"hat",val:"ninja",price:150,icon:"shop:ninja",name:["Ninja headband","にんじゃのはちまき"]},
+  {type:"part",part:"hat",val:"beret",price:80,icon:"shop:beret",name:["Beret","ベレーぼう"]},
+  {type:"part",part:"color",val:24,price:90,name:["Silver","シルバー"]},
+  {type:"part",part:"color",val:25,price:90,name:["Crimson","しんく"]},
+  {type:"part",part:"color",val:26,price:90,name:["Midnight","ミッドナイト"]},
+  {type:"part",part:"color",val:27,price:90,name:["Sakura","さくら色"]},
+  {type:"part",part:"color",val:28,price:90,name:["Mango","マンゴー"]},
+  {type:"part",part:"color",val:29,price:90,name:["Forest","もり色"]},
+  {type:"deco",val:"umbrella",price:60,icon:"shop:umbrella",name:["Beach umbrella","ビーチパラソル"]},
+  {type:"deco",val:"lantern",price:80,icon:"shop:lantern",name:["Festival lantern","ちょうちん"]},
+  {type:"deco",val:"flags",price:70,icon:"shop:flags",name:["Party flags","パーティーのはた"]},
+  {type:"deco",val:"snowman",price:100,icon:"shop:snowman",name:["Snowman","雪だるま"]},
+  {type:"deco",val:"lighthouse",price:200,icon:"shop:lighthouse",name:["Lighthouse","とうだい"]}
+];
+/* rank titles: points = every island star you have + 10 for each Word Kaiju you beat */
+const RANKS=[{at:0,t:["Beach Beginner","ビーチのしんじん"]},{at:3,t:["Shell Seeker","貝さがし"]},{at:8,t:["Island Hopper","島わたり"]},
+  {at:15,t:["Word Explorer","ことばの探検家"]},{at:25,t:["Sea Captain","海の船長"]},{at:40,t:["Kaiju Hunter","怪獣ハンター"]},
+  {at:60,t:["Word Hero","ことばのヒーロー"]},{at:90,t:["Word Legend","ことばの伝説"]}];
 
 const BOOKS=Kit.words.books();
 const gradeMode=b=>{const g=(BOOKS[b]||{}).grade||"";return /^ES[34]$/.test(g)?"list":/^ES[56]$/.test(g)?"spell":"phrase";};
@@ -2084,19 +2209,30 @@ const FIND={name:["Find it!","見つけよう！"],how:["Listen and walk to the 
 
 /* ---------- codes ---------- */
 const CKEYS=()=>window.Kit3D?Object.keys(Kit3D.CRITTERS):[];
-const saveCodec=Kit.codec({game:"word-island-save",fields:[{k:"book",n:8},...Array.from({length:MAXI},(_,i)=>({k:"s"+i,n:4})),{k:"shells",n:4096},{k:"caps",n:128},{k:"pick",n:64}]});
+/* save codes. Version 2 adds the shell shop; version 1 codes still load. */
+const saveCodec1=Kit.codec({game:"word-island-save",fields:[{k:"book",n:8},...Array.from({length:MAXI},(_,i)=>({k:"s"+i,n:4})),{k:"shells",n:4096},{k:"caps",n:128},{k:"pick",n:64}]});
+const saveCodec2=Kit.codec({game:"word-island-save2",fields:[{k:"book",n:8},...Array.from({length:MAXI},(_,i)=>({k:"s"+i,n:4})),{k:"shells",n:4096},{k:"caps",n:65},{k:"pick",n:48},{k:"shop",n:65536}]});
+const saveCodec={encode:S=>saveCodec2.encode(S),decode:c=>saveCodec2.decode(c)||saveCodec1.decode(c),length:saveCodec2.length+4};
 const critCodec=window.Kit3D?Kit.codec({game:"word-island-critter",fields:Kit3D.critterFields}):null;
 const classCodec=Kit.codec({game:"word-island-class",fields:[...Kit.words.fields,{k:"stage",n:4},{k:"rounds",n:3},{k:"hint",n:2}]});
 const ROUNDS=[3,5,8],STAGES=[["Whole island","島ぜんぶ"],["Find it only","見つけようだけ"],["Collect only","集めようだけ"]];
 
 /* ---------- progress (auto-saved on this computer) ---------- */
-const P=Object.assign({book:-1,stars:{},shells:0,caps:0,pick:"cat",custom:null,story:false},st.get("save",{}));
+const P=Object.assign({book:-1,stars:{},shells:0,caps:0,pick:"cat",custom:null,story:false,shop:[],seen:{}},st.get("save",{}));
+if(!P.seen.mid)P.seen.mid={};
 if(!P.custom)P.custom=Object.assign({},window.Kit3D?Kit3D.CRITTERS.cat:{});
 const starsOf=b=>{const a=P.stars[b]||[];return Array.from({length:MAXI},(_,i)=>a[i]||0);};
 const cleared=()=>Object.values(P.stars).reduce((n,a)=>n+(a||[]).filter(x=>x>0).length,0);
+const bossSlot=b=>unitsOf(b).length;
+const bossBeaten=b=>starsOf(b)[bossSlot(b)]>0;
+const bossWins=()=>Object.keys(P.stars).filter(b=>BOOKS[b]&&bossBeaten(+b)).length;
+const rankPts=()=>Object.values(P.stars).reduce((n,a)=>n+(a||[]).reduce((x,y)=>x+(y||0),0),0)+10*bossWins();
+const rankOf=pts=>RANKS.filter(r=>pts>=r.at).pop();
+const owns=i=>(P.shop||[]).includes(i);
 function save(){st.set("save",P);renderShells();renderSaveCode();}
-function saveCode(){if(P.book<0)return "";const S={book:P.book,shells:Math.min(4095,P.shells),caps:Math.min(127,P.caps),pick:0};
-  starsOf(P.book).forEach((v,i)=>S["s"+i]=v);const k=CKEYS().indexOf(P.pick);S.pick=P.pick==="custom"||k<0?0:Math.min(63,k+1);
+function saveCode(){if(P.book<0)return "";const S={book:P.book,shells:Math.min(4095,P.shells),caps:Math.min(64,P.caps),pick:0,shop:0};
+  starsOf(P.book).forEach((v,i)=>S["s"+i]=v);const k=CKEYS().indexOf(P.pick);S.pick=P.pick==="custom"||k<0?0:Math.min(47,k+1);
+  (P.shop||[]).forEach(i=>{if(i<16)S.shop|=1<<i;});
   return saveCodec.encode(S);}
 const fmt4=c=>{const g=c.match(/.{1,4}/g)||[];if(g.length>1&&g[g.length-1].length<2)g[g.length-2]+=g.pop();return g.join("-");};
 function renderShells(){$("#tbShells").textContent=P.shells;}
@@ -2105,12 +2241,15 @@ function loadSave(d){const S=d.S,b=S.book;if(!BOOKS[b])return false;
   /* merge: keep the best of this computer and the code, so nothing is ever lost */
   const mine=starsOf(b);P.stars[b]=mine.map((v,i)=>Math.max(v,S["s"+i]||0));
   P.shells=Math.max(P.shells,S.shells);P.caps=Math.max(P.caps,S.caps);P.book=b;
+  for(let i=0;i<16;i++)if((S.shop||0)&(1<<i)&&!owns(i))P.shop=(P.shop||[]).concat(i);
   if(S.pick>0&&CKEYS()[S.pick-1])P.pick=CKEYS()[S.pick-1];
   save();return true;}
 
 /* ---------- unlock rules ---------- */
-function critterOpen(k){if(STARTERS.includes(k))return true;const u=UNLOCKS.find(x=>x.kind===k);return !u||cleared()>=u.at;}
-function partOpen(part,val){if((FREE[part]||[]).includes(val))return true;const i=GACHA.findIndex(g=>g[0]===part&&g[1]===val);return i<0||i<P.caps;}
+function critterOpen(k){if(STARTERS.includes(k))return true;const u=UNLOCKS.find(x=>x.kind===k);return !u||(u.boss?bossWins()>=u.boss:cleared()>=u.at);}
+const shopIndex=(part,val)=>SHOP.findIndex(x=>x.type==="part"&&x.part===part&&x.val===val);
+function partOpen(part,val){if((FREE[part]||[]).includes(val))return true;const si=shopIndex(part,val);if(si>=0)return owns(si);
+  const i=GACHA.findIndex(g=>g[0]===part&&g[1]===val);return i<0||i<P.caps;}
 const myRecipe=()=>P.pick==="custom"?P.custom:(window.Kit3D&&Kit3D.CRITTERS[P.pick])||Kit3D.CRITTERS.cat;
 
 Kit.setupToggles(st,{});
@@ -2119,6 +2258,7 @@ const scr=Kit.screens({onShow(id){
   if(id==="home")renderHome();
   if(id==="map")showMap();
   if(id==="maker")openMaker();
+  if(id==="shop")openShop();
   if(id==="teacher"){teach.slot.appendChild(tpanel);renderTeacherSettings();teach.refresh();}
 }});
 $("#goHome").onclick=()=>scr.show("home");
@@ -2162,6 +2302,22 @@ function decorate(group,i,radius,count,rng){const T=themeOf(i);
     const t=T.palm?palm(h):Kit3D.tree({h,color:T.tree});t.position.set(Math.cos(a)*r,0,Math.sin(a)*r);t.rotation.y=rng()*6;group.add(t);}}
 
 /* ---------- home ---------- */
+/* decorations from the shell shop, around a small island */
+const DECO_SPOT={umbrella:[1.55,-0.55,0.3],lantern:[-1.7,0.35,0.4],flags:[-0.2,-1.85,0],snowman:[1.35,0.85,-0.4],lighthouse:[0.95,-1.55,0]};
+function decoModel(id){const g=new THREE.Group(),M=c=>Kit3D.mat(c),add=(geo,m,x,y,z)=>{const o=Kit3D.mesh(geo,m);o.position.set(x,y,z);g.add(o);return o;};
+  const Cyl=(a,b,h,n)=>new THREE.CylinderGeometry(a,b,h,n||6),Sph=(r)=>new THREE.SphereGeometry(r,8,6);
+  if(id==="umbrella"){add(Cyl(0.04,0.04,1.4,4),M(0xdddddd),0,0.7,0);add(new THREE.ConeGeometry(0.75,0.35,8),Kit3D.mat(0xffffff,{map:Kit3D.TEX.checker("#e8483f","#ffffff",8)}),0,1.45,0);}
+  if(id==="lantern"){add(Cyl(0.04,0.05,1.5,4),M(0x8a5a33),0,0.75,0);add(new THREE.BoxGeometry(0.5,0.05,0.05),M(0x8a5a33),0.22,1.45,0);
+    add(Sph(0.22),Kit3D.basic(0xff5a4a),0.42,1.12,0).scale.y=1.3;add(Cyl(0.12,0.12,0.06),M(0x2a2630),0.42,1.42,0);}
+  if(id==="flags"){[-0.8,0.8].forEach(x=>add(Cyl(0.035,0.035,1.3,4),M(0x8a5a33),x,0.65,0));
+    [0xe8483f,0xffd84a,0x5aa0ff,0x7fd36b,0xff9db5].forEach((c,i)=>{add(new THREE.ConeGeometry(0.11,0.26,3),M(c),-0.6+i*0.3,1.1-Math.sin((i+0.5)/5*Math.PI)*0.15,0).rotation.x=Math.PI;});}
+  if(id==="snowman"){add(Sph(0.32),M(0xffffff),0,0.3,0);add(Sph(0.22),M(0xffffff),0,0.78,0);add(Cyl(0.13,0.13,0.2,8),M(0x2a2630),0,1.06,0);
+    add(new THREE.ConeGeometry(0.04,0.18,4),M(0xff8a2a),0,0.78,0.25).rotation.x=Math.PI/2;}
+  if(id==="lighthouse"){add(Cyl(0.2,0.3,1.8,8),M(0xffffff),0,0.9,0);add(Cyl(0.27,0.29,0.25,8),M(0xe8483f),0,0.5,0);add(Cyl(0.22,0.24,0.22,8),M(0xe8483f),0,1.25,0);
+    add(Cyl(0.18,0.18,0.3,8),Kit3D.basic(0xffe680),0,1.95,0);add(new THREE.ConeGeometry(0.26,0.3,8),M(0xe8483f),0,2.25,0);}
+  return g;}
+function placeDecos(group,want){group.children.slice().forEach(c=>{group.remove(c);dispose(c);});
+  SHOP.forEach((it,i)=>{if(it.type!=="deco"||!want(i))return;const d=decoModel(it.val),sp=DECO_SPOT[it.val]||[0,-1.5,0];d.position.set(sp[0],0,sp[1]);d.rotation.y=sp[2];d.scale.setScalar(0.85);group.add(d);});}
 let hero=null;
 function heroScene(){
   if(!window.Kit3D)return;
@@ -2169,13 +2325,15 @@ function heroScene(){
   else{const s3=Kit3D.stage({mount:"#heroStage",height:180,fog:false,bg:0x9fd8ff});
     const ground=Kit3D.mesh(new THREE.CylinderGeometry(2.2,2.4,0.4,10),Kit3D.mat(0xffffff,{map:Kit3D.TEX.grass()}));ground.position.y=-0.2;s3.scene.add(ground);
     const p=palm(0.9);p.position.set(-1.5,0,-1.2);s3.scene.add(p);
-    s3.camera.position.set(0,1.7,4.4);s3.camera.lookAt(0,0.8,0);hero={st:s3};
+    s3.camera.position.set(0,1.7,4.4);s3.camera.lookAt(0,0.8,0);hero={st:s3,deco:new THREE.Group()};s3.scene.add(hero.deco);
     Kit3D.loop(s3,(dt,t)=>{hero.c.update(dt,0);hero.c.group.rotation.y=Math.sin(t*0.8)*0.6;if(Math.floor(t*10)%40===0)hero.c.hop();});}
   hero.c=Kit3D.critter({recipe:myRecipe(),scale:1.15});hero.st.scene.add(hero.c.group);
+  placeDecos(hero.deco,owns);
 }
 let classSel=null;   /* a class code's settings, when a student typed one */
 function renderHome(){
   renderShells();renderSaveCode();heroScene();
+  const r=rankOf(rankPts());$("#rankChip").innerHTML=art("ui:crown",26)+`<span>${bi(["Rank: "+r.t[0],"ランク："+r.t[1]])}</span>`;
   const box=$("#classBox");box.hidden=!classSel;
   if(classSel){box.innerHTML=`<div><b>${bi(["Today's class island","今日のクラスの島"])}</b><div>${bi(Kit.words.label(classSel))}</div></div>
     <div class="rowbtns"><button class="btn primary" id="playClass" type="button">${bi(["Play","あそぶ"])}</button><button class="btn small" id="dropClass" type="button">${bi(["Close","とじる"])}</button></div>`;
@@ -2199,12 +2357,25 @@ const STORY=[
   {big:"ui:kaiju",t:["Then the WORD KAIJU woke up... and swallowed them ALL! GULP!","ところが、ワード怪獣が目をさまし…ことばを全部のみこんだ！ゴクン！"],kaiju:true},
   {big:"ui:sword",t:["Only you and your critter can bring the words back. Clear every island, then face the Kaiju!","ことばを取りもどせるのは、きみとキャラだけ。島をクリアして、怪獣にいどめ！"]}
 ];
-function story(then){let i=0;
-  const show=()=>{const s=STORY[i];modal.open(`<div class="story"><div class="big">${art(s.big,96)}</div><p>${bi(s.t)}</p></div>
-    <div class="rowbtns"><button class="btn primary big" type="button" id="stNext">${bi(i<STORY.length-1?["Next","つぎへ"]:["Let's go!","いくぞ！"])}</button></div>`,s.kaiju?"kaiju":"");
+const MID_STORY=k=>[
+  {big:"ui:kaiju",kaiju:true,t:["RUMBLE... RUMBLE... The ground is shaking!","ゴゴゴゴ…地面がゆれている！"]},
+  {big:"ui:kaiju",kaiju:true,t:[k.name[0]+" the Word Kaiju has noticed you! \"Those are MY words!\"","ワード怪獣"+k.name[1]+"が、きみに気づいた！「それはオレのことばだ！」"]},
+  {big:"ui:sword",t:["Keep going! Clear every island, then sail to its lair.","この調子！島を全部クリアして、怪獣のすみかへ行こう！"],last:["Keep going!","がんばる！"]}];
+const BOSS_STORY=k=>[
+  {big:"ui:kaiju",kaiju:true,t:["You found the Kaiju's lair. Something HUGE is snoring...","怪獣のすみかを見つけた。なにか大きなものがいびきをかいている…"]},
+  {big:"ui:kaiju",kaiju:true,t:[k.name[0]+" wakes up! \"MORE WORDS! I'M STILL HUNGRY!\"",k.name[1]+"が目をさました！「もっとことばを！まだハラペコだ！」"]},
+  {big:"ui:sword",t:["Answer with words from the whole book. Every right answer is an attack!","教科書ぜんぶのことばで答えよう。正解するたびにこうげきだ！"],last:["FIGHT!","たたかう！"]}];
+const WIN_STORY=k=>[
+  {big:"ui:kaiju",t:[k.name[0]+" burps... BUUURP! Every word flies back to the islands!","ゲーップ！ことばが全部、島にもどっていく！"]},
+  {big:"ui:kaiju",t:["\"Sorry... I was just SO hungry. Can we be friends?\"","「ごめん…すごくおなかがすいてたんだ。友だちになってくれる？」"]},
+  {big:"ui:crown",t:["A Mini Kaiju joined your team! Find it in the Critter Maker.","ミニ怪獣が仲間になった！キャラメーカーで使えるよ。"],last:["Yay!","やったー！"]}];
+function storyShow(list,then){let i=0;
+  const show=()=>{const s=list[i];modal.open(`<div class="story"><div class="big">${art(s.big,96)}</div><p>${bi(s.t)}</p></div>
+    <div class="rowbtns"><button class="btn primary big" type="button" id="stNext">${bi(i<list.length-1?["Next","つぎへ"]:(s.last||["Let's go!","いくぞ！"]))}</button></div>`,s.kaiju?"kaiju":"");
     if(s.kaiju){Kit.sound.play("boo");$("#modalCard").classList.add("shake");}
-    $("#stNext").onclick=()=>{i++;if(i<STORY.length)show();else{modal.close();P.story=true;save();then&&then();}};};
+    $("#stNext").onclick=()=>{i++;if(i<list.length)show();else{modal.close();then&&then();}};};
   show();}
+function story(then){storyShow(STORY,()=>{P.story=true;save();then&&then();});}
 $("#goAdventure").onclick=()=>{const go=()=>P.story?scr.show("map"):story(()=>scr.show("map"));P.book<0?chooseBook(go):go();};
 $("#changeBook").onclick=()=>chooseBook(()=>renderHome());
 $("#goMaker").onclick=()=>scr.show("maker");
@@ -2215,7 +2386,21 @@ $("#goMaker").onclick=()=>scr.show("maker");
 const M={st:null,book:-1,islands:[],sel:0,boat:null,loop:null};
 const islandPos=i=>new THREE.Vector3(Math.sin(i*1.25)*3.4,0,-i*4.2);
 const unitsOf=b=>(BOOKS[b]||{units:[]}).units.slice(0,MAXI-1);
-const isOpen=(b,i)=>i===0||starsOf(b)[i-1]>0;
+const isOpen=(b,i)=>i===0||(i>=unitsOf(b).length?unitsOf(b).every((u,k)=>starsOf(b)[k]>0):starsOf(b)[i-1]>0);
+/* the Word Kaiju: a big low-poly monster (map, boss fight) */
+function kaijuModel(color){const g=new THREE.Group(),col=new THREE.Color(color),KM=Kit3D.mat(col),DM=Kit3D.mat(col.clone().multiplyScalar(0.5)),
+    BM=Kit3D.mat(col.clone().lerp(new THREE.Color(0xffffff),0.55)),add=(geo,m,x,y,z,p)=>{const o=Kit3D.mesh(geo,m);o.position.set(x,y,z);(p||g).add(o);return o;};
+  const body=add(new THREE.SphereGeometry(1.3,8,6),KM,0,1.3,0);body.scale.set(1,1.15,0.9);
+  add(new THREE.SphereGeometry(0.9,8,6),BM,0,1.1,0.6).scale.set(1,1.1,0.45);
+  for(let k=0;k<4;k++){const sp=add(new THREE.ConeGeometry(0.25,0.7,4),DM,0,2.4-k*0.45,-0.6-k*0.25);sp.rotation.x=-0.5-k*0.25;}
+  [-1,1].forEach(s=>{add(new THREE.SphereGeometry(0.19,6,4),Kit3D.basic(0xffd84a),s*0.45,1.75,1.05);add(new THREE.SphereGeometry(0.08,4,3),Kit3D.basic(0x1a1420),s*0.45,1.75,1.22);
+    const brow=add(new THREE.BoxGeometry(0.4,0.08,0.08),DM,s*0.42,2.0,1.08);brow.rotation.z=s*0.35;
+    add(new THREE.SphereGeometry(0.3,6,4),KM,s*1.25,1.35,0.45);for(let c=0;c<3;c++){const cl=add(new THREE.ConeGeometry(0.06,0.18,4),Kit3D.mat(0xffffff),s*1.3+(c-1)*0.1,1.1,0.62);cl.rotation.x=Math.PI;}
+    add(new THREE.SphereGeometry(0.38,6,4),DM,s*0.65,0.22,0.25).scale.set(1,0.6,1.3);
+    add(new THREE.ConeGeometry(0.1,0.3,4),Kit3D.mat(0xffd84a),s*0.35,2.55,0.3).rotation.z=-s*0.4;});
+  add(new THREE.BoxGeometry(0.9,0.1,0.1),Kit3D.basic(0xffffff),0,1.22,1.16);
+  const tail=add(new THREE.ConeGeometry(0.45,1.6,5),KM,0,0.55,-1.4);tail.rotation.x=-Math.PI/2+0.3;
+  return g;}
 function buildMap(){
   if(!M.st){M.st=Kit3D.stage({mount:"#mapStage",height:220,fog:[14,34],bg:0xa8dcff});
     const wt=Kit3D.TEX.water();wt.repeat.set(30,30);M.wtex=wt;
@@ -2237,16 +2422,12 @@ function buildMap(){
     if(stars[i]){const s=starSprite(stars[i]);s.position.set(0,3.15,0);g.add(s);}
     if(!open)for(let k=0;k<4;k++){const c=Kit3D.mesh(new THREE.SphereGeometry(0.6+R()*0.3,6,4),Kit3D.mat(0xf2f4f8));c.position.set((k-1.5)*0.7,1.3+R()*0.4,(R()-0.5)*0.8);c.scale.y=0.7;g.add(c);}
     M.islands.push({g,hit:g,u,open});});
-  /* the Word Kaiju's island waits at the end (boss fights come in the next update) */
-  const kb=new THREE.Group(),kp=islandPos(units.length);kb.position.copy(kp);kb.position.z-=1;M.root.add(kb);
+  /* the Word Kaiju's lair waits at the end: open once every island has a star */
+  const kb=new THREE.Group(),kp=islandPos(units.length),kOpen=isOpen(P.book,units.length),beat=bossBeaten(P.book);kb.position.copy(kp);kb.userData.idx=units.length;M.root.add(kb);
   const rock=Kit3D.mesh(new THREE.CylinderGeometry(2,2.4,0.8,8),Kit3D.mat(0x3a3348));kb.add(rock);
-  const kaiju=new THREE.Group();kaiju.position.y=0.4;kb.add(kaiju);M.kaiju=kaiju;
-  const KM=Kit3D.mat(0x4b2a78);const body=Kit3D.mesh(new THREE.SphereGeometry(1.3,8,6),KM);body.position.y=1.3;body.scale.set(1,1.15,0.9);kaiju.add(body);
-  for(let k=0;k<4;k++){const sp=Kit3D.mesh(new THREE.ConeGeometry(0.25,0.7,4),Kit3D.mat(0x2a1640));sp.position.set(0,2.4-k*0.45,-0.6-k*0.25);sp.rotation.x=-0.5-k*0.25;kaiju.add(sp);}
-  [-1,1].forEach(s=>{const e=Kit3D.mesh(new THREE.SphereGeometry(0.17,6,4),Kit3D.basic(0xffd84a));e.position.set(s*0.45,1.75,1.05);kaiju.add(e);
-    const p=Kit3D.mesh(new THREE.SphereGeometry(0.07,4,3),Kit3D.basic(0x1a1420));p.position.set(s*0.45,1.75,1.2);kaiju.add(p);});
-  const teeth=Kit3D.mesh(new THREE.BoxGeometry(0.9,0.08,0.1),Kit3D.basic(0xffffff));teeth.position.set(0,1.2,1.15);kaiju.add(teeth);
-  const q=textSprite("?",{size:0.9,fs:24,bg:"#7b3fd1",fg:"#ffffff"});q.position.set(0,3.6,0);kb.add(q);
+  const kaiju=kaijuModel(kaijuOf(P.book).color);kaiju.position.y=0.4;if(beat)kaiju.scale.setScalar(0.6);kb.add(kaiju);M.kaiju=kaiju;
+  const q=beat?starSprite(stars[units.length]):textSprite(kOpen?"!":"?",{size:0.9,fs:24,bg:"#7b3fd1",fg:"#ffffff"});q.position.set(0,beat?3.2:3.6,0);kb.add(q);
+  M.islands.push({g:kb,hit:kb,u:{title:kaijuOf(P.book).name[0],topic:"ワード怪獣 "+kaijuOf(P.book).name[1]},open:kOpen,boss:true});
   /* boat with your critter */
   M.boat=new THREE.Group();M.root.add(M.boat);
   const raft=Kit3D.mesh(new THREE.BoxGeometry(1.4,0.25,1.1),Kit3D.mat(0xffffff,{map:Kit3D.TEX.wood()}));raft.position.y=-0.1;M.boat.add(raft);
@@ -2254,7 +2435,7 @@ function buildMap(){
   const sail=Kit3D.mesh(new THREE.ConeGeometry(0.5,1.1,3),Kit3D.mat(0xfffaf0));sail.position.set(-0.3,1.0,-0.3);sail.scale.z=0.15;M.boat.add(sail);
   M.crit=Kit3D.critter({recipe:myRecipe(),scale:0.7});M.crit.group.position.y=0.05;M.boat.add(M.crit.group);
   const first=units.findIndex((u,i)=>isOpen(P.book,i)&&!stars[i]);
-  M.sel=Math.max(0,Math.min(st.get("sel"+P.book,first<0?units.length-1:first),units.length-1));
+  M.sel=Math.max(0,Math.min(st.get("sel"+P.book,first<0?units.length:first),units.length));
   M.boat.position.copy(boatSpot(M.sel));
 }
 const boatSpot=i=>islandPos(i).add(new THREE.Vector3(2.2,0,0.8));
@@ -2277,20 +2458,21 @@ function showMap(){
 function selectIsland(i,fromClick){const n=M.islands.length;if(i<0||i>=n)return;M.sel=i;st.set("sel"+P.book,i);Kit.sound.play("click");renderMapInfo();
   if(fromClick&&M.islands[i].open&&M._lastClick===i)sail();M._lastClick=i;}
 function renderMapInfo(){
-  const I=M.islands[M.sel];if(!I)return;const s=starsOf(P.book)[M.sel],u=I.u;
-  $("#mapInfo").innerHTML=`<div><small>${bi(["Island "+(M.sel+1)+" of "+M.islands.length,"島 "+(M.sel+1)+" / "+M.islands.length],true)}</small>
+  const I=M.islands[M.sel];if(!I)return;const s=starsOf(P.book)[M.sel],u=I.u,nU=M.islands.length-1,done=starsOf(P.book).slice(0,nU).filter(x=>x>0).length;
+  $("#mapInfo").innerHTML=`<div><small>${I.boss?bi(["The Word Kaiju's lair","ワード怪獣のすみか"],true):bi(["Island "+(M.sel+1)+" of "+nU,"島 "+(M.sel+1)+" / "+nU],true)}</small>
     <h2>${esc(u.title||"Unit "+u.unit)}</h2><span class="ja">${esc(u.topic||"")}</span>
     <div><span class="ministars">${[1,2,3].map(k=>Kit.STAR(s>=k)).join("")}</span></div></div>
     <div class="rowbtns">
       <button class="btn small" id="mPrev" type="button" ${M.sel===0?"disabled":""}>&#9664;</button>
-      ${I.open?`<button class="btn primary big" id="mSail" type="button">${bi(["Set sail!","しゅっぱつ！"])}</button>`
-        :`<span class="lockmsg">${bi(["Clear island "+M.sel+" first","先に島 "+M.sel+" をクリアしよう"])}</span>`}
+      ${I.open?`<button class="btn primary big" id="mSail" type="button">${bi(I.boss?["FIGHT!","たたかう！"]:["Set sail!","しゅっぱつ！"])}</button>`
+        :`<span class="lockmsg">${I.boss?bi(["Clear every island first ("+done+"/"+nU+")","先に島を全部クリアしよう（"+done+"/"+nU+"）"]):bi(["Clear island "+M.sel+" first","先に島 "+M.sel+" をクリアしよう"])}</span>`}
       <button class="btn small" id="mNext" type="button" ${M.sel>=M.islands.length-1?"disabled":""}>&#9654;</button>
       <button class="btn small" id="mHome" type="button">${bi(["Home","ホーム"])}</button></div>`;
   $("#mPrev").onclick=()=>selectIsland(M.sel-1);$("#mNext").onclick=()=>selectIsland(M.sel+1);$("#mHome").onclick=()=>scr.show("home");
   const b=$("#mSail");if(b)b.onclick=sail;
 }
 function sail(){const I=M.islands[M.sel];if(!I||!I.open)return;
+  if(I.boss){startBoss();return;}
   startIsland({book:P.book,from:M.sel,to:M.sel,island:M.sel,stages:["find","collect"],rounds:5,signs:4,hint:0,adventure:true});}
 
 /* =====================================================================
@@ -2303,6 +2485,11 @@ traps.add("seagull",(done,k)=>{const c=k.tc(),n=G.stealN||1;k.layer.classList.ad
   const g=k.el("kt-gull",`<span class="flap">${art("ui:seagull",128)}${art("ui:seagull2",128)}</span>`,{});g.style.setProperty("--tx",(c.x+110-40)+"px");g.style.setProperty("--ty",(c.y+110-60)+"px");
   const l=k.el("kt-loot",art("ui:shell",36),{left:c.x+"px",top:c.y+"px"});l.style.setProperty("--tx",(c.x*0.5)+"px");l.style.setProperty("--ty",(c.y)+"px");
   k.word(["SQUAWK! A seagull took "+n+" shell"+(n>1?"s":"")+"!","カモメに貝を"+n+"こ取られた！"],"50%","8%");k.later(()=>{k.clear();done();},2700);});
+traps.add("sneeze",(done,k)=>{const n=G.stealN||0;k.layer.classList.add("block");Kit.sound.play("achoo");
+  k.el("kt-kaiju",art("ui:kaiju",160),{});
+  k.word(n?["ACHOO!! The Kaiju sneezed away "+n+" shell"+(n>1?"s":"")+"!","ハックション！！貝が"+n+"こ飛ばされた！"]:["ACHOO!! The Kaiju sneezed!","ハックション！！怪獣のくしゃみ！"],"50%","8%");
+  for(let i=0;i<Math.min(n,6);i++){const l=k.el("kt-loot",art("ui:shell",32),{left:(40+i*4)+"%",top:"60%"});l.style.setProperty("--tx",(50+i*25)+"px");l.style.setProperty("--ty",(110+i*12)+"px");}
+  k.later(()=>{k.clear();done();},2400);});
 traps.use(["glove","chicken","soot","water","duck","bear","cat"]);
 const keys=window.Kit3D?Kit3D.move():null;
 let timers=[];const later=(fn,ms)=>{const run=G.run;timers.push(setTimeout(()=>{if(G.run===run&&scr.current==="play")fn();},ms));};
@@ -2319,13 +2506,42 @@ function buildWorld(){
   const deco=new THREE.Group();s3.scene.add(deco);const items=new THREE.Group();s3.scene.add(items);
   s3.camera.position.set(0,5.2,7);
   s3.canvas.addEventListener("pointerdown",e=>{if(G.busy)return;const p=Kit3D.groundPoint(s3,e,0);if(p)G.walkTo=p;});
-  world={st:s3,wtex,island,grass,snow,deco,items,theme:-1};return world;
+  world={st:s3,wtex,water,island,grass,snow,deco,items,theme:-1};return world;
 }
 function themeWorld(i){const W=world;if(W.theme===i)return;W.theme=i;const T=themeOf(i);
   W.island.material.map=T.snow?W.snow:W.grass;W.island.material.needsUpdate=true;
   W.deco.children.slice().forEach(c=>{W.deco.remove(c);dispose(c);});
   const R=Kit.rng("island",i);decorate(W.deco,i,8.1,9,R);
   for(let k=0;k<6;k++){const a=R()*Math.PI*2,r=6.5+R()*1.6,rk=Kit3D.rock({r:0.3+R()*0.3});rk.position.x=Math.cos(a)*r;rk.position.z=Math.sin(a)*r;W.deco.add(rk);}}
+
+/* ---------- Word Kaiju fight ---------- */
+const KZ=-7.2;   /* where the Kaiju stands */
+function startBoss(){const b=P.book,n=unitsOf(b).length,k=kaijuOf(b);
+  const go=()=>startIsland({book:b,from:0,to:n-1,island:n,stages:["find","collect","find"],rounds:4,signs:5,hint:0,adventure:true,boss:true});
+  if(!P.seen.bossIntro)storyShow(BOSS_STORY(k),()=>{P.seen.bossIntro=1;save();go();});else go();}
+function setBossLook(on){const W=world;W.st.scene.background.set(on?0x3a2058:0x9fd8ff);W.island.material.color.set(on?0xb8a6d8:0xffffff);W.water.material.color.set(on?0x9a88d0:0xffffff);
+  if(W.kaiju){W.st.scene.remove(W.kaiju);dispose(W.kaiju);W.kaiju=null;}
+  if(on){W.kaiju=kaijuModel(kaijuOf(G.cfg.book).color);W.kaiju.position.set(0,0,KZ);W.kaiju.scale.setScalar(2);W.st.scene.add(W.kaiju);
+    G.hpMax=G.cfg.stages.reduce((n,k)=>n+(k==="collect"?3:G.cfg.rounds),0);G.hp=G.hpMax;}
+  $("#bossBar").hidden=!on;if(on)bossBar();}
+function bossBar(){const k=kaijuOf(G.cfg.book);
+  $("#bossBar").innerHTML=`<b>${esc(k.name[0])}</b><span class="ja">${k.name[1]}</span><div class="hp"><i style="width:${Math.round(G.hp/G.hpMax*100)}%"></i></div>`;}
+function roundWon(){if(!G.cfg.boss)return;G.hp=Math.max(0,G.hp-1);bossBar();beam(1);G.kjHurt=0.6;Kit.sound.play("boing");}
+/* a beam from your critter to the Kaiju: it grows thin and fades out (no flashing) */
+function beam(size){const W=world,a=G.c.group.position.clone().add(new THREE.Vector3(0,1,0)),b=new THREE.Vector3(0,3.2,KZ),d=b.clone().sub(a);
+  const m=Kit3D.mesh(new THREE.CylinderGeometry(0.16*size,0.16*size,d.length(),6),Kit3D.basic(0xffe14a));m.position.copy(a).add(d.clone().multiplyScalar(0.5));
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());W.st.scene.add(m);G.beams=(G.beams||[]).concat({m,t:0});}
+let PT=null;   /* a small hidden 3D view that takes your critter's portrait for the cut-in */
+function portrait(){
+  if(!PT){const d=document.createElement("div");d.style.cssText="position:fixed;left:-9999px;top:0;width:160px;height:160px";document.body.appendChild(d);
+    PT={st:Kit3D.stage({mount:d,height:160,fog:false,bg:0xffcf3f})};PT.st.camera.position.set(0.35,1.0,2.2);PT.st.camera.lookAt(0,0.75,0);}
+  if(PT.c){PT.st.scene.remove(PT.c.group);dispose(PT.c.group);}
+  PT.c=Kit3D.critter({recipe:myRecipe(),scale:1});PT.c.update(0.01,0);PT.c.group.rotation.y=0.35;PT.st.scene.add(PT.c.group);
+  try{if(PT.st.resize)PT.st.resize();PT.st.render();return PT.st.canvas.toDataURL();}catch(e){return "";}}
+function cutIn(move,cb){const L=$("#cutin"),face=portrait();
+  L.innerHTML=`<div class="cut-lines"></div><div class="cut-band"><div class="cut-face">${face?`<img src="${face}" alt="">`:""}</div><div class="cut-txt"><b>${esc(move[0])}</b><span class="ja">${move[1]}</span></div></div>`;
+  L.hidden=false;L.className="cutin in";Kit.sound.play("win");beam(3);G.kjHurt=1;
+  later(()=>L.className="cutin out",1600);later(()=>{L.hidden=true;cb&&cb();},1950);}
 
 /* which words an island uses: the unit, plus the next units when a unit is very small */
 function islandPool(cfg){let sel={book:cfg.book,from:cfg.from,to:cfg.to},p=Kit.words.pick(sel);
@@ -2342,12 +2558,16 @@ function startIsland(cfg){
   G.c=Kit3D.critter({recipe:myRecipe(),scale:1.35});W.st.scene.add(G.c.group);
   G.run=(G.run||0)+1;
   Object.assign(G,{cfg,pool:p.words,phrases:p.phrases||[],mode:gradeMode(cfg.book),stageI:0,stars:[],times:0,oopsAll:0,
-    combo:0,best:0,pack:0,busy:true,walkTo:null,answers:[],shells:[],chest:null,stage:null});
+    combo:0,best:0,pack:0,busy:true,walkTo:null,answers:[],shells:[],chest:null,stage:null,knock:null,kjHurt:0,kjAngry:0,kjDown:false,beams:[]});
+  setBossLook(!!cfg.boss);
   G.c.group.position.set(0,0,0);W.st.camera.position.set(0,5.2,7);
   if(G.loop)G.loop.stop();G.loop=Kit3D.loop(W.st,tick);
   hud();bubble(null);
   const u=(BOOKS[cfg.book]||{units:[]}).units[cfg.from]||{};
   Kit.sound.play("done");
+  if(cfg.boss){const k=kaijuOf(cfg.book);Kit.sound.play("boo");
+    bang(["WARNING!!","けいこく！！"],["A huge shadow is coming...","大きなかげが近づいてくる…"],2200,"",()=>{$("#playWrap").classList.remove("shake");void $("#playWrap").offsetWidth;$("#playWrap").classList.add("shake");Kit.sound.play("boo");
+      bang(k.name,["THE WORD KAIJU","ワード怪獣"],2800,`<div class="bossart">${art("ui:kaiju",96)}</div>`,()=>startStage(),true);},true);return;}
   bang(cfg.adventure?["ISLAND "+(cfg.island+1),"島 "+(cfg.island+1)]:["CLASS ISLAND","クラスの島"],[esc(u.title||""),""],2300,"",()=>startStage());
 }
 function startStage(){
@@ -2355,11 +2575,21 @@ function startStage(){
   G.stage=kind==="find"?stageFind():stageCollect();
   G.oops=0;G.round=0;clearItems();spawnShells(6);hud();
   const S=G.stage;$("#stageChip").innerHTML=esc(S.name[0]);
-  bang(["STAGE "+(G.stageI+1)+": "+S.name[0],"ステージ"+(G.stageI+1)+"："+S.name[1]],S.how,2400,"",()=>{G.busy=false;clock.start();S.next();});
+  const title=G.cfg.boss?["ROUND "+(G.stageI+1)+": "+S.name[0],"ラウンド"+(G.stageI+1)+"："+S.name[1]]:["STAGE "+(G.stageI+1)+": "+S.name[0],"ステージ"+(G.stageI+1)+"："+S.name[1]];
+  bang(title,S.how,2400,"",()=>{G.busy=false;clock.start();S.next();},!!G.cfg.boss);
 }
 function stageDone(){
   const S=G.stage,elapsed=clock.stop(),sc=Kit.score({elapsed,oops:G.oops,par:S.par()});G.stars.push(sc.stars);G.times+=elapsed;G.oopsAll+=G.oops;
-  G.busy=true;keys.clear();Kit.sound.play("win");G.c.cheer();bubble(["Stage clear!","ステージクリア！"]);
+  G.busy=true;keys.clear();
+  if(G.cfg.boss){$("#bubble").innerHTML="";G.c.cheer();
+    cutIn(MOVES[Math.min(G.stageI,MOVES.length-1)],()=>{
+      if(G.stageI+1<G.cfg.stages.length){G.kjAngry++;Kit.sound.play("boo");const w=$("#playWrap");w.classList.remove("shake");void w.offsetWidth;w.classList.add("shake");
+        bang(["KAIJU IS ANGRY!","怪獣がおこった！"],["It's getting BIGGER!","大きくなった！"],2400,"",()=>{G.stageI++;startStage();},true);}
+      else{G.kjDown=true;Kit.sound.play("win");const first=!bossBeaten(G.cfg.book);
+        bang(["KAIJU DEFEATED!!","怪獣をたおした！！"],null,2800,`<div class="bstars">${[1,2,3].map(i=>Kit.STAR(sc.stars>=i)).join("")}</div>`,()=>{
+          const go=()=>{G.stageI++;islandDone();};first?storyShow(WIN_STORY(kaijuOf(G.cfg.book)),go):go();},true);}});
+    return;}
+  Kit.sound.play("win");G.c.cheer();bubble(["Stage clear!","ステージクリア！"]);
   bang(["STAGE CLEAR!","ステージクリア！"],null,2600,`<div class="bstars">${[1,2,3].map(i=>Kit.STAR(sc.stars>=i)).join("")}</div>`,()=>{
     G.stageI++;if(G.stageI<G.cfg.stages.length)startStage();else islandDone();});
 }
@@ -2374,29 +2604,37 @@ function islandDone(){
   const lid=new THREE.Group();lid.position.set(0,0.7,-0.4);chest.add(lid);
   const lm=Kit3D.mesh(new THREE.CylinderGeometry(0.4,0.4,1.2,6,1,false,0,Math.PI),wood);lm.rotation.z=Math.PI/2;lm.position.z=0.4;lid.add(lm);
   G.chest={g:chest,lid,t:0};G.c.face(0);
-  bang(["ISLAND CLEAR!!","島クリア！！"],["The words are back!","ことばが もどった！"],2600,`<div class="bstars">${[1,2,3].map(i=>Kit.STAR(stars>=i)).join("")}</div>`,()=>{
+  bang(G.cfg.boss?["VICTORY!!","しょうり！！"]:["ISLAND CLEAR!!","島クリア！！"],["The words are back!","ことばが もどった！"],2600,`<div class="bstars">${[1,2,3].map(i=>Kit.STAR(stars>=i)).join("")}</div>`,()=>{
     Kit.sound.play("ok");G.chest.open=true;
     later(()=>finishIsland(),1600);});
 }
 function finishIsland(){
-  const cfg=G.cfg,bonus=G.islandStars*10,bank=G.pack+bonus,before=cleared(),capsBefore=Math.floor(P.shells/CAPSULE);
+  const cfg=G.cfg,bonus=cfg.boss?G.islandStars*30+50:G.islandStars*10,bank=G.pack+bonus,capsBefore=Math.floor(P.shells/CAPSULE);
+  const openBefore=CKEYS().filter(critterOpen),rankBefore=rankOf(rankPts());
   P.shells+=bank;
   /* stars count for the map when the island matches the student's adventure book */
   let isl=cfg.adventure?cfg.island:(cfg.from===cfg.to&&cfg.book===P.book&&cfg.stages.length===2?cfg.from:-1);
   if(P.book<0&&!cfg.adventure&&cfg.from===cfg.to&&cfg.stages.length===2){P.book=cfg.book;isl=cfg.from;}
   if(isl>=0&&isl<MAXI){const a=starsOf(P.book);a[isl]=Math.max(a[isl],G.islandStars);P.stars[P.book]=a;}
   save();
-  const newCrit=UNLOCKS.filter(u=>u.at>before&&u.at<=cleared()).map(u=>Kit3D.CRITTERS[u.kind]).filter(Boolean);
+  const newCrit=CKEYS().filter(k=>critterOpen(k)&&!openBefore.includes(k)).map(k=>Kit3D.CRITTERS[k]);
+  const rankNow=rankOf(rankPts()),nU=unitsOf(P.book).length,doneU=P.book>=0?starsOf(P.book).slice(0,nU).filter(x=>x>0).length:0;
+  const after=[];
+  if(rankNow!==rankBefore)after.push(next=>rankUp(rankNow,next));
+  if(P.book>=0&&!cfg.boss&&!P.seen.mid[P.book]&&doneU>=Math.ceil(nU/2)&&doneU<nU)after.push(next=>{P.seen.mid[P.book]=1;save();storyShow(MID_STORY(kaijuOf(P.book)),next);});
+  const toBoss=cfg.adventure&&!cfg.boss&&P.book>=0&&isOpen(P.book,nU)&&!bossBeaten(P.book);
   const canCap=P.caps<GACHA.length&&P.shells>=CAPSULE;
   const nextI=cfg.adventure&&cfg.island+1<unitsOf(P.book).length?cfg.island+1:-1;
   Kit.result("#result",{elapsed:G.times,oops:G.oopsAll,stars:G.islandStars,
-    title:G.islandStars===3?["Legendary!","伝説級！"]:G.islandStars===2?["Great job!","よくできました！"]:["Island clear!","島クリア！"],
+    title:cfg.boss?["KAIJU DEFEATED!","怪獣をたおした！"]:G.islandStars===3?["Legendary!","伝説級！"]:G.islandStars===2?["Great job!","よくできました！"]:["Island clear!","島クリア！"],
     nums:[{label:["Time","タイム"],value:Kit.fmtTime(G.times)},{label:["Oops","ミス"],value:G.oopsAll},{label:["Best combo","最高コンボ"],value:G.best},{label:["Shells","貝"],value:"+"+bank}],
-    art:`<div style="line-height:1">${art("ui:island",112)}</div>`,
-    buttons:[nextI>=0?{label:["Next island","つぎの島"],primary:true,onClick:()=>{M.sel=nextI;st.set("sel"+P.book,nextI);startIsland({book:P.book,from:nextI,to:nextI,island:nextI,stages:["find","collect"],rounds:5,signs:4,hint:0,adventure:true});}}
+    art:`<div style="line-height:1">${art(cfg.boss?"ui:kaiju":"ui:island",112)}</div>`,
+    buttons:[toBoss?{label:["Face the Kaiju!","怪獣にいどむ！"],primary:true,onClick:()=>{M.sel=nU;st.set("sel"+P.book,nU);startBoss();}}
+      :nextI>=0?{label:["Next island","つぎの島"],primary:true,onClick:()=>{M.sel=nextI;st.set("sel"+P.book,nextI);startIsland({book:P.book,from:nextI,to:nextI,island:nextI,stages:["find","collect"],rounds:5,signs:4,hint:0,adventure:true});}}
       :{label:["Play again","もう一度"],primary:true,onClick:()=>startIsland(cfg)},
       {label:["Sea map","マップ"],onClick:()=>scr.show("map"),hidden:P.book<0},
       {label:["Critter Maker","キャラをつくる"],onClick:()=>scr.show("maker")},
+      {label:["Shell Shop","貝のおみせ"],onClick:()=>scr.show("shop")},
       {label:["Home","ホーム"],onClick:()=>scr.show("home")}]});
   const extra=document.createElement("div");extra.className="resextra";
   extra.innerHTML=newCrit.map(c=>`<div class="unlock">${art("ui:gift",26)} ${bi(["New critter: "+c.name[0]+"!","新しいキャラ："+c.name[1]+"！"])}</div>`).join("")
@@ -2404,13 +2642,19 @@ function finishIsland(){
     +(P.book>=0?`<p class="note">${bi(["Your save code","セーブコード"])}</p><div class="savecode">${fmt4(saveCode())}</div>`:"");
   $("#result .kit-result").insertBefore(extra,$("#result .rowbtns"));
   scr.show("result");
+  const run=()=>{const f=after.shift();if(f)setTimeout(()=>f(run),500);};run();
 }
+function rankUp(r,then){Kit.sound.play("win");
+  modal.open(`<div class="rankup"><div class="bang-lines"></div><div class="ru-in"><small>RANK UP!</small>${art("ui:crown",80)}<b>${esc(r.t[0])}</b><span class="ja">${r.t[1]}</span></div></div>
+    <div class="rowbtns"><button class="btn primary big" id="ruOk" type="button">${bi(["Awesome!","やったー！"])}</button></div>`,"kaiju");
+  $("#ruOk").onclick=()=>{modal.close();then&&then();};}
 
 /* ---------- items on the island ---------- */
 function clearItems(){const W=world;W.items.children.slice().forEach(c=>{W.items.remove(c);dispose(c);});G.answers=[];G.shells=[];G.chest=null;}
 function freeSpot(minGap,avoid){const p=G.c.group.position;
   for(let tries=0;tries<80;tries++){const a=Kit.RND()*Math.PI*2,r=2.4+Kit.RND()*4.6,x=Math.cos(a)*r,z=Math.sin(a)*r;
     if(Math.hypot(x-p.x,z-p.z)<2.3)continue;
+    if(G.cfg&&G.cfg.boss&&Math.hypot(x,z-KZ)<4.2)continue;
     if((avoid||[]).some(q=>Math.hypot(q.x-x,q.z-z)<minGap))continue;return {x,z};}
   const a=Kit.RND()*Math.PI*2;return {x:Math.cos(a)*5,z:Math.sin(a)*5};}
 function placeAnswers(list){/* list: [{label, pic, value}] */
@@ -2445,6 +2689,8 @@ function oops(item,msg){
   if(item){const a=Math.atan2(p.z-item.position.z,p.x-item.position.x);p.x+=Math.cos(a)*1.4;p.z+=Math.sin(a)*1.4;}
   bubble(msg);hud();G.missed=true;
   const after=()=>{G.busy=false;if(scr.current==="play"&&G.stage){bubble();G.stage.say();}};
+  if(G.cfg.boss){const a=Math.atan2(p.z-KZ,p.x);G.knock={x:Math.cos(a),z:Math.sin(a),t:0.45};
+    G.stealN=G.pack>=3?Math.max(1,Math.ceil(G.pack*0.3)):0;G.pack-=G.stealN;hud();traps.run("sneeze",after);return;}
   if(G.pack>=3){G.stealN=Math.max(1,Math.ceil(G.pack*0.3));G.pack-=G.stealN;hud();traps.run("seagull",after);}
   else traps.next(after);
 }
@@ -2462,7 +2708,7 @@ function stageFind(){
     bubble(){const show=G.cfg.hint||G.missed||!usePics?0:1;
       return `<span class="ear">${art("ui:ear",34,"listen")}</span><div><b>${!show?"Find: "+esc(target.en):"Find the picture!"}</b><span class="ja">${!show&&target.ja?esc(target.ja):"聞いて、さがそう！"}</span></div>`;},
     hit(s){const w=s.userData.answer.value;G.busy=true;keys.clear();
-      if(w===target){good(3);bubble(["Yes! "+esc(target.en)+"!","せいかい！"]);Kit.speech.say(target.en,0.85);G.round++;hud();
+      if(w===target){good(3);bubble(["Yes! "+esc(target.en)+"!","せいかい！"]);Kit.speech.say(target.en,0.85);G.round++;roundWon();hud();
         later(()=>{G.busy=false;if(G.round>=total)stageDone();else S.next();},1200);}
       else oops(s,["That's "+esc(w.en)+"!","それは "+esc(w.en)+" だよ！"]);}
   };
@@ -2504,7 +2750,7 @@ function stageCollect(){
     hit(s){const v=s.userData.answer.value,need=want[got];
       const ok=mode==="list"?v===need:v===need;
       if(ok){got++;removeAnswer(s);good(mode==="list"?3:1);bubble();
-        if(got>=want.length){G.busy=true;keys.clear();G.round++;hud();
+        if(got>=want.length){G.busy=true;keys.clear();G.round++;roundWon();hud();
           bubble([mode==="spell"?esc(cur.en)+"!":mode==="phrase"?esc(cur):"All done!","できた！"]);if(mode!=="list")Kit.speech.say(mode==="spell"?cur.en:cur,0.85);
           later(()=>{G.busy=false;if(G.round>=total)stageDone();else S.next();},1400);}}
       else{G.busy=true;keys.clear();
@@ -2521,15 +2767,24 @@ function tick(dt,t){
     if(keys.any){vx=keys.x;vz=keys.z;G.walkTo=null;}
     else if(G.walkTo){const dx=G.walkTo.x-p.x,dz=G.walkTo.z-p.z,d=Math.hypot(dx,dz);if(d<0.2)G.walkTo=null;else{vx=dx/d;vz=dz/d;}}
   }
+  if(G.knock){p.x+=G.knock.x*7*dt;p.z+=G.knock.z*7*dt;G.knock.t-=dt;if(G.knock.t<=0)G.knock=null;}
   const len=Math.hypot(vx,vz);
   if(len>0){vx/=len;vz/=len;p.x+=vx*4.2*dt;p.z+=vz*4.2*dt;c.face(Math.atan2(vx,vz));
     const r=Math.hypot(p.x,p.z);if(r>8.3){p.x*=8.3/r;p.z*=8.3/r;}}
+  {const r=Math.hypot(p.x,p.z);if(r>8.3){p.x*=8.3/r;p.z*=8.3/r;}}
+  if(W.kaiju){const K=W.kaiju,dk=Math.hypot(p.x,p.z-KZ);if(dk<3.6){p.x*=1;const a=Math.atan2(p.z-KZ,p.x);p.x=Math.cos(a)*3.6;p.z=KZ+Math.sin(a)*3.6;}
+    const want=G.kjDown?0.7:2+G.kjAngry*0.3;K.scale.setScalar(K.scale.x+(want-K.scale.x)*Math.min(1,dt*3));
+    K.position.y=Math.sin(t*1.6)*0.12;K.rotation.y=G.kjDown?K.rotation.y+dt*4:Math.atan2(p.x,p.z-KZ)*0.6;
+    K.rotation.x=G.kjHurt>0?-Math.sin(G.kjHurt/0.6*Math.PI)*0.3:0;if(G.kjHurt>0)G.kjHurt-=dt;}
+  (G.beams||[]).slice().forEach(b=>{b.t+=dt;const k=Math.max(0.01,1-b.t/0.6);b.m.scale.set(k,1,k);if(b.t>=0.6){W.st.scene.remove(b.m);dispose(b.m);G.beams=G.beams.filter(x=>x!==b);}});
   c.update(dt,len>0?1:0);
   G.answers.forEach((s,i)=>{s.userData.sprite.position.y=s.userData.base+Math.sin(t*2+i)*0.06;});
   G.shells.forEach((s,i)=>{s.rotation.y=t*1.5+i;s.position.y=Math.sin(t*3+i)*0.08;});
   if(G.chest){const ch=G.chest;if(ch.open&&ch.t<1){ch.t=Math.min(1,ch.t+dt*1.6);ch.lid.rotation.x=-ch.t*1.9;}
     ch.g.scale.setScalar(Math.min(1,(ch.g.scale.x||0)+dt*3));}
-  Kit3D.follow(W.st.camera,c.group,new THREE.Vector3(0,5.2,7),0.08);
+  if(W.kaiju){/* boss fight: pull back and look between your critter and the Kaiju */
+    W.st.camera.position.lerp(new THREE.Vector3(p.x*0.8,7,p.z+9.5),0.08);W.st.camera.lookAt(p.x*0.5,1.6,(p.z+KZ)/2+1);}
+  else Kit3D.follow(W.st.camera,c.group,new THREE.Vector3(0,5.2,7),0.08);
   for(const s of G.shells.slice()){if(Math.hypot(s.position.x-p.x,s.position.z-p.z)<0.85){G.shells=G.shells.filter(x=>x!==s);world.items.remove(s);dispose(s);G.pack+=2;pop("+2 "+art("ui:shell",22));Kit.sound.play("key");hud();}}
   if(G.busy)return;
   for(const s of G.answers){if(Math.hypot(s.position.x-p.x,s.position.z-p.z)<1.05){G.stage.hit(s);break;}}
@@ -2575,7 +2830,7 @@ function renderMaker(){
     $$("#makerOpts [data-s]").forEach(b=>b.onclick=()=>{MK.draft.c=(MK.draft.c||[0,1,6]).slice();MK.draft.c[+b.dataset.s]=+b.dataset.i;Kit.sound.play("click");renderMaker();});
   }else{const part=MK.tab,curV=MK.draft[part]||(part==="eyes"?"dot":part==="body"?"round":"none");
     box.innerHTML=`<div class="opts">${Kit3D.PARTS[part].map(v=>{const open=partOpen(part,v);
-      return `<button type="button" data-v="${v}" aria-pressed="${v===curV}" ${open?"":"disabled title='Get it from the capsule machine'"}>${open?"":art("ui:lock",16)+" "}${esc(label(part,v)[0])}</button>`;}).join("")}</div>`;
+      return `<button type="button" data-v="${v}" aria-pressed="${v===curV}" ${open?"":`disabled title='${shopIndex(part,v)>=0?"Buy it in the Shell Shop":"Get it from the capsule machine"}'`}>${open?"":art("ui:lock",16)+" "}${esc(label(part,v)[0])}</button>`;}).join("")}</div>`;
     $$("#makerOpts [data-v]").forEach(b=>b.onclick=()=>{MK.draft[part]=b.dataset.v;Kit.sound.play("click");renderMaker();MK.c.hop();});
   }
   const left=GACHA.length-P.caps;
@@ -2602,6 +2857,42 @@ $("#makerUse").onclick=()=>{P.custom=JSON.parse(JSON.stringify(MK.draft));P.pick
   if(same)P.pick=same;save();Kit.sound.play("done");MK.c.cheer();Kit.toast(bi(["Your critter is ready!","キャラが決まった！"]));};
 $("#makerBack").onclick=()=>scr.show("home");
 if(critCodec)Kit.codeEntry("#critEntry",{codec:critCodec,placeholder:"Friend's critter code",onCode(d){MK.draft=Kit3D.recipeFromCode(d.S);renderMaker();MK.c.cheer();}});
+
+/* =====================================================================
+   SHELL SHOP
+   ===================================================================== */
+const SH={st:null,c:null,deco:null,sel:-1};
+function openShop(){
+  if(!window.Kit3D){Kit.toast(bi(["3D couldn't load","3Dを読み込めません"]));return;}
+  if(!SH.st){SH.st=Kit3D.stage({mount:"#shopStage",height:200,fog:false,bg:0x9fd8ff});
+    const ground=Kit3D.mesh(new THREE.CylinderGeometry(2.2,2.4,0.4,10),Kit3D.mat(0xffffff,{map:Kit3D.TEX.grass()}));ground.position.y=-0.2;SH.st.scene.add(ground);
+    const p=palm(0.9);p.position.set(-1.5,0,-1.2);SH.st.scene.add(p);
+    SH.deco=new THREE.Group();SH.st.scene.add(SH.deco);SH.st.camera.position.set(0,2.3,5);SH.st.camera.lookAt(0,0.7,0);
+    Kit3D.loop(SH.st,(dt,t)=>{if(!SH.c)return;SH.c.update(dt,0);SH.c.group.rotation.y=Math.sin(t*0.8)*0.6;});}
+  SH.sel=-1;renderShop();}
+function shopRecipe(i){const r=JSON.parse(JSON.stringify(myRecipe()));delete r.name;const it=SHOP[i];
+  if(it&&it.type==="part"){if(it.part==="color")r.c=[it.val].concat((r.c||[0,1,6]).slice(1));else r[it.part]=it.val;}
+  return r;}
+function renderShop(){renderShells();
+  if(SH.c){SH.st.scene.remove(SH.c.group);dispose(SH.c.group);}SH.c=Kit3D.critter({recipe:shopRecipe(SH.sel),scale:1.1});SH.st.scene.add(SH.c.group);
+  placeDecos(SH.deco,i=>owns(i)||i===SH.sel);
+  $("#shopGrid").innerHTML=SHOP.map((it,i)=>{const have=owns(i),can=P.shells>=it.price;
+    const icon=it.part==="color"?`<span class="sw" style="background:#${Kit3D.PALETTE[it.val].toString(16).padStart(6,"0")}"></span>`:art(it.icon,48);
+    return `<div class="shopitem${i===SH.sel?" sel":""}${have?" owned":""}"><button class="look" type="button" data-i="${i}">${icon}<b>${bi(it.name)}</b></button>
+      ${have?`<span class="own">${bi(["Yours!","ゲット済み"])}</span>`:`<button class="btn small${can?" primary":""}" type="button" data-buy="${i}" ${can?"":"disabled"}>${art("ui:shell",16)} ${it.price}</button>`}</div>`;}).join("");
+  $$("#shopGrid [data-i]").forEach(b=>b.onclick=()=>{SH.sel=+b.dataset.i;Kit.sound.play("click");renderShop();SH.c.hop();});
+  $$("#shopGrid [data-buy]").forEach(b=>b.onclick=()=>buy(+b.dataset.buy));
+  const it=SHOP[SH.sel];
+  $("#shopNote").innerHTML=bi(!it?["Click an item to try it on.","アイテムをクリックしてためしてみよう。"]
+    :it.type==="deco"?["Decorations go on your island on the home screen.","かざりはホーム画面の島にかざられるよ。"]
+    :owns(SH.sel)?["It's yours! Use it in the Critter Maker.","ゲット済み！キャラメーカーで使えるよ。"]:["Buy it and your critter wears it right away.","買うとキャラがすぐに使うよ。"]);}
+function buy(i){const it=SHOP[i];if(owns(i)||P.shells<it.price)return;
+  P.shells-=it.price;P.shop=(P.shop||[]).concat(i);
+  if(it.type==="part"){P.custom=shopRecipe(i);P.pick="custom";}
+  SH.sel=i;save();Kit.sound.play("win");renderShop();SH.c.cheer();
+  Kit.toast(bi(["You got: "+it.name[0]+"!",it.name[1]+"をゲット！"]));}
+$("#shopBack").onclick=()=>scr.show("home");
+$("#goShop").onclick=()=>scr.show("shop");
 
 /* =====================================================================
    TEACHER PAGE (class mode)
@@ -2634,6 +2925,6 @@ $("#toTeacher").onclick=()=>scr.show("teacher");
 
 $$("[data-art]").forEach(e=>e.innerHTML=art(e.dataset.art,+(e.dataset.size||22)));
 scr.show("home");
-window.WI={G,M,MK,P,saveCodec,critCodec,classCodec,startIsland,get world(){return world;}};
+window.WI={G,M,MK,P,SH,saveCodec,critCodec,classCodec,startIsland,startBoss,get world(){return world;}};
 })();
 </script>

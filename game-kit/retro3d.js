@@ -130,7 +130,8 @@ Kit3D.follow=function(cam,target,offset,ease){const want=target.position.clone()
    so reordering would change students' saved critters. */
 Kit3D.PALETTE=[0xffa860,0xf4f0ff,0xb07a4f,0x7fd36b,0xffd84a,0xffffff,0x2a2630,0x9aa0aa,
   0xff9db5,0xe8483f,0x5aa0ff,0x9fe0ff,0xa77bff,0xd6c2ff,0x9fefd0,0x2fb5a5,
-  0x34407a,0xffd2b0,0xe0b07a,0x6b4a33,0xffc23a,0xc6f26b,0xe85ab0,0xfff3a0];
+  0x34407a,0xffd2b0,0xe0b07a,0x6b4a33,0xffc23a,0xc6f26b,0xe85ab0,0xfff3a0,
+  0xd8dde6,0xb0203a,0x1c2350,0xffc8dc,0xffb020,0x2e7d43];
 Kit3D.PARTS={
   body:["round","tall","chubby","tiny"],
   ears:["none","cat","bunny","bear","fox","pointy","floppy","mouse","frills"],
@@ -141,7 +142,7 @@ Kit3D.PARTS={
   back:["none","wings","bat","shell","spikes","cape","leaf"],
   head:["none","horn","horns","antenna","sprout","flame","crest","halo","tuft"],
   pattern:["none","stripes","spots","mask","panda","socks","tips"],
-  hat:["none","cap","crown","party","bow","straw","wizard","headband","flower"]
+  hat:["none","cap","crown","party","bow","straw","wizard","headband","flower","pirate","chef","kabuto","ninja","beret"]
 };
 /* English + Japanese names for the Critter Maker buttons */
 Kit3D.PART_NAMES={
@@ -270,6 +271,13 @@ Kit3D.critter=function(o){
   if(ht==="wizard"){sadd(Cyl(0.5,0.5,0.04,10),Kit3D.mat(0x34407a),0,1.12,0);sadd(Cone(0.3,0.75,6),Kit3D.mat(0x34407a),0,1.5,-0.05).rotation.x=-0.15;}
   if(ht==="headband"){const h=sadd(new THREE.TorusGeometry(0.56,0.05,4,12),Mw,0,0.98,0,1,1,1);h.rotation.x=Math.PI/2;h.scale.set(1.05,1.02,1);sadd(S(0.07,6,4),Mr,0,1.0,0.6,1,1,0.4);}
   if(ht==="flower"){const g=new THREE.Group();shell.add(g);g.position.set(0.3,1.1-0.62,0.15);for(let i=0;i<5;i++){const a=i/5*Math.PI*2;add(g,S(0.07,4,3),Mp,Math.cos(a)*0.09,Math.sin(a)*0.09,0);}add(g,S(0.05,4,3),Mg,0,0,0.03);}
+  if(ht==="pirate"){const Mb=Kit3D.mat(0x2a2630);sadd(Cyl(0.5,0.5,0.05,3),Mb,0,1.12,0.02).rotation.y=Math.PI;sadd(S(0.3,8,4),Mb,0,1.16,0,1,0.6,1);sadd(S(0.07,5,4),Mw,0,1.26,0.27,1,1,0.4);}
+  if(ht==="chef"){sadd(Cyl(0.27,0.27,0.18,8),Mw,0,1.18,0);[[-0.13,0],[0.13,0],[0,0.1],[0,-0.1],[0,0]].forEach(([x,z])=>sadd(S(0.18,6,4),Mw,x,1.38,z));}
+  if(ht==="kabuto"){const Mn=Kit3D.mat(0x1c2350);sadd(new THREE.SphereGeometry(0.5,10,5,0,Math.PI*2,0,Math.PI/2),Mn,0,1.0,0,1,0.75,1);sadd(Cyl(0.6,0.62,0.05,10),Mn,0,0.98,-0.05);
+    [-1,1].forEach(sg=>{const h=sadd(Cone(0.06,0.55,4),Mg,sg*0.26,1.42,0.34);h.rotation.z=-sg*0.75;});sadd(S(0.07,5,4),Mg,0,1.24,0.42);}
+  if(ht==="ninja"){const h=sadd(new THREE.TorusGeometry(0.56,0.06,4,12),Kit3D.mat(0x2a2630),0,0.98,0);h.rotation.x=Math.PI/2;h.scale.set(1.05,1.02,1);
+    [-1,1].forEach(sg=>{const t=sadd(Cone(0.05,0.3,3),Kit3D.mat(0x2a2630),sg*0.12,0.95,-0.66);t.rotation.x=Math.PI/2+0.4;t.rotation.z=sg*0.4;});sadd(Cyl(0.1,0.1,0.02,6),Kit3D.mat(0xd8dde6),0,1.0,0.6).rotation.x=Math.PI/2;}
+  if(ht==="beret"){const b=sadd(Cyl(0.42,0.38,0.12,10),Ma,0.06,1.2,0);b.rotation.z=-0.25;sadd(Cyl(0.02,0.02,0.08,4),Ma,0.1,1.3,0);}
   /* arms + feet */
   const LM=pat==="panda"?Ma:M,FM=(pat==="panda"||pat==="socks")?Ma:Md;
   const armL=add(body,S(0.13,6,4),LM,-0.58*BS[0],0.5,0.1),armR=add(body,S(0.13,6,4),LM,0.58*BS[0],0.5,0.1);
