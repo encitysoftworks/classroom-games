@@ -18,6 +18,8 @@ RENAME = {
     "The Maze Game.html": "maze.html",
     "game-kit/starters/Picture Lock.html": "game-kit/starters/picture-lock.html",
     "game-kit/starters/Word Party.html": "game-kit/starters/word-party.html",
+    "game-kit/starters/Word Island.html": "game-kit/starters/word-island.html",
+    "Word Island.html": "word-island.html",
     "sentence-box/Sentence Box.html": "sentence-box/index.html",
 }
 FOLDERS = ["game-kit", "textbook-db", "sentence-box"]

@@ -7,6 +7,7 @@ A game needs these three spots (the starter game already has them):
     <style>/*KIT:CSS START*/ ... /*KIT:CSS END*/</style>
     <script type="application/json" id="kit-wordbank">...</script>
     <script>/*KIT:JS START*/ ... /*KIT:JS END*/</script>
+3D games also have  <script>/*KIT:3D START*/ ... /*KIT:3D END*/</script>  after the three.js tag; it gets retro3d.js.
 Add --no-words to leave the word bank out (games that don't use textbook words).
 """
 import json, re, sys, pathlib
@@ -26,7 +27,9 @@ def main(args):
     if not files:
         sys.exit(__doc__)
     css = (KIT / "classroom-kit.css").read_text(encoding="utf-8")
-    js = (KIT / "classroom-kit.js").read_text(encoding="utf-8")
+    # a literal </script> inside the code would end the script tag early
+    safe = lambda code: code.replace("</script", "<\\/script")
+    js = safe((KIT / "classroom-kit.js").read_text(encoding="utf-8"))
     if words:
         data = json.loads(DB.read_text(encoding="utf-8"))
         # games only need what they show; drop the long source notes
@@ -38,6 +41,8 @@ def main(args):
         t = p.read_text(encoding="utf-8")
         t = between(t, "/*KIT:CSS START*/", "/*KIT:CSS END*/", css, p)
         t = between(t, "/*KIT:JS START*/", "/*KIT:JS END*/", js, p)
+        if "/*KIT:3D START*/" in t:
+            t = between(t, "/*KIT:3D START*/", "/*KIT:3D END*/", safe((KIT / "retro3d.js").read_text(encoding="utf-8")), p)
         wb = re.compile(r'(<script type="application/json" id="kit-wordbank">).*?(</script>)', re.S)
         if words:
             if not wb.search(t):
