@@ -301,13 +301,14 @@ Kit3D.critter=function(o){
 };
 
 /* ---------- signs, scenery ---------- */
-/* Kit3D.sign("🍎") or Kit3D.sign("apple",{text:true}). The picture is drawn small so it looks like pixel art. */
+/* Kit3D.sign("🍎"), Kit3D.sign("apple",{text:true}), or Kit3D.sign("apple") when Kit.pics has a drawn "apple". The picture is drawn small so it looks like pixel art. */
 Kit3D.sign=function(content,o){
   o=o||{};const g=new THREE.Group(),px=o.px||40;
   const c=document.createElement("canvas");c.width=c.height=px;const x=c.getContext("2d");
   x.fillStyle="#fffaf0";x.fillRect(0,0,px,px);x.strokeStyle="#3b2a1a";x.lineWidth=2;x.strokeRect(1,1,px-2,px-2);
   x.textAlign="center";x.textBaseline="middle";x.fillStyle="#1b1a17";
   if(o.text){let fs=Math.floor(px*0.42);x.font=`700 ${fs}px Andika, sans-serif`;while(x.measureText(content).width>px-6&&fs>8){fs--;x.font=`700 ${fs}px Andika, sans-serif`;}x.fillText(content,px/2,px/2+1);}
+  else if(window.Kit&&Kit.pics&&Kit.pics.has(content)){x.imageSmoothingEnabled=false;x.drawImage(Kit.pics.canvas(content,32),4,4,px-8,px-8);}
   else{x.font=`${Math.floor(px*0.66)}px "Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji",sans-serif`;x.fillText(content,px/2,px/2+2);}
   const tex=nearest(new THREE.CanvasTexture(c));
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,fog:true}));const s=o.size||1.4;sp.scale.set(s,s,1);sp.position.y=(o.height||1.6)+s/2;g.add(sp);

@@ -9,6 +9,7 @@ Shared parts for Wyatt's English classroom games: pair games, team games, whole-
 | `starters/Picture Lock.html` | Pair information-gap starter (two Chromebooks, class code, traps, swap roles). Live: https://claude.ai/artifact/1ysuzRH3Dk7gRoJ9y9VLq7 |
 | `starters/Word Party.html` | Whole-class + solo starter: projector Team Quiz, Bingo (caller + a card per student), Practice Quiz. Live: https://claude.ai/artifact/XFSCqtnPSjxCBsdgDHfLNd |
 | `retro3d.js` | Optional retro 3D add-on (PSX/N64 look) on `window.Kit3D`, for 3D games |
+| `pictures.js` | Optional drawn word pictures on `Kit.pics` (about 420 pixel sprites for textbook words, plus game and trap sprites) |
 | `starters/Word Island.html` | Retro 3D starter: walk a cute low-poly critter to the picture you hear. Live: https://claude.ai/artifact/RKRbpLmjb54JizK61SZ7NN |
 | `../Word Island.html` | The full Word Island adventure (sea map, island stages, Critter Maker, save codes) built from that starter. Live: https://claude.ai/artifact/7schAnCRJjhEZxLvKqqZRe |
 | `update-kit.py` | Copies the latest kit and textbook word bank into one or more game files |
@@ -58,6 +59,15 @@ Wyatt's chosen style for 3D: low-poly and cute, light enough for school Chromebo
 
 Keep scenes small, with a few hundred low-poly shapes at most. No flashing lights or fast color changes.
 
+## Word pictures (no emoji)
+
+Emoji collide (hello, goodbye and see you were all a waving hand) and look different on every device, so games draw their pictures with `pictures.js`. Add `<script>/*KIT:PICS START*/ /*KIT:PICS END*/</script>` right after the kit JS block and `update-kit.py` fills it.
+
+- `Kit.pics.has("apple")`, `Kit.pics.img("apple", 48)` (an `<img>` tag), `Kit.pics.url(name, size)`, `Kit.pics.canvas(name, size)`.
+- `Kit3D.sign("apple")` draws the sprite on a 3D sign when there is one.
+- Game sprites are named `ui:...` (seagull, seagull2, shell, island, kaiju, chest, cart, ear, speech, abc, gift, capsule, machine, sword, star, trophy, boat, lock) and the kit traps use `trap:...` automatically.
+- Each picture is a 32 x 32 drawing: `"apple":p=>{p.circ(16,18,11,C.red);...}` between the `PICS:WORDS` markers. Keep look-alike words in the same unit visibly different (a scene, a corner clock for times, red circles for body parts, three kids for teams).
+
 ## When the kit or word bank changes
 
 Run `update-kit.py` on every game that uses the kit (`python3 update-kit.py starters/*.html "../Some Game.html"`). It also escapes any literal closing script tag in the kit code, which would otherwise break the page., then republish each one. The word bank is the copy in `textbook-db/all-books.json`. When Wyatt fixes units from the PDFs, a single run carries the fixed words into every game.
@@ -88,6 +98,6 @@ The database is still a draft (every unit has `verified:false`). Games built on 
 
 ## Kit.* at a glance
 
-`$ $$ esc bi store` · `rng hash32 hashStr ri shuffle pickN bag RND randomSeeds` · `codec link qr` · `sound.play/add speech.say/sayEach/hush` · `toggle setupToggles seg screens toast` · `timer fmtTime score STAR` · `traps({layer,target,area}).next(done)` · `codeEntry badges teacher result soloPartner` · `words` · `keys fullscreen countdown teams TEAMS quiz bingo` · 3D add-on: `Kit3D.stage mat basic mesh facet tex TEX critter CRITTERS sign tree rock loop move groundPoint pick follow`
+`$ $$ esc bi store` · `rng hash32 hashStr ri shuffle pickN bag RND randomSeeds` · `codec link qr` · `sound.play/add speech.say/sayEach/hush` · `toggle setupToggles seg screens toast` · `timer fmtTime score STAR` · `traps({layer,target,area}).next(done)` · `codeEntry badges teacher result soloPartner` · `words` · `keys fullscreen countdown teams TEAMS quiz bingo` · 3D add-on: `Kit3D.stage mat basic mesh facet tex TEX critter CRITTERS sign tree rock loop move groundPoint pick follow` · pictures add-on: `Kit.pics.has img url canvas add addAll` `Kit.art`
 
 The comments at the top of each section in `classroom-kit.js` give the details.
