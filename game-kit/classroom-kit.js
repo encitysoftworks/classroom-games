@@ -241,9 +241,11 @@ Kit.traps=function(o){
   const box=sel=>{const s=layer.getBoundingClientRect(),e=(typeof sel==="string"?$(sel):sel);if(!e)return {x:s.width/4,y:s.height/4,w:s.width/2,h:s.height/2};const b=e.getBoundingClientRect();return {x:b.left-s.left,y:b.top-s.top,w:b.width,h:b.height};};
   const tc=()=>{const b=box(o.target);return {x:b.x+b.w/2,y:b.y+b.h/2};},ar=()=>box(o.area);
   const play=sound.play;
+  /* drawn sprite from the pictures add-on when the game has it, emoji otherwise */
+  const art=(n,e,px)=>Kit.art?Kit.art("trap:"+n,e,px):e;
   const T={
-    glove(done){const c=tc();layer.classList.add("block");play("boing");el("kt-glove","\u{1F94A}",{left:c.x+"px",top:c.y+"px"});word(["BOING!","ボヨーン！"],"50%","8%");later(()=>{clear();done();},2100);},
-    chicken(done){layer.classList.add("block");play("bawk");const k=ar();el("kt-chicken","\u{1F414}",{left:(k.x+k.w/2-60)+"px"});word(["BAWK!","コケーッ！"],"50%","8%");later(()=>{clear();done();},2500);},
+    glove(done){const c=tc();layer.classList.add("block");play("boing");el("kt-glove",art("glove","\u{1F94A}",96),{left:c.x+"px",top:c.y+"px"});word(["BOING!","ボヨーン！"],"50%","8%");later(()=>{clear();done();},2100);},
+    chicken(done){layer.classList.add("block");play("bawk");const k=ar();el("kt-chicken",art("chicken","\u{1F414}",128),{left:(k.x+k.w/2-60)+"px"});word(["BAWK!","コケーッ！"],"50%","8%");later(()=>{clear();done();},2500);},
     soot(done){
       play("achoo");const c=tc();word(["ACHOO!","ハックション！"],c.x+"px","6%");layer.classList.add("block");let fin=false;
       const finish=()=>{if(fin)return;fin=true;clear();done();};
@@ -254,18 +256,18 @@ Kit.traps=function(o){
         later(finish,10000);},700);
     },
     water(done){layer.classList.add("block");play("splash");const k=ar();
-      for(let i=0;i<16;i++){const d=el("kt-drop","\u{1F4A7}",{left:(10+ri(60))+"px",top:(10+ri(60))+"px",animationDelay:(i*0.05)+"s"});d.style.setProperty("--dx",(k.x+ri(Math.max(40,k.w)))+"px");d.style.setProperty("--dy",(k.y+ri(Math.max(40,k.h)))+"px");}
+      for(let i=0;i<16;i++){const d=el("kt-drop",art("drop","\u{1F4A7}",40),{left:(10+ri(60))+"px",top:(10+ri(60))+"px",animationDelay:(i*0.05)+"s"});d.style.setProperty("--dx",(k.x+ri(Math.max(40,k.w)))+"px");d.style.setProperty("--dy",(k.y+ri(Math.max(40,k.h)))+"px");}
       word(["SPLASH!","バシャッ！"],"50%","8%");later(()=>{clear();done();},2200);},
-    duck(done){layer.classList.add("block");play("quack");el("kt-duck","\u{1F986}",{});word(["QUACK! QUACK!","ガーガー！"],"50%","8%");later(()=>{clear();done();},3000);},
-    bear(done){layer.classList.add("block");play("snore");el("kt-bear","\u{1F43B}",{});
+    duck(done){layer.classList.add("block");play("quack");el("kt-duck",art("duck","\u{1F986}",104),{});word(["QUACK! QUACK!","ガーガー！"],"50%","8%");later(()=>{clear();done();},3000);},
+    bear(done){layer.classList.add("block");play("snore");el("kt-bear",art("bear","\u{1F43B}",136),{});
       for(let i=0;i<3;i++)el("kt-zz","Z",{left:"55%",top:"40%",animationDelay:(i*0.6)+"s"});
       word(["ZZZ... SNORE!","グーグー…"],"50%","8%");later(()=>{clear();done();},2800);},
     cat(done){
       play("meow");const k=ar();layer.classList.add("block");let pets=0,fin=false;
-      const cat=el("kt-cat","\u{1F431}",{left:(k.x+k.w/2-65)+"px",top:(k.y+k.h/2-75)+"px"});
+      const cat=el("kt-cat",art("cat","\u{1F431}",136),{left:(k.x+k.w/2-65)+"px",top:(k.y+k.h/2-75)+"px"});
       const hint=el("kt-hint",bi(["Pet the cat 3 times to move it!","ネコを3回なでて、どいてもらおう！"]),{});
       const bye=()=>{if(fin)return;fin=true;play("meow");cat.classList.add("bye");hint.remove();later(()=>{clear();done();},650);};
-      cat.onclick=()=>{if(fin)return;pets++;play("purr");el("kt-heart","\u{1F497}",{left:(k.x+k.w/2+ri(40)-20)+"px",top:(k.y+k.h/2-80)+"px"});if(pets>=3)bye();};
+      cat.onclick=()=>{if(fin)return;pets++;play("purr");el("kt-heart",art("heart","\u{1F497}",40),{left:(k.x+k.w/2+ri(40)-20)+"px",top:(k.y+k.h/2-80)+"px"});if(pets>=3)bye();};
       later(bye,12000);
     }
   };
