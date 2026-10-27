@@ -10,6 +10,7 @@ Shared parts for Wyatt's English classroom games: pair games, team games, whole-
 | `starters/Word Party.html` | Whole-class + solo starter: projector Team Quiz, Bingo (caller + a card per student), Practice Quiz. Live: https://claude.ai/artifact/XFSCqtnPSjxCBsdgDHfLNd |
 | `retro3d.js` | Optional retro 3D add-on (PSX/N64 look) on `window.Kit3D`, for 3D games |
 | `pictures.js` | Optional drawn word pictures on `Kit.pics` (about 420 pixel sprites for textbook words, plus game and trap sprites) |
+| `art.js` | Optional detailed SVG word pictures on `Kit.art`, for pictures shown big (used by Vocab Intro). Covers Let's Try 1 so far, plus numbers, colors and shapes |
 | `starters/Word Island.html` | Retro 3D starter: walk a cute low-poly critter to the picture you hear. Live: https://claude.ai/artifact/RKRbpLmjb54JizK61SZ7NN |
 | `../Word Island.html` | The full Word Island adventure (sea map, island stages, Critter Maker, save codes) built from that starter. Live: https://claude.ai/artifact/7schAnCRJjhEZxLvKqqZRe |
 | `update-kit.py` | Copies the latest kit and textbook word bank into one or more game files |
@@ -61,7 +62,7 @@ Keep scenes small, with a few hundred low-poly shapes at most. No flashing light
 
 ## Word pictures (no emoji)
 
-Emoji collide (hello, goodbye and see you were all a waving hand) and look different on every device, so games draw their pictures with `pictures.js`. Add `<script>/*KIT:PICS START*/ /*KIT:PICS END*/</script>` right after the kit JS block and `update-kit.py` fills it.
+Emoji collide (hello, goodbye and see you were all a waving hand) and look different on every device, so games draw their pictures with `pictures.js`. Add `<script>/*KIT:PICS START*/ /*KIT:PICS END*/</script>` right after the kit JS block and `update-kit.py` fills it. For big, more detailed pictures use `art.js` the same way with `<script>/*KIT:ART START*/ /*KIT:ART END*/</script>` (`Kit.art.has`, `Kit.art.url`, `Kit.art.add`).
 
 - `Kit.pics.has("apple")`, `Kit.pics.img("apple", 48)` (an `<img>` tag), `Kit.pics.url(name, size)`, `Kit.pics.canvas(name, size)`.
 - `Kit3D.sign("apple")` draws the sprite on a 3D sign when there is one.
