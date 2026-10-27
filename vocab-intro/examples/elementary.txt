@@ -1,0 +1,778 @@
+# Checked example sentences for Vocab Intro.
+# "# Book|unit" starts a unit. "word = sentence". "@N filler>picture word | ..." lists what may go in grammar point N's blank.
+# A filler with no ">" uses its own words (without a/an/the) as the picture word.
+
+# Let's Try! 1|1
+hello = Hello. I'm Hinata.
+hi = Hi. I'm Ken.
+goodbye = Goodbye. See you.
+see you = See you tomorrow.
+friend = Ken is my friend.
+@0[Hinata,Ken] Mai~Sora>friend | Yui~Ken>friend | Sora~Mai>friend
+
+# Let's Try! 1|2
+fine = I'm fine, thank you.
+happy = I'm happy.
+good = I'm good.
+sleepy = I'm sleepy.
+hungry = I'm hungry.
+tired = I'm tired.
+sad = I'm sad.
+great = I'm great.
+@0 fine | good | sleepy | hungry | tired | sad | great
+
+# Let's Try! 1|3
+one = One apple.
+two = Two apples.
+three = Three apples.
+four = Four balls.
+five = Five pencils.
+six = Six erasers.
+seven = Seven crayons.
+eight = Eight rulers.
+nine = Nine strawberries.
+ten = Ten tomatoes.
+eleven = Eleven apples.
+twelve = Twelve pencils.
+thirteen = Thirteen balls.
+fourteen = Fourteen crayons.
+fifteen = Fifteen strawberries.
+sixteen = Sixteen circles.
+seventeen = Seventeen hearts.
+eighteen = Eighteen triangles.
+nineteen = Nineteen counters.
+twenty = Twenty apples.
+counter = How many counters?
+ball = How many balls?
+pencil = How many pencils?
+eraser = How many erasers?
+ruler = How many rulers?
+crayon = How many crayons?
+apple = How many apples?
+strawberry = How many strawberries?
+tomato = How many tomatoes?
+circle = How many circles?
+triangle = How many triangles?
+cross = How many crosses?
+heart = How many hearts?
+@0 balls>ball | pencils>pencil | erasers>eraser | rulers>ruler | crayons>crayon | strawberries>strawberry | tomatoes>tomato | circles>circle | triangles>triangle | hearts>heart | counters>counter
+
+# Let's Try! 1|4
+red = I like red.
+blue = I like blue.
+green = I like green.
+yellow = I like yellow.
+pink = I like pink.
+black = I like black.
+white = I like white.
+orange = I like orange.
+purple = I like purple.
+brown = I like brown.
+soccer = I like soccer.
+baseball = I like baseball.
+basketball = I like basketball.
+dodgeball = I like dodgeball.
+swimming = I like swimming.
+ice cream = I like ice cream.
+pudding = I like pudding.
+milk = I like milk.
+orange juice = I like orange juice.
+onion = I don't like onions.
+green pepper = I don't like green peppers.
+cucumber = I like cucumbers.
+carrot = I don't like carrots.
+rainbow = I like rainbows.
+@0 red | green | yellow | pink | black | white | orange | purple | brown | soccer | baseball | basketball | dodgeball | swimming | ice cream | pudding | milk | orange juice | carrots>carrot | rainbows>rainbow
+
+# Let's Try! 1|5
+color = What color do you like?
+sport = What sport do you like?
+tennis = I like tennis.
+volleyball = I like volleyball.
+table tennis = I like table tennis.
+food = What food do you like?
+hamburger = I like hamburgers.
+pizza = I like pizza.
+spaghetti = I like spaghetti.
+steak = I like steak.
+salad = I like salad.
+cake = I like cake.
+noodle = I like noodles.
+egg = I like eggs.
+rice ball = I like rice balls.
+jam = I like jam.
+fruit = What fruit do you like?
+grapes = I like grapes.
+pineapple = I like pineapples.
+peach = I like peaches.
+melon = I like melons.
+banana = I like bananas.
+kiwi fruit = I like kiwi fruit.
+lemon = I don't like lemons.
+@0[sport,soccer] color~red>color | food~pizza>food | fruit~bananas>fruit
+
+# Let's Try! 1|6
+alphabet = I like the alphabet song.
+card = The "A" card, please.
+twenty-one = Twenty-one cards.
+twenty-two = Twenty-two cards.
+twenty-three = Twenty-three cards.
+twenty-four = Twenty-four cards.
+twenty-five = Twenty-five cards.
+twenty-six = Twenty-six letters, A to Z.
+twenty-seven = Twenty-seven cards.
+twenty-eight = Twenty-eight cards.
+twenty-nine = Twenty-nine cards.
+thirty = Thirty cards.
+zero = Zero cards.
+book = "B" is for book.
+drum = "D" is for drum.
+fish = "F" is for fish.
+gorilla = "G" is for gorilla.
+hat = "H" is for hat.
+ink = "I" is for ink.
+jet = "J" is for jet.
+king = "K" is for king.
+monkey = "M" is for monkey.
+notebook = "N" is for notebook.
+pig = "P" is for pig.
+queen = "Q" is for queen.
+rabbit = "R" is for rabbit.
+sun = "S" is for sun.
+tree = "T" is for tree.
+umbrella = "U" is for umbrella.
+violin = "V" is for violin.
+watch = "W" is for watch.
+box = "X" is in box.
+yacht = "Y" is for yacht.
+@0 The "B" card>book | The "D" card>drum | The "F" card>fish | The "H" card>hat | The "K" card>king | The "S" card>sun
+
+# Let's Try! 1|7
+big = A big star, please.
+small = A small heart, please.
+square = A square, please.
+rectangle = A rectangle, please.
+star = A star, please.
+diamond = A diamond, please.
+bus = This bus is for you.
+flower = A flower, please.
+shop = This is a flower shop.
+balloon = A balloon, please.
+house = This house is for you.
+car = A car, please.
+candy = Candy, please.
+dog = This dog card is for you.
+cat = This cat card is for you.
+panda = This panda card is for you.
+mouse = This mouse card is for you.
+bear = This bear card is for you.
+@0 A square>square | A rectangle>rectangle | A diamond>diamond | A flower>flower | A balloon>balloon | A car>car | A big star>big | A small star>small
+
+# Let's Try! 1|8
+hint = Hint, please.
+sea = It's blue. It's the sea.
+elephant = It's big. It's an elephant.
+horse = It's an animal. It's a horse.
+spider = It's small. It's a spider.
+@0[a melon,green] an elephant~gray>elephant | a horse~brown>horse | a spider~black>spider | the sea~blue>sea
+
+# Let's Try! 1|9
+cow = Are you a cow?
+dragon = Are you a dragon?
+snake = Are you a snake?
+tiger = Are you a tiger?
+sheep = Are you a sheep?
+chicken = Are you a chicken?
+wild boar = Are you a wild boar?
+long = I have a long nose.
+shiny = I'm shiny.
+scary = I'm scary.
+round = I'm round.
+furry = I'm furry.
+head = Touch your head.
+eyes = I have big eyes.
+ears = I have long ears.
+nose = I have a long nose.
+mouth = I have a big mouth.
+shoulders = Touch your shoulders.
+knees = Touch your knees.
+toes = Touch your toes.
+@0 a cow>cow | a dragon>dragon | a snake>snake | a tiger>tiger | a sheep>sheep | a chicken>chicken | a wild boar>wild boar
+
+# Let's Try! 2|1
+good morning = Good morning.
+good afternoon = Good afternoon.
+good night = Good night.
+morning = Good morning.
+afternoon = Good afternoon.
+night = Good night.
+world = Hello, world!
+@0 afternoon | night
+
+# Let's Try! 2|2
+weather = How's the weather?
+sunny = It's sunny.
+rainy = It's rainy.
+cloudy = It's cloudy.
+snowy = It's snowy.
+hot = It's hot.
+cold = It's cold.
+stand up = Stand up.
+sit down = Sit down.
+stop = Stop.
+jump = Jump.
+turn around = Turn around.
+walk = Walk.
+run = Run.
+look = Look.
+touch = Touch your head.
+play = Let's play tag.
+left = Turn left.
+hand = Touch your hand.
+leg = Touch your leg.
+tag = Let's play tag.
+jump rope = Let's jump rope.
+bingo = Let's play bingo.
+game = Let's play a game.
+outside = Let's play outside.
+inside = Let's play inside.
+shirt = I have a red shirt.
+shorts = It's hot. I wear shorts.
+sweater = It's cold. I wear a sweater.
+pants = I have blue pants.
+boots = It's snowy. I wear boots.
+cap = It's sunny. I wear a cap.
+@0 rainy | cloudy | snowy | hot | cold
+@1 play tag>tag | jump rope | play bingo>bingo | play outside>outside | play inside>inside
+
+# Let's Try! 2|3
+day = What day is it?
+Monday = It's Monday.
+Tuesday = It's Tuesday.
+Wednesday = It's Wednesday.
+Thursday = It's Thursday.
+Friday = It's Friday.
+Saturday = It's Saturday.
+Sunday = It's Sunday.
+mushroom = I like mushrooms.
+watermelon = I like watermelon.
+soup = I like soup.
+pie = I like pie.
+sandwich = I like sandwiches.
+fresh = It's fresh.
+@0[Monday,Mondays] Tuesday~Tuesdays>tuesday | Wednesday~Wednesdays>wednesday | Friday~Fridays>friday | Saturday~Saturdays>saturday | Sunday~Sundays>sunday
+
+# Let's Try! 2|4
+forty = It's 7:40. (seven forty)
+fifty = It's 8:50. (eight fifty)
+sixty = One hour is sixty minutes.
+a.m. = I wake up at 6 a.m.
+p.m. = I take a bath at 8 p.m.
+wake-up time = It's 6:30. It's "Wake-up Time".
+breakfast time = It's 7:00. It's "Breakfast Time".
+study time = It's 4:00. It's "Study Time".
+lunch time = It's 12:30. It's "Lunch Time".
+snack time = It's 3:00. It's "Snack Time".
+dinner time = It's 7:00. It's "Dinner Time".
+homework time = It's 5:00. It's "Homework Time".
+TV time = It's 6:00. It's "TV Time".
+bath time = It's 8:00. It's "Bath Time".
+bed time = It's 9:00. It's "Bed Time".
+dream time = It's 11:00. It's "Dream Time".
+@0[8:30,"Homework Time","Bath Time"] 6:30~"Wake-up Time"~"Breakfast Time">wake-up time | 12:30~"Lunch Time"~"Snack Time">lunch time | 9:00~"Bed Time"~"Dream Time">bed time | 6:40~"TV Time"~"Dinner Time">forty
+
+# Let's Try! 2|5
+glue stick = Do you have a glue stick?
+scissors = Do you have scissors?
+pen = Do you have a pen?
+stapler = Do you have a stapler?
+magnet = Do you have a magnet?
+marker = Do you have a marker?
+pencil sharpener = Do you have a pencil sharpener?
+pencil case = Do you have a pencil case?
+desk = I have a desk.
+chair = I have a chair.
+clock = I have a clock.
+calendar = I have a calendar.
+short = I have a short pencil.
+@0 a glue stick>glue stick | scissors | a stapler>stapler | a magnet>magnet | a marker>marker | a pencil sharpener>pencil sharpener | a pencil case>pencil case | a calendar>calendar
+
+# Let's Try! 2|6
+letter = How many letters?
+bookstore = I see a bookstore.
+juice = I like juice.
+news = I watch the news.
+school = I go to school.
+station = I see a station.
+taxi = I see a taxi.
+telephone = I have a telephone.
+
+# Let's Try! 2|7
+vegetable = What vegetables do you want?
+potato = I want potatoes, please.
+cabbage = I want a cabbage, please.
+corn = I want corn, please.
+cherry = I want cherries, please.
+sausage = I want sausages, please.
+@0 cherries>cherry | sausages>sausage | corn | a cabbage>cabbage
+
+# Let's Try! 2|8
+go straight = Go straight.
+turn right = Turn right.
+turn left = Turn left.
+favorite = This is my favorite place.
+place = This is my favorite place.
+classroom = This is the classroom.
+restroom = This is the restroom.
+science room = This is the science room.
+music room = This is the music room.
+arts and crafts room = This is the arts and crafts room.
+computer room = This is the computer room.
+cooking room = This is the cooking room.
+school nurse's office = This is the school nurse's office.
+school principal's office = This is the school principal's office.
+teachers' office = This is the teachers' office.
+entrance = This is the entrance.
+library = This is the library.
+gym = This is the gym.
+playground = This is the playground.
+@0[the music room,music] the science room~science>science room | the arts and crafts room~arts and crafts>arts and crafts room | the computer room~computers>computer room | the cooking room~cooking>cooking room | the library~books>library | the gym~sports>gym | the playground~soccer>playground
+
+# Let's Try! 2|9
+wake up = I wake up at 6:00.
+wash my face = I wash my face.
+have breakfast = I have breakfast at 7:00.
+brush my teeth = I brush my teeth.
+put away my futon = I put away my futon.
+check my school bag = I check my school bag.
+leave my house = I leave my house at 7:30.
+take out the garbage = I take out the garbage.
+go to school = I go to school.
+go home = I go home.
+homework = I do my homework.
+dinner = I have dinner at 7:00.
+dream = Sweet dreams!
+yummy = Yummy!
+wonderful = It's a wonderful day.
+@0 at 6:30>wake up | at 7:00>wake up | at 5:45>wake up
+
+# Junior Sunshine 5|1
+hello = Hello. My name is Haruhi.
+name = My name is Chiba Haruhi.
+spell = How do you spell your name?
+red = I like red.
+yellow = I like yellow.
+green = I like green.
+orange = I like orange.
+basketball = I like basketball.
+baseball = I like baseball.
+tennis = I like tennis.
+soccer = I like soccer.
+apple = I like apples.
+peach = I like peaches.
+cat = I like cats.
+dog = I like dogs.
+video games = I like video games.
+racket = I want a new racket.
+@1 basketball | baseball | tennis
+@2 a new ball>basketball | a dog>dog | a cat>cat | new video games>video games
+
+# Junior Sunshine 5|2
+January = My birthday is January 2nd.
+February = My birthday is February 3rd.
+March = Doll's Day is March 3rd.
+April = My birthday is April 1st.
+May = Children's Day is May 5th.
+June = My birthday is June 5th.
+July = The Star Festival is July 7th.
+August = My birthday is August 20th.
+September = My birthday is September 15th.
+October = My birthday is October 31st.
+November = My special day is November 13th.
+December = New Year's Eve is December 31st.
+1st = My birthday is April 1st.
+2nd = My birthday is January 2nd.
+3rd = Doll's Day is March 3rd.
+5th = My birthday is June 5th.
+12th = My birthday is December 12th.
+13th = My special day is November 13th.
+15th = My birthday is September 15th.
+20th = My birthday is August 20th.
+31st = New Year's Eve is December 31st.
+birthday = When is your birthday?
+special day = When is your special day?
+Doll's Day = Doll's Day is March 3rd.
+Children's Day = Children's Day is May 5th.
+Star Festival = The Star Festival is July 7th.
+New Year's Eve = New Year's Eve is December 31st.
+@0 April 1st>1st | January 2nd>2nd | March 3rd>3rd | December 12th>12th | September 15th>15th | August 20th>20th | October 31st>31st
+
+# Junior Sunshine 5|3
+Monday = I have math on Mondays.
+Tuesday = I have music on Tuesdays.
+Wednesday = I have P.E. on Wednesdays.
+Thursday = I have science on Thursdays.
+Friday = I have English on Fridays.
+Japanese = I have Japanese on Mondays.
+English = I have English on Fridays.
+math = I have math on Mondays.
+science = I have science on Thursdays.
+social studies = Do you like social studies?
+P.E. = I have P.E. on Wednesdays.
+music = I have music on Tuesdays.
+arts and crafts = Do you like arts and crafts?
+home economics = Do you like home economics?
+calligraphy = I have calligraphy on Fridays.
+moral education = I have moral education on Mondays.
+the period for integrated studies = I have the period for integrated studies on Thursdays.
+class activities = I have class activities on Fridays.
+recess = I like recess.
+lunch time = I like lunch time.
+cleaning time = I don't like cleaning time.
+musician = I want to be a musician.
+scientist = I want to be a scientist.
+basketball player = I want to be a basketball player.
+programmer = I want to be a programmer.
+police officer = I want to be a police officer.
+vet = I want to be a vet.
+teacher = I want to be a teacher.
+pilot = I want to be a pilot.
+@0[math,Mondays] English~Fridays>english | science~Thursdays>science | P.E.~Wednesdays>p.e. | music~Tuesdays>music | Japanese~Mondays>japanese
+@1 English | science | social studies | P.E. | music | arts and crafts | home economics | calligraphy
+@2 a musician>musician | a scientist>scientist | a basketball player>basketball player | a programmer>programmer | a police officer>police officer | a vet>vet | a teacher>teacher
+
+# Junior Sunshine 5|4
+play video games = I can play video games.
+play shogi = I can play shogi.
+play badminton = I can play badminton.
+dance = I can dance.
+cook = I can cook.
+draw pictures = I can draw pictures.
+sing = I can sing.
+sing well = I can sing well.
+play the violin = I can play the violin.
+play the piano = I can't play the piano.
+play the recorder = I can play the recorder.
+play the guitar = He can play the guitar.
+play baseball = I can play baseball.
+play soccer = I can play soccer.
+play tennis = I can't play tennis.
+play basketball = I can play basketball.
+swim = I can swim.
+swim fast = I can swim fast.
+run = I can run.
+run fast = I can run fast.
+jump rope = I can jump rope.
+do judo = I can do judo.
+do kendo = I can do kendo.
+skateboard = I can skateboard.
+play kendama = I can play kendama.
+make paper cranes = I can make paper cranes.
+snap my fingers = I can snap my fingers.
+@0 play video games | play badminton | dance | cook | draw pictures | sing well | play the violin | play the piano | play the recorder | play the guitar | play baseball | play soccer | play basketball | swim fast | run fast | jump rope | do judo | do kendo | skateboard | play kendama | make paper cranes | snap my fingers
+
+# Junior Sunshine 5|5
+clock = Where is your clock? It's on the desk.
+T-shirt = Where is your T-shirt? It's on the chair.
+school bag = Where is your school bag? It's under the desk.
+on = It's on the desk.
+under = It's under the desk.
+in = It's in the basket.
+by = It's by the wall.
+wall = It's by the wall.
+chair = It's on the chair.
+basket = It's in the basket.
+desk = It's on the desk.
+station = Where is the station?
+park = My house is by the park.
+lake = My house is by the lake.
+hamburger shop = Where is the hamburger shop?
+pizza shop = Where is the pizza shop?
+post office = Where is the post office?
+zoo = My favorite place is the zoo.
+school = My house is by the school.
+library = My favorite place is the library.
+convenience store = My house is by the convenience store.
+flower shop = Where is the flower shop?
+fire station = Where is the fire station?
+hospital = Where is the hospital?
+museum = My favorite place is the museum.
+police station = Where is the police station?
+movie theater = My favorite place is the movie theater.
+amusement park = My favorite place is the amusement park.
+supermarket = Where is the supermarket?
+restaurant = Where is the restaurant?
+turn right = Turn right.
+turn left = Turn left.
+go straight = Go straight.
+@0[on,desk] under~desk>under | in~basket>in | by~wall>by
+
+# Junior Sunshine 5|6
+spaghetti = I'd like spaghetti.
+curry = I'd like curry.
+curry and rice = I'd like curry and rice.
+sushi = I'd like sushi.
+hamburger = I'd like a hamburger.
+borscht = I'd like borscht.
+kebab = I'd like a kebab.
+tacos = I'd like tacos.
+fish and chips = I'd like fish and chips.
+steak = I'd like steak.
+French fries = I'd like French fries.
+tempura = I'd like tempura.
+rice = I'd like rice.
+salad = I'd like salad.
+soup = I'd like soup.
+miso soup = What's this? It's miso soup.
+bread = I'd like bread.
+grilled fish = I'd like grilled fish.
+cake = I'd like cake.
+ice cream = I'd like ice cream.
+pizza = I'd like pizza.
+yogurt = I'd like yogurt.
+coffee = I'd like coffee.
+orange juice = I'd like orange juice.
+tom yam kung = What's this? It's tom yam kung.
+yen = It's 250 yen.
+@0 spaghetti | sushi | a hamburger>hamburger | borscht | a kebab>kebab | tacos | fish and chips | steak | French fries | tempura | grilled fish | ice cream | pizza | orange juice
+
+# Junior Sunshine 5|7
+big = It's big.
+small = It's small.
+long = It's long.
+short = It's short.
+high = It's high.
+low = It's low.
+old = It's old.
+new = It's new.
+tall = It's tall.
+bookstore = We have a bookstore.
+library = We have a library.
+hospital = We have a hospital.
+amusement park = We have an amusement park.
+department store = We have a department store.
+stadium = We have a stadium.
+temple = We have an old temple.
+strawberry farm = We have a strawberry farm.
+park = We have a big park.
+beach = We have a beach.
+aquarium = We have an aquarium.
+@0 a bookstore>bookstore | a library>library | a hospital>hospital | an amusement park>amusement park | a department store>department store | a temple>temple | a strawberry farm>strawberry farm | a park>park | a beach>beach | an aquarium>aquarium
+@2 small | long | short | high | old | new | tall
+
+# Junior Sunshine 5|8
+hero = Who is your hero?
+he = He is kind.
+she = She is kind.
+good at = She is good at singing.
+singing = She is good at singing.
+cooking = He is good at cooking.
+swimming = He is good at swimming.
+dancing = She is good at dancing.
+kind = She is kind.
+strong = He is strong.
+brave = He is brave.
+great = She is great.
+father = My hero is my father.
+mother = My hero is my mother.
+brother = My hero is my brother.
+sister = My hero is my sister.
+grandfather = My hero is my grandfather.
+grandmother = My hero is my grandmother.
+@1[singing] swimming | dancing
+@2[my mother,She] my father~He>father | my brother~He>brother | my sister~She>sister | my grandfather~He>grandfather | my grandmother~She>grandmother
+
+# Junior Sunshine 6|1
+Japan = I'm from Japan.
+Singapore = I'm from Singapore.
+the U.S.A. = I'm from the U.S.A.
+the U.K. = I'm from the U.K.
+France = I'm from France.
+ball = I want a ball.
+racket = I want a racket.
+glove = I want a glove.
+cap = I want a cap.
+dog = I have a dog.
+video games = I like video games.
+shogi = I'm good at playing shogi.
+table tennis = I'm good at playing table tennis.
+social studies = I like social studies.
+English = I like English.
+dance = I'm good at dancing.
+@0 Singapore | the U.S.A.>the u.s.a. | the U.K.>the u.k. | France
+@1 playing shogi>shogi | playing table tennis>table tennis | dancing>dance
+@2 a ball>ball | a glove>glove | a cap>cap
+
+# Junior Sunshine 6|2
+spring = We have hanami in spring.
+summer = We have the Star Festival in summer.
+fall = We have beautiful leaves in fall.
+winter = We have New Year's Day in winter.
+New Year's Day = We have New Year's Day in winter.
+Dolls' Day = We have Dolls' Day in spring.
+Children's Day = We have Children's Day in spring.
+Star Festival = We have the Star Festival in summer.
+festival = We have a summer festival.
+fireworks = You can see fireworks.
+hanami = We have hanami in spring.
+osechi = You can eat osechi on New Year's Day.
+kashiwamochi = You can eat kashiwamochi on Children's Day.
+soba = You can eat delicious soba.
+sushi = You can eat delicious sushi.
+okonomiyaki = You can eat delicious okonomiyaki.
+mango = You can eat sweet mangoes.
+sumo = You can watch sumo.
+kabuki = You can watch kabuki.
+shogi = You can play shogi.
+shrine = We have a famous shrine.
+castle = We have a famous castle.
+temple = We have a famous temple.
+mountain = We have a beautiful mountain.
+beautiful = It's beautiful.
+delicious = It's delicious.
+sweet = It's sweet.
+nice = It's nice.
+exciting = It's exciting.
+fantastic = It's fantastic.
+fun = It's fun.
+@0[the Star Festival,summer] hanami~spring>hanami | Children's Day~spring>children's day | Dolls' Day~spring>dolls' day | fireworks~summer>fireworks | New Year's Day~winter>new year's day
+@1 eat delicious soba>soba | eat delicious sushi>sushi | eat osechi>osechi | eat kashiwamochi>kashiwamochi | watch sumo>sumo | watch kabuki>kabuki
+@2 beautiful | delicious | nice | exciting | fun
+
+# Junior Sunshine 6|3
+get up = I get up at 6:00.
+wash my face = I always wash my face.
+go to school = I go to school at 7:30.
+eat breakfast = I usually eat breakfast at 7:00.
+eat lunch = I eat lunch at 12:30.
+study = I usually study at 7:00.
+go home = I go home at 4:00.
+do my homework = I usually do my homework at 5:00.
+play with my friends = I sometimes play with my friends.
+eat dinner = I usually eat dinner at 7:00.
+swimming club = I go to swimming club on Saturdays.
+clean my room = I sometimes clean my room.
+take a bath = I usually take a bath at 8:00.
+go to bed = I usually go to bed at 9:30.
+play video games = I sometimes play video games.
+walk my dog = I always walk my dog.
+always = I always eat pancakes for breakfast.
+usually = I usually eat breakfast at 7:30.
+sometimes = I sometimes eat bread for breakfast.
+never = I never eat natto for breakfast.
+pancakes = I always eat pancakes for breakfast.
+bread = I sometimes eat bread for breakfast.
+natto = I never eat natto for breakfast.
+a.m. = I get up at 6 a.m.
+p.m. = I go to bed at 9 p.m.
+@1[eat breakfast,7:30] eat dinner~7:00>eat dinner | do my homework~5:00>do my homework | take a bath~8:00>take a bath | go to bed~9:30>go to bed | eat lunch~12:30>eat lunch
+
+# Junior Sunshine 6|4
+went = I went to the sea.
+enjoyed = I enjoyed swimming.
+saw = I saw fireworks.
+ate = I ate a hamburger.
+was = It was fun.
+mountain = I went to the mountains.
+beach = I went to the beach.
+sea = I went to the sea.
+amusement park = I went to an amusement park.
+swimming pool = I went to the swimming pool.
+river = I went to the river.
+lake = I went to the lake.
+camping = I enjoyed camping.
+swimming = I enjoyed swimming.
+fireworks = I saw fireworks.
+hamburger = I ate a hamburger.
+carrot = I ate carrots.
+whale = I saw a whale.
+fun = It was fun.
+exciting = It was exciting.
+delicious = It was delicious.
+beautiful = It was beautiful.
+Hokkaido = I went to Hokkaido.
+@0 the mountains>mountain | the beach>beach | an amusement park>amusement park | the swimming pool>swimming pool | the river>river | the lake>lake | Hokkaido>hokkaido
+@1 exciting | delicious | beautiful
+
+# Junior Sunshine 6|5
+Finland = I want to go to Finland.
+China = I want to go to China.
+Italy = I want to go to Italy.
+Kenya = I want to go to Kenya.
+Korea = I want to go to Korea.
+Australia = I want to go to Australia.
+the U.S.A. = I want to go to the U.S.A.
+Brazil = I want to go to Brazil.
+the U.K. = I want to go to the U.K.
+Egypt = I want to go to Egypt.
+see = I want to see the Pyramids.
+eat = I want to eat pizza.
+visit = I want to visit Italy.
+play = I want to play soccer in Brazil.
+buy = I want to buy a beautiful bag.
+watch = I want to watch baseball games.
+pizza = I want to eat pizza.
+hot dog = I want to eat a hot dog.
+ice cream = I want to eat ice cream.
+Pyramids = I want to see the Pyramids.
+ocean = You can see the ocean.
+baseball games = I want to watch baseball games.
+@0 Finland>finland | China>china | Kenya>kenya | Korea>korea | Australia>australia | the U.S.A.>the u.s.a. | Brazil>brazil | the U.K.>the u.k. | Egypt>egypt
+@1 see the Pyramids>pyramids | eat a hot dog>hot dog | eat ice cream>ice cream | see the ocean>ocean | watch baseball games>baseball games
+
+# Junior Sunshine 6|6
+entrance ceremony = My best memory is the entrance ceremony.
+swimming meet = My best memory is the swimming meet.
+sports day = My best memory is sports day.
+music festival = My best memory is the music festival.
+volunteer day = My best memory is volunteer day.
+hiking = My best memory is hiking.
+school trip = My best memory is the school trip.
+field trip = My best memory is the field trip.
+graduation ceremony = My best memory is the graduation ceremony.
+memory = What is your best memory?
+Kyoto = I went to Kyoto.
+Kinkakuji Temple = I saw Kinkakuji Temple.
+@0 the entrance ceremony>entrance ceremony | the swimming meet>swimming meet | sports day>sports day | the music festival>music festival | volunteer day>volunteer day | hiking>hiking | the field trip>field trip | the graduation ceremony>graduation ceremony
+
+# Junior Sunshine 6|7
+cook = I want to be a cook.
+fire fighter = I want to be a fire fighter.
+carpenter = I want to be a carpenter.
+farmer = I want to be a farmer.
+vet = I want to be a vet.
+doctor = I want to be a doctor.
+nurse = I want to be a nurse.
+game creator = I want to be a game creator.
+baker = I want to be a baker.
+scientist = I want to be a scientist.
+singer = I want to be a singer.
+soccer player = I want to be a soccer player.
+comedian = I want to be a comedian.
+teacher = I want to be a teacher.
+florist = I want to be a florist.
+baseball player = I want to be a baseball player.
+pilot = I want to be a pilot.
+comic creator = I want to be a comic creator.
+dancer = I want to be a dancer.
+basketball player = I want to be a basketball player.
+@0 a cook>cook | a fire fighter>fire fighter | a carpenter>carpenter | a farmer>farmer | a vet>vet | a doctor>doctor | a nurse>nurse | a game creator>game creator | a baker>baker | a scientist>scientist | a soccer player>soccer player | a comedian>comedian | a teacher>teacher | a florist>florist | a baseball player>baseball player | a pilot>pilot | a comic creator>comic creator | a dancer>dancer | a basketball player>basketball player
+
+# Junior Sunshine 6|8
+science club = I want to join the science club.
+baseball team = I want to join the baseball team.
+English class = I want to enjoy English class.
+brass band = I want to join the brass band.
+soccer team = I want to join the soccer team.
+kendo club = I want to join the kendo club.
+industrial arts = I want to study industrial arts.
+track and field team = I want to join the track and field team.
+tennis team = I want to join the tennis team.
+chorus = I want to join the chorus.
+volleyball team = I want to join the volleyball team.
+art club = I want to join the art club.
+study technology = I want to study technology.
+join = I want to join the chorus.
+study = I want to study English hard.
+math = I want to study math hard.
+@0 the science club>science club | the baseball team>baseball team | the brass band>brass band | the soccer team>soccer team | the kendo club>kendo club | the track and field team>track and field team | the tennis team>tennis team | the volleyball team>volleyball team | the art club>art club

@@ -1,0 +1,711 @@
+# Checked example sentences for Vocab Intro (junior high). Same format as elementary.txt.
+# "@N[slot,slot] a~b>picture" fills those slots (as written in the book's pattern and chat) together.
+
+# Sunshine English Course 1|1
+shy = I'm shy.
+city = I'm from this city.
+just = I just moved here.
+problem = No problem.
+pardon = Pardon?
+quiet = I'm quiet.
+polite = Ken is polite.
+cheerful = I'm cheerful.
+honest = Mao is honest.
+brave = I'm brave.
+careful = I'm careful.
+active = I'm active.
+funny = I'm funny.
+fan = I'm a fan of baseball.
+math = I'm good at math.
+P.E. = I'm good at P.E.
+social studies = I'm good at social studies.
+J-pop = I'm a fan of J-pop.
+the U.S. = I'm from the U.S.
+the U.K. = I'm from the U.K.
+Canada = I'm from Canada.
+Australia = I'm from Australia.
+Brazil = I'm from Brazil.
+@1 Canada>canada | Australia>australia | Brazil>brazil | the U.S.>the u.s. | the U.K.>the u.k.
+
+# Sunshine English Course 1|2
+home = I have a dog at home.
+frog = I have five frogs.
+walk = I walk my dog every day.
+grow = I grow tomatoes.
+use = I use this notebook every day.
+weekend = I play tennis on weekends.
+after school = I play soccer after school.
+before = I read books before dinner.
+question = I have a question.
+sure = Sure.
+during = I play badminton during lunch break.
+break = I play badminton during lunch break.
+tomorrow = See you tomorrow.
+notebook = I have two notebooks.
+draw = I draw pictures.
+picture = I draw pictures.
+watch movies = I watch movies on weekends.
+read books = I read books after school.
+cook = I cook dinner on Sundays.
+clean = I clean my room on weekends.
+flower = I grow flowers.
+bicycle = I have a new bicycle.
+piano = I play the piano.
+@0[play] like>like | watch>watch movies
+@1 two notebooks>notebook | three flowers>flower | two bicycles>bicycle
+
+# Sunshine English Course 1|3
+swim = I can swim.
+dance = I can dance.
+ski = I can ski.
+speak Chinese = I can speak Chinese.
+speak French = I can speak French.
+play the guitar = I can play the guitar.
+run fast = I can run fast.
+do magic tricks = I can do magic tricks.
+read a map = I can read a map.
+make sushi = I can make sushi.
+sing = I can sing well.
+father = My father can cook.
+mother = My mother can speak French.
+uncle = My uncle can ski.
+aunt = My aunt can play the guitar.
+cousin = My cousin can do magic tricks.
+grandfather = My grandfather can make sushi.
+grandmother = My grandmother can dance.
+talent show = Let's have a talent show.
+perform = I can perform magic tricks.
+excited = I'm excited.
+often = I often sing.
+internet = I use the internet.
+robot = This robot can dance.
+carry = I can carry this box.
+heavy = This box is heavy.
+find = I can't find my pen.
+fly = Birds can fly.
+@0 dance>dance | ski>ski | speak Chinese>speak chinese | speak French>speak french | play the guitar>play the guitar | run fast>run fast | do magic tricks>do magic tricks | read a map>read a map | make sushi>make sushi
+
+# Sunshine English Course 1|4
+jelly = This is coffee jelly.
+butterfly = This is a butterfly.
+zebra = Is that a zebra?
+gorilla = Is that a gorilla?
+ant = This is an ant.
+elephant = That is an elephant.
+horse = Is that a horse?
+cookie = This is a cookie.
+brand = This is a famous brand.
+woman = Who is this woman?
+man = Who is that man?
+boy = Who is that boy?
+girl = Who is this girl?
+classmate = She is my classmate.
+runner = He is a famous runner.
+street singer = She is a street singer.
+famous = She is a famous cook.
+udon = This is udon.
+meat = This is meat.
+deep-fried tofu = This is deep-fried tofu.
+lady = Who is that lady?
+chef = He is a famous chef.
+traditional = It's a Japanese traditional dish.
+custard pudding = This is custard pudding.
+sweet = It's sweet.
+excellent = Excellent!
+@0 udon>udon | custard pudding>custard pudding | deep-fried tofu>deep-fried tofu | a cookie>cookie
+
+# Sunshine English Course 1|5
+design = She likes design.
+home economics = My brother likes home economics.
+sew = He sews very well.
+drawing = She likes drawing.
+curry and rice = He makes curry and rice.
+clothes = He makes clothes.
+pajamas = He makes pajamas.
+ice hockey = He likes ice hockey.
+Korean = She speaks Korean.
+play soccer = He doesn't play soccer.
+like sports = She doesn't like sports.
+read books = He reads books every day.
+live = She lives in New York.
+common = Pajamas are common in Japan.
+spend = He spends a lot of time on art.
+school uniform = She makes school uniforms.
+player = He is a good soccer player.
+@0[music] design>design | drawing>drawing | ice hockey>ice hockey | home economics>home economics
+
+# Sunshine English Course 1|6
+him = I respect him.
+her = I like her.
+detective = I like the detective in this book.
+monster = I like that monster.
+pirate = I like that pirate.
+because = Because she is always nice to me.
+early = He gets up early.
+there = He lives there.
+cute = She is cute.
+cool = He is cool.
+beautiful = She is beautiful.
+funny = He is funny.
+romantic = The story is romantic.
+exciting = The story is exciting.
+respect = I respect him.
+tell = Tell me about him.
+hour = He walks for two hours.
+across = He walks across the savanna.
+savanna = He walks across the savanna.
+tough = He is tough.
+kilometer = He walks ten kilometers.
+@0 her>her
+@1[her,she is always nice to me] him~he is cool>him | him~he is funny>him | her~she is cute>her
+
+# Sunshine English Course 1|7
+over there = There is a steak restaurant over there.
+near = There are three parks near my house.
+those = Those are my bikes.
+college = There is a college in my town.
+library = There is a library in my town.
+museum = There is a museum in my town.
+shopping mall = There is a shopping mall in my town.
+park = There is a park in my town.
+zoo = Is there a zoo in your town?
+amusement park = Is there an amusement park in your town?
+hungry = I'm hungry.
+full = I'm full.
+something = I want something to eat.
+a little = I'm a little hungry.
+far = It's far from here.
+plane = I go to Fukuoka by plane.
+bus = I go to school by bus.
+bike = I go to school by bike.
+train = I go to school by train.
+walk = I walk to school.
+cake shop = There is a cake shop near my house.
+restaurant = There is a steak restaurant over there.
+steak = There is a steak restaurant over there.
+@0[a park,a zoo] a library~a museum>library | a museum~an amusement park>museum | a shopping mall~a zoo>shopping mall | a college~a cake shop>college
+@1[bike] bus>bus | train>train
+
+# Sunshine English Course 1|8
+need = I need some help.
+bathroom = I'm cleaning the bathroom now.
+shower = I'm taking a shower now.
+persimmon = I'm eating a persimmon now.
+grapes = I'm eating grapes now.
+pineapple = I'm cutting a pineapple now.
+strawberry = I'm eating strawberries now.
+peach = I'm eating a peach now.
+still = Are you still studying?
+prepare = I'm preparing for the countdown.
+countdown = I'm preparing for the New Year countdown event.
+feel = I feel cold.
+listen to music = I'm listening to music now.
+read a book = I'm reading a book now.
+cook = I'm cooking now.
+watch a movie = I'm watching a movie now.
+busy = I'm busy now.
+sunny = It's sunny today.
+today = I'm busy today.
+supermarket = I'm going to the supermarket now.
+@0[studying] cooking>cook | reading a book>read a book | watching a movie>watch a movie | listening to music>listen to music
+@1[reading a book] listening to music>listen to music | watching a movie>watch a movie | cooking>cook
+
+# Sunshine English Course 1|9
+holiday = I had a holiday last week.
+relax = I relaxed at home.
+also = I also cooked nikujaga.
+beat = Our team beat the Tigers.
+last = I played tennis last Sunday.
+a lot = I studied a lot yesterday.
+cooked = I cooked dinner last night.
+watched = I watched TV yesterday.
+played = I played tennis last Sunday.
+studied = I studied English yesterday.
+came = I came back from Finland yesterday.
+back = I came back from Finland yesterday.
+yesterday = I watched TV yesterday.
+aurora = I saw the aurora.
+lucky = I was lucky.
+read = I read a book yesterday.
+took = I took a walk.
+take a walk = I took a walk in the park.
+medical checkup = I had a medical checkup.
+did = I did my homework.
+jet lag = I have jet lag.
+sleep = I didn't sleep well last night.
+win = We didn't win the game.
+ago = I played tennis three days ago.
+anywhere = I didn't go anywhere.
+have a good time = I had a good time.
+@0[played] watched>watched
+
+# Sunshine English Course 1|10
+were = You were very cute.
+finish = I didn't finish my homework.
+awesome = It was awesome.
+funny = It was funny.
+nice = It was nice.
+tough = It was tough.
+fine = I was fine.
+sleepy = I was sleepy.
+tired = I was tired.
+at a theater = I was at a theater.
+at a stadium = I was at a stadium.
+at home = I was at home.
+story = I was reading a story.
+call = I was talking on the phone. Sorry I didn't call you.
+surprised = I was surprised.
+surf the internet = I was surfing the internet.
+watch videos = I was watching videos.
+homework = I was doing my homework.
+comic = I was reading a comic.
+textbook = I was reading my textbook.
+@0[busy] tired>tired | sleepy>sleepy | surprised>surprised
+@1[reading this book] watching videos>watch videos | surfing the internet>surf the internet | doing my homework>homework | reading a comic>comic
+
+# Sunshine English Course 2|1
+plan = I have a plan for this weekend.
+go shopping = I'm going to go shopping this Sunday.
+see a movie = I'm going to see a movie this Sunday.
+stay home = I'm going to stay home this Sunday.
+late = I'll be late.
+soon = He'll come soon.
+eat ramen = I'm going to eat ramen.
+go fishing = I'm going to go fishing.
+camp = I'm going to camp this weekend.
+dance = I enjoyed dancing with you.
+read manga = I'm going to read manga.
+nothing = I have nothing to do.
+move = Miki is going to move to Canada.
+farewell party = We're going to have a farewell party.
+care = Take care.
+local = I'll go to a local festival.
+worried = I'm worried.
+hope = I hope you like it.
+forget = I won't forget you.
+either = I don't like it either.
+keep = Keep in touch.
+text = I'll text you.
+cry = Don't cry.
+overseas = I want to go overseas.
+picnic = We're going to have a picnic.
+maybe = Maybe I'll go.
+amusement park = I'm going to go to an amusement park.
+@0[practice] go shopping>go shopping | see a movie>see a movie | go fishing>go fishing | camp>camp
+@1[clean my room] go shopping>go shopping | see a movie>see a movie | stay home>stay home
+
+# Sunshine English Course 2|2
+free = Are you free this Sunday?
+hear = I hear that Anya will play in a baseball game.
+root for = Let's root for her team.
+easy = I think that math is easy.
+difficult = I think that English is difficult.
+history = I think that history is interesting.
+interested = I'm interested in history.
+scarf = I'll wear my team's scarf.
+shirt = I'll wear my team's shirt.
+bag = I have a new bag.
+cheering = Let's go cheering.
+flag = I'll take a flag.
+program = This is a good program.
+practice soccer = When I'm free, I practice soccer.
+watch TV = When I'm free, I watch TV.
+study English = When I'm free, I study English.
+if = If it's sunny, I'll play tennis.
+hit = If you hit a home run, I'll make cookies for you.
+home run = He hit a home run.
+cycle = I cycle to school.
+rain = If it rains, I'll stay home.
+go cycling = If it's sunny, I'll go cycling.
+promote = They promote baseball in Africa.
+successful = The project was successful.
+championship = They won the championship.
+passionate = He is passionate about baseball.
+person = He is a kind person.
+university = He studies at a university.
+coach = He is a baseball coach.
+national = He is on the national team.
+believe = I believe in you.
+create = Let's create a new team.
+peace = Sports can bring peace.
+education = Education is important.
+sportsmanship = Sportsmanship is important.
+manners = Good manners are important.
+power = Sports have power.
+@0[math is easy] history is interesting>history | English is difficult>difficult | soccer is fun>practice soccer
+@1[practice soccer] watch TV>watch tv | study English>study english | go cycling>go cycling
+@2[play tennis] go cycling>go cycling | practice soccer>practice soccer
+
+# Sunshine English Course 2|3
+festival = There is a festival this evening.
+wait = I can't wait!
+light = This bag is light.
+go shopping = I went to the supermarket to go shopping.
+play with my dog = I went to the park to play with my dog.
+see a movie = I went to the theater to see a movie.
+scoop = You use it to scoop up fish.
+thin = It's too thin.
+beach = I went to the beach to swim.
+swim = I went to the beach to swim.
+catch = I want to catch goldfish.
+job = I have a job to do.
+bowl = I need a bowl to keep it in.
+bitter = It's bitter.
+sour = It's sour.
+sweet = It's sweet.
+soft = It's soft.
+racket = I need a racket to play tennis.
+present = I want to buy a present.
+cheese = I want to eat cheese.
+corn dog = I want to eat a corn dog.
+cotton candy = I want to eat cotton candy.
+food stand = There are food stands at the festival.
+goldfish = I want to scoop goldfish.
+@1[a supermarket,buy ice cream,the park,draw pictures] the beach~swim~the beach~swim>beach | the park~play with my dog~the park~play with my dog>play with my dog | the theater~see a movie~the theater~see a movie>see a movie
+
+# Sunshine English Course 2|4
+actually = Actually, I'm a big fan of enka.
+deer = I'm surprised to see a deer.
+guitarist = He is a famous guitarist.
+hear from = I'm glad to hear from you.
+see my cousin = I'm happy to see my cousin.
+get a new watch = I'm happy to get a new watch.
+emotional = The song is emotional.
+must = You must turn down the volume.
+volume = You must turn down the volume.
+uh-oh = Uh-oh!
+chips = You mustn't eat chips in the library.
+cover = Cover your mouth.
+hood = I have to wear a hood.
+have to = I have to cook dinner.
+cook dinner = I have to cook dinner today.
+study English = I have to study English.
+smartphone = You mustn't use a smartphone in class.
+hike = We must stay on the path when we hike.
+true = Is it true?
+glad = I'm glad to hear that.
+guide = Our guide is kind.
+clear = The water is clear.
+@0[hear that] see a deer>deer | see my cousin>see my cousin | get a new watch>get a new watch
+@2[be careful] cook dinner>cook dinner | study English>study english
+
+# Sunshine English Course 2|5
+tablet = You're good at using a tablet.
+chess = Do you know how to play chess?
+both = I know how to play both.
+play the drums = I know how to play the drums.
+ride a unicycle = I know how to ride a unicycle.
+how to = I know how to cook sukiyaki.
+meter = It's two meters long.
+become = You'll become a good athlete.
+athlete = You'll become a good athlete.
+happen = What happened?
+get first place = I got first place.
+happy = You look happy.
+sad = You look sad.
+tired = You look tired.
+sleepy = You look sleepy.
+lend = I'll lend you this apron.
+apron = I'll lend you this apron.
+show = I'll show you.
+give = I'll give you a present.
+tell = I'll tell you the answer.
+supermarket = I work at a supermarket.
+boat = I'll make you a boat.
+paper = I'll make you a paper boat.
+@0[cook sukiyaki] play chess>chess | play the drums>play the drums | ride a unicycle>ride a unicycle | use a tablet>tablet
+@1[tired] happy>happy | sad>sad | sleepy>sleepy
+
+# Sunshine English Course 2|6
+cafe = This cafe is cuter than that one.
+than = This cafe is bigger than that one.
+more = It's more expensive than that one.
+Germany = Germany is bigger than Japan.
+old = This temple is older than that one.
+young = My sister is younger than me.
+easy = Math is easier than science.
+difficult = English is more difficult than math.
+parfait = The parfaits are the most popular here.
+most = It's the most popular cafe.
+London = London is a big city.
+useful = This bag is more useful than that one.
+strong = He is stronger than me.
+stylish = This cap is more stylish than that one.
+centimeter = It's ten centimeters taller.
+exciting = Soccer is the most exciting.
+delicious = This cake is the most delicious.
+cute = This cafe is cuter than that one.
+expensive = This parfait is more expensive than that one.
+umbrella = This umbrella is as light as yours.
+tall = He is taller than me.
+big = This parfait is bigger than that one.
+popular = The parfaits are the most popular here.
+@0[cuter] bigger>big | older>old
+@1[popular] delicious>delicious | expensive>expensive
+
+# Sunshine English Course 2|7
+somewhere = Let's go somewhere this weekend.
+Halloween = I like Halloween better than Christmas.
+blossom = I like cherry blossoms the best.
+math = I like math better than science.
+science = I like science the best of all.
+fish = I like fish better than meat.
+meat = I like meat better than fish.
+ticket = I have two tickets.
+penguin = I like the penguin design the best.
+animal = What animal do you like the best?
+color = What color do you like the best?
+country = What country do you like the best?
+music = What music do you like the best?
+aquarium = I like aquariums better than zoos.
+zoo = I like zoos better than aquariums.
+design = Which design do you like the best?
+teach = I'll teach you how to cook well.
+make = I'll teach you how to make a cake.
+cook = I'll teach you how to cook well.
+use = I'll teach you how to use it.
+fireworks = I like fireworks the best.
+recorder = I'll teach you how to play the recorder.
+mushroom = It's "mushroom".
+@0[aquariums,zoos] zoos~aquariums>zoo | math~science>math | science~math>science
+@1[strawberries,fruit] penguins~animal>penguin | blue~color>color | fireworks~summer event>fireworks
+@2[cook well] make a cake>make | use it>use | play the recorder>recorder
+
+# Sunshine English Course 2|8
+taken = It was taken at Itsukushima Shrine.
+email = This email was written in English.
+seen = Mt. Fuji can be seen from here.
+kitchen = The kitchen is cleaned every day.
+sold = Stationery is sold at this store.
+stationery = Stationery is sold at this store.
+store = Stationery is sold at this store.
+line = There is a long line.
+supermarket = Bread is sold at the supermarket.
+tourist = It's visited by many tourists.
+built = It was built in 593.
+written = This book was written by Natsume Soseki.
+sung = It's sung by Aimyon.
+paint = The wall was painted blue.
+known = Momiji manju is known to many people.
+filled = It's filled with anko!
+wood = This table is made from wood.
+butter = Butter is made from milk.
+tofu = Tofu is made from soybeans.
+udon = Udon is made from wheat.
+table = This table is made from wood.
+rice = Mochi is made from rice.
+milk = Butter is made from milk.
+shrine = It was built in 593.
+peace = It's a symbol of peace.
+@2[butter,milk] tofu~soybeans>tofu | udon~wheat>udon | this table~wood>table
+
+# Sunshine English Course 3|1
+bento = Please make our bentos for tomorrow.
+lunch = I'll ask someone to make lunch.
+someone = I'll ask someone to make them.
+schoolyard = Can I ask you to clean the schoolyard?
+suitcase = Can I ask you to carry my suitcase?
+walk the dog = Can I ask you to walk the dog?
+water the flowers = Can I ask you to water the flowers?
+clean my room = Can I ask you to clean my room?
+window = Can I ask you to open the window?
+chair = Can I ask you to carry this chair?
+eel = I've eaten eel before.
+musical instrument = It's fun for me to play a musical instrument.
+marathon = It's hard for me to run a marathon.
+run a marathon = It's hard for me to run a marathon.
+easy = It's easy for me to cook.
+difficult = It's difficult for me to read this kanji.
+fun = It's fun for me to play soccer.
+important = It's important for me to study English.
+interesting = It's interesting for me to watch foreign movies.
+study English = It's important for me to study English.
+watch foreign movies = It's interesting for me to watch foreign movies.
+cream puff = Have you ever eaten a cream puff?
+eaten = I've eaten it before.
+so-so = It was so-so.
+ever = Have you ever been to Kochi?
+been = I've been there twice.
+twice = I've been there twice.
+never = I've never been there.
+sell out = The cream puffs sell out quickly.
+expensive = It's too expensive.
+@0[make them] walk the dog>walk the dog | water the flowers>water the flowers | clean my room>clean my room
+@1[hard,read this kanji] fun~run a marathon>run a marathon | important~study English>study english | interesting~watch foreign movies>watch foreign movies
+@2[eaten] tried>eaten
+
+# Sunshine English Course 3|2
+gotten = I've just gotten a new video game!
+yet = I haven't started playing it yet.
+done = I've already done my homework.
+already = I've already read it.
+just = I've just finished my homework.
+hurry = Hurry up!
+in a hurry = I'm in a hurry.
+video game = I've just gotten a new video game!
+base = The movie is based on a book.
+be based on = The movie is based on a book.
+since = I've lived here since I was nine.
+diary = I've kept a diary for three years.
+keep a diary = I've kept a diary for three years.
+live here = I've lived here for five years.
+for years = I've known it for years.
+rope = I've been jumping rope for ten minutes.
+jump rope = I've been jumping rope for ten minutes.
+title = I like the title of this book.
+dry = She has been drying her hair.
+hair = She has been drying her hair.
+right now = Stop it right now.
+choose her clothes = She has been choosing her clothes.
+sleep = I've been sleeping for ten hours.
+@0[gotten a new video game] done my homework>done | finished my homework>just
+@2[playing it,four hours] jumping rope~ten minutes>jump rope | sleeping~ten hours>sleep | drying my hair~ten minutes>dry
+
+# Sunshine English Course 3|3
+basketball = I'll tell him that you want to play basketball.
+practice = The morning practice made you sleepy.
+family = My family makes me happy.
+smartphone = A smartphone makes my life easy.
+video games = Video games make me excited.
+health = My teacher often tells me that health is important.
+wake = Wake up, Mao!
+wake up = Mao, wake up!
+fall asleep = Oh, I fell asleep.
+sleepy = The morning practice made you sleepy.
+happy = Watching movies makes me happy.
+tired = I'm so tired today.
+excited = Video games make me excited.
+comfortable = This bed makes me comfortable.
+hungry = Running makes me hungry.
+eating sweets = Eating sweets makes me happy.
+playing sports = Playing sports makes me excited.
+running = Running makes me hungry.
+dessert = Dessert makes me happy.
+rest = You should get some rest.
+get rest = You should get some rest.
+lend = I'll lend you my book.
+laugh = My friends make me laugh.
+cry = Sad movies make me cry.
+bake = I bake cookies on Sundays.
+smile = My dog makes me smile.
+milk = Warm milk makes you sleep well.
+@1[morning practice,sleepy] long run~hungry>running | game~excited>playing sports
+@2[Warm milk,sleep well,My dog,smile] A funny movie~laugh~A funny movie~laugh>laugh | A sad movie~cry~A sad movie~cry>cry | A hot bath~sleep well~My family~smile>family
+
+# Sunshine English Course 3|4
+waiter = That waiter looks like Ken!
+glasses = I mean the man wearing glasses.
+hmm = Hmm, I don't know.
+behind = Who is the girl sitting behind you?
+in front of = Who is the boy sitting in front of you?
+near = Who is the boy standing near the door?
+sit = Who is the boy sitting in front of you?
+stand = Who is the girl standing near the door?
+eco-friendly = This restaurant is eco-friendly.
+straw = This is a straw made of paper.
+paper = This is a straw made of paper.
+made of = This is a straw made of paper.
+song = Do you know any songs sung by YOASOBI?
+movie = This is a movie made in Korea.
+sign language = Are they using sign language?
+afraid = I'm afraid I don't.
+forgot = I forgot his name.
+held = The school festival is held in November.
+concert = The concert is held in December.
+school festival = Do you know when the school festival is held?
+chorus contest = The chorus contest is held in October.
+field trip = The field trip is held in May.
+Italy = This is a car made in Italy.
+cap = Who is the boy wearing a cap?
+@0[wearing glasses] wearing a cap>cap
+@2[the school festival,November] the chorus contest~October>chorus contest | the concert~December>concert | the field trip~May>field trip
+
+# Sunshine English Course 3|5
+manga artist = He is the manga artist who drew Black Jack.
+draw = He is the manga artist who drew Black Jack.
+chocolate = They're chocolates which look like stones.
+doctor = I want to be a doctor who helps a lot of people.
+soccer player = I want to be a soccer player who plays in Europe.
+comedian = I want to be a comedian who makes people laugh.
+musician = I want to be a musician who writes good songs.
+Europe = I want to be a soccer player who plays in Europe.
+stone = They're chocolates which look like stones.
+hard = They look so hard!
+male = A male lion has a mane.
+female = A female lion hunts.
+neck = This is an animal which has a long neck.
+stripe = This is an animal which has stripes.
+trunk = This is an animal which has a long trunk.
+tallest = This is the tallest animal.
+mountain = This is the tallest mountain in Japan.
+China = This is a country which has a long history.
+dramatic = It's a movie that has many dramatic scenes.
+scene = It's a movie that has many dramatic scenes.
+magazine = This is a magazine that has many pictures.
+jeans = These are jeans that are popular.
+park = Let's go to a park that has a tennis court.
+shop = Let's go to a shop that sells cute clothes.
+tennis court = Let's go to a park that has a tennis court.
+restaurant = Let's go to a restaurant that serves good steak.
+steak = Let's go to a restaurant that serves good steak.
+@0[doctor,helps a lot of people] soccer player~plays in Europe>soccer player | comedian~makes people laugh>comedian | musician~writes good songs>musician
+@2[restaurant,serves good steak] park~has a tennis court>park | shop~sells cute clothes>shop
+
+# Sunshine English Course 3|6
+bottle = I have a bottle which I bought yesterday.
+water bottle = I'll use my own water bottle.
+green tea = Green tea with honey!
+honey = Green tea with honey!
+comic book = My favorite comic book is ONE PIECE.
+music = This is the music that I like the best.
+skating = Skating is a sport which is popular in Canada.
+Canadian = He is a Canadian player.
+ice = We play ice hockey on ice.
+ice hockey = Ice hockey is a sport which is popular in Canada.
+beaver = The beaver is an animal which lives in Canada.
+thirsty = I'm thirsty.
+store = Let's go to that store.
+drink = This is the drink that I like the best.
+balloon = The balloon that the girl has is red.
+cotton candy = The cotton candy that I bought is sweet.
+stick = It's on a stick.
+banana = The fruit that the boy has is a banana.
+plastic = There are too many plastic bottles!
+reduce = We must reduce such waste.
+waste = We must reduce such waste.
+environment = That's one thing we can do for the environment.
+own = I'll use my own bottle.
+stew = Beef stew is a dish I like the best.
+dish = Beef stew is a dish I like the best.
+curry and rice = Curry and rice is a dish I like the best.
+fried chicken = Fried chicken is a dish I like the best.
+river = This is a river which I swam in.
+@1[drink] music>music | dish>dish
+
+# Sunshine English Course 3|7
+robot = If I had a robot, I would clean my room every day.
+vacuum cleaner = If I were you, I would use a robot vacuum cleaner.
+expensive = It's too expensive.
+fever = If I didn't have a fever, I would go.
+dictionary = If I had a dictionary, I could read this.
+bird = If I were a bird, I would fly to many places.
+panda = If I were a panda, I would sleep all day.
+fish = If I were a fish, I would swim in the deep sea.
+fly = If I were a bird, I would fly to many places.
+sleep all day = If I were a panda, I would sleep all day.
+swim in the deep sea = If I were a fish, I would swim in the deep sea.
+belong to = I belong to a rock band.
+rock = I like rock music.
+band = I wish I were in a band.
+vocalist = If I were a vocalist, I would sing every day.
+musical = I wish I could see a musical.
+abroad = If I had one million yen, I would travel abroad.
+travel = If I had one million yen, I would travel abroad.
+powerful = That robot is very powerful.
+lift = Maybe it can lift you up.
+heater = I wish I had a heater.
+shake hands with = I wish I could shake hands with my hero.
+classroom = I wish the robot would clean the classroom.
+amazing = That's amazing!
+@0[you,use a robot vacuum cleaner,an animal,a bird,fly to many places] you~use a robot vacuum cleaner~an animal~a panda~sleep all day>panda | you~use a robot vacuum cleaner~an animal~a fish~swim in the deep sea>fish
+@2[the robot,take me to school] the robot~clean the classroom>classroom
