@@ -2,81 +2,132 @@
  "book": "Sunshine English Course 1",
  "publisher": "Kairyudo",
  "grade": "JHS1",
- "edition": "2025",
- "source": "Outline from ALTopedia Sunshine (2025) page, which matches Wyatt's newest edition. ALTopedia lists pages and grammar points, not program numbers; 'unit' here is our own grouping by page. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "edition": "2025 (10 Programs)",
+ "source": "Checked 2026-10-27 against Wyatt's Sunshine English Course 1 (2025, Kairyudo) teacher's textbook: contents page, each Program's Scenes, Parts, New Words, Word Box and 英語早わかり grammar pages. One unit per Program; Power-Ups, Steps and Our Projects are left out.",
  "units": [
   {
    "unit": 1,
-   "page": 8,
-   "title": "Getting started: town, friends, alphabet",
-   "topic": "Greetings, alphabet review",
-   "grammar": "Greetings, alphabet review",
-   "verified": false,
+   "page": 21,
+   "title": "友だちを作ろう (Let's make friends!)",
+   "topic": "be verb am / are, where",
+   "verified": true,
    "phrases": [
-    "Hello. I'm (Mao).",
+    "Hi, I'm (Mao).",
     "Nice to meet you.",
-    "How do you spell it?"
-   ],
-   "words": [
-    {
-     "en": "station",
-     "ja": "駅",
-     "emoji": "🚉"
-    },
-    {
-     "en": "park",
-     "ja": "公園",
-     "emoji": "🌳"
-    },
-    {
-     "en": "library",
-     "ja": "図書館",
-     "emoji": "📚"
-    },
-    {
-     "en": "hospital",
-     "ja": "病院",
-     "emoji": "🏥"
-    },
-    {
-     "en": "post office",
-     "ja": "郵便局",
-     "emoji": "🏤"
-    },
-    {
-     "en": "bookstore",
-     "ja": "書店",
-     "emoji": "📖"
-    },
-    {
-     "en": "restaurant",
-     "ja": "レストラン",
-     "emoji": "🍽️"
-    },
-    {
-     "en": "convenience store",
-     "ja": "コンビニ",
-     "emoji": "🏪"
-    }
-   ]
-  },
-  {
-   "unit": 2,
-   "page": 22,
-   "title": "Hi, Mao. I'm Felipe.",
-   "topic": "be verb (am / are)",
-   "grammar": "be verb (am / are)",
-   "verified": false,
-   "phrases": [
-    "I'm (Felipe).",
-    "Are you from (Australia)?",
+    "I'm not (Mao).",
+    "You're not from (this city).",
+    "Are you (a new student)?",
     "Yes, I am. / No, I'm not.",
-    "I'm not (a fan of natto)."
+    "Where are you from?",
+    "I'm from (Australia).",
+    "I'm good at (P.E.).",
+    "I'm a fan of (baseball)."
    ],
    "words": [
     {
-     "en": "from",
-     "ja": "〜出身"
+     "en": "shy",
+     "ja": "恥ずかしがりの",
+     "emoji": "😳"
+    },
+    {
+     "en": "city",
+     "ja": "市",
+     "emoji": "🏙️"
+    },
+    {
+     "en": "just",
+     "ja": "ちょうど",
+     "emoji": "☝️"
+    },
+    {
+     "en": "problem",
+     "ja": "問題",
+     "emoji": "❓"
+    },
+    {
+     "en": "pardon",
+     "ja": "何と言いましたか",
+     "emoji": "🤔"
+    },
+    {
+     "en": "quiet",
+     "ja": "静かな",
+     "emoji": "🤫"
+    },
+    {
+     "en": "polite",
+     "ja": "礼儀正しい",
+     "emoji": "🙇"
+    },
+    {
+     "en": "cheerful",
+     "ja": "元気な",
+     "emoji": "😄"
+    },
+    {
+     "en": "honest",
+     "ja": "正直な",
+     "emoji": "🙂"
+    },
+    {
+     "en": "brave",
+     "ja": "勇敢な",
+     "emoji": "🦁"
+    },
+    {
+     "en": "careful",
+     "ja": "注意深い",
+     "emoji": "⚠️"
+    },
+    {
+     "en": "active",
+     "ja": "活発な",
+     "emoji": "🏃"
+    },
+    {
+     "en": "funny",
+     "ja": "おもしろい",
+     "emoji": "😂"
+    },
+    {
+     "en": "fan",
+     "ja": "ファン",
+     "emoji": "📣"
+    },
+    {
+     "en": "math",
+     "ja": "数学",
+     "emoji": "📐"
+    },
+    {
+     "en": "P.E.",
+     "ja": "保健体育",
+     "emoji": "🏃"
+    },
+    {
+     "en": "social studies",
+     "ja": "社会",
+     "emoji": "🌏"
+    },
+    {
+     "en": "J-pop",
+     "ja": "Jポップ",
+     "emoji": "🎵"
+    },
+    {
+     "en": "the U.S.",
+     "ja": "アメリカ",
+     "emoji": "🇺🇸"
+    },
+    {
+     "en": "the U.K.",
+     "ja": "イギリス",
+     "emoji": "🇬🇧"
+    },
+    {
+     "en": "Canada",
+     "ja": "カナダ",
+     "emoji": "🇨🇦"
     },
     {
      "en": "Australia",
@@ -87,64 +138,69 @@
      "en": "Brazil",
      "ja": "ブラジル",
      "emoji": "🇧🇷"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "I am ~. / You are ~.",
+     "ja": "「(〜は)…です」と言うときには、be動詞の am や are を使います。",
+     "pattern": "I'm (Mao).",
+     "qa": [
+      [
+       "Are you (Jun)?",
+       "Yes, I am. / No, I'm not."
+      ]
+     ],
+     "table": [
+      [
+       "I",
+       "am",
+       "I'm"
+      ],
+      [
+       "you",
+       "are",
+       "you're"
+      ]
+     ],
+     "neg": "I'm not (Mao).",
+     "q": "Are you (Jun)?"
     },
     {
-     "en": "fan",
-     "ja": "ファン"
-    },
-    {
-     "en": "new",
-     "ja": "新しい"
-    },
-    {
-     "en": "friend",
-     "ja": "友だち"
+     "point": "Where are you from?",
+     "ja": "場所をたずねるときには、文のはじめに where を置きます。",
+     "pattern": "I'm from (Osaka).",
+     "qa": [
+      [
+       "Where are you from?",
+       "I'm from (Osaka)."
+      ]
+     ]
     }
    ]
   },
   {
-   "unit": 3,
-   "page": 30,
-   "title": "I have a dog at home.",
-   "topic": "General verbs, plurals",
-   "grammar": "General verbs, plurals",
-   "verified": false,
+   "unit": 2,
+   "page": 29,
+   "title": "1-Bの生徒たち (Students in 1-B)",
+   "topic": "General verbs, plurals, when",
+   "verified": true,
    "phrases": [
-    "I have (a dog).",
-    "Do you (like cats)?",
+    "I have (a dog) at home.",
+    "I have five (frogs).",
+    "I don't (like frogs).",
+    "Do you (walk your dog every day)?",
     "Yes, I do. / No, I don't.",
-    "I have five (frogs)."
+    "When do you (play badminton)?",
+    "(During lunch break).",
+    "How many (pencils) do you see?",
+    "I see (two pencils)."
    ],
    "words": [
     {
-     "en": "have",
-     "ja": "持っている"
-    },
-    {
-     "en": "like",
-     "ja": "好き"
-    },
-    {
-     "en": "play",
-     "ja": "する・演奏する"
-    },
-    {
-     "en": "want",
-     "ja": "ほしい"
-    },
-    {
-     "en": "eat",
-     "ja": "食べる"
-    },
-    {
-     "en": "dog",
-     "ja": "犬",
-     "emoji": "🐶"
-    },
-    {
-     "en": "cat",
-     "ja": "ねこ",
-     "emoji": "🐱"
+     "en": "home",
+     "ja": "家",
+     "emoji": "🏠"
     },
     {
      "en": "frog",
@@ -152,46 +208,64 @@
      "emoji": "🐸"
     },
     {
-     "en": "bird",
-     "ja": "鳥",
-     "emoji": "🐦"
+     "en": "walk",
+     "ja": "散歩させる",
+     "emoji": "🐕"
     },
     {
-     "en": "pet",
-     "ja": "ペット"
-    }
-   ]
-  },
-  {
-   "unit": 4,
-   "page": 38,
-   "title": "I can make sushi.",
-   "topic": "can",
-   "grammar": "can",
-   "verified": false,
-   "phrases": [
-    "I can (make sushi).",
-    "Can you (play the guitar)?",
-    "Yes, I can. / No, I can't."
-   ],
-   "words": [
-    {
-     "en": "make",
-     "ja": "作る"
+     "en": "grow",
+     "ja": "育てる",
+     "emoji": "🌱"
     },
     {
-     "en": "cook",
-     "ja": "料理する"
+     "en": "use",
+     "ja": "使う",
+     "emoji": "🛠️"
     },
     {
-     "en": "play the guitar",
-     "ja": "ギターをひく",
-     "emoji": "🎸"
+     "en": "weekend",
+     "ja": "週末",
+     "emoji": "📅"
     },
     {
-     "en": "dance",
-     "ja": "おどる",
-     "emoji": "💃"
+     "en": "after school",
+     "ja": "放課後",
+     "emoji": "🏫"
+    },
+    {
+     "en": "before",
+     "ja": "〜の前に",
+     "emoji": "⏪"
+    },
+    {
+     "en": "question",
+     "ja": "質問",
+     "emoji": "❓"
+    },
+    {
+     "en": "sure",
+     "ja": "もちろん",
+     "emoji": "👍"
+    },
+    {
+     "en": "during",
+     "ja": "〜の間に",
+     "emoji": "⏳"
+    },
+    {
+     "en": "break",
+     "ja": "休憩",
+     "emoji": "☕"
+    },
+    {
+     "en": "tomorrow",
+     "ja": "明日",
+     "emoji": "📆"
+    },
+    {
+     "en": "notebook",
+     "ja": "ノート",
+     "emoji": "📓"
     },
     {
      "en": "draw",
@@ -199,140 +273,490 @@
      "emoji": "✏️"
     },
     {
-     "en": "sushi",
-     "ja": "すし",
+     "en": "picture",
+     "ja": "絵",
+     "emoji": "🖼️"
+    },
+    {
+     "en": "watch movies",
+     "ja": "映画を見る",
+     "emoji": "🎬"
+    },
+    {
+     "en": "read books",
+     "ja": "本を読む",
+     "emoji": "📚"
+    },
+    {
+     "en": "cook",
+     "ja": "料理する",
+     "emoji": "🍳"
+    },
+    {
+     "en": "clean",
+     "ja": "そうじする",
+     "emoji": "🧹"
+    },
+    {
+     "en": "flower",
+     "ja": "花",
+     "emoji": "🌷"
+    },
+    {
+     "en": "bicycle",
+     "ja": "自転車",
+     "emoji": "🚲"
+    },
+    {
+     "en": "piano",
+     "ja": "ピアノ",
+     "emoji": "🎹"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "一般動詞 (I play ~.)",
+     "ja": "一般動詞とは、動作や状態を表す動詞のことです。",
+     "pattern": "I (play) tennis.",
+     "qa": [
+      [
+       "Do you (play) tennis?",
+       "Yes, I do. / No, I don't."
+      ]
+     ],
+     "neg": "I don't (play) tennis.",
+     "q": "Do you (play) tennis?"
+    },
+    {
+     "point": "複数形 (plurals)",
+     "ja": "ものや人の数が2つ以上のときは、複数形を使います。",
+     "pattern": "I have (five frogs).",
+     "table": [
+      [
+       "girl",
+       "girls"
+      ],
+      [
+       "box",
+       "boxes"
+      ],
+      [
+       "watch",
+       "watches"
+      ],
+      [
+       "city",
+       "cities"
+      ]
+     ]
+    },
+    {
+     "point": "When do you ~?",
+     "ja": "「いつ〜しますか」とたずねるときには、文のはじめに when を置きます。",
+     "pattern": "When do you (play) soccer?",
+     "qa": [
+      [
+       "When do you (play soccer)?",
+       "(After school)."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 3,
+   "page": 37,
+   "title": "タレントショーを開こう (Let's hold a talent show!)",
+   "topic": "can, what",
+   "verified": true,
+   "phrases": [
+    "I can (make sushi).",
+    "I can't (eat fish).",
+    "Can you (cook Japanese food)?",
+    "Yes, I can. / No, I can't.",
+    "What can you (make)?",
+    "I can (make ramen).",
+    "Let's have a talent show.",
+    "Good luck!"
+   ],
+   "words": [
+    {
+     "en": "swim",
+     "ja": "泳ぐ",
+     "emoji": "🏊"
+    },
+    {
+     "en": "dance",
+     "ja": "おどる",
+     "emoji": "💃"
+    },
+    {
+     "en": "ski",
+     "ja": "スキーをする",
+     "emoji": "⛷️"
+    },
+    {
+     "en": "speak Chinese",
+     "ja": "中国語を話す",
+     "emoji": "🀄"
+    },
+    {
+     "en": "speak French",
+     "ja": "フランス語を話す",
+     "emoji": "🇫🇷"
+    },
+    {
+     "en": "play the guitar",
+     "ja": "ギターをひく",
+     "emoji": "🎸"
+    },
+    {
+     "en": "run fast",
+     "ja": "速く走る",
+     "emoji": "🏃"
+    },
+    {
+     "en": "do magic tricks",
+     "ja": "手品をする",
+     "emoji": "🎩"
+    },
+    {
+     "en": "read a map",
+     "ja": "地図を読む",
+     "emoji": "🗺️"
+    },
+    {
+     "en": "make sushi",
+     "ja": "すしを作る",
      "emoji": "🍣"
     },
     {
-     "en": "well",
-     "ja": "上手に"
+     "en": "sing",
+     "ja": "歌う",
+     "emoji": "🎤"
+    },
+    {
+     "en": "father",
+     "ja": "父",
+     "emoji": "👨"
+    },
+    {
+     "en": "mother",
+     "ja": "母",
+     "emoji": "👩"
+    },
+    {
+     "en": "uncle",
+     "ja": "おじ",
+     "emoji": "👨"
+    },
+    {
+     "en": "aunt",
+     "ja": "おば",
+     "emoji": "👩"
+    },
+    {
+     "en": "cousin",
+     "ja": "いとこ",
+     "emoji": "🧑"
+    },
+    {
+     "en": "grandfather",
+     "ja": "祖父",
+     "emoji": "👴"
+    },
+    {
+     "en": "grandmother",
+     "ja": "祖母",
+     "emoji": "👵"
+    },
+    {
+     "en": "talent show",
+     "ja": "タレントショー",
+     "emoji": "🎤"
+    },
+    {
+     "en": "perform",
+     "ja": "演じる",
+     "emoji": "🎭"
+    },
+    {
+     "en": "excited",
+     "ja": "わくわくした",
+     "emoji": "🤩"
+    },
+    {
+     "en": "often",
+     "ja": "よく",
+     "emoji": "🔁"
+    },
+    {
+     "en": "internet",
+     "ja": "インターネット",
+     "emoji": "🌐"
+    },
+    {
+     "en": "robot",
+     "ja": "ロボット",
+     "emoji": "🤖"
+    },
+    {
+     "en": "carry",
+     "ja": "運ぶ",
+     "emoji": "📦"
+    },
+    {
+     "en": "heavy",
+     "ja": "重い",
+     "emoji": "🏋️"
+    },
+    {
+     "en": "find",
+     "ja": "見つける",
+     "emoji": "🔍"
+    },
+    {
+     "en": "fly",
+     "ja": "飛ぶ",
+     "emoji": "🕊️"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "can",
+     "ja": "「〜することができる」と言うときには can を使います。",
+     "pattern": "I can (swim).",
+     "qa": [
+      [
+       "Can you (swim)?",
+       "Yes, I can. / No, I can't."
+      ]
+     ],
+     "neg": "I can't (swim).",
+     "q": "Can you (swim)?"
+    },
+    {
+     "point": "What can you ~?",
+     "ja": "「何を〜できますか」とたずねるときには、文のはじめに what を置きます。",
+     "pattern": "What can you (make)?",
+     "qa": [
+      [
+       "What can you (make)?",
+       "I can (make ramen)."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 4,
+   "page": 51,
+   "title": "Let's Enjoy Japanese Food.",
+   "topic": "This / That is, Who is, He / She is",
+   "verified": true,
+   "phrases": [
+    "This is (yokan).",
+    "Is that (yokan) too?",
+    "No, it isn't. It's (coffee jelly).",
+    "Who is this (woman)?",
+    "She is (Rami), a famous cook.",
+    "Would you like (some tea)?",
+    "It's a Japanese traditional dish."
+   ],
+   "words": [
+    {
+     "en": "jelly",
+     "ja": "ゼリー",
+     "emoji": "🍮"
+    },
+    {
+     "en": "butterfly",
+     "ja": "チョウ",
+     "emoji": "🦋"
+    },
+    {
+     "en": "zebra",
+     "ja": "シマウマ",
+     "emoji": "🦓"
+    },
+    {
+     "en": "gorilla",
+     "ja": "ゴリラ",
+     "emoji": "🦍"
+    },
+    {
+     "en": "ant",
+     "ja": "アリ",
+     "emoji": "🐜"
+    },
+    {
+     "en": "elephant",
+     "ja": "ゾウ",
+     "emoji": "🐘"
+    },
+    {
+     "en": "horse",
+     "ja": "馬",
+     "emoji": "🐴"
+    },
+    {
+     "en": "cookie",
+     "ja": "クッキー",
+     "emoji": "🍪"
+    },
+    {
+     "en": "brand",
+     "ja": "ブランド",
+     "emoji": "🏷️"
+    },
+    {
+     "en": "woman",
+     "ja": "女性",
+     "emoji": "👩"
+    },
+    {
+     "en": "man",
+     "ja": "男性",
+     "emoji": "👨"
+    },
+    {
+     "en": "boy",
+     "ja": "男の子",
+     "emoji": "👦"
+    },
+    {
+     "en": "girl",
+     "ja": "女の子",
+     "emoji": "👧"
+    },
+    {
+     "en": "classmate",
+     "ja": "クラスメート",
+     "emoji": "🧑‍🤝‍🧑"
+    },
+    {
+     "en": "runner",
+     "ja": "ランナー",
+     "emoji": "🏃"
+    },
+    {
+     "en": "street singer",
+     "ja": "ストリートミュージシャン",
+     "emoji": "🎸"
+    },
+    {
+     "en": "famous",
+     "ja": "有名な",
+     "emoji": "⭐"
+    },
+    {
+     "en": "udon",
+     "ja": "うどん",
+     "emoji": "🍜"
+    },
+    {
+     "en": "meat",
+     "ja": "肉",
+     "emoji": "🍖"
+    },
+    {
+     "en": "deep-fried tofu",
+     "ja": "油あげ",
+     "emoji": "🍢"
+    },
+    {
+     "en": "lady",
+     "ja": "女性",
+     "emoji": "👩"
+    },
+    {
+     "en": "chef",
+     "ja": "シェフ",
+     "emoji": "🧑‍🍳"
+    },
+    {
+     "en": "traditional",
+     "ja": "伝統的な",
+     "emoji": "⛩️"
+    },
+    {
+     "en": "custard pudding",
+     "ja": "カスタードプリン",
+     "emoji": "🍮"
+    },
+    {
+     "en": "sweet",
+     "ja": "あまい",
+     "emoji": "🍬"
+    },
+    {
+     "en": "excellent",
+     "ja": "すばらしい",
+     "emoji": "🌟"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "This [That] is ~.",
+     "ja": "近くのものは this、はなれたものは that を使って「これ[あれ]は〜です」と言います。",
+     "pattern": "This is (yokan).",
+     "qa": [
+      [
+       "Is that (yokan) too?",
+       "Yes, it is. / No, it isn't."
+      ]
+     ],
+     "neg": "This isn't (yokan).",
+     "q": "Is this (yokan)?"
+    },
+    {
+     "point": "Who is ~? / He [She] is ~.",
+     "ja": "「〜はだれですか」とたずねるときは who を使います。男性は he、女性は she で表します。",
+     "pattern": "She is (Rami).",
+     "qa": [
+      [
+       "Who is this (woman)?",
+       "She is (Rami), a famous cook."
+      ]
+     ],
+     "table": [
+      [
+       "I",
+       "am"
+      ],
+      [
+       "you",
+       "are"
+      ],
+      [
+       "he / she / this / that",
+       "is"
+      ]
+     ]
     }
    ]
   },
   {
    "unit": 5,
-   "page": 50,
-   "title": "Power Up 1: Hamburger shop",
-   "topic": "Ordering food",
-   "grammar": "Ordering food",
-   "verified": false,
-   "phrases": [
-    "Can I help you?",
-    "I'd like (a hamburger).",
-    "For here or to go?",
-    "That'll be (600) yen."
-   ],
-   "words": [
-    {
-     "en": "hamburger",
-     "ja": "ハンバーガー",
-     "emoji": "🍔"
-    },
-    {
-     "en": "French fries",
-     "ja": "フライドポテト",
-     "emoji": "🍟"
-    },
-    {
-     "en": "drink",
-     "ja": "飲み物",
-     "emoji": "🥤"
-    },
-    {
-     "en": "small",
-     "ja": "S"
-    },
-    {
-     "en": "medium",
-     "ja": "M"
-    },
-    {
-     "en": "large",
-     "ja": "L"
-    }
-   ]
-  },
-  {
-   "unit": 6,
-   "page": 52,
-   "title": "Who is this woman?",
-   "topic": "who, he / she, this / that",
-   "grammar": "who, he / she, this / that",
-   "verified": false,
-   "phrases": [
-    "Who is this woman?",
-    "She is (Rami), a famous cook.",
-    "This is (yokan).",
-    "What's that?"
-   ],
-   "words": [
-    {
-     "en": "who",
-     "ja": "だれ"
-    },
-    {
-     "en": "woman",
-     "ja": "女性"
-    },
-    {
-     "en": "man",
-     "ja": "男性"
-    },
-    {
-     "en": "famous",
-     "ja": "有名な"
-    },
-    {
-     "en": "cook",
-     "ja": "料理人"
-    },
-    {
-     "en": "he",
-     "ja": "彼"
-    },
-    {
-     "en": "she",
-     "ja": "彼女"
-    },
-    {
-     "en": "this",
-     "ja": "これ"
-    },
-    {
-     "en": "that",
-     "ja": "あれ"
-    }
-   ]
-  },
-  {
-   "unit": 7,
-   "page": 62,
-   "title": "My brother likes home economics.",
+   "page": 61,
+   "title": "Pajama Day",
    "topic": "3rd person singular -s",
-   "grammar": "3rd person singular -s",
-   "verified": false,
+   "verified": true,
    "phrases": [
     "My brother likes (home economics).",
-    "Does he (play soccer)?",
+    "He sews very well.",
+    "He doesn't (cook).",
+    "Does your brother (make clothes)?",
     "Yes, he does. / No, he doesn't.",
-    "He doesn't (like math)."
+    "What does he (make)?",
+    "He makes (pajamas).",
+    "She lives in (New York)."
    ],
    "words": [
     {
-     "en": "brother",
-     "ja": "兄弟"
-    },
-    {
-     "en": "sister",
-     "ja": "姉妹"
-    },
-    {
-     "en": "mother",
-     "ja": "母"
-    },
-    {
-     "en": "father",
-     "ja": "父"
+     "en": "design",
+     "ja": "デザイン",
+     "emoji": "🎨"
     },
     {
      "en": "home economics",
@@ -340,316 +764,978 @@
      "emoji": "🍳"
     },
     {
-     "en": "math",
-     "ja": "数学",
-     "emoji": "➕"
+     "en": "sew",
+     "ja": "ぬう",
+     "emoji": "🧵"
     },
     {
-     "en": "science",
-     "ja": "理科",
-     "emoji": "🔬"
+     "en": "drawing",
+     "ja": "絵",
+     "emoji": "✏️"
     },
     {
-     "en": "P.E.",
-     "ja": "保健体育",
-     "emoji": "🏃"
+     "en": "curry and rice",
+     "ja": "カレーライス",
+     "emoji": "🍛"
     },
     {
-     "en": "art",
-     "ja": "美術",
-     "emoji": "🎨"
+     "en": "clothes",
+     "ja": "服",
+     "emoji": "👕"
     },
     {
-     "en": "music",
-     "ja": "音楽",
-     "emoji": "🎵"
+     "en": "pajamas",
+     "ja": "パジャマ",
+     "emoji": "🛌"
+    },
+    {
+     "en": "ice hockey",
+     "ja": "アイスホッケー",
+     "emoji": "🏒"
+    },
+    {
+     "en": "Korean",
+     "ja": "韓国語",
+     "emoji": "🇰🇷"
+    },
+    {
+     "en": "play soccer",
+     "ja": "サッカーをする",
+     "emoji": "⚽"
+    },
+    {
+     "en": "like sports",
+     "ja": "スポーツが好き",
+     "emoji": "🏅"
+    },
+    {
+     "en": "read books",
+     "ja": "本を読む",
+     "emoji": "📚"
+    },
+    {
+     "en": "live",
+     "ja": "住む",
+     "emoji": "🏠"
+    },
+    {
+     "en": "common",
+     "ja": "よくある",
+     "emoji": "👥"
+    },
+    {
+     "en": "spend",
+     "ja": "過ごす",
+     "emoji": "⏳"
+    },
+    {
+     "en": "school uniform",
+     "ja": "制服",
+     "emoji": "🧥"
+    },
+    {
+     "en": "player",
+     "ja": "選手",
+     "emoji": "🏅"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "三人称単数現在 (He likes ~.)",
+     "ja": "主語が I, you 以外の1人[1つ]のときは、動詞に -s や -es をつけます。",
+     "pattern": "(He) likes (music).",
+     "qa": [
+      [
+       "Does (he) (make clothes)?",
+       "Yes, he does. / No, he doesn't."
+      ]
+     ],
+     "table": [
+      [
+       "like",
+       "likes"
+      ],
+      [
+       "play",
+       "plays"
+      ],
+      [
+       "watch",
+       "watches"
+      ],
+      [
+       "study",
+       "studies"
+      ],
+      [
+       "have",
+       "has"
+      ]
+     ],
+     "neg": "(She) doesn't like (science).",
+     "q": "Does (he) like (music)?"
     }
    ]
   },
   {
-   "unit": 8,
-   "page": 70,
-   "title": "Power Up 2: Asking about belongings",
-   "topic": "Whose ~? / Which ~?",
-   "grammar": "Whose ~? / Which ~?",
-   "verified": false,
+   "unit": 6,
+   "page": 71,
+   "title": "The Way to School",
+   "topic": "him / her, why / because",
+   "verified": true,
    "phrases": [
-    "Whose (pen) is this?",
-    "It's (mine).",
-    "Which (bag) is yours?"
+    "Do you know (that girl)?",
+    "No, I don't know her.",
+    "How about (the boy)? Do you know him?",
+    "Yes, he's my brother.",
+    "Why do you like (her)?",
+    "Because (she is always nice to me).",
+    "I respect him.",
+    "Tell me about him."
    ],
    "words": [
-    {
-     "en": "whose",
-     "ja": "だれの"
-    },
-    {
-     "en": "mine",
-     "ja": "私のもの"
-    },
-    {
-     "en": "yours",
-     "ja": "あなたのもの"
-    },
-    {
-     "en": "his",
-     "ja": "彼のもの"
-    },
-    {
-     "en": "hers",
-     "ja": "彼女のもの"
-    },
-    {
-     "en": "umbrella",
-     "ja": "かさ",
-     "emoji": "☂️"
-    }
-   ]
-  },
-  {
-   "unit": 9,
-   "page": 72,
-   "title": "I don't know her.",
-   "topic": "Object pronouns",
-   "grammar": "Object pronouns",
-   "verified": false,
-   "phrases": [
-    "I don't know her.",
-    "Do you know (him)?",
-    "Please tell (me)."
-   ],
-   "words": [
-    {
-     "en": "me",
-     "ja": "私を"
-    },
-    {
-     "en": "you",
-     "ja": "あなたを"
-    },
     {
      "en": "him",
-     "ja": "彼を"
+     "ja": "彼を",
+     "emoji": "👦"
     },
     {
      "en": "her",
-     "ja": "彼女を"
+     "ja": "彼女を",
+     "emoji": "👧"
     },
     {
-     "en": "us",
-     "ja": "私たちを"
+     "en": "detective",
+     "ja": "探偵",
+     "emoji": "🕵️"
     },
     {
-     "en": "them",
-     "ja": "彼らを"
+     "en": "monster",
+     "ja": "怪獣",
+     "emoji": "👾"
+    },
+    {
+     "en": "pirate",
+     "ja": "海賊",
+     "emoji": "🏴‍☠️"
+    },
+    {
+     "en": "because",
+     "ja": "なぜなら",
+     "emoji": "💡"
+    },
+    {
+     "en": "early",
+     "ja": "早く",
+     "emoji": "🌅"
+    },
+    {
+     "en": "there",
+     "ja": "そこで",
+     "emoji": "📍"
+    },
+    {
+     "en": "cute",
+     "ja": "かわいい",
+     "emoji": "🥰"
+    },
+    {
+     "en": "cool",
+     "ja": "かっこいい",
+     "emoji": "😎"
+    },
+    {
+     "en": "beautiful",
+     "ja": "美しい",
+     "emoji": "🌺"
+    },
+    {
+     "en": "funny",
+     "ja": "おもしろい",
+     "emoji": "😂"
+    },
+    {
+     "en": "romantic",
+     "ja": "ロマンチックな",
+     "emoji": "💕"
+    },
+    {
+     "en": "exciting",
+     "ja": "わくわくする",
+     "emoji": "🤩"
+    },
+    {
+     "en": "respect",
+     "ja": "尊敬する",
+     "emoji": "🙇"
+    },
+    {
+     "en": "tell",
+     "ja": "話す",
+     "emoji": "🗣️"
+    },
+    {
+     "en": "hour",
+     "ja": "時間",
+     "emoji": "⏰"
+    },
+    {
+     "en": "across",
+     "ja": "〜を横切って",
+     "emoji": "↔️"
+    },
+    {
+     "en": "savanna",
+     "ja": "サバンナ",
+     "emoji": "🦒"
+    },
+    {
+     "en": "tough",
+     "ja": "たいへんな",
+     "emoji": "😣"
+    },
+    {
+     "en": "kilometer",
+     "ja": "キロメートル",
+     "emoji": "📏"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "代名詞 (him / her)",
+     "ja": "「彼を」は him、「彼女を」は her で表します。",
+     "pattern": "I respect (him).",
+     "table": [
+      [
+       "I",
+       "me"
+      ],
+      [
+       "you",
+       "you"
+      ],
+      [
+       "he",
+       "him"
+      ],
+      [
+       "she",
+       "her"
+      ],
+      [
+       "we",
+       "us"
+      ],
+      [
+       "they",
+       "them"
+      ]
+     ]
+    },
+    {
+     "point": "Why ~? / Because ~.",
+     "ja": "理由をたずねるときは why、答えるときは because を使います。",
+     "pattern": "Why do you like (her)?",
+     "qa": [
+      [
+       "Why do you like (her)?",
+       "Because (she is always nice to me)."
+      ]
+     ]
     }
    ]
   },
   {
-   "unit": 10,
-   "page": 82,
-   "title": "There is a steak restaurant over there.",
-   "topic": "There is / There are",
-   "grammar": "There is / There are",
-   "verified": false,
+   "unit": 7,
+   "page": 81,
+   "title": "Research on Australia",
+   "topic": "There is / are, how",
+   "verified": true,
    "phrases": [
     "There is (a steak restaurant) over there.",
-    "There are (two parks) in my town.",
-    "Is there (a bank) near here?"
+    "There are (three parks) near my house.",
+    "Is there (a zoo) in your town?",
+    "How can we (go there)?",
+    "By (bus).",
+    "How do you come to school?",
+    "I go to (Fukuoka) by (plane)."
    ],
    "words": [
     {
      "en": "over there",
-     "ja": "あそこに"
+     "ja": "あそこに",
+     "emoji": "👉"
     },
     {
      "en": "near",
-     "ja": "〜の近くに"
+     "ja": "〜の近くに",
+     "emoji": "📍"
+    },
+    {
+     "en": "those",
+     "ja": "それらの",
+     "emoji": "👉"
+    },
+    {
+     "en": "college",
+     "ja": "大学",
+     "emoji": "🎓"
+    },
+    {
+     "en": "library",
+     "ja": "図書館",
+     "emoji": "📚"
+    },
+    {
+     "en": "museum",
+     "ja": "博物館",
+     "emoji": "🏛️"
+    },
+    {
+     "en": "shopping mall",
+     "ja": "ショッピングモール",
+     "emoji": "🛍️"
+    },
+    {
+     "en": "park",
+     "ja": "公園",
+     "emoji": "🌳"
+    },
+    {
+     "en": "zoo",
+     "ja": "動物園",
+     "emoji": "🦁"
+    },
+    {
+     "en": "amusement park",
+     "ja": "遊園地",
+     "emoji": "🎡"
+    },
+    {
+     "en": "hungry",
+     "ja": "おなかがすいた",
+     "emoji": "🍽️"
+    },
+    {
+     "en": "full",
+     "ja": "おなかがいっぱい",
+     "emoji": "😋"
+    },
+    {
+     "en": "something",
+     "ja": "何か",
+     "emoji": "❓"
+    },
+    {
+     "en": "a little",
+     "ja": "少し",
+     "emoji": "🤏"
+    },
+    {
+     "en": "far",
+     "ja": "遠い",
+     "emoji": "🛣️"
+    },
+    {
+     "en": "plane",
+     "ja": "飛行機",
+     "emoji": "✈️"
+    },
+    {
+     "en": "bus",
+     "ja": "バス",
+     "emoji": "🚌"
+    },
+    {
+     "en": "bike",
+     "ja": "自転車",
+     "emoji": "🚲"
+    },
+    {
+     "en": "train",
+     "ja": "電車",
+     "emoji": "🚆"
+    },
+    {
+     "en": "walk",
+     "ja": "歩く",
+     "emoji": "🚶"
+    },
+    {
+     "en": "cake shop",
+     "ja": "ケーキ屋",
+     "emoji": "🍰"
+    },
+    {
+     "en": "restaurant",
+     "ja": "レストラン",
+     "emoji": "🍽️"
     },
     {
      "en": "steak",
      "ja": "ステーキ",
      "emoji": "🥩"
-    },
-    {
-     "en": "bank",
-     "ja": "銀行",
-     "emoji": "🏦"
-    },
-    {
-     "en": "shrine",
-     "ja": "神社",
-     "emoji": "⛩️"
-    },
-    {
-     "en": "temple",
-     "ja": "寺",
-     "emoji": "🛕"
     }
-   ]
-  },
-  {
-   "unit": 11,
-   "page": 91,
-   "title": "Power Up 3: Directions at school",
-   "topic": "Asking the way",
-   "grammar": "Asking the way",
-   "verified": false,
-   "phrases": [
-    "Where is the (music room)?",
-    "Go up the stairs.",
-    "It's next to the (library)."
    ],
-   "words": [
+   "grammar": [
     {
-     "en": "stairs",
-     "ja": "階段"
+     "point": "There is [are] ~.",
+     "ja": "「〜があります[います]」と言うときは there is [are] を使います。",
+     "pattern": "There is (a park) in my town.",
+     "qa": [
+      [
+       "Is there (a zoo) in your town?",
+       "Yes, there is. / No, there isn't."
+      ]
+     ],
+     "table": [
+      [
+       "1つ",
+       "There is (a park)."
+      ],
+      [
+       "2つ以上",
+       "There are (three parks)."
+      ]
+     ],
+     "q": "Is there (a zoo) in your town?"
     },
     {
-     "en": "floor",
-     "ja": "階"
-    },
-    {
-     "en": "next to",
-     "ja": "〜のとなり"
-    },
-    {
-     "en": "between",
-     "ja": "〜の間"
-    },
-    {
-     "en": "teachers' room",
-     "ja": "職員室"
-    },
-    {
-     "en": "nurse's office",
-     "ja": "保健室"
+     "point": "How ~?",
+     "ja": "手段や方法をたずねるときは how を使います。",
+     "pattern": "How do you come to school?",
+     "qa": [
+      [
+       "How do you come to school?",
+       "By (bike). / I walk."
+      ]
+     ]
     }
    ]
   },
   {
-   "unit": 12,
-   "page": 100,
-   "title": "Sorry, I'm studying now.",
+   "unit": 8,
+   "page": 99,
+   "title": "Happy New Year!",
    "topic": "Present continuous",
-   "grammar": "Present continuous",
-   "verified": false,
+   "verified": true,
    "phrases": [
-    "I'm (studying) now.",
+    "Can you help me?",
+    "Sorry, I'm (studying) now.",
+    "I'm not (doing anything) now.",
+    "Are you still (studying)?",
+    "Yes, I am. / No, I'm not.",
     "What are you doing?",
-    "Are you (watching TV)?"
+    "I'm (preparing for the New Year countdown event).",
+    "Why don't we (play tennis in the park)?"
    ],
    "words": [
     {
-     "en": "studying",
-     "ja": "勉強している"
+     "en": "need",
+     "ja": "必要とする",
+     "emoji": "🙏"
     },
     {
-     "en": "cooking",
-     "ja": "料理している"
+     "en": "bathroom",
+     "ja": "浴室",
+     "emoji": "🛁"
     },
     {
-     "en": "watching",
-     "ja": "見ている"
+     "en": "shower",
+     "ja": "シャワー",
+     "emoji": "🚿"
     },
     {
-     "en": "running",
-     "ja": "走っている"
+     "en": "persimmon",
+     "ja": "かき",
+     "emoji": "🍊"
     },
     {
-     "en": "sleeping",
-     "ja": "寝ている"
+     "en": "grapes",
+     "ja": "ぶどう",
+     "emoji": "🍇"
     },
     {
-     "en": "now",
-     "ja": "今"
-    }
-   ]
-  },
-  {
-   "unit": 13,
-   "page": 110,
-   "title": "I stayed home and watched TV.",
-   "topic": "Past tense (regular / irregular)",
-   "grammar": "Past tense (regular / irregular)",
-   "verified": false,
-   "phrases": [
-    "I (stayed) home and (watched) TV.",
-    "Did you (go out)?",
-    "Yes, I did. / No, I didn't.",
-    "What did you do yesterday?"
-   ],
-   "words": [
-    {
-     "en": "stayed",
-     "ja": "とどまった"
+     "en": "pineapple",
+     "ja": "パイナップル",
+     "emoji": "🍍"
     },
     {
-     "en": "watched",
-     "ja": "見た"
+     "en": "strawberry",
+     "ja": "いちご",
+     "emoji": "🍓"
     },
     {
-     "en": "played",
-     "ja": "した"
+     "en": "peach",
+     "ja": "もも",
+     "emoji": "🍑"
     },
     {
-     "en": "went",
-     "ja": "行った"
+     "en": "still",
+     "ja": "まだ",
+     "emoji": "⏳"
     },
     {
-     "en": "ate",
-     "ja": "食べた"
+     "en": "prepare",
+     "ja": "準備する",
+     "emoji": "📋"
     },
     {
-     "en": "saw",
-     "ja": "見た"
+     "en": "countdown",
+     "ja": "カウントダウン",
+     "emoji": "🔟"
     },
     {
-     "en": "made",
-     "ja": "作った"
+     "en": "feel",
+     "ja": "感じる",
+     "emoji": "💗"
     },
     {
-     "en": "yesterday",
-     "ja": "昨日"
+     "en": "listen to music",
+     "ja": "音楽を聞く",
+     "emoji": "🎧"
     },
     {
-     "en": "last week",
-     "ja": "先週"
-    }
-   ]
-  },
-  {
-   "unit": 14,
-   "page": 124,
-   "title": "I was a student thirty years ago.",
-   "topic": "was / were, past continuous",
-   "grammar": "was / were, past continuous",
-   "verified": false,
-   "phrases": [
-    "I was (a student) thirty years ago.",
-    "Were you (busy)?",
-    "I was (sleeping) then."
-   ],
-   "words": [
-    {
-     "en": "was",
-     "ja": "〜だった"
+     "en": "read a book",
+     "ja": "本を読む",
+     "emoji": "📖"
     },
     {
-     "en": "were",
-     "ja": "〜だった"
+     "en": "cook",
+     "ja": "料理する",
+     "emoji": "🍳"
     },
     {
-     "en": "ago",
-     "ja": "〜前"
-    },
-    {
-     "en": "then",
-     "ja": "そのとき"
+     "en": "watch a movie",
+     "ja": "映画を見る",
+     "emoji": "🎬"
     },
     {
      "en": "busy",
-     "ja": "忙しい"
+     "ja": "忙しい",
+     "emoji": "😵"
+    },
+    {
+     "en": "sunny",
+     "ja": "晴れた",
+     "emoji": "☀️"
+    },
+    {
+     "en": "today",
+     "ja": "今日",
+     "emoji": "📅"
+    },
+    {
+     "en": "supermarket",
+     "ja": "スーパー",
+     "emoji": "🛒"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "現在進行形 (I'm ~ing.)",
+     "ja": "「今〜しているところです」と言うときは、be動詞 + 動詞の -ing 形を使います。",
+     "pattern": "I'm (studying) now.",
+     "qa": [
+      [
+       "Are you (studying)?",
+       "Yes, I am. / No, I'm not."
+      ]
+     ],
+     "neg": "I'm not (studying) now.",
+     "q": "Are you (studying)?"
+    },
+    {
+     "point": "What are you ~ing?",
+     "ja": "「何を〜していますか」とたずねるときは what + be動詞 + 主語 + -ing 形 にします。",
+     "pattern": "What are you doing?",
+     "qa": [
+      [
+       "What are you doing?",
+       "I'm (reading a book)."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 9,
+   "page": 109,
+   "title": "A Trip to Finland",
+   "topic": "Past tense: regular / irregular verbs, did",
+   "verified": true,
+   "phrases": [
+    "I stayed home and watched TV.",
+    "I also cooked (nikujaga).",
+    "I came back from (Finland) yesterday.",
+    "I saw (the aurora) there.",
+    "Did you enjoy your trip?",
+    "Yes, I did. / No, I didn't.",
+    "I didn't sleep well last night.",
+    "What did you do?"
+   ],
+   "words": [
+    {
+     "en": "holiday",
+     "ja": "休日",
+     "emoji": "🏖️"
+    },
+    {
+     "en": "relax",
+     "ja": "くつろぐ",
+     "emoji": "😌"
+    },
+    {
+     "en": "also",
+     "ja": "〜もまた",
+     "emoji": "➕"
+    },
+    {
+     "en": "beat",
+     "ja": "負かす",
+     "emoji": "🥊"
+    },
+    {
+     "en": "last",
+     "ja": "この前の",
+     "emoji": "⏮️"
+    },
+    {
+     "en": "a lot",
+     "ja": "たくさん",
+     "emoji": "💯"
+    },
+    {
+     "en": "cooked",
+     "ja": "料理した",
+     "emoji": "🍳"
+    },
+    {
+     "en": "watched",
+     "ja": "見た",
+     "emoji": "📺"
+    },
+    {
+     "en": "played",
+     "ja": "した",
+     "emoji": "🎾"
+    },
+    {
+     "en": "studied",
+     "ja": "勉強した",
+     "emoji": "📚"
+    },
+    {
+     "en": "came",
+     "ja": "来た",
+     "emoji": "🚶"
+    },
+    {
+     "en": "back",
+     "ja": "戻って",
+     "emoji": "↩️"
+    },
+    {
+     "en": "yesterday",
+     "ja": "昨日",
+     "emoji": "📅"
+    },
+    {
+     "en": "aurora",
+     "ja": "オーロラ",
+     "emoji": "🌌"
+    },
+    {
+     "en": "lucky",
+     "ja": "運のよい",
+     "emoji": "🍀"
+    },
+    {
+     "en": "read",
+     "ja": "読んだ",
+     "emoji": "📖"
+    },
+    {
+     "en": "took",
+     "ja": "取った",
+     "emoji": "📸"
+    },
+    {
+     "en": "take a walk",
+     "ja": "散歩する",
+     "emoji": "🚶"
+    },
+    {
+     "en": "medical checkup",
+     "ja": "健康診断",
+     "emoji": "🩺"
+    },
+    {
+     "en": "did",
+     "ja": "した",
+     "emoji": "✅"
+    },
+    {
+     "en": "jet lag",
+     "ja": "時差ぼけ",
+     "emoji": "😵"
+    },
+    {
+     "en": "sleep",
+     "ja": "眠る",
+     "emoji": "💤"
+    },
+    {
+     "en": "win",
+     "ja": "勝つ",
+     "emoji": "🏆"
+    },
+    {
+     "en": "ago",
+     "ja": "〜前に",
+     "emoji": "⏪"
+    },
+    {
+     "en": "anywhere",
+     "ja": "どこかへ",
+     "emoji": "🗺️"
+    },
+    {
+     "en": "have a good time",
+     "ja": "楽しく過ごす",
+     "emoji": "😄"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "過去形 (規則動詞)",
+     "ja": "過去のことを言うときは、動詞に -ed をつけます。",
+     "pattern": "I (played) tennis last Sunday.",
+     "table": [
+      [
+       "play",
+       "played"
+      ],
+      [
+       "watch",
+       "watched"
+      ],
+      [
+       "cook",
+       "cooked"
+      ],
+      [
+       "study",
+       "studied"
+      ],
+      [
+       "stay",
+       "stayed"
+      ]
+     ]
+    },
+    {
+     "point": "過去形 (不規則動詞)",
+     "ja": "形が不規則に変わる動詞もあります。",
+     "pattern": "I (saw) the aurora.",
+     "table": [
+      [
+       "go",
+       "went"
+      ],
+      [
+       "see",
+       "saw"
+      ],
+      [
+       "come",
+       "came"
+      ],
+      [
+       "eat",
+       "ate"
+      ],
+      [
+       "take",
+       "took"
+      ],
+      [
+       "read",
+       "read"
+      ]
+     ]
+    },
+    {
+     "point": "Did you ~?",
+     "ja": "過去のことをたずねるときは did を使い、動詞はもとの形にします。",
+     "pattern": "Did you (enjoy your trip)?",
+     "qa": [
+      [
+       "Did you (play tennis three days ago)?",
+       "Yes, I did. / No, I didn't."
+      ],
+      [
+       "What did you do?",
+       "I (watched a soccer game)."
+      ]
+     ],
+     "neg": "I didn't (sleep) well.",
+     "q": "Did you (play tennis)?"
+    }
+   ]
+  },
+  {
+   "unit": 10,
+   "page": 123,
+   "title": "Grandma Baba's Warming Ideas!",
+   "topic": "was / were, past continuous",
+   "verified": true,
+   "phrases": [
+    "I was (a student) thirty years ago.",
+    "You were very cute.",
+    "How was your day?",
+    "Were you busy?",
+    "No, I wasn't so busy today.",
+    "What were you doing?",
+    "I was (reading this book).",
+    "Where were you (then)?"
+   ],
+   "words": [
+    {
+     "en": "were",
+     "ja": "〜だった",
+     "emoji": "💭"
+    },
+    {
+     "en": "finish",
+     "ja": "終える",
+     "emoji": "🏁"
+    },
+    {
+     "en": "awesome",
+     "ja": "すごい",
+     "emoji": "🤩"
+    },
+    {
+     "en": "funny",
+     "ja": "おもしろい",
+     "emoji": "😂"
+    },
+    {
+     "en": "nice",
+     "ja": "すてきな",
+     "emoji": "👍"
+    },
+    {
+     "en": "tough",
+     "ja": "たいへんな",
+     "emoji": "😣"
+    },
+    {
+     "en": "fine",
+     "ja": "元気な",
+     "emoji": "🙂"
+    },
+    {
+     "en": "sleepy",
+     "ja": "ねむい",
+     "emoji": "😪"
+    },
+    {
+     "en": "tired",
+     "ja": "つかれた",
+     "emoji": "😩"
+    },
+    {
+     "en": "at a theater",
+     "ja": "劇場で",
+     "emoji": "🎭"
+    },
+    {
+     "en": "at a stadium",
+     "ja": "スタジアムで",
+     "emoji": "🏟️"
+    },
+    {
+     "en": "at home",
+     "ja": "家で",
+     "emoji": "🏠"
+    },
+    {
+     "en": "story",
+     "ja": "物語",
+     "emoji": "📖"
+    },
+    {
+     "en": "call",
+     "ja": "電話する",
+     "emoji": "📞"
+    },
+    {
+     "en": "surprised",
+     "ja": "驚いた",
+     "emoji": "😲"
+    },
+    {
+     "en": "surf the internet",
+     "ja": "ネットを見る",
+     "emoji": "🌐"
+    },
+    {
+     "en": "watch videos",
+     "ja": "動画を見る",
+     "emoji": "📹"
+    },
+    {
+     "en": "homework",
+     "ja": "宿題",
+     "emoji": "📝"
+    },
+    {
+     "en": "comic",
+     "ja": "マンガ",
+     "emoji": "📚"
+    },
+    {
+     "en": "textbook",
+     "ja": "教科書",
+     "emoji": "📘"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "was / were",
+     "ja": "be動詞の過去形は was と were です。",
+     "pattern": "I (was) a student thirty years ago.",
+     "qa": [
+      [
+       "Were you (busy)?",
+       "Yes, I was. / No, I wasn't."
+      ]
+     ],
+     "table": [
+      [
+       "I / he / she / it",
+       "was"
+      ],
+      [
+       "you / we / they",
+       "were"
+      ]
+     ],
+     "neg": "I wasn't (busy).",
+     "q": "Were you (busy)?"
+    },
+    {
+     "point": "過去進行形 (I was ~ing.)",
+     "ja": "「〜していました」と言うときは was [were] + 動詞の -ing 形を使います。",
+     "pattern": "I was (reading this book).",
+     "qa": [
+      [
+       "What were you doing (at nine last night)?",
+       "I was (talking with my sister)."
+      ]
+     ]
     }
    ]
   }

@@ -2,88 +2,25 @@
  "book": "Junior Sunshine 6",
  "publisher": "Kairyudo",
  "grade": "ES6",
- "edition": "2020 outline (newest edition not on ALTopedia)",
- "source": "Outline from ALTopedia, which only has the 2020 edition; Wyatt's books are the newest edition, so units and pages may differ. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "edition": "newest edition (8 lessons)",
+ "source": "Checked 2026-10-27 against Wyatt's Junior Sunshine 6 (newest edition, Kairyudo): lesson pages and the 6年で学習した表現のまとめ (p.120-121). Words are the ones printed in the lessons; the separate Word Book booklet was not in the scan.",
  "units": [
   {
    "unit": 1,
-   "page": 4,
-   "title": "We are friends.",
-   "topic": "Self-introduction, daily routine, time",
-   "verified": false,
+   "page": 14,
+   "title": "This is me.",
+   "topic": "Self-introduction: from, likes, wants, can, good at",
+   "verified": true,
    "phrases": [
-    "What time do you get up?",
-    "I usually get up at (6:30).",
-    "I always (walk my dog).",
-    "I sometimes (help my mother)."
-   ],
-   "words": [
-    {
-     "en": "get up",
-     "ja": "起きる",
-     "emoji": "⏰"
-    },
-    {
-     "en": "go to bed",
-     "ja": "ねる",
-     "emoji": "🛏️"
-    },
-    {
-     "en": "eat breakfast",
-     "ja": "朝ごはんを食べる",
-     "emoji": "🍳"
-    },
-    {
-     "en": "go to school",
-     "ja": "学校へ行く",
-     "emoji": "🏫"
-    },
-    {
-     "en": "do my homework",
-     "ja": "宿題をする",
-     "emoji": "📝"
-    },
-    {
-     "en": "take a bath",
-     "ja": "おふろに入る",
-     "emoji": "🛁"
-    },
-    {
-     "en": "walk my dog",
-     "ja": "犬の散歩をする",
-     "emoji": "🐕"
-    },
-    {
-     "en": "always",
-     "ja": "いつも"
-    },
-    {
-     "en": "usually",
-     "ja": "たいてい"
-    },
-    {
-     "en": "sometimes",
-     "ja": "ときどき"
-    },
-    {
-     "en": "never",
-     "ja": "決して〜ない"
-    }
-   ]
-  },
-  {
-   "unit": 2,
-   "page": 12,
-   "title": "Where do you want to go?",
-   "topic": "Countries, things to do",
-   "grammar": "want to ~",
-   "verified": false,
-   "phrases": [
-    "Where do you want to go?",
-    "I want to go to (Italy).",
-    "Why?",
-    "I want to (eat pizza).",
-    "You can (see the Colosseum)."
+    "Hi. I'm (Yuki).",
+    "I'm from (Japan).",
+    "My birthday is (August 9th).",
+    "I like (social studies).",
+    "I have (a dog).",
+    "I want (a racket).",
+    "I can (play baseball).",
+    "I'm good at (playing tennis).",
+    "It's fun."
    ],
    "words": [
     {
@@ -92,54 +29,14 @@
      "emoji": "🇯🇵"
     },
     {
-     "en": "America",
+     "en": "Singapore",
+     "ja": "シンガポール",
+     "emoji": "🇸🇬"
+    },
+    {
+     "en": "the U.S.A.",
      "ja": "アメリカ",
      "emoji": "🇺🇸"
-    },
-    {
-     "en": "Australia",
-     "ja": "オーストラリア",
-     "emoji": "🇦🇺"
-    },
-    {
-     "en": "Brazil",
-     "ja": "ブラジル",
-     "emoji": "🇧🇷"
-    },
-    {
-     "en": "Canada",
-     "ja": "カナダ",
-     "emoji": "🇨🇦"
-    },
-    {
-     "en": "China",
-     "ja": "中国",
-     "emoji": "🇨🇳"
-    },
-    {
-     "en": "Egypt",
-     "ja": "エジプト",
-     "emoji": "🇪🇬"
-    },
-    {
-     "en": "France",
-     "ja": "フランス",
-     "emoji": "🇫🇷"
-    },
-    {
-     "en": "India",
-     "ja": "インド",
-     "emoji": "🇮🇳"
-    },
-    {
-     "en": "Italy",
-     "ja": "イタリア",
-     "emoji": "🇮🇹"
-    },
-    {
-     "en": "Korea",
-     "ja": "韓国",
-     "emoji": "🇰🇷"
     },
     {
      "en": "the U.K.",
@@ -147,42 +44,97 @@
      "emoji": "🇬🇧"
     },
     {
-     "en": "Spain",
-     "ja": "スペイン",
-     "emoji": "🇪🇸"
+     "en": "France",
+     "ja": "フランス",
+     "emoji": "🇫🇷"
     },
     {
-     "en": "see",
-     "ja": "見る",
-     "emoji": "👀"
+     "en": "ball",
+     "ja": "ボール",
+     "emoji": "⚽"
     },
     {
-     "en": "eat",
-     "ja": "食べる",
-     "emoji": "🍽️"
+     "en": "racket",
+     "ja": "ラケット",
+     "emoji": "🏸"
     },
     {
-     "en": "visit",
-     "ja": "訪れる"
+     "en": "glove",
+     "ja": "グローブ",
+     "emoji": "🥎"
     },
     {
-     "en": "buy",
-     "ja": "買う",
-     "emoji": "🛍️"
+     "en": "cap",
+     "ja": "ぼうし",
+     "emoji": "🧢"
+    },
+    {
+     "en": "dog",
+     "ja": "犬",
+     "emoji": "🐶"
+    },
+    {
+     "en": "video games",
+     "ja": "テレビゲーム",
+     "emoji": "🎮"
+    },
+    {
+     "en": "shogi",
+     "ja": "将棋",
+     "emoji": "♟️"
+    },
+    {
+     "en": "table tennis",
+     "ja": "卓球",
+     "emoji": "🏓"
+    },
+    {
+     "en": "social studies",
+     "ja": "社会",
+     "emoji": "🌏"
+    },
+    {
+     "en": "English",
+     "ja": "英語",
+     "emoji": "🔤"
+    },
+    {
+     "en": "dance",
+     "ja": "おどる",
+     "emoji": "💃"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "I'm from ~.",
+     "ja": "出身地を伝えるときは I'm from ～. と言います。",
+     "pattern": "I'm from (Japan)."
+    },
+    {
+     "point": "I'm good at ~.",
+     "ja": "得意なことを伝えるときは I'm good at ～. と言います。",
+     "pattern": "I'm good at (playing tennis)."
+    },
+    {
+     "point": "I want ~.",
+     "ja": "ほしいものを伝えるときは I want ～. と言います。",
+     "pattern": "I want (a racket)."
+    }
+   ],
+   "note": "Word Book: 動作, 感情など, 身の回りのもの, 国"
   },
   {
-   "unit": 3,
-   "page": 18,
+   "unit": 2,
+   "page": 24,
    "title": "Welcome to Japan.",
-   "topic": "Japanese culture, seasons, events",
-   "verified": false,
+   "topic": "Japanese places, food, events, entertainment",
+   "verified": true,
    "phrases": [
-    "Welcome to Japan.",
-    "We have (Tanabata) in (summer).",
-    "You can (enjoy fireworks).",
-    "It's (fun)."
+    "We have (the Star Festival) in (summer).",
+    "You can (eat delicious okonomiyaki).",
+    "You can enjoy (watching a parade).",
+    "It's (fantastic).",
+    "We have (a famous shrine) in (Tochigi)."
    ],
    "words": [
     {
@@ -206,6 +158,26 @@
      "emoji": "⛄"
     },
     {
+     "en": "New Year's Day",
+     "ja": "元日",
+     "emoji": "🎍"
+    },
+    {
+     "en": "Dolls' Day",
+     "ja": "ひなまつり",
+     "emoji": "🎎"
+    },
+    {
+     "en": "Children's Day",
+     "ja": "こどもの日",
+     "emoji": "🎏"
+    },
+    {
+     "en": "Star Festival",
+     "ja": "七夕",
+     "emoji": "🎋"
+    },
+    {
      "en": "festival",
      "ja": "祭り",
      "emoji": "🏮"
@@ -216,19 +188,24 @@
      "emoji": "🎆"
     },
     {
-     "en": "cherry blossom viewing",
+     "en": "hanami",
      "ja": "花見",
      "emoji": "🌸"
     },
     {
-     "en": "snow festival",
-     "ja": "雪まつり",
-     "emoji": "❄️"
+     "en": "osechi",
+     "ja": "おせち",
+     "emoji": "🍱"
     },
     {
-     "en": "hot spring",
-     "ja": "温泉",
-     "emoji": "♨️"
+     "en": "kashiwamochi",
+     "ja": "かしわもち",
+     "emoji": "🍡"
+    },
+    {
+     "en": "soba",
+     "ja": "そば",
+     "emoji": "🍜"
     },
     {
      "en": "sushi",
@@ -236,96 +213,390 @@
      "emoji": "🍣"
     },
     {
-     "en": "tempura",
-     "ja": "てんぷら",
-     "emoji": "🍤"
+     "en": "okonomiyaki",
+     "ja": "お好み焼き",
+     "emoji": "🥞"
     },
     {
-     "en": "kimono",
-     "ja": "着物",
-     "emoji": "👘"
+     "en": "mango",
+     "ja": "マンゴー",
+     "emoji": "🥭"
+    },
+    {
+     "en": "sumo",
+     "ja": "相撲",
+     "emoji": "🤼"
+    },
+    {
+     "en": "kabuki",
+     "ja": "歌舞伎",
+     "emoji": "🎭"
+    },
+    {
+     "en": "shogi",
+     "ja": "将棋",
+     "emoji": "♟️"
+    },
+    {
+     "en": "shrine",
+     "ja": "神社",
+     "emoji": "⛩️"
+    },
+    {
+     "en": "castle",
+     "ja": "城",
+     "emoji": "🏯"
+    },
+    {
+     "en": "temple",
+     "ja": "寺",
+     "emoji": "🛕"
+    },
+    {
+     "en": "mountain",
+     "ja": "山",
+     "emoji": "🗻"
+    },
+    {
+     "en": "beautiful",
+     "ja": "美しい",
+     "emoji": "🌺"
+    },
+    {
+     "en": "delicious",
+     "ja": "おいしい",
+     "emoji": "😋"
+    },
+    {
+     "en": "sweet",
+     "ja": "あまい",
+     "emoji": "🍬"
+    },
+    {
+     "en": "nice",
+     "ja": "すてきな",
+     "emoji": "👍"
+    },
+    {
+     "en": "exciting",
+     "ja": "わくわくする",
+     "emoji": "🤩"
+    },
+    {
+     "en": "fantastic",
+     "ja": "すばらしい",
+     "emoji": "🌟"
+    },
+    {
+     "en": "fun",
+     "ja": "楽しい",
+     "emoji": "😄"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "We have ~ in (season / place).",
+     "ja": "日本や地域にあるものを伝えるときは We have ～. と言います。",
+     "pattern": "We have (the Star Festival) in (summer)."
+    },
+    {
+     "point": "You can ~.",
+     "ja": "できることをすすめるときは You can ～. と言います。",
+     "pattern": "You can (eat delicious okonomiyaki)."
+    },
+    {
+     "point": "It's ~.",
+     "ja": "様子や感想は It's ～. で伝えます。",
+     "pattern": "It's (fantastic)."
+    }
+   ],
+   "note": "Word Book: 年中行事など, 建物など, 自然など, 様子など"
   },
   {
-   "unit": 4,
-   "page": 24,
-   "title": "I want to see the Milky Way.",
-   "topic": "Summer plans",
-   "grammar": "want to ~",
-   "verified": false,
+   "unit": 3,
+   "page": 34,
+   "title": "What time do you get up?",
+   "topic": "Daily routine, time, frequency",
+   "verified": true,
    "phrases": [
-    "What do you want to do in summer?",
-    "I want to (go camping).",
-    "I want to see (the Milky Way)."
+    "What time do you get up?",
+    "I get up at (6:00).",
+    "I usually (eat breakfast) at (7:30).",
+    "I always (eat pancakes) for breakfast.",
+    "I sometimes (eat bread) for breakfast.",
+    "I never (eat natto) for breakfast.",
+    "Do you like (video games)?",
+    "Yes, I do. / No, I don't.",
+    "Really?"
    ],
    "words": [
     {
-     "en": "go camping",
-     "ja": "キャンプに行く",
-     "emoji": "🏕️"
+     "en": "get up",
+     "ja": "起きる",
+     "emoji": "⏰"
     },
     {
-     "en": "go to the sea",
-     "ja": "海に行く",
-     "emoji": "🏖"
+     "en": "wash my face",
+     "ja": "顔を洗う",
+     "emoji": "🧼"
     },
     {
-     "en": "go to the zoo",
-     "ja": "動物園に行く",
-     "emoji": "🦁"
+     "en": "go to school",
+     "ja": "学校へ行く",
+     "emoji": "🏫"
     },
     {
-     "en": "see the Milky Way",
-     "ja": "天の川を見る",
-     "emoji": "🌌"
+     "en": "eat breakfast",
+     "ja": "朝ごはんを食べる",
+     "emoji": "🍳"
     },
     {
-     "en": "eat shaved ice",
-     "ja": "かき氷を食べる",
-     "emoji": "🍧"
+     "en": "eat lunch",
+     "ja": "昼ごはんを食べる",
+     "emoji": "🍱"
     },
     {
-     "en": "swim",
-     "ja": "泳ぐ",
+     "en": "study",
+     "ja": "勉強する",
+     "emoji": "📚"
+    },
+    {
+     "en": "go home",
+     "ja": "家に帰る",
+     "emoji": "🏠"
+    },
+    {
+     "en": "do my homework",
+     "ja": "宿題をする",
+     "emoji": "📝"
+    },
+    {
+     "en": "play with my friends",
+     "ja": "友だちと遊ぶ",
+     "emoji": "🧑‍🤝‍🧑"
+    },
+    {
+     "en": "eat dinner",
+     "ja": "夕ごはんを食べる",
+     "emoji": "🍛"
+    },
+    {
+     "en": "swimming club",
+     "ja": "水泳クラブ",
      "emoji": "🏊"
+    },
+    {
+     "en": "clean my room",
+     "ja": "部屋をそうじする",
+     "emoji": "🧹"
+    },
+    {
+     "en": "take a bath",
+     "ja": "おふろに入る",
+     "emoji": "🛁"
+    },
+    {
+     "en": "go to bed",
+     "ja": "ねる",
+     "emoji": "🛏️"
+    },
+    {
+     "en": "play video games",
+     "ja": "テレビゲームをする",
+     "emoji": "🎮"
+    },
+    {
+     "en": "walk my dog",
+     "ja": "犬の散歩をする",
+     "emoji": "🐕"
+    },
+    {
+     "en": "always",
+     "ja": "いつも",
+     "emoji": "🟠"
+    },
+    {
+     "en": "usually",
+     "ja": "たいてい",
+     "emoji": "🟧"
+    },
+    {
+     "en": "sometimes",
+     "ja": "ときどき",
+     "emoji": "◐"
+    },
+    {
+     "en": "never",
+     "ja": "決して〜ない",
+     "emoji": "⚪"
+    },
+    {
+     "en": "pancakes",
+     "ja": "パンケーキ",
+     "emoji": "🥞"
+    },
+    {
+     "en": "bread",
+     "ja": "パン",
+     "emoji": "🍞"
+    },
+    {
+     "en": "natto",
+     "ja": "納豆",
+     "emoji": "🫘"
+    },
+    {
+     "en": "a.m.",
+     "ja": "午前",
+     "emoji": "🌅"
+    },
+    {
+     "en": "p.m.",
+     "ja": "午後",
+     "emoji": "🌇"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "What time do you ~?",
+     "ja": "何時にするかたずねるときは What time do you ～? と言います。",
+     "pattern": "I get up at (6:00).",
+     "qa": [
+      [
+       "What time do you (get up)?",
+       "I get up at (6:00)."
+      ]
+     ]
+    },
+    {
+     "point": "always / usually / sometimes / never",
+     "ja": "どのくらいするかは always, usually, sometimes, never で表します。",
+     "pattern": "I usually (eat breakfast) at (7:30).",
+     "table": [
+      [
+       "always",
+       "いつも"
+      ],
+      [
+       "usually",
+       "たいてい"
+      ],
+      [
+       "sometimes",
+       "ときどき"
+      ],
+      [
+       "never",
+       "決して〜ない"
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: 食べ物, 日課, 食事, くり返し"
   },
   {
-   "unit": 5,
-   "page": 28,
+   "unit": 4,
+   "page": 50,
    "title": "My Summer Vacation",
-   "topic": "Past tense: summer memories",
-   "grammar": "past tense (went, ate, saw, was)",
-   "verified": false,
+   "topic": "Summer memories: past tense",
+   "verified": true,
    "phrases": [
-    "How was your summer vacation?",
-    "I went to (the beach).",
+    "I went to (the sea).",
     "I enjoyed (swimming).",
-    "I ate (watermelon).",
+    "I saw (fireworks).",
+    "I ate (a hamburger).",
     "It was (fun)."
    ],
    "words": [
     {
      "en": "went",
-     "ja": "行った"
-    },
-    {
-     "en": "ate",
-     "ja": "食べた"
-    },
-    {
-     "en": "saw",
-     "ja": "見た"
+     "ja": "行った",
+     "emoji": "🚶"
     },
     {
      "en": "enjoyed",
-     "ja": "楽しんだ"
+     "ja": "楽しんだ",
+     "emoji": "😄"
+    },
+    {
+     "en": "saw",
+     "ja": "見た",
+     "emoji": "👀"
+    },
+    {
+     "en": "ate",
+     "ja": "食べた",
+     "emoji": "🍽️"
     },
     {
      "en": "was",
-     "ja": "〜だった"
+     "ja": "〜だった",
+     "emoji": "💭"
+    },
+    {
+     "en": "mountain",
+     "ja": "山",
+     "emoji": "⛰️"
+    },
+    {
+     "en": "beach",
+     "ja": "浜辺",
+     "emoji": "🏖️"
+    },
+    {
+     "en": "sea",
+     "ja": "海",
+     "emoji": "🌊"
+    },
+    {
+     "en": "amusement park",
+     "ja": "遊園地",
+     "emoji": "🎡"
+    },
+    {
+     "en": "swimming pool",
+     "ja": "プール",
+     "emoji": "🏊"
+    },
+    {
+     "en": "river",
+     "ja": "川",
+     "emoji": "🏞️"
+    },
+    {
+     "en": "lake",
+     "ja": "湖",
+     "emoji": "🏞️"
+    },
+    {
+     "en": "camping",
+     "ja": "キャンプ",
+     "emoji": "🏕️"
+    },
+    {
+     "en": "swimming",
+     "ja": "水泳",
+     "emoji": "🏊"
+    },
+    {
+     "en": "fireworks",
+     "ja": "花火",
+     "emoji": "🎆"
+    },
+    {
+     "en": "hamburger",
+     "ja": "ハンバーガー",
+     "emoji": "🍔"
+    },
+    {
+     "en": "carrot",
+     "ja": "にんじん",
+     "emoji": "🥕"
+    },
+    {
+     "en": "whale",
+     "ja": "クジラ",
+     "emoji": "🐋"
     },
     {
      "en": "fun",
@@ -344,133 +615,239 @@
     },
     {
      "en": "beautiful",
-     "ja": "美しい"
+     "ja": "美しい",
+     "emoji": "🌺"
     },
     {
-     "en": "watermelon",
-     "ja": "すいか",
-     "emoji": "🍉"
-    },
-    {
-     "en": "beach",
-     "ja": "海辺",
-     "emoji": "🏖️"
-    },
-    {
-     "en": "mountain",
-     "ja": "山",
-     "emoji": "⛰️"
-    },
-    {
-     "en": "grandparents' house",
-     "ja": "祖父母の家",
-     "emoji": "🏡"
+     "en": "Hokkaido",
+     "ja": "北海道",
+     "emoji": "🗾"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "I went to ~.",
+     "ja": "したことを伝えるときは、動詞を過去の形 (went, saw, ate, enjoyed) にします。",
+     "pattern": "I went to (the sea).",
+     "table": [
+      [
+       "go",
+       "went"
+      ],
+      [
+       "see",
+       "saw"
+      ],
+      [
+       "eat",
+       "ate"
+      ],
+      [
+       "enjoy",
+       "enjoyed"
+      ],
+      [
+       "is",
+       "was"
+      ]
+     ]
+    },
+    {
+     "point": "It was ~.",
+     "ja": "過去の感想は It was ～. で伝えます。",
+     "pattern": "It was (fun)."
+    }
+   ],
+   "note": "Word Book: 食べ物, したこと, 遊び, 様子など"
   },
   {
-   "unit": 6,
-   "page": 39,
-   "title": "See the world.",
-   "topic": "Sports, famous athletes",
-   "verified": false,
+   "unit": 5,
+   "page": 60,
+   "title": "Where do you want to go?",
+   "topic": "Countries and what to do there",
+   "verified": true,
    "phrases": [
-    "What sport do you like?",
-    "I like (tennis).",
-    "Who is your favorite sports player?",
-    "My favorite player is (Ohtani Shohei).",
-    "He can (hit a home run)."
+    "Where do you want to go?",
+    "I want to go to (Italy).",
+    "I want to (eat pizza).",
+    "I want to (buy a beautiful bag).",
+    "You can (see the ocean)."
    ],
    "words": [
     {
-     "en": "baseball",
-     "ja": "野球",
-     "emoji": "⚾"
+     "en": "Finland",
+     "ja": "フィンランド",
+     "emoji": "🇫🇮"
     },
     {
-     "en": "soccer",
-     "ja": "サッカー",
+     "en": "China",
+     "ja": "中国",
+     "emoji": "🇨🇳"
+    },
+    {
+     "en": "Italy",
+     "ja": "イタリア",
+     "emoji": "🇮🇹"
+    },
+    {
+     "en": "Kenya",
+     "ja": "ケニア",
+     "emoji": "🇰🇪"
+    },
+    {
+     "en": "Korea",
+     "ja": "韓国",
+     "emoji": "🇰🇷"
+    },
+    {
+     "en": "Australia",
+     "ja": "オーストラリア",
+     "emoji": "🇦🇺"
+    },
+    {
+     "en": "the U.S.A.",
+     "ja": "アメリカ",
+     "emoji": "🇺🇸"
+    },
+    {
+     "en": "Brazil",
+     "ja": "ブラジル",
+     "emoji": "🇧🇷"
+    },
+    {
+     "en": "the U.K.",
+     "ja": "イギリス",
+     "emoji": "🇬🇧"
+    },
+    {
+     "en": "Egypt",
+     "ja": "エジプト",
+     "emoji": "🇪🇬"
+    },
+    {
+     "en": "see",
+     "ja": "見る",
+     "emoji": "👀"
+    },
+    {
+     "en": "eat",
+     "ja": "食べる",
+     "emoji": "🍽️"
+    },
+    {
+     "en": "visit",
+     "ja": "訪れる",
+     "emoji": "🏛️"
+    },
+    {
+     "en": "play",
+     "ja": "する",
      "emoji": "⚽"
     },
     {
-     "en": "basketball",
-     "ja": "バスケットボール",
-     "emoji": "🏀"
+     "en": "buy",
+     "ja": "買う",
+     "emoji": "🛍️"
     },
     {
-     "en": "tennis",
-     "ja": "テニス",
-     "emoji": "🎾"
+     "en": "watch",
+     "ja": "見る",
+     "emoji": "📺"
     },
     {
-     "en": "table tennis",
-     "ja": "卓球",
-     "emoji": "🏓"
+     "en": "pizza",
+     "ja": "ピザ",
+     "emoji": "🍕"
     },
     {
-     "en": "volleyball",
-     "ja": "バレーボール",
-     "emoji": "🏐"
+     "en": "hot dog",
+     "ja": "ホットドッグ",
+     "emoji": "🌭"
     },
     {
-     "en": "badminton",
-     "ja": "バドミントン",
-     "emoji": "🏸"
+     "en": "ice cream",
+     "ja": "アイスクリーム",
+     "emoji": "🍨"
     },
     {
-     "en": "rugby",
-     "ja": "ラグビー",
-     "emoji": "🏉"
+     "en": "Pyramids",
+     "ja": "ピラミッド",
+     "emoji": "🔺"
     },
     {
-     "en": "swimming",
-     "ja": "水泳",
-     "emoji": "🏊"
+     "en": "ocean",
+     "ja": "海",
+     "emoji": "🌊"
     },
     {
-     "en": "wheelchair basketball",
-     "ja": "車いすバスケ",
-     "emoji": "🏀"
-    },
-    {
-     "en": "skateboarding",
-     "ja": "スケートボード",
-     "emoji": "🛹"
-    },
-    {
-     "en": "player",
-     "ja": "選手"
-    },
-    {
-     "en": "Olympics",
-     "ja": "オリンピック",
-     "emoji": "🏅"
-    },
-    {
-     "en": "Paralympics",
-     "ja": "パラリンピック",
-     "emoji": "🏅"
+     "en": "baseball games",
+     "ja": "野球の試合",
+     "emoji": "⚾"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "Where do you want to go?",
+     "ja": "行きたい場所をたずねるときは Where do you want to go? と言います。",
+     "pattern": "I want to go to (Italy).",
+     "qa": [
+      [
+       "Where do you want to go?",
+       "I want to go to (Italy)."
+      ]
+     ]
+    },
+    {
+     "point": "I want to ~.",
+     "ja": "したいことを伝えるときは I want to ～. と言います。",
+     "pattern": "I want to (eat pizza)."
+    }
+   ],
+   "note": "Word Book: 食べ物, スポーツ, 動作, 国"
   },
   {
-   "unit": 7,
-   "page": 52,
-   "title": "My Favorite Memory",
-   "topic": "School memories",
-   "grammar": "My best memory is ~ / past tense",
-   "verified": false,
+   "unit": 6,
+   "page": 70,
+   "title": "My Best Memory",
+   "topic": "School events and memories",
+   "verified": true,
    "phrases": [
-    "What's your best memory?",
-    "My best memory is (the sports day).",
-    "We (ran a relay).",
-    "It was (exciting)."
+    "What is your best memory?",
+    "My best memory is (the school trip).",
+    "I went to (Kyoto).",
+    "I saw (Kinkakuji Temple).",
+    "It was (beautiful)."
    ],
    "words": [
+    {
+     "en": "entrance ceremony",
+     "ja": "入学式",
+     "emoji": "🌸"
+    },
+    {
+     "en": "swimming meet",
+     "ja": "水泳大会",
+     "emoji": "🏊"
+    },
     {
      "en": "sports day",
      "ja": "運動会",
      "emoji": "🏃"
+    },
+    {
+     "en": "music festival",
+     "ja": "音楽会",
+     "emoji": "🎵"
+    },
+    {
+     "en": "volunteer day",
+     "ja": "ボランティアの日",
+     "emoji": "🧹"
+    },
+    {
+     "en": "hiking",
+     "ja": "ハイキング",
+     "emoji": "🥾"
     },
     {
      "en": "school trip",
@@ -479,27 +856,8 @@
     },
     {
      "en": "field trip",
-     "ja": "遠足",
-     "emoji": "🎒"
-    },
-    {
-     "en": "music festival",
-     "ja": "音楽会",
-     "emoji": "🎵"
-    },
-    {
-     "en": "drama festival",
-     "ja": "学芸会",
-     "emoji": "🎭"
-    },
-    {
-     "en": "swimming meet",
-     "ja": "水泳大会",
-     "emoji": "🏊"
-    },
-    {
-     "en": "volunteer day",
-     "ja": "ボランティア活動"
+     "ja": "社会科見学",
+     "emoji": "🏭"
     },
     {
      "en": "graduation ceremony",
@@ -507,83 +865,64 @@
      "emoji": "🎓"
     },
     {
-     "en": "entrance ceremony",
-     "ja": "入学式",
-     "emoji": "🌸"
+     "en": "memory",
+     "ja": "思い出",
+     "emoji": "💭"
     },
     {
-     "en": "memory",
-     "ja": "思い出"
+     "en": "Kyoto",
+     "ja": "京都",
+     "emoji": "⛩️"
+    },
+    {
+     "en": "Kinkakuji Temple",
+     "ja": "金閣寺",
+     "emoji": "🛕"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "What is your best memory?",
+     "ja": "いちばんの思い出をたずねるときは What is your best memory? と言います。",
+     "pattern": "My best memory is (the school trip).",
+     "qa": [
+      [
+       "What is your best memory?",
+       "My best memory is (the school trip)."
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: したこと, 学校行事, 建物・自然など, 様子など"
   },
   {
-   "unit": 8,
-   "page": 60,
-   "title": "I have a dream.",
-   "topic": "Jobs and dreams",
-   "grammar": "want to be ~",
-   "verified": false,
+   "unit": 7,
+   "page": 86,
+   "title": "My Dream",
+   "topic": "Jobs and future dreams",
+   "verified": true,
    "phrases": [
     "What do you want to be?",
-    "I want to be (a teacher).",
-    "Why?",
-    "I like (children)."
+    "I want to be (a basketball player).",
+    "I like (baseball).",
+    "I can (run fast).",
+    "I'm good at (playing baseball)."
    ],
    "words": [
     {
-     "en": "teacher",
-     "ja": "先生",
-     "emoji": "👩‍🏫"
-    },
-    {
-     "en": "doctor",
-     "ja": "医者",
-     "emoji": "👨‍⚕️"
-    },
-    {
-     "en": "nurse",
-     "ja": "看護師",
-     "emoji": "🩺"
-    },
-    {
-     "en": "vet",
-     "ja": "獣医",
-     "emoji": "🐾"
-    },
-    {
      "en": "cook",
      "ja": "料理人",
-     "emoji": "👨‍🍳"
+     "emoji": "🧑‍🍳"
     },
     {
-     "en": "baker",
-     "ja": "パン屋",
-     "emoji": "🥖"
-    },
-    {
-     "en": "florist",
-     "ja": "花屋",
-     "emoji": "💐"
-    },
-    {
-     "en": "pilot",
-     "ja": "パイロット",
-     "emoji": "✈️"
-    },
-    {
-     "en": "flight attendant",
-     "ja": "客室乗務員"
-    },
-    {
-     "en": "police officer",
-     "ja": "警察官",
-     "emoji": "👮"
-    },
-    {
-     "en": "firefighter",
+     "en": "fire fighter",
      "ja": "消防士",
-     "emoji": "🚒"
+     "emoji": "🧑‍🚒"
+    },
+    {
+     "en": "carpenter",
+     "ja": "大工",
+     "emoji": "🪚"
     },
     {
      "en": "farmer",
@@ -591,19 +930,34 @@
      "emoji": "🧑‍🌾"
     },
     {
+     "en": "vet",
+     "ja": "獣医",
+     "emoji": "🐕"
+    },
+    {
+     "en": "doctor",
+     "ja": "医者",
+     "emoji": "🧑‍⚕️"
+    },
+    {
+     "en": "nurse",
+     "ja": "看護師",
+     "emoji": "🩺"
+    },
+    {
+     "en": "game creator",
+     "ja": "ゲームクリエイター",
+     "emoji": "🎮"
+    },
+    {
+     "en": "baker",
+     "ja": "パン職人",
+     "emoji": "🥖"
+    },
+    {
      "en": "scientist",
      "ja": "科学者",
      "emoji": "🔬"
-    },
-    {
-     "en": "astronaut",
-     "ja": "宇宙飛行士",
-     "emoji": "🧑‍🚀"
-    },
-    {
-     "en": "soccer player",
-     "ja": "サッカー選手",
-     "emoji": "⚽"
     },
     {
      "en": "singer",
@@ -611,54 +965,94 @@
      "emoji": "🎤"
     },
     {
+     "en": "soccer player",
+     "ja": "サッカー選手",
+     "emoji": "⚽"
+    },
+    {
      "en": "comedian",
      "ja": "お笑い芸人",
      "emoji": "😂"
     },
     {
-     "en": "YouTuber",
-     "ja": "ユーチューバー",
-     "emoji": "📹"
+     "en": "teacher",
+     "ja": "先生",
+     "emoji": "🧑‍🏫"
     },
     {
-     "en": "game creator",
-     "ja": "ゲームクリエイター",
-     "emoji": "🎮"
+     "en": "florist",
+     "ja": "花屋",
+     "emoji": "💐"
+    },
+    {
+     "en": "baseball player",
+     "ja": "野球選手",
+     "emoji": "⚾"
+    },
+    {
+     "en": "pilot",
+     "ja": "パイロット",
+     "emoji": "✈️"
+    },
+    {
+     "en": "comic creator",
+     "ja": "マンガ家",
+     "emoji": "✏️"
+    },
+    {
+     "en": "dancer",
+     "ja": "ダンサー",
+     "emoji": "💃"
+    },
+    {
+     "en": "basketball player",
+     "ja": "バスケットボール選手",
+     "emoji": "🏀"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "What do you want to be?",
+     "ja": "なりたい職業をたずねるときは What do you want to be? と言います。",
+     "pattern": "I want to be (a singer).",
+     "qa": [
+      [
+       "What do you want to be?",
+       "I want to be (a singer)."
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: 動作, 何かをする, 感情など, 職業"
   },
   {
-   "unit": 9,
-   "page": 68,
-   "title": "Junior High School Life",
-   "topic": "Clubs, JHS subjects, events",
-   "verified": false,
+   "unit": 8,
+   "page": 96,
+   "title": "My Junior High School Life",
+   "topic": "Clubs, subjects, plans for JHS",
+   "verified": true,
    "phrases": [
-    "What club do you want to join?",
-    "I want to join the (computer club).",
     "What do you want to do in junior high school?",
-    "I want to (study English hard)."
+    "I want to (join the chorus).",
+    "I want to (study English hard).",
+    "I want to (try new sports).",
+    "I like (ball games)."
    ],
    "words": [
+    {
+     "en": "science club",
+     "ja": "科学部",
+     "emoji": "🔬"
+    },
     {
      "en": "baseball team",
      "ja": "野球部",
      "emoji": "⚾"
     },
     {
-     "en": "soccer team",
-     "ja": "サッカー部",
-     "emoji": "⚽"
-    },
-    {
-     "en": "tennis team",
-     "ja": "テニス部",
-     "emoji": "🎾"
-    },
-    {
-     "en": "track and field team",
-     "ja": "陸上部",
-     "emoji": "🏃"
+     "en": "English class",
+     "ja": "英語の授業",
+     "emoji": "🔤"
     },
     {
      "en": "brass band",
@@ -666,19 +1060,29 @@
      "emoji": "🎺"
     },
     {
-     "en": "art club",
-     "ja": "美術部",
-     "emoji": "🎨"
+     "en": "soccer team",
+     "ja": "サッカー部",
+     "emoji": "⚽"
     },
     {
-     "en": "computer club",
-     "ja": "コンピューター部",
-     "emoji": "💻"
+     "en": "kendo club",
+     "ja": "剣道部",
+     "emoji": "🤺"
     },
     {
-     "en": "science club",
-     "ja": "科学部",
-     "emoji": "🔬"
+     "en": "industrial arts",
+     "ja": "技術",
+     "emoji": "🔧"
+    },
+    {
+     "en": "track and field team",
+     "ja": "陸上部",
+     "emoji": "🏃"
+    },
+    {
+     "en": "tennis team",
+     "ja": "テニス部",
+     "emoji": "🎾"
     },
     {
      "en": "chorus",
@@ -686,42 +1090,50 @@
      "emoji": "🎤"
     },
     {
-     "en": "kendo club",
-     "ja": "剣道部"
+     "en": "volleyball team",
+     "ja": "バレーボール部",
+     "emoji": "🏐"
     },
     {
-     "en": "club",
-     "ja": "部活"
+     "en": "art club",
+     "ja": "美術部",
+     "emoji": "🎨"
     },
     {
-     "en": "uniform",
-     "ja": "制服"
+     "en": "study technology",
+     "ja": "技術を勉強する",
+     "emoji": "🔨"
     },
     {
-     "en": "geography",
-     "ja": "地理",
-     "emoji": "🗺️"
+     "en": "join",
+     "ja": "入る",
+     "emoji": "🙋"
     },
     {
-     "en": "history",
-     "ja": "歴史",
-     "emoji": "📜"
+     "en": "study",
+     "ja": "勉強する",
+     "emoji": "📚"
     },
     {
-     "en": "technology",
-     "ja": "技術"
-    },
-    {
-     "en": "homework",
-     "ja": "宿題",
-     "emoji": "📝"
-    },
-    {
-     "en": "test",
-     "ja": "テスト",
-     "emoji": "📄"
+     "en": "math",
+     "ja": "数学",
+     "emoji": "📐"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "I want to join ~.",
+     "ja": "入りたい部活を伝えるときは I want to join ～. と言います。",
+     "pattern": "I want to join (the chorus).",
+     "qa": [
+      [
+       "What do you want to do?",
+       "I want to (join the chorus)."
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: 教科, 動作, 中学校生活, 職業"
   }
  ]
 }

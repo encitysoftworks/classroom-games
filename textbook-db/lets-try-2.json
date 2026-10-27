@@ -3,27 +3,22 @@
  "publisher": "MEXT",
  "grade": "ES4",
  "edition": "current (2018 text)",
- "source": "Outline from altopedia.net/textbooks/8-let-s-try-2. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "source": "Checked 2026-10-27 against the 言語材料 (language materials) box of each unit in the Let's Try! teacher's manual (Wyatt's copy). Page = student book page.",
  "units": [
   {
    "unit": 1,
    "page": 2,
    "title": "Hello, world!",
    "topic": "Greetings around the world",
-   "verified": false,
+   "verified": true,
    "phrases": [
-    "Hello!",
-    "Good morning.",
-    "Good afternoon.",
-    "Good night.",
-    "Nice to meet you."
+    "Hello.",
+    "Good [morning / afternoon / night].",
+    "I like (strawberries).",
+    "Goodbye.",
+    "See you."
    ],
    "words": [
-    {
-     "en": "hello",
-     "ja": "こんにちは",
-     "emoji": "👋"
-    },
     {
      "en": "good morning",
      "ja": "おはよう",
@@ -40,9 +35,31 @@
      "emoji": "🌙"
     },
     {
+     "en": "morning",
+     "ja": "朝",
+     "emoji": "🌅"
+    },
+    {
+     "en": "afternoon",
+     "ja": "午後",
+     "emoji": "🌤️"
+    },
+    {
+     "en": "night",
+     "ja": "夜",
+     "emoji": "🌙"
+    },
+    {
      "en": "world",
      "ja": "世界",
      "emoji": "🌍"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "Good ~.",
+     "ja": "時間に合わせて Good morning. / Good afternoon. / Good night. とあいさつします。",
+     "pattern": "Good (morning)."
     }
    ]
   },
@@ -50,17 +67,28 @@
    "unit": 2,
    "page": 6,
    "title": "Let's play cards.",
-   "topic": "Weather, play outside / inside",
-   "grammar": "Let's ~ / imperatives",
-   "verified": false,
+   "topic": "Weather, games, actions",
+   "verified": true,
    "phrases": [
     "How's the weather?",
-    "It's (sunny).",
+    "It's [sunny / rainy / cloudy / snowy].",
     "Let's (play cards).",
     "Yes, let's.",
-    "Sorry."
+    "Sorry.",
+    "Stand up.",
+    "Sit down.",
+    "Stop.",
+    "Walk.",
+    "Jump.",
+    "Run.",
+    "Turn around."
    ],
    "words": [
+    {
+     "en": "weather",
+     "ja": "天気",
+     "emoji": "🌤️"
+    },
     {
      "en": "sunny",
      "ja": "晴れ",
@@ -92,14 +120,74 @@
      "emoji": "🥶"
     },
     {
-     "en": "tag",
-     "ja": "おにごっこ",
+     "en": "stand up",
+     "ja": "立つ",
+     "emoji": "🧍"
+    },
+    {
+     "en": "sit down",
+     "ja": "すわる",
+     "emoji": "🪑"
+    },
+    {
+     "en": "stop",
+     "ja": "止まる",
+     "emoji": "🛑"
+    },
+    {
+     "en": "jump",
+     "ja": "跳ぶ",
+     "emoji": "🦘"
+    },
+    {
+     "en": "turn around",
+     "ja": "回る",
+     "emoji": "🔄"
+    },
+    {
+     "en": "walk",
+     "ja": "歩く",
+     "emoji": "🚶"
+    },
+    {
+     "en": "run",
+     "ja": "走る",
      "emoji": "🏃"
     },
     {
-     "en": "cards",
-     "ja": "トランプ",
-     "emoji": "🃏"
+     "en": "look",
+     "ja": "見る",
+     "emoji": "👀"
+    },
+    {
+     "en": "touch",
+     "ja": "さわる",
+     "emoji": "👆"
+    },
+    {
+     "en": "play",
+     "ja": "遊ぶ",
+     "emoji": "🎲"
+    },
+    {
+     "en": "left",
+     "ja": "左",
+     "emoji": "⬅️"
+    },
+    {
+     "en": "hand",
+     "ja": "手",
+     "emoji": "✋"
+    },
+    {
+     "en": "leg",
+     "ja": "足",
+     "emoji": "🦵"
+    },
+    {
+     "en": "tag",
+     "ja": "おにごっこ",
+     "emoji": "🏃"
     },
     {
      "en": "jump rope",
@@ -107,21 +195,78 @@
      "emoji": "🪢"
     },
     {
-     "en": "dodgeball",
-     "ja": "ドッジボール",
-     "emoji": "🤾"
+     "en": "bingo",
+     "ja": "ビンゴ",
+     "emoji": "🎱"
     },
     {
-     "en": "stand up",
-     "ja": "立って"
+     "en": "game",
+     "ja": "ゲーム",
+     "emoji": "🎮"
     },
     {
-     "en": "sit down",
-     "ja": "座って"
+     "en": "outside",
+     "ja": "外で",
+     "emoji": "🌳"
     },
     {
-     "en": "turn around",
-     "ja": "回って"
+     "en": "inside",
+     "ja": "中で",
+     "emoji": "🏠"
+    },
+    {
+     "en": "shirt",
+     "ja": "シャツ",
+     "emoji": "👕"
+    },
+    {
+     "en": "shorts",
+     "ja": "半ズボン",
+     "emoji": "🩳"
+    },
+    {
+     "en": "sweater",
+     "ja": "セーター",
+     "emoji": "🧶"
+    },
+    {
+     "en": "pants",
+     "ja": "ズボン",
+     "emoji": "👖"
+    },
+    {
+     "en": "boots",
+     "ja": "ブーツ",
+     "emoji": "👢"
+    },
+    {
+     "en": "cap",
+     "ja": "ぼうし",
+     "emoji": "🧢"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "How's the weather?",
+     "ja": "天気をたずねるときは How's the weather? と言います。",
+     "pattern": "It's (sunny).",
+     "qa": [
+      [
+       "How's the weather?",
+       "It's (sunny)."
+      ]
+     ]
+    },
+    {
+     "point": "Let's ~.",
+     "ja": "さそうときは Let's ～. と言います。",
+     "pattern": "Let's (play cards).",
+     "qa": [
+      [
+       "Let's (play cards).",
+       "Yes, let's. / Sorry."
+      ]
+     ]
     }
    ]
   },
@@ -130,41 +275,102 @@
    "page": 10,
    "title": "I like Mondays.",
    "topic": "Days of the week",
-   "verified": false,
+   "verified": true,
    "phrases": [
     "What day is it?",
     "It's (Monday).",
     "Do you like (Mondays)?",
+    "Yes, I do.",
+    "No, I don't.",
     "I like (Mondays)."
    ],
    "words": [
     {
-     "en": "Sunday",
-     "ja": "日曜日"
+     "en": "day",
+     "ja": "日・曜日",
+     "emoji": "📅"
     },
     {
      "en": "Monday",
-     "ja": "月曜日"
+     "ja": "月曜日",
+     "emoji": "🌙"
     },
     {
      "en": "Tuesday",
-     "ja": "火曜日"
+     "ja": "火曜日",
+     "emoji": "🔥"
     },
     {
      "en": "Wednesday",
-     "ja": "水曜日"
+     "ja": "水曜日",
+     "emoji": "💧"
     },
     {
      "en": "Thursday",
-     "ja": "木曜日"
+     "ja": "木曜日",
+     "emoji": "🌳"
     },
     {
      "en": "Friday",
-     "ja": "金曜日"
+     "ja": "金曜日",
+     "emoji": "💰"
     },
     {
      "en": "Saturday",
-     "ja": "土曜日"
+     "ja": "土曜日",
+     "emoji": "🪨"
+    },
+    {
+     "en": "Sunday",
+     "ja": "日曜日",
+     "emoji": "☀️"
+    },
+    {
+     "en": "mushroom",
+     "ja": "きのこ",
+     "emoji": "🍄"
+    },
+    {
+     "en": "watermelon",
+     "ja": "すいか",
+     "emoji": "🍉"
+    },
+    {
+     "en": "soup",
+     "ja": "スープ",
+     "emoji": "🥣"
+    },
+    {
+     "en": "pie",
+     "ja": "パイ",
+     "emoji": "🥧"
+    },
+    {
+     "en": "sandwich",
+     "ja": "サンドイッチ",
+     "emoji": "🥪"
+    },
+    {
+     "en": "fresh",
+     "ja": "新鮮な",
+     "emoji": "✨"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "What day is it?",
+     "ja": "曜日をたずねるときは What day is it? と言います。",
+     "pattern": "It's (Monday).",
+     "qa": [
+      [
+       "What day is it?",
+       "It's (Monday)."
+      ],
+      [
+       "Do you like (Mondays)?",
+       "Yes, I do. / No, I don't."
+      ]
+     ]
     }
    ]
   },
@@ -173,14 +379,36 @@
    "page": 14,
    "title": "What time is it?",
    "topic": "Time, daily schedule",
-   "verified": false,
+   "verified": true,
    "phrases": [
     "What time is it?",
-    "It's (8 a.m.).",
-    "It's (homework) time.",
+    "It's (8:30).",
+    "It's (\"Homework Time\").",
     "How about you?"
    ],
    "words": [
+    {
+     "en": "forty",
+     "ja": "40"
+    },
+    {
+     "en": "fifty",
+     "ja": "50"
+    },
+    {
+     "en": "sixty",
+     "ja": "60"
+    },
+    {
+     "en": "a.m.",
+     "ja": "午前",
+     "emoji": "🌅"
+    },
+    {
+     "en": "p.m.",
+     "ja": "午後",
+     "emoji": "🌇"
+    },
     {
      "en": "wake-up time",
      "ja": "起きる時間",
@@ -207,6 +435,11 @@
      "emoji": "🍪"
     },
     {
+     "en": "dinner time",
+     "ja": "夕ごはんの時間",
+     "emoji": "🍛"
+    },
+    {
      "en": "homework time",
      "ja": "宿題の時間",
      "emoji": "📝"
@@ -222,17 +455,31 @@
      "emoji": "🛁"
     },
     {
-     "en": "dream time",
+     "en": "bed time",
      "ja": "ねる時間",
+     "emoji": "🛏️"
+    },
+    {
+     "en": "dream time",
+     "ja": "ゆめの時間",
      "emoji": "💤"
-    },
+    }
+   ],
+   "grammar": [
     {
-     "en": "a.m.",
-     "ja": "午前"
-    },
-    {
-     "en": "p.m.",
-     "ja": "午後"
+     "point": "What time is it?",
+     "ja": "時刻をたずねるときは What time is it? と言います。",
+     "pattern": "It's (8:30).",
+     "qa": [
+      [
+       "What time is it?",
+       "It's (8:30). It's (\"Homework Time\")."
+      ],
+      [
+       "How about you?",
+       "It's (\"Bath Time\")."
+      ]
+     ]
     }
    ]
   },
@@ -240,46 +487,20 @@
    "unit": 5,
    "page": 18,
    "title": "Do you have a pen?",
-   "topic": "Stationery",
-   "verified": false,
+   "topic": "Stationery, school things",
+   "verified": true,
    "phrases": [
     "Do you have (a pen)?",
-    "Yes, I do. / No, I don't.",
-    "I have (a ruler).",
-    "I don't have (a stapler)."
+    "Yes, I do.",
+    "No, I don't.",
+    "I [have / don't have] (a pen).",
+    "This is for you."
    ],
    "words": [
     {
-     "en": "pen",
-     "ja": "ペン",
-     "emoji": "🖊️"
-    },
-    {
-     "en": "pencil",
-     "ja": "えんぴつ",
-     "emoji": "✏️"
-    },
-    {
-     "en": "eraser",
-     "ja": "消しゴム"
-    },
-    {
-     "en": "ruler",
-     "ja": "定規",
-     "emoji": "📏"
-    },
-    {
-     "en": "crayon",
-     "ja": "クレヨン",
-     "emoji": "🖍️"
-    },
-    {
-     "en": "marker",
-     "ja": "マーカー"
-    },
-    {
      "en": "glue stick",
-     "ja": "のり"
+     "ja": "のり",
+     "emoji": "🧴"
     },
     {
      "en": "scissors",
@@ -287,26 +508,14 @@
      "emoji": "✂️"
     },
     {
+     "en": "pen",
+     "ja": "ペン",
+     "emoji": "🖊️"
+    },
+    {
      "en": "stapler",
-     "ja": "ホッチキス"
-    },
-    {
-     "en": "notebook",
-     "ja": "ノート",
-     "emoji": "📓"
-    },
-    {
-     "en": "pencil case",
-     "ja": "筆箱"
-    },
-    {
-     "en": "pencil sharpener",
-     "ja": "えんぴつけずり"
-    },
-    {
-     "en": "calendar",
-     "ja": "カレンダー",
-     "emoji": "📅"
+     "ja": "ホッチキス",
+     "emoji": "📎"
     },
     {
      "en": "magnet",
@@ -314,18 +523,59 @@
      "emoji": "🧲"
     },
     {
-     "en": "bag",
-     "ja": "かばん",
-     "emoji": "🎒"
+     "en": "marker",
+     "ja": "マーカー",
+     "emoji": "🖍️"
+    },
+    {
+     "en": "pencil sharpener",
+     "ja": "えんぴつけずり",
+     "emoji": "✏️"
+    },
+    {
+     "en": "pencil case",
+     "ja": "筆箱",
+     "emoji": "👝"
     },
     {
      "en": "desk",
-     "ja": "机"
+     "ja": "机",
+     "emoji": "🪑"
     },
     {
      "en": "chair",
      "ja": "いす",
      "emoji": "🪑"
+    },
+    {
+     "en": "clock",
+     "ja": "時計",
+     "emoji": "🕰️"
+    },
+    {
+     "en": "calendar",
+     "ja": "カレンダー",
+     "emoji": "📅"
+    },
+    {
+     "en": "short",
+     "ja": "短い",
+     "emoji": "📏"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "Do you have ~?",
+     "ja": "持っているかたずねるときは Do you have ～? と言います。",
+     "pattern": "Do you have (a pen)?",
+     "qa": [
+      [
+       "Do you have (a pen)?",
+       "Yes, I do. / No, I don't."
+      ]
+     ],
+     "neg": "I don't have (a pen).",
+     "q": "Do you have (a pen)?"
     }
    ]
   },
@@ -334,28 +584,45 @@
    "page": 22,
    "title": "Alphabet",
    "topic": "Lowercase letters, signs",
-   "verified": false,
+   "verified": true,
    "phrases": [
     "Look.",
     "What's this?",
     "Hint, please.",
     "How many letters?",
-    "I have (six)."
+    "I have (six).",
+    "Do you have (a \"b\")?",
+    "Yes, I do.",
+    "No, I don't.",
+    "That's right.",
+    "Sorry.",
+    "Try again."
    ],
    "words": [
     {
-     "en": "a–z (lowercase)",
-     "ja": "小文字"
+     "en": "letter",
+     "ja": "文字",
+     "emoji": "🔤"
     },
     {
-     "en": "bus stop",
-     "ja": "バス停",
-     "emoji": "🚏"
+     "en": "bookstore",
+     "ja": "本屋",
+     "emoji": "📚"
     },
     {
-     "en": "hospital",
-     "ja": "病院",
-     "emoji": "🏥"
+     "en": "juice",
+     "ja": "ジュース",
+     "emoji": "🧃"
+    },
+    {
+     "en": "news",
+     "ja": "ニュース",
+     "emoji": "📰"
+    },
+    {
+     "en": "school",
+     "ja": "学校",
+     "emoji": "🏫"
     },
     {
      "en": "station",
@@ -363,9 +630,31 @@
      "emoji": "🚉"
     },
     {
-     "en": "library",
-     "ja": "図書館",
-     "emoji": "📚"
+     "en": "taxi",
+     "ja": "タクシー",
+     "emoji": "🚕"
+    },
+    {
+     "en": "telephone",
+     "ja": "電話",
+     "emoji": "☎️"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "How many letters?",
+     "ja": "文字の数をたずねるときは How many letters? と言います。",
+     "pattern": "I have (six).",
+     "qa": [
+      [
+       "How many letters?",
+       "I have (six)."
+      ],
+      [
+       "Do you have (a \"b\")?",
+       "Yes, I do. / No, I don't."
+      ]
+     ]
     }
    ]
   },
@@ -373,92 +662,21 @@
    "unit": 7,
    "page": 26,
    "title": "What do you want?",
-   "topic": "Food, making a parfait/pizza",
-   "verified": false,
+   "topic": "Food, making a menu",
+   "verified": true,
    "phrases": [
     "What do you want?",
-    "(Potatoes), please.",
+    "I want (potatoes), please.",
     "How many?",
     "(Two), please.",
     "Here you are.",
-    "Thank you.",
-    "This is my (parfait)."
+    "Thank you."
    ],
    "words": [
     {
-     "en": "apple",
-     "ja": "りんご",
-     "emoji": "🍎"
-    },
-    {
-     "en": "banana",
-     "ja": "バナナ",
-     "emoji": "🍌"
-    },
-    {
-     "en": "grapes",
-     "ja": "ぶどう",
-     "emoji": "🍇"
-    },
-    {
-     "en": "lemon",
-     "ja": "レモン",
-     "emoji": "🍋"
-    },
-    {
-     "en": "melon",
-     "ja": "メロン",
-     "emoji": "🍈"
-    },
-    {
-     "en": "orange",
-     "ja": "オレンジ",
-     "emoji": "🍊"
-    },
-    {
-     "en": "peach",
-     "ja": "もも",
-     "emoji": "🍑"
-    },
-    {
-     "en": "pineapple",
-     "ja": "パイナップル",
-     "emoji": "🍍"
-    },
-    {
-     "en": "strawberry",
-     "ja": "いちご",
-     "emoji": "🍓"
-    },
-    {
-     "en": "kiwi fruit",
-     "ja": "キウイ",
-     "emoji": "🥝"
-    },
-    {
-     "en": "cabbage",
-     "ja": "キャベツ",
-     "emoji": "🥬"
-    },
-    {
-     "en": "carrot",
-     "ja": "にんじん",
-     "emoji": "🥕"
-    },
-    {
-     "en": "cucumber",
-     "ja": "きゅうり",
-     "emoji": "🥒"
-    },
-    {
-     "en": "mushroom",
-     "ja": "きのこ",
-     "emoji": "🍄"
-    },
-    {
-     "en": "onion",
-     "ja": "たまねぎ",
-     "emoji": "🧅"
+     "en": "vegetable",
+     "ja": "野菜",
+     "emoji": "🥦"
     },
     {
      "en": "potato",
@@ -466,29 +684,41 @@
      "emoji": "🥔"
     },
     {
-     "en": "tomato",
-     "ja": "トマト",
-     "emoji": "🍅"
+     "en": "cabbage",
+     "ja": "キャベツ",
+     "emoji": "🥬"
+    },
+    {
+     "en": "corn",
+     "ja": "とうもろこし",
+     "emoji": "🌽"
+    },
+    {
+     "en": "cherry",
+     "ja": "さくらんぼ",
+     "emoji": "🍒"
     },
     {
      "en": "sausage",
      "ja": "ソーセージ",
      "emoji": "🌭"
-    },
+    }
+   ],
+   "grammar": [
     {
-     "en": "cheese",
-     "ja": "チーズ",
-     "emoji": "🧀"
-    },
-    {
-     "en": "parfait",
-     "ja": "パフェ",
-     "emoji": "🍨"
-    },
-    {
-     "en": "pizza",
-     "ja": "ピザ",
-     "emoji": "🍕"
+     "point": "I want ~.",
+     "ja": "ほしいものを伝えるときは I want ～. と言います。",
+     "pattern": "I want (potatoes), please.",
+     "qa": [
+      [
+       "What do you want?",
+       "I want (potatoes), please."
+      ],
+      [
+       "How many?",
+       "(Two), please."
+      ]
+     ]
     }
    ]
   },
@@ -496,21 +726,57 @@
    "unit": 8,
    "page": 30,
    "title": "This is my favorite place.",
-   "topic": "School rooms, directions",
-   "verified": false,
+   "topic": "School places, directions",
+   "verified": true,
    "phrases": [
     "Go straight.",
-    "Turn right / left.",
+    "Turn [right / left].",
     "Stop.",
+    "This is (the music room).",
     "This is my favorite place.",
     "Why?",
     "I like (music)."
    ],
    "words": [
     {
+     "en": "go straight",
+     "ja": "まっすぐ進む",
+     "emoji": "⬆️"
+    },
+    {
+     "en": "turn right",
+     "ja": "右に曲がる",
+     "emoji": "➡️"
+    },
+    {
+     "en": "turn left",
+     "ja": "左に曲がる",
+     "emoji": "⬅️"
+    },
+    {
+     "en": "favorite",
+     "ja": "お気に入りの",
+     "emoji": "💖"
+    },
+    {
+     "en": "place",
+     "ja": "場所",
+     "emoji": "📍"
+    },
+    {
      "en": "classroom",
      "ja": "教室",
      "emoji": "🏫"
+    },
+    {
+     "en": "restroom",
+     "ja": "トイレ",
+     "emoji": "🚻"
+    },
+    {
+     "en": "science room",
+     "ja": "理科室",
+     "emoji": "🔬"
     },
     {
      "en": "music room",
@@ -518,9 +784,39 @@
      "emoji": "🎵"
     },
     {
-     "en": "science room",
-     "ja": "理科室",
-     "emoji": "🔬"
+     "en": "arts and crafts room",
+     "ja": "図工室",
+     "emoji": "🎨"
+    },
+    {
+     "en": "computer room",
+     "ja": "コンピューター室",
+     "emoji": "💻"
+    },
+    {
+     "en": "cooking room",
+     "ja": "家庭科室",
+     "emoji": "🍳"
+    },
+    {
+     "en": "school nurse's office",
+     "ja": "保健室",
+     "emoji": "🩹"
+    },
+    {
+     "en": "school principal's office",
+     "ja": "校長室",
+     "emoji": "👔"
+    },
+    {
+     "en": "teachers' office",
+     "ja": "職員室",
+     "emoji": "🧑‍🏫"
+    },
+    {
+     "en": "entrance",
+     "ja": "げんかん",
+     "emoji": "🚪"
     },
     {
      "en": "library",
@@ -536,54 +832,23 @@
      "en": "playground",
      "ja": "運動場",
      "emoji": "⚽"
-    },
+    }
+   ],
+   "grammar": [
     {
-     "en": "school nurse's office",
-     "ja": "保健室",
-     "emoji": "🩹"
-    },
-    {
-     "en": "teachers' office",
-     "ja": "職員室"
-    },
-    {
-     "en": "principal's office",
-     "ja": "校長室"
-    },
-    {
-     "en": "computer room",
-     "ja": "コンピューター室",
-     "emoji": "💻"
-    },
-    {
-     "en": "cooking room",
-     "ja": "家庭科室",
-     "emoji": "🍳"
-    },
-    {
-     "en": "toilet",
-     "ja": "トイレ",
-     "emoji": "🚻"
-    },
-    {
-     "en": "entrance",
-     "ja": "げんかん",
-     "emoji": "🚪"
-    },
-    {
-     "en": "go straight",
-     "ja": "まっすぐ進む",
-     "emoji": "⬆️"
-    },
-    {
-     "en": "turn right",
-     "ja": "右に曲がる",
-     "emoji": "➡️"
-    },
-    {
-     "en": "turn left",
-     "ja": "左に曲がる",
-     "emoji": "⬅️"
+     "point": "This is ~.",
+     "ja": "場所をしょうかいするときは This is ～. と言います。",
+     "pattern": "This is (the music room).",
+     "qa": [
+      [
+       "This is my favorite place.",
+       "Why?"
+      ],
+      [
+       "Why?",
+       "I like (music)."
+      ]
+     ]
     }
    ]
   },
@@ -592,14 +857,12 @@
    "page": 34,
    "title": "This is my day.",
    "topic": "Picture book: daily routine",
-   "verified": false,
+   "verified": true,
    "phrases": [
-    "I wake up.",
-    "I have breakfast.",
+    "I wake up (at 6:00).",
+    "I have breakfast (at 7:00).",
     "I go to school.",
-    "I go home.",
-    "I take a bath.",
-    "I go to bed."
+    "I go home."
    ],
    "words": [
     {
@@ -609,12 +872,8 @@
     },
     {
      "en": "wash my face",
-     "ja": "顔を洗う"
-    },
-    {
-     "en": "brush my teeth",
-     "ja": "歯をみがく",
-     "emoji": "🪥"
+     "ja": "顔を洗う",
+     "emoji": "🧼"
     },
     {
      "en": "have breakfast",
@@ -622,14 +881,34 @@
      "emoji": "🍳"
     },
     {
+     "en": "brush my teeth",
+     "ja": "歯をみがく",
+     "emoji": "🪥"
+    },
+    {
+     "en": "put away my futon",
+     "ja": "ふとんをかたづける",
+     "emoji": "🛏️"
+    },
+    {
+     "en": "check my school bag",
+     "ja": "ランドセルを確認する",
+     "emoji": "🎒"
+    },
+    {
+     "en": "leave my house",
+     "ja": "家を出る",
+     "emoji": "🚪"
+    },
+    {
+     "en": "take out the garbage",
+     "ja": "ごみを出す",
+     "emoji": "🗑️"
+    },
+    {
      "en": "go to school",
      "ja": "学校へ行く",
      "emoji": "🏫"
-    },
-    {
-     "en": "study",
-     "ja": "勉強する",
-     "emoji": "📚"
     },
     {
      "en": "go home",
@@ -637,19 +916,36 @@
      "emoji": "🏠"
     },
     {
-     "en": "do my homework",
-     "ja": "宿題をする",
+     "en": "homework",
+     "ja": "宿題",
      "emoji": "📝"
     },
     {
-     "en": "take a bath",
-     "ja": "おふろに入る",
-     "emoji": "🛁"
+     "en": "dinner",
+     "ja": "夕ごはん",
+     "emoji": "🍛"
     },
     {
-     "en": "go to bed",
-     "ja": "ねる",
-     "emoji": "🛏️"
+     "en": "dream",
+     "ja": "ゆめ",
+     "emoji": "💭"
+    },
+    {
+     "en": "yummy",
+     "ja": "おいしい",
+     "emoji": "😋"
+    },
+    {
+     "en": "wonderful",
+     "ja": "すばらしい",
+     "emoji": "🌟"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "I ~ (at time).",
+     "ja": "一日の生活を言うときは I ～ (at 時刻). と言います。",
+     "pattern": "I wake up (at 6:00)."
     }
    ]
   }

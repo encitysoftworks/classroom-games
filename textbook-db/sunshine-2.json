@@ -2,81 +2,302 @@
  "book": "Sunshine English Course 2",
  "publisher": "Kairyudo",
  "grade": "JHS2",
- "edition": "2025",
- "source": "Outline from ALTopedia Sunshine (2025) page, which matches Wyatt's newest edition. ALTopedia lists pages and grammar points, not program numbers; 'unit' here is our own grouping by page. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "edition": "2025 (8 Programs)",
+ "source": "Checked 2026-10-27 against Wyatt's Sunshine English Course 2 (2025, Kairyudo) teacher's book: contents page, each Program's Scenes (target sentences, New Words, Word Box) and Part pages. One unit per Program; Readings, Power-Ups, Steps and Our Projects are left out.",
  "units": [
   {
    "unit": 1,
-   "page": 8,
-   "title": "I'm going to practice with Ken this Sunday.",
-   "topic": "be going to, will, gerund (enjoy ~ing)",
-   "grammar": "be going to, will, gerund (enjoy ~ing)",
-   "verified": false,
+   "page": 7,
+   "title": "New Start",
+   "topic": "be going to, will, enjoy ~ing",
+   "verified": true,
    "phrases": [
-    "I'm going to (practice) this Sunday.",
+    "I'm going to (practice with Ken) this Sunday.",
+    "We're going to (start at ten).",
+    "Can I join you?",
     "I'll be late.",
-    "I enjoyed (singing) with you."
+    "He'll come soon.",
+    "I enjoyed (singing) with you.",
+    "Stop (talking) about it.",
+    "Miki is going to move to Canada.",
+    "I won't forget you.",
+    "Keep in touch."
    ],
    "words": [
     {
-     "en": "practice",
-     "ja": "練習する"
+     "en": "plan",
+     "ja": "予定",
+     "emoji": "📅"
     },
     {
-     "en": "this Sunday",
-     "ja": "今度の日曜日"
+     "en": "go shopping",
+     "ja": "買い物に行く",
+     "emoji": "🛍️"
+    },
+    {
+     "en": "see a movie",
+     "ja": "映画を見る",
+     "emoji": "🎬"
+    },
+    {
+     "en": "stay home",
+     "ja": "家にいる",
+     "emoji": "🏠"
     },
     {
      "en": "late",
-     "ja": "遅れて"
+     "ja": "遅れた",
+     "emoji": "⏰"
     },
     {
-     "en": "enjoy",
-     "ja": "楽しむ"
+     "en": "soon",
+     "ja": "すぐに",
+     "emoji": "⏩"
     },
     {
-     "en": "tomorrow",
-     "ja": "明日"
+     "en": "eat ramen",
+     "ja": "ラーメンを食べる",
+     "emoji": "🍜"
     },
     {
-     "en": "next week",
-     "ja": "来週"
+     "en": "go fishing",
+     "ja": "釣りに行く",
+     "emoji": "🎣"
+    },
+    {
+     "en": "camp",
+     "ja": "キャンプする",
+     "emoji": "🏕️"
+    },
+    {
+     "en": "dance",
+     "ja": "おどる",
+     "emoji": "💃"
+    },
+    {
+     "en": "read manga",
+     "ja": "マンガを読む",
+     "emoji": "📚"
+    },
+    {
+     "en": "nothing",
+     "ja": "何も〜ない",
+     "emoji": "🚫"
+    },
+    {
+     "en": "move",
+     "ja": "引っ越す",
+     "emoji": "🚚"
+    },
+    {
+     "en": "farewell party",
+     "ja": "送別会",
+     "emoji": "🎉"
+    },
+    {
+     "en": "care",
+     "ja": "注意",
+     "emoji": "⚠️"
+    },
+    {
+     "en": "local",
+     "ja": "地元の",
+     "emoji": "📍"
+    },
+    {
+     "en": "worried",
+     "ja": "心配して",
+     "emoji": "😟"
+    },
+    {
+     "en": "hope",
+     "ja": "望む",
+     "emoji": "🙏"
+    },
+    {
+     "en": "forget",
+     "ja": "忘れる",
+     "emoji": "💭"
+    },
+    {
+     "en": "either",
+     "ja": "〜もまた(ない)",
+     "emoji": "➖"
+    },
+    {
+     "en": "keep",
+     "ja": "保つ",
+     "emoji": "🤝"
+    },
+    {
+     "en": "text",
+     "ja": "メッセージを送る",
+     "emoji": "📱"
+    },
+    {
+     "en": "cry",
+     "ja": "泣く",
+     "emoji": "😢"
+    },
+    {
+     "en": "overseas",
+     "ja": "海外で",
+     "emoji": "✈️"
+    },
+    {
+     "en": "picnic",
+     "ja": "ピクニック",
+     "emoji": "🧺"
+    },
+    {
+     "en": "maybe",
+     "ja": "たぶん",
+     "emoji": "🤔"
+    },
+    {
+     "en": "amusement park",
+     "ja": "遊園地",
+     "emoji": "🎡"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "be going to ~",
+     "ja": "「〜する予定だ」と言うときは be going to + 動詞の原形を使います。",
+     "pattern": "I'm going to (practice) this Sunday.",
+     "qa": [
+      [
+       "What are you going to do (this weekend)?",
+       "I'm going to (play soccer)."
+      ]
+     ],
+     "q": "Are you going to (practice) this Sunday?"
+    },
+    {
+     "point": "will",
+     "ja": "「〜だろう」「〜するつもりだ」と言うときは will + 動詞の原形を使います。",
+     "pattern": "I'll (clean my room) next Sunday.",
+     "qa": [
+      [
+       "Will (Miki) (often text Daniel)?",
+       "Yes, (she) will. / No, (she) won't."
+      ]
+     ],
+     "neg": "I won't (forget) you.",
+     "q": "Will (Miki) (text Daniel)?"
+    },
+    {
+     "point": "enjoy ~ing",
+     "ja": "「〜することを楽しむ」は enjoy + 動詞の -ing 形で表します。",
+     "pattern": "I enjoyed (singing) with you."
     }
    ]
   },
   {
    "unit": 2,
-   "page": 20,
-   "title": "When I was a kid, I enjoyed sewing.",
-   "topic": "that-clause, when, if",
-   "grammar": "that-clause, when, if",
-   "verified": false,
+   "page": 19,
+   "title": "Koshien Project in Africa",
+   "topic": "I think (that) ~, when ~, if ~",
+   "verified": true,
    "phrases": [
-    "I hear that (Anya will play in a game).",
-    "When I was a kid, I (enjoyed sewing).",
-    "If you (hit a home run), I'll (make cookies)."
+    "Are you free this Sunday?",
+    "I hear that (Anya will play in a baseball game).",
+    "Let's go and root for her team.",
+    "When I was a kid, I enjoyed (sewing with my grandma).",
+    "If you hit a home run, (Felipe will make cookies for you).",
+    "I think (that) (math is easy).",
+    "I don't think (that) (baseball is popular in Africa)."
    ],
    "words": [
     {
+     "en": "free",
+     "ja": "ひまな",
+     "emoji": "🆓"
+    },
+    {
      "en": "hear",
-     "ja": "聞く"
+     "ja": "聞く",
+     "emoji": "👂"
     },
     {
-     "en": "think",
-     "ja": "思う"
+     "en": "root for",
+     "ja": "〜を応援する",
+     "emoji": "📣"
     },
     {
-     "en": "know",
-     "ja": "知っている"
+     "en": "easy",
+     "ja": "簡単な",
+     "emoji": "👌"
     },
     {
-     "en": "kid",
-     "ja": "子ども"
+     "en": "difficult",
+     "ja": "難しい",
+     "emoji": "😣"
     },
     {
-     "en": "sew",
-     "ja": "ぬう",
-     "emoji": "🧵"
+     "en": "history",
+     "ja": "歴史",
+     "emoji": "📜"
+    },
+    {
+     "en": "interested",
+     "ja": "興味がある",
+     "emoji": "🤔"
+    },
+    {
+     "en": "scarf",
+     "ja": "マフラー",
+     "emoji": "🧣"
+    },
+    {
+     "en": "shirt",
+     "ja": "シャツ",
+     "emoji": "👕"
+    },
+    {
+     "en": "bag",
+     "ja": "かばん",
+     "emoji": "👜"
+    },
+    {
+     "en": "cheering",
+     "ja": "応援の",
+     "emoji": "📣"
+    },
+    {
+     "en": "flag",
+     "ja": "旗",
+     "emoji": "🚩"
+    },
+    {
+     "en": "program",
+     "ja": "番組",
+     "emoji": "📺"
+    },
+    {
+     "en": "practice soccer",
+     "ja": "サッカーを練習する",
+     "emoji": "⚽"
+    },
+    {
+     "en": "watch TV",
+     "ja": "テレビを見る",
+     "emoji": "📺"
+    },
+    {
+     "en": "study English",
+     "ja": "英語を勉強する",
+     "emoji": "📚"
+    },
+    {
+     "en": "if",
+     "ja": "もし〜なら",
+     "emoji": "❓"
+    },
+    {
+     "en": "hit",
+     "ja": "打つ",
+     "emoji": "🏏"
     },
     {
      "en": "home run",
@@ -84,81 +305,209 @@
      "emoji": "⚾"
     },
     {
-     "en": "cookie",
-     "ja": "クッキー",
-     "emoji": "🍪"
+     "en": "cycle",
+     "ja": "サイクリングする",
+     "emoji": "🚴"
+    },
+    {
+     "en": "rain",
+     "ja": "雨が降る",
+     "emoji": "🌧️"
+    },
+    {
+     "en": "go cycling",
+     "ja": "サイクリングに行く",
+     "emoji": "🚲"
+    },
+    {
+     "en": "promote",
+     "ja": "広める",
+     "emoji": "📢"
+    },
+    {
+     "en": "successful",
+     "ja": "成功した",
+     "emoji": "🏆"
+    },
+    {
+     "en": "championship",
+     "ja": "選手権",
+     "emoji": "🏆"
+    },
+    {
+     "en": "passionate",
+     "ja": "情熱的な",
+     "emoji": "🔥"
+    },
+    {
+     "en": "person",
+     "ja": "人",
+     "emoji": "🧑"
+    },
+    {
+     "en": "university",
+     "ja": "大学",
+     "emoji": "🎓"
+    },
+    {
+     "en": "coach",
+     "ja": "指導する",
+     "emoji": "🧢"
+    },
+    {
+     "en": "national",
+     "ja": "国の",
+     "emoji": "🏳️"
+    },
+    {
+     "en": "believe",
+     "ja": "信じる",
+     "emoji": "🙏"
+    },
+    {
+     "en": "create",
+     "ja": "つくり出す",
+     "emoji": "✨"
+    },
+    {
+     "en": "peace",
+     "ja": "平和",
+     "emoji": "🕊️"
+    },
+    {
+     "en": "education",
+     "ja": "教育",
+     "emoji": "📚"
+    },
+    {
+     "en": "sportsmanship",
+     "ja": "スポーツマンシップ",
+     "emoji": "🤝"
+    },
+    {
+     "en": "manners",
+     "ja": "行儀",
+     "emoji": "🙇"
+    },
+    {
+     "en": "power",
+     "ja": "力",
+     "emoji": "💪"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "I think (that) ~.",
+     "ja": "自分の考えを伝えるときは I think (that) + 文 を使います。that は省略できます。",
+     "pattern": "I think (that) (math is easy).",
+     "qa": [
+      [
+       "What do you think about (math)?",
+       "I think (that) (it's difficult)."
+      ]
+     ],
+     "neg": "I don't think (that) (baseball is popular in Africa)."
+    },
+    {
+     "point": "When ~, ...",
+     "ja": "「〜のとき…」と言うときは接続詞 when を使います。",
+     "pattern": "When I was a kid, I (enjoyed sewing).",
+     "qa": [
+      [
+       "When you are free, what do you usually do?",
+       "When I'm free, I (practice soccer)."
+      ]
+     ]
+    },
+    {
+     "point": "If ~, ...",
+     "ja": "「もし〜ならば…」と言うときは接続詞 if を使います。if の文の中は未来のことでも現在形を使います。",
+     "pattern": "If it's sunny, I'll (play tennis).",
+     "qa": [
+      [
+       "If it's (rainy) this weekend, what will you do?",
+       "I'll (read books at home)."
+      ]
+     ]
     }
    ]
   },
   {
    "unit": 3,
-   "page": 29,
-   "title": "Weather forecast",
-   "topic": "Weather",
-   "grammar": "Weather",
-   "verified": false,
+   "page": 31,
+   "title": "Taste of Culture",
+   "topic": "Infinitives: to ~ (noun, adverb, adjective uses)",
+   "verified": true,
    "phrases": [
-    "It will be (sunny) tomorrow.",
-    "How's the weather?"
+    "There is a festival this evening.",
+    "I want to go!",
+    "I can't wait!",
+    "You use it to (scoop up fish).",
+    "How do I use it?",
+    "It's too thin.",
+    "I need a bowl to (keep it in).",
+    "I want to (eat an \"American dog\")."
    ],
    "words": [
     {
-     "en": "sunny",
-     "ja": "晴れ",
-     "emoji": "☀️"
+     "en": "festival",
+     "ja": "祭り",
+     "emoji": "🏮"
     },
     {
-     "en": "cloudy",
-     "ja": "くもり",
-     "emoji": "☁️"
+     "en": "wait",
+     "ja": "待つ",
+     "emoji": "⏳"
     },
     {
-     "en": "rainy",
-     "ja": "雨",
-     "emoji": "🌧️"
+     "en": "light",
+     "ja": "軽い",
+     "emoji": "🪶"
     },
     {
-     "en": "snowy",
-     "ja": "雪",
-     "emoji": "❄️"
+     "en": "go shopping",
+     "ja": "買い物に行く",
+     "emoji": "🛍️"
     },
     {
-     "en": "windy",
-     "ja": "風が強い",
-     "emoji": "🌬️"
+     "en": "play with my dog",
+     "ja": "犬と遊ぶ",
+     "emoji": "🐕"
     },
     {
-     "en": "typhoon",
-     "ja": "台風",
-     "emoji": "🌀"
+     "en": "see a movie",
+     "ja": "映画を見る",
+     "emoji": "🎬"
     },
     {
-     "en": "temperature",
-     "ja": "気温",
-     "emoji": "🌡️"
-    }
-   ]
-  },
-  {
-   "unit": 4,
-   "page": 32,
-   "title": "I want to go!",
-   "topic": "Infinitives (noun, adverb, adjective uses)",
-   "grammar": "Infinitives (noun, adverb, adjective uses)",
-   "verified": false,
-   "phrases": [
-    "I want (to go)!",
-    "You use it (to scoop up fish).",
-    "I need a bowl (to keep it in)."
-   ],
-   "words": [
-    {
-     "en": "want to",
-     "ja": "〜したい"
+     "en": "scoop",
+     "ja": "すくう",
+     "emoji": "🥄"
     },
     {
-     "en": "need",
-     "ja": "必要とする"
+     "en": "thin",
+     "ja": "うすい",
+     "emoji": "📄"
+    },
+    {
+     "en": "beach",
+     "ja": "浜辺",
+     "emoji": "🏖️"
+    },
+    {
+     "en": "swim",
+     "ja": "泳ぐ",
+     "emoji": "🏊"
+    },
+    {
+     "en": "catch",
+     "ja": "つかまえる",
+     "emoji": "🎣"
+    },
+    {
+     "en": "job",
+     "ja": "仕事",
+     "emoji": "💼"
     },
     {
      "en": "bowl",
@@ -166,94 +515,153 @@
      "emoji": "🥣"
     },
     {
-     "en": "scoop",
-     "ja": "すくう"
+     "en": "bitter",
+     "ja": "苦い",
+     "emoji": "☕"
     },
     {
-     "en": "goldfish scooping",
-     "ja": "金魚すくい",
-     "emoji": "🐟"
+     "en": "sour",
+     "ja": "すっぱい",
+     "emoji": "🍋"
     },
     {
-     "en": "festival",
-     "ja": "祭り",
+     "en": "sweet",
+     "ja": "あまい",
+     "emoji": "🍬"
+    },
+    {
+     "en": "soft",
+     "ja": "やわらかい",
+     "emoji": "🧸"
+    },
+    {
+     "en": "racket",
+     "ja": "ラケット",
+     "emoji": "🏸"
+    },
+    {
+     "en": "present",
+     "ja": "プレゼント",
+     "emoji": "🎁"
+    },
+    {
+     "en": "cheese",
+     "ja": "チーズ",
+     "emoji": "🧀"
+    },
+    {
+     "en": "corn dog",
+     "ja": "アメリカンドッグ",
+     "emoji": "🌭"
+    },
+    {
+     "en": "cotton candy",
+     "ja": "わたあめ",
+     "emoji": "🍭"
+    },
+    {
+     "en": "food stand",
+     "ja": "屋台",
      "emoji": "🏮"
+    },
+    {
+     "en": "goldfish",
+     "ja": "金魚",
+     "emoji": "🐟"
     }
-   ]
-  },
-  {
-   "unit": 5,
-   "page": 46,
-   "title": "Reading 1: The Three Dolls",
-   "topic": "Story reading",
-   "grammar": "Story reading",
-   "verified": false,
-   "phrases": [
-    "Once upon a time, ..."
    ],
-   "words": [
+   "grammar": [
     {
-     "en": "doll",
-     "ja": "人形",
-     "emoji": "🪆"
+     "point": "want to ~ (名詞的用法)",
+     "ja": "「〜したい」は want to + 動詞の原形で表します。to + 動詞の原形を不定詞と言います。",
+     "pattern": "I want (to go).",
+     "qa": [
+      [
+       "What do you want to do this weekend?",
+       "I want to (go fishing)."
+      ]
+     ]
     },
     {
-     "en": "king",
-     "ja": "王",
-     "emoji": "🤴"
+     "point": "to ~ (副詞的用法：目的)",
+     "ja": "「〜するために」と目的を言うときも to + 動詞の原形を使います。",
+     "pattern": "I went to (a supermarket) to (buy ice cream).",
+     "qa": [
+      [
+       "Why did you go to (the park)?",
+       "To (draw pictures)."
+      ]
+     ]
     },
     {
-     "en": "wise",
-     "ja": "賢い"
+     "point": "名詞 + to ~ (形容詞的用法)",
+     "ja": "「〜するための…」と名詞を説明するときは、名詞のあとに to + 動詞の原形を置きます。",
+     "pattern": "I need a bowl to (keep it in).",
+     "qa": [
+      [
+       "It's something to (eat). It's (yellow).",
+       "I got it! It's a (banana)."
+      ]
+     ]
     }
    ]
   },
   {
-   "unit": 6,
-   "page": 50,
-   "title": "Power Up 2: Let's make a phone call",
-   "topic": "Phone conversations",
-   "grammar": "Phone conversations",
-   "verified": false,
+   "unit": 4,
+   "page": 51,
+   "title": "Leave Only Footprints",
+   "topic": "be surprised to ~, must, have to",
+   "verified": true,
    "phrases": [
-    "Hello. This is (Ken).",
-    "May I speak to (Daniel)?",
-    "Just a moment.",
-    "Can I leave a message?"
-   ],
-   "words": [
-    {
-     "en": "phone",
-     "ja": "電話",
-     "emoji": "📞"
-    },
-    {
-     "en": "message",
-     "ja": "伝言"
-    }
-   ]
-  },
-  {
-   "unit": 7,
-   "page": 52,
-   "title": "You must turn down the volume.",
-   "topic": "must, have to, infinitive (emotion)",
-   "grammar": "must, have to, infinitive (emotion)",
-   "verified": false,
-   "phrases": [
-    "You must (turn down the volume).",
-    "I have to (be careful).",
+    "What are you listening to?",
     "I'm surprised to hear that.",
-    "You don't have to (hurry)."
+    "Actually, I'm a big fan of (enka).",
+    "You must (turn down the volume).",
+    "You mustn't (sing in the bus).",
+    "I have to (be careful about the volume).",
+    "You don't have to (do that).",
+    "I'm glad to hear that."
    ],
    "words": [
+    {
+     "en": "actually",
+     "ja": "実は",
+     "emoji": "💡"
+    },
+    {
+     "en": "deer",
+     "ja": "シカ",
+     "emoji": "🦌"
+    },
+    {
+     "en": "guitarist",
+     "ja": "ギタリスト",
+     "emoji": "🎸"
+    },
+    {
+     "en": "hear from",
+     "ja": "〜から連絡がある",
+     "emoji": "📩"
+    },
+    {
+     "en": "see my cousin",
+     "ja": "いとこに会う",
+     "emoji": "🧑"
+    },
+    {
+     "en": "get a new watch",
+     "ja": "新しい時計をもらう",
+     "emoji": "⌚"
+    },
+    {
+     "en": "emotional",
+     "ja": "感動的な",
+     "emoji": "🥹"
+    },
     {
      "en": "must",
-     "ja": "〜しなければならない"
-    },
-    {
-     "en": "have to",
-     "ja": "〜しなければならない"
+     "ja": "〜しなければならない",
+     "emoji": "❗"
     },
     {
      "en": "volume",
@@ -261,222 +669,538 @@
      "emoji": "🔊"
     },
     {
-     "en": "careful",
-     "ja": "注意深い"
+     "en": "uh-oh",
+     "ja": "あらら",
+     "emoji": "😬"
     },
     {
-     "en": "surprised",
-     "ja": "驚いた",
-     "emoji": "😲"
+     "en": "chips",
+     "ja": "ポテトチップス",
+     "emoji": "🥔"
     },
     {
-     "en": "quiet",
-     "ja": "静かな"
+     "en": "cover",
+     "ja": "おおう",
+     "emoji": "🧥"
+    },
+    {
+     "en": "hood",
+     "ja": "フード",
+     "emoji": "🧥"
+    },
+    {
+     "en": "have to",
+     "ja": "〜しなければならない",
+     "emoji": "📋"
+    },
+    {
+     "en": "cook dinner",
+     "ja": "夕食を作る",
+     "emoji": "🍳"
+    },
+    {
+     "en": "study English",
+     "ja": "英語を勉強する",
+     "emoji": "📚"
+    },
+    {
+     "en": "smartphone",
+     "ja": "スマートフォン",
+     "emoji": "📱"
+    },
+    {
+     "en": "hike",
+     "ja": "ハイキングする",
+     "emoji": "🥾"
+    },
+    {
+     "en": "true",
+     "ja": "本当の",
+     "emoji": "✅"
+    },
+    {
+     "en": "glad",
+     "ja": "うれしい",
+     "emoji": "😊"
+    },
+    {
+     "en": "guide",
+     "ja": "案内する",
+     "emoji": "🧭"
+    },
+    {
+     "en": "clear",
+     "ja": "晴れた",
+     "emoji": "☀️"
     }
-   ]
-  },
-  {
-   "unit": 8,
-   "page": 61,
-   "title": "Power Up 3: Let's eat at a restaurant",
-   "topic": "Ordering",
-   "grammar": "Ordering",
-   "verified": false,
-   "phrases": [
-    "Are you ready to order?",
-    "I'll have (the steak).",
-    "Anything else?",
-    "Check, please."
    ],
-   "words": [
+   "grammar": [
     {
-     "en": "menu",
-     "ja": "メニュー"
+     "point": "be surprised [glad] to ~",
+     "ja": "「〜しておどろく[うれしい]」と感情の原因を言うときは、感情を表す語 + to + 動詞の原形を使います。",
+     "pattern": "I'm surprised to (hear that)."
     },
     {
-     "en": "order",
-     "ja": "注文する"
+     "point": "must",
+     "ja": "「〜しなければならない」は must + 動詞の原形で表します。",
+     "pattern": "You must (turn down the volume).",
+     "qa": [
+      [
+       "What are the rules of your school?",
+       "We must (arrive at school by eight fifteen)."
+      ]
+     ],
+     "neg": "You mustn't (sing in the bus)."
     },
     {
-     "en": "dessert",
-     "ja": "デザート",
-     "emoji": "🍰"
-    },
-    {
-     "en": "check",
-     "ja": "お会計"
+     "point": "have to ~",
+     "ja": "「〜する必要がある」は have to、「〜する必要はない」は don't have to で表します。",
+     "pattern": "I have to (be careful).",
+     "qa": [
+      [
+       "Do you have to (go to juku) today?",
+       "Yes, I do. / No, I don't."
+      ]
+     ],
+     "neg": "You don't have to (do that).",
+     "q": "Do you have to (go to juku) today?"
     }
    ]
   },
   {
-   "unit": 9,
-   "page": 66,
-   "title": "You'll become a good athlete.",
-   "topic": "become/look, how to, SVOO",
-   "grammar": "become/look, how to, SVOO",
-   "verified": false,
+   "unit": 5,
+   "page": 65,
+   "title": "Work Experience",
+   "topic": "how to ~, look / become, give / lend + person + thing",
+   "verified": true,
    "phrases": [
-    "You'll become (a good athlete).",
-    "I don't know how to (use it).",
+    "You're really good at (using a tablet).",
+    "I don't know how to (use it well).",
+    "I'll show you.",
+    "You look tired.",
+    "What did you do?",
+    "You'll become a good athlete.",
+    "Where are you going to work?",
     "I'll lend you (this apron)."
    ],
    "words": [
     {
-     "en": "become",
-     "ja": "〜になる"
+     "en": "tablet",
+     "ja": "タブレット",
+     "emoji": "📱"
     },
     {
-     "en": "look",
-     "ja": "〜に見える"
+     "en": "chess",
+     "ja": "チェス",
+     "emoji": "♟️"
     },
     {
-     "en": "athlete",
-     "ja": "運動選手"
+     "en": "both",
+     "ja": "両方",
+     "emoji": "✌️"
+    },
+    {
+     "en": "play the drums",
+     "ja": "ドラムをたたく",
+     "emoji": "🥁"
+    },
+    {
+     "en": "ride a unicycle",
+     "ja": "一輪車に乗る",
+     "emoji": "🛞"
     },
     {
      "en": "how to",
-     "ja": "〜の仕方"
+     "ja": "〜のしかた",
+     "emoji": "❓"
+    },
+    {
+     "en": "meter",
+     "ja": "メートル",
+     "emoji": "📏"
+    },
+    {
+     "en": "become",
+     "ja": "〜になる",
+     "emoji": "🦋"
+    },
+    {
+     "en": "athlete",
+     "ja": "運動選手",
+     "emoji": "🏅"
+    },
+    {
+     "en": "happen",
+     "ja": "起こる",
+     "emoji": "❗"
+    },
+    {
+     "en": "get first place",
+     "ja": "1位になる",
+     "emoji": "🥇"
+    },
+    {
+     "en": "happy",
+     "ja": "うれしい",
+     "emoji": "😄"
+    },
+    {
+     "en": "sad",
+     "ja": "悲しい",
+     "emoji": "😢"
+    },
+    {
+     "en": "tired",
+     "ja": "つかれた",
+     "emoji": "😩"
+    },
+    {
+     "en": "sleepy",
+     "ja": "ねむい",
+     "emoji": "😪"
     },
     {
      "en": "lend",
-     "ja": "貸す"
-    },
-    {
-     "en": "give",
-     "ja": "あげる"
-    },
-    {
-     "en": "show",
-     "ja": "見せる"
+     "ja": "貸す",
+     "emoji": "🤝"
     },
     {
      "en": "apron",
-     "ja": "エプロン"
+     "ja": "エプロン",
+     "emoji": "🧑‍🍳"
+    },
+    {
+     "en": "show",
+     "ja": "見せる",
+     "emoji": "👀"
+    },
+    {
+     "en": "give",
+     "ja": "あげる",
+     "emoji": "🎁"
+    },
+    {
+     "en": "tell",
+     "ja": "話す",
+     "emoji": "🗣️"
+    },
+    {
+     "en": "supermarket",
+     "ja": "スーパー",
+     "emoji": "🛒"
+    },
+    {
+     "en": "boat",
+     "ja": "ボート",
+     "emoji": "⛵"
+    },
+    {
+     "en": "paper",
+     "ja": "紙",
+     "emoji": "📄"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "how to ~",
+     "ja": "「〜のしかた」は how to + 動詞の原形で表します。",
+     "pattern": "I know how to (cook sukiyaki).",
+     "qa": [
+      [
+       "Do you know how to (play chess)?",
+       "Yes. I know how to (play) both."
+      ]
+     ]
+    },
+    {
+     "point": "look + 形容詞 / become + 名詞",
+     "ja": "「〜に見える」は look + 形容詞、「〜になる」は become + 名詞で表します。",
+     "pattern": "You look (tired).",
+     "qa": [
+      [
+       "You look (happy). What's up?",
+       "Well, (the Tigers won yesterday)."
+      ]
+     ]
+    },
+    {
+     "point": "lend [give / show] + 人 + もの",
+     "ja": "「(人)に(もの)を〜する」は 動詞 + 人 + もの の順に並べます。",
+     "pattern": "I'll lend you (this apron).",
+     "qa": [
+      [
+       "Can you make me something?",
+       "OK. I'll make you (a boat)."
+      ]
+     ]
     }
    ]
   },
   {
-   "unit": 10,
-   "page": 76,
-   "title": "This cafe is cuter than that one.",
-   "topic": "Comparatives and superlatives",
-   "grammar": "Comparatives and superlatives",
-   "verified": false,
+   "unit": 6,
+   "page": 75,
+   "title": "High-Tech Nature",
+   "topic": "Comparatives and superlatives, as ~ as",
+   "verified": true,
    "phrases": [
-    "This umbrella is as light as that one.",
     "This cafe is cuter than that one.",
-    "The parfaits are the most popular here."
+    "It's more expensive than that one.",
+    "The parfaits are the most popular here.",
+    "It's the biggest parfait in the world, I think.",
+    "This umbrella is as light as yours.",
+    "But it's not as stylish as mine.",
+    "Which is the most exciting, (tennis, soccer, or baseball)?"
    ],
    "words": [
-    {
-     "en": "light",
-     "ja": "軽い"
-    },
-    {
-     "en": "heavy",
-     "ja": "重い"
-    },
-    {
-     "en": "cute",
-     "ja": "かわいい"
-    },
-    {
-     "en": "popular",
-     "ja": "人気のある"
-    },
-    {
-     "en": "than",
-     "ja": "〜より"
-    },
-    {
-     "en": "the most",
-     "ja": "いちばん"
-    },
     {
      "en": "cafe",
      "ja": "カフェ",
      "emoji": "☕"
     },
     {
+     "en": "than",
+     "ja": "〜よりも",
+     "emoji": "⚖️"
+    },
+    {
+     "en": "more",
+     "ja": "もっと",
+     "emoji": "➕"
+    },
+    {
+     "en": "Germany",
+     "ja": "ドイツ",
+     "emoji": "🇩🇪"
+    },
+    {
+     "en": "old",
+     "ja": "古い",
+     "emoji": "🏚️"
+    },
+    {
+     "en": "young",
+     "ja": "若い",
+     "emoji": "👶"
+    },
+    {
+     "en": "easy",
+     "ja": "簡単な",
+     "emoji": "👌"
+    },
+    {
+     "en": "difficult",
+     "ja": "難しい",
+     "emoji": "😣"
+    },
+    {
      "en": "parfait",
      "ja": "パフェ",
      "emoji": "🍨"
+    },
+    {
+     "en": "most",
+     "ja": "最も",
+     "emoji": "🥇"
+    },
+    {
+     "en": "London",
+     "ja": "ロンドン",
+     "emoji": "🇬🇧"
+    },
+    {
+     "en": "useful",
+     "ja": "役に立つ",
+     "emoji": "🔧"
+    },
+    {
+     "en": "strong",
+     "ja": "強い",
+     "emoji": "💪"
+    },
+    {
+     "en": "stylish",
+     "ja": "おしゃれな",
+     "emoji": "😎"
+    },
+    {
+     "en": "centimeter",
+     "ja": "センチメートル",
+     "emoji": "📏"
+    },
+    {
+     "en": "exciting",
+     "ja": "わくわくする",
+     "emoji": "🤩"
+    },
+    {
+     "en": "delicious",
+     "ja": "おいしい",
+     "emoji": "😋"
+    },
+    {
+     "en": "cute",
+     "ja": "かわいい",
+     "emoji": "🥰"
+    },
+    {
+     "en": "expensive",
+     "ja": "高価な",
+     "emoji": "💰"
+    },
+    {
+     "en": "umbrella",
+     "ja": "かさ",
+     "emoji": "☂️"
+    },
+    {
+     "en": "tall",
+     "ja": "背が高い",
+     "emoji": "📏"
+    },
+    {
+     "en": "big",
+     "ja": "大きい",
+     "emoji": "🐘"
+    },
+    {
+     "en": "popular",
+     "ja": "人気のある",
+     "emoji": "⭐"
     }
-   ]
-  },
-  {
-   "unit": 11,
-   "page": 85,
-   "title": "Power Up 4: Email update",
-   "topic": "Writing an email",
-   "grammar": "Writing an email",
-   "verified": false,
-   "phrases": [
-    "Dear (Ms. Brown),",
-    "How are you?",
-    "Best wishes,"
    ],
-   "words": [
+   "grammar": [
     {
-     "en": "email",
-     "ja": "メール",
-     "emoji": "📧"
+     "point": "比較級 (-er / more)",
+     "ja": "2つを比べて「…よりも〜だ」と言うときは、-er 形または more ～ と than を使います。",
+     "pattern": "This cafe is (cuter) than that one.",
+     "table": [
+      [
+       "cute",
+       "cuter",
+       "cutest"
+      ],
+      [
+       "big",
+       "bigger",
+       "biggest"
+      ],
+      [
+       "easy",
+       "easier",
+       "easiest"
+      ],
+      [
+       "popular",
+       "more popular",
+       "most popular"
+      ]
+     ]
     },
     {
-     "en": "subject",
-     "ja": "件名"
+     "point": "最上級 (-est / most)",
+     "ja": "3つ以上の中で「もっとも〜だ」と言うときは、the + -est 形 または the most ～ を使います。",
+     "pattern": "The parfaits are the most (popular) here.",
+     "qa": [
+      [
+       "Which is the most (exciting), (tennis), (soccer), or (baseball)?",
+       "I think (soccer) is the most (exciting) of the three."
+      ]
+     ]
     },
     {
-     "en": "attach",
-     "ja": "添付する"
+     "point": "as ~ as ...",
+     "ja": "「…と同じくらい〜」は as ～ as …、「…ほど〜ない」は not as ～ as … で表します。",
+     "pattern": "This umbrella is as (light) as yours.",
+     "neg": "It's not as (stylish) as mine."
     }
    ]
   },
   {
-   "unit": 12,
-   "page": 92,
-   "title": "Reading 2: Friendship beyond Time and Borders",
-   "topic": "Story reading",
-   "grammar": "Story reading",
-   "verified": false,
-   "phrases": [],
-   "words": [
-    {
-     "en": "friendship",
-     "ja": "友情"
-    },
-    {
-     "en": "border",
-     "ja": "国境"
-    },
-    {
-     "en": "ship",
-     "ja": "船",
-     "emoji": "🚢"
-    }
-   ]
-  },
-  {
-   "unit": 13,
-   "page": 98,
-   "title": "Which design do you like the best?",
-   "topic": "like ~ better / the best, teach how to",
-   "grammar": "like ~ better / the best, teach how to",
-   "verified": false,
+   "unit": 7,
+   "page": 97,
+   "title": "Unique Animals",
+   "topic": "like ~ better / the best, teach + person + how to ~",
+   "verified": true,
    "phrases": [
+    "Let's go somewhere this weekend.",
+    "How about a zoo?",
+    "I like (aquariums) better than (zoos).",
+    "Which do you like better, (basketball) or (volleyball)?",
     "Which (design) do you like the best?",
-    "I like aquariums better than zoos.",
-    "I'll teach you how to (cook)."
+    "I like (the penguin design) the best.",
+    "I'll teach you how to (cook well).",
+    "Tell me how to (say kinoko) in English."
    ],
    "words": [
     {
-     "en": "design",
-     "ja": "デザイン"
+     "en": "somewhere",
+     "ja": "どこかへ",
+     "emoji": "🗺️"
+    },
+    {
+     "en": "Halloween",
+     "ja": "ハロウィーン",
+     "emoji": "🎃"
+    },
+    {
+     "en": "blossom",
+     "ja": "花",
+     "emoji": "🌸"
+    },
+    {
+     "en": "math",
+     "ja": "数学",
+     "emoji": "📐"
+    },
+    {
+     "en": "science",
+     "ja": "理科",
+     "emoji": "🔬"
+    },
+    {
+     "en": "fish",
+     "ja": "魚",
+     "emoji": "🐟"
+    },
+    {
+     "en": "meat",
+     "ja": "肉",
+     "emoji": "🍖"
+    },
+    {
+     "en": "ticket",
+     "ja": "チケット",
+     "emoji": "🎫"
+    },
+    {
+     "en": "penguin",
+     "ja": "ペンギン",
+     "emoji": "🐧"
+    },
+    {
+     "en": "animal",
+     "ja": "動物",
+     "emoji": "🐾"
+    },
+    {
+     "en": "color",
+     "ja": "色",
+     "emoji": "🎨"
+    },
+    {
+     "en": "country",
+     "ja": "国",
+     "emoji": "🌏"
+    },
+    {
+     "en": "music",
+     "ja": "音楽",
+     "emoji": "🎵"
     },
     {
      "en": "aquarium",
      "ja": "水族館",
-     "emoji": "🐠"
+     "emoji": "🐬"
     },
     {
      "en": "zoo",
@@ -484,88 +1208,294 @@
      "emoji": "🦁"
     },
     {
-     "en": "better",
-     "ja": "よりよく"
+     "en": "design",
+     "ja": "デザイン",
+     "emoji": "🎨"
     },
     {
-     "en": "best",
-     "ja": "いちばんよく"
+     "en": "teach",
+     "ja": "教える",
+     "emoji": "🧑‍🏫"
+    },
+    {
+     "en": "make",
+     "ja": "作る",
+     "emoji": "🛠️"
+    },
+    {
+     "en": "cook",
+     "ja": "料理する",
+     "emoji": "🍳"
+    },
+    {
+     "en": "use",
+     "ja": "使う",
+     "emoji": "🔧"
+    },
+    {
+     "en": "fireworks",
+     "ja": "花火",
+     "emoji": "🎆"
+    },
+    {
+     "en": "recorder",
+     "ja": "リコーダー",
+     "emoji": "🪈"
+    },
+    {
+     "en": "mushroom",
+     "ja": "きのこ",
+     "emoji": "🍄"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "like ~ better than ...",
+     "ja": "「…よりも〜が好き」は like ～ better than … で表します。",
+     "pattern": "I like (aquariums) better than (zoos).",
+     "qa": [
+      [
+       "Which do you like better, (meat) or (fish)?",
+       "I like (fish) better than (meat)."
+      ]
+     ]
+    },
+    {
+     "point": "like ~ the best",
+     "ja": "「〜がもっとも好き」は like ～ the best で表します。",
+     "pattern": "I like (strawberries) the best (of all).",
+     "qa": [
+      [
+       "What (fruit) do you like the best?",
+       "I like (strawberries) the best of all."
+      ]
+     ]
+    },
+    {
+     "point": "teach + 人 + how to ~",
+     "ja": "「(人)に〜のしかたを教える」は teach + 人 + how to ～ で表します。",
+     "pattern": "I'll teach you how to (cook well).",
+     "qa": [
+      [
+       "Tell me how to (say kinoko) in English.",
+       "Sure. It's (\"mushroom\")."
+      ]
+     ]
     }
    ]
   },
   {
-   "unit": 14,
-   "page": 108,
-   "title": "Where was it taken?",
+   "unit": 8,
+   "page": 107,
+   "title": "A Hope for Lasting Peace",
    "topic": "Passive voice",
-   "grammar": "Passive voice",
-   "verified": false,
+   "verified": true,
    "phrases": [
+    "This picture is amazing.",
     "Where was it taken?",
+    "It was taken at (Itsukushima Shrine).",
     "It's visited by many tourists every year.",
-    "Momiji manju is known to many people."
+    "It was built in (593).",
+    "(Momiji manju) is known to many people.",
+    "It's filled with (anko)!",
+    "What is (butter) made from?",
+    "It's made from (milk)."
    ],
    "words": [
     {
      "en": "taken",
-     "ja": "撮られた"
+     "ja": "撮られた",
+     "emoji": "📸"
     },
     {
-     "en": "visited",
-     "ja": "訪れられた"
+     "en": "email",
+     "ja": "メール",
+     "emoji": "📧"
     },
     {
-     "en": "known",
-     "ja": "知られている"
+     "en": "seen",
+     "ja": "見られる",
+     "emoji": "👀"
     },
     {
-     "en": "made",
-     "ja": "作られた"
+     "en": "kitchen",
+     "ja": "台所",
+     "emoji": "🍳"
+    },
+    {
+     "en": "sold",
+     "ja": "売られる",
+     "emoji": "🏷️"
+    },
+    {
+     "en": "stationery",
+     "ja": "文房具",
+     "emoji": "✏️"
+    },
+    {
+     "en": "store",
+     "ja": "店",
+     "emoji": "🏪"
+    },
+    {
+     "en": "line",
+     "ja": "線",
+     "emoji": "📏"
+    },
+    {
+     "en": "supermarket",
+     "ja": "スーパー",
+     "emoji": "🛒"
     },
     {
      "en": "tourist",
-     "ja": "観光客"
+     "ja": "観光客",
+     "emoji": "🧳"
     },
     {
-     "en": "photo",
-     "ja": "写真",
-     "emoji": "📷"
+     "en": "built",
+     "ja": "建てられた",
+     "emoji": "🏗️"
     },
     {
-     "en": "world heritage site",
-     "ja": "世界遺産"
+     "en": "written",
+     "ja": "書かれた",
+     "emoji": "✍️"
+    },
+    {
+     "en": "sung",
+     "ja": "歌われた",
+     "emoji": "🎤"
+    },
+    {
+     "en": "paint",
+     "ja": "描く",
+     "emoji": "🎨"
+    },
+    {
+     "en": "known",
+     "ja": "知られている",
+     "emoji": "⭐"
+    },
+    {
+     "en": "filled",
+     "ja": "満たされた",
+     "emoji": "🫙"
+    },
+    {
+     "en": "wood",
+     "ja": "木材",
+     "emoji": "🪵"
+    },
+    {
+     "en": "butter",
+     "ja": "バター",
+     "emoji": "🧈"
+    },
+    {
+     "en": "tofu",
+     "ja": "豆腐",
+     "emoji": "🧊"
+    },
+    {
+     "en": "udon",
+     "ja": "うどん",
+     "emoji": "🍜"
+    },
+    {
+     "en": "table",
+     "ja": "テーブル",
+     "emoji": "🪑"
+    },
+    {
+     "en": "rice",
+     "ja": "米",
+     "emoji": "🍚"
+    },
+    {
+     "en": "milk",
+     "ja": "牛乳",
+     "emoji": "🥛"
+    },
+    {
+     "en": "shrine",
+     "ja": "神社",
+     "emoji": "⛩️"
+    },
+    {
+     "en": "peace",
+     "ja": "平和",
+     "emoji": "🕊️"
     }
-   ]
-  },
-  {
-   "unit": 15,
-   "page": 117,
-   "title": "Power Up 5: Airplane announcements",
-   "topic": "Travel listening",
-   "grammar": "Travel listening",
-   "verified": false,
-   "phrases": [
-    "Please fasten your seat belt.",
-    "We will arrive at (Narita) in (30 minutes)."
    ],
-   "words": [
+   "grammar": [
     {
-     "en": "airport",
-     "ja": "空港",
-     "emoji": "🛫"
+     "point": "受け身 (be + 過去分詞)",
+     "ja": "「〜される[された]」は be動詞 + 過去分詞で表します。",
+     "pattern": "It was (taken) at (Itsukushima Shrine).",
+     "qa": [
+      [
+       "Where was it (taken)?",
+       "It was (taken) at (Itsukushima Shrine)."
+      ]
+     ],
+     "table": [
+      [
+       "take",
+       "taken"
+      ],
+      [
+       "see",
+       "seen"
+      ],
+      [
+       "sell",
+       "sold"
+      ],
+      [
+       "build",
+       "built"
+      ],
+      [
+       "write",
+       "written"
+      ],
+      [
+       "sing",
+       "sung"
+      ],
+      [
+       "know",
+       "known"
+      ],
+      [
+       "visit",
+       "visited"
+      ]
+     ],
+     "q": "Was it (taken) in (Hiroshima)?"
     },
     {
-     "en": "seat belt",
-     "ja": "シートベルト"
+     "point": "be + 過去分詞 + by ...",
+     "ja": "「…によって〜される」と、だれがするかを言うときは by … を使います。",
+     "pattern": "It's (visited) by (many tourists).",
+     "qa": [
+      [
+       "Is it (sung) by (Yuzu)?",
+       "No. It's (sung) by (Aimyon)."
+      ]
+     ]
     },
     {
-     "en": "gate",
-     "ja": "搭乗口"
-    },
-    {
-     "en": "passport",
-     "ja": "パスポート",
-     "emoji": "🛂"
+     "point": "be known to ~ / be filled with ~",
+     "ja": "be known to ～ は「〜に知られている」、be filled with ～ は「〜で満たされている」、be made from ～ は「〜からできている」です。",
+     "pattern": "(Momiji manju) is known to many people.",
+     "qa": [
+      [
+       "What is (butter) made from?",
+       "It's made from (milk)."
+      ]
+     ]
     }
    ]
   }
