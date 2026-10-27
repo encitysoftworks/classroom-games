@@ -1,122 +1,1115 @@
 {
-  "book": "Let's Try! 1",
-  "publisher": "MEXT",
-  "grade": "ES3",
-  "edition": "current (2018 text)",
-  "source": "Unit outline from altopedia.net/textbooks/7-let-s-try-1; words and phrases drafted from general knowledge of the book. verified=false until Wyatt checks against the book.",
-  "units": [
+ "book": "Let's Try! 1",
+ "publisher": "MEXT",
+ "grade": "ES3",
+ "edition": "current (2018 text)",
+ "source": "Checked 2026-10-27 against the 言語材料 (language materials) box of each unit in the Let's Try! teacher's manual (Wyatt's copy). Page = student book page.",
+ "units": [
+  {
+   "unit": 1,
+   "page": 2,
+   "title": "Hello!",
+   "topic": "Greetings, names",
+   "verified": true,
+   "phrases": [
+    "Hello.",
+    "Hi.",
+    "I'm (Hinata).",
+    "Goodbye.",
+    "See you."
+   ],
+   "words": [
     {
-      "unit": 1, "page": 2, "title": "Hello!", "topic": "Greetings, names", "verified": false,
-      "phrases": ["Hello.", "Hi.", "I'm (Sakura).", "Goodbye.", "See you."],
-      "words": [
-        {"en": "hello", "ja": "こんにちは", "emoji": "👋"},
-        {"en": "goodbye", "ja": "さようなら", "emoji": "👋"},
-        {"en": "see you", "ja": "またね", "emoji": "🙌"},
-        {"en": "name", "ja": "名前", "emoji": "📛"}
-      ]
+     "en": "hello",
+     "ja": "こんにちは",
+     "emoji": "👋"
     },
     {
-      "unit": 2, "page": 6, "title": "How are you?", "topic": "Feelings", "verified": false,
-      "phrases": ["How are you?", "I'm (happy).", "I'm fine, thank you.", "And you?"],
-      "words": [
-        {"en": "fine", "ja": "元気", "emoji": "🙂"},
-        {"en": "happy", "ja": "うれしい", "emoji": "😄"},
-        {"en": "good", "ja": "よい", "emoji": "👍"},
-        {"en": "great", "ja": "すごくよい", "emoji": "🤩"},
-        {"en": "sad", "ja": "悲しい", "emoji": "😢"},
-        {"en": "sleepy", "ja": "ねむい", "emoji": "😪"},
-        {"en": "tired", "ja": "つかれた", "emoji": "😩"},
-        {"en": "hungry", "ja": "おなかがすいた", "emoji": "🍽️"},
-        {"en": "angry", "ja": "おこっている", "emoji": "😠"},
-        {"en": "sick", "ja": "具合が悪い", "emoji": "🤒"}
-      ]
+     "en": "hi",
+     "ja": "やあ",
+     "emoji": "🙋"
     },
     {
-      "unit": 3, "page": 10, "title": "How many?", "topic": "Numbers 1-20", "verified": false,
-      "phrases": ["How many (apples)?", "(Ten) (apples).", "Yes. / No. / That's right."],
-      "words": [
-        {"en": "one", "ja": "1", "emoji": "1️⃣"}, {"en": "two", "ja": "2", "emoji": "2️⃣"},
-        {"en": "three", "ja": "3", "emoji": "3️⃣"}, {"en": "four", "ja": "4", "emoji": "4️⃣"},
-        {"en": "five", "ja": "5", "emoji": "5️⃣"}, {"en": "six", "ja": "6", "emoji": "6️⃣"},
-        {"en": "seven", "ja": "7", "emoji": "7️⃣"}, {"en": "eight", "ja": "8", "emoji": "8️⃣"},
-        {"en": "nine", "ja": "9", "emoji": "9️⃣"}, {"en": "ten", "ja": "10", "emoji": "🔟"},
-        {"en": "eleven", "ja": "11"}, {"en": "twelve", "ja": "12"}, {"en": "thirteen", "ja": "13"},
-        {"en": "fourteen", "ja": "14"}, {"en": "fifteen", "ja": "15"}, {"en": "sixteen", "ja": "16"},
-        {"en": "seventeen", "ja": "17"}, {"en": "eighteen", "ja": "18"}, {"en": "nineteen", "ja": "19"},
-        {"en": "twenty", "ja": "20"},
-        {"en": "apple", "ja": "りんご", "emoji": "🍎"},
-        {"en": "pencil", "ja": "えんぴつ", "emoji": "✏️"},
-        {"en": "ball", "ja": "ボール", "emoji": "⚽"},
-        {"en": "strawberry", "ja": "いちご", "emoji": "🍓"}
-      ]
+     "en": "goodbye",
+     "ja": "さようなら",
+     "emoji": "👋"
     },
     {
-      "unit": 4, "page": 14, "title": "I like blue.", "topic": "Colors, likes", "verified": false,
-      "phrases": ["I like (blue).", "Do you like (blue)?", "Yes, I do.", "No, I don't.", "I don't like (green)."],
-      "words": [
-        {"en": "red", "ja": "赤", "emoji": "🔴"}, {"en": "blue", "ja": "青", "emoji": "🔵"},
-        {"en": "yellow", "ja": "黄色", "emoji": "🟡"}, {"en": "green", "ja": "緑", "emoji": "🟢"},
-        {"en": "orange", "ja": "オレンジ", "emoji": "🟠"}, {"en": "purple", "ja": "むらさき", "emoji": "🟣"},
-        {"en": "pink", "ja": "ピンク", "emoji": "🩷"}, {"en": "white", "ja": "白", "emoji": "⚪"},
-        {"en": "black", "ja": "黒", "emoji": "⚫"}, {"en": "brown", "ja": "茶色", "emoji": "🟤"}
-      ]
+     "en": "see you",
+     "ja": "またね",
+     "emoji": "🙌"
     },
     {
-      "unit": 5, "page": 18, "title": "What do you like?", "topic": "Food, sports, colors", "verified": false,
-      "phrases": ["What do you like?", "I like (soccer).", "What (sport) do you like?", "What (food) do you like?", "What (color) do you like?"],
-      "words": [
-        {"en": "soccer", "ja": "サッカー", "emoji": "⚽"}, {"en": "baseball", "ja": "野球", "emoji": "⚾"},
-        {"en": "basketball", "ja": "バスケットボール", "emoji": "🏀"}, {"en": "volleyball", "ja": "バレーボール", "emoji": "🏐"},
-        {"en": "tennis", "ja": "テニス", "emoji": "🎾"}, {"en": "swimming", "ja": "水泳", "emoji": "🏊"},
-        {"en": "dodgeball", "ja": "ドッジボール", "emoji": "🤾"},
-        {"en": "ice cream", "ja": "アイスクリーム", "emoji": "🍨"}, {"en": "cake", "ja": "ケーキ", "emoji": "🍰"},
-        {"en": "pudding", "ja": "プリン", "emoji": "🍮"}, {"en": "milk", "ja": "牛乳", "emoji": "🥛"},
-        {"en": "banana", "ja": "バナナ", "emoji": "🍌"}, {"en": "tomato", "ja": "トマト", "emoji": "🍅"},
-        {"en": "carrot", "ja": "にんじん", "emoji": "🥕"}, {"en": "onion", "ja": "たまねぎ", "emoji": "🧅"},
-        {"en": "green pepper", "ja": "ピーマン", "emoji": "🫑"}, {"en": "cucumber", "ja": "きゅうり", "emoji": "🥒"}
-      ]
-    },
-    {
-      "unit": 6, "page": 22, "title": "ALPHABET", "topic": "Uppercase letters", "verified": false,
-      "phrases": ["What do you want?", "The \"A\" card, please.", "Here you are.", "Thank you."],
-      "words": [
-        {"en": "A–Z (uppercase)", "ja": "大文字"},
-        {"en": "STOP", "ja": "とまれ", "emoji": "🛑"}, {"en": "BUS", "ja": "バス", "emoji": "🚌"},
-        {"en": "TAXI", "ja": "タクシー", "emoji": "🚕"}, {"en": "WC", "ja": "トイレ", "emoji": "🚻"}
-      ]
-    },
-    {
-      "unit": 7, "page": 26, "title": "This is for you.", "topic": "Shapes, giving cards", "verified": false,
-      "phrases": ["What do you want?", "A (star), please.", "How many?", "Here you are.", "This is for you.", "Thank you.", "You're welcome."],
-      "words": [
-        {"en": "circle", "ja": "丸", "emoji": "⚪"}, {"en": "triangle", "ja": "三角", "emoji": "🔺"},
-        {"en": "square", "ja": "四角", "emoji": "🟥"}, {"en": "rectangle", "ja": "長方形", "emoji": "▭"},
-        {"en": "star", "ja": "星", "emoji": "⭐"}, {"en": "heart", "ja": "ハート", "emoji": "❤️"},
-        {"en": "diamond", "ja": "ひし形", "emoji": "🔷"}
-      ]
-    },
-    {
-      "unit": 8, "page": 30, "title": "What's this?", "topic": "Quiz: what is it?", "verified": false,
-      "phrases": ["What's this?", "Hint, please.", "It's (a fish).", "That's right."],
-      "words": [
-        {"en": "fish", "ja": "魚", "emoji": "🐟"}, {"en": "octopus", "ja": "たこ", "emoji": "🐙"},
-        {"en": "insect", "ja": "虫", "emoji": "🐞"}, {"en": "fruit", "ja": "果物", "emoji": "🍇"},
-        {"en": "vegetable", "ja": "野菜", "emoji": "🥦"}, {"en": "animal", "ja": "動物", "emoji": "🐾"}
-      ]
-    },
-    {
-      "unit": 9, "page": 34, "title": "Who are you?", "topic": "Animal story, describing", "verified": false,
-      "phrases": ["Who are you?", "I'm (a dog).", "Are you (a cat)?", "Yes, I am. / No, I'm not."],
-      "words": [
-        {"en": "dog", "ja": "犬", "emoji": "🐶"}, {"en": "cat", "ja": "ねこ", "emoji": "🐱"},
-        {"en": "rabbit", "ja": "うさぎ", "emoji": "🐰"}, {"en": "mouse", "ja": "ねずみ", "emoji": "🐭"},
-        {"en": "pig", "ja": "ぶた", "emoji": "🐷"}, {"en": "cow", "ja": "牛", "emoji": "🐮"},
-        {"en": "big", "ja": "大きい"}, {"en": "small", "ja": "小さい"},
-        {"en": "long", "ja": "長い"}, {"en": "short", "ja": "短い"},
-        {"en": "head", "ja": "頭"}, {"en": "eyes", "ja": "目", "emoji": "👀"},
-        {"en": "ears", "ja": "耳", "emoji": "👂"}, {"en": "nose", "ja": "鼻", "emoji": "👃"},
-        {"en": "mouth", "ja": "口", "emoji": "👄"}
-      ]
+     "en": "friend",
+     "ja": "友だち",
+     "emoji": "🧑‍🤝‍🧑"
     }
-  ]
+   ],
+   "grammar": [
+    {
+     "point": "I'm ~.",
+     "ja": "自分の名前を伝えるときは I'm ～. と言います。",
+     "pattern": "I'm (Hinata).",
+     "qa": [
+      [
+       "Hello. I'm (Hinata).",
+       "Hi. I'm (Ken)."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 2,
+   "page": 6,
+   "title": "How are you?",
+   "topic": "Feelings",
+   "verified": true,
+   "phrases": [
+    "How are you?",
+    "I'm (happy)."
+   ],
+   "words": [
+    {
+     "en": "fine",
+     "ja": "元気",
+     "emoji": "🙂"
+    },
+    {
+     "en": "happy",
+     "ja": "うれしい",
+     "emoji": "😄"
+    },
+    {
+     "en": "good",
+     "ja": "よい",
+     "emoji": "👍"
+    },
+    {
+     "en": "sleepy",
+     "ja": "ねむい",
+     "emoji": "😪"
+    },
+    {
+     "en": "hungry",
+     "ja": "おなかがすいた",
+     "emoji": "🍽️"
+    },
+    {
+     "en": "tired",
+     "ja": "つかれた",
+     "emoji": "😩"
+    },
+    {
+     "en": "sad",
+     "ja": "悲しい",
+     "emoji": "😢"
+    },
+    {
+     "en": "great",
+     "ja": "とてもよい",
+     "emoji": "🤩"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "How are you?",
+     "ja": "調子や気持ちをたずねるときは How are you? と言います。",
+     "pattern": "I'm (happy).",
+     "qa": [
+      [
+       "How are you?",
+       "I'm (happy)."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 3,
+   "page": 10,
+   "title": "How many?",
+   "topic": "Numbers 1-20, things around us",
+   "verified": true,
+   "phrases": [
+    "How many (apples)?",
+    "(Ten) (apples).",
+    "Yes.",
+    "That's right.",
+    "No.",
+    "Sorry."
+   ],
+   "words": [
+    {
+     "en": "one",
+     "ja": "1"
+    },
+    {
+     "en": "two",
+     "ja": "2"
+    },
+    {
+     "en": "three",
+     "ja": "3"
+    },
+    {
+     "en": "four",
+     "ja": "4"
+    },
+    {
+     "en": "five",
+     "ja": "5"
+    },
+    {
+     "en": "six",
+     "ja": "6"
+    },
+    {
+     "en": "seven",
+     "ja": "7"
+    },
+    {
+     "en": "eight",
+     "ja": "8"
+    },
+    {
+     "en": "nine",
+     "ja": "9"
+    },
+    {
+     "en": "ten",
+     "ja": "10"
+    },
+    {
+     "en": "eleven",
+     "ja": "11"
+    },
+    {
+     "en": "twelve",
+     "ja": "12"
+    },
+    {
+     "en": "thirteen",
+     "ja": "13"
+    },
+    {
+     "en": "fourteen",
+     "ja": "14"
+    },
+    {
+     "en": "fifteen",
+     "ja": "15"
+    },
+    {
+     "en": "sixteen",
+     "ja": "16"
+    },
+    {
+     "en": "seventeen",
+     "ja": "17"
+    },
+    {
+     "en": "eighteen",
+     "ja": "18"
+    },
+    {
+     "en": "nineteen",
+     "ja": "19"
+    },
+    {
+     "en": "twenty",
+     "ja": "20"
+    },
+    {
+     "en": "counter",
+     "ja": "おはじき",
+     "emoji": "🔵"
+    },
+    {
+     "en": "ball",
+     "ja": "ボール",
+     "emoji": "⚽"
+    },
+    {
+     "en": "pencil",
+     "ja": "えんぴつ",
+     "emoji": "✏️"
+    },
+    {
+     "en": "eraser",
+     "ja": "消しゴム",
+     "emoji": "🧽"
+    },
+    {
+     "en": "ruler",
+     "ja": "定規",
+     "emoji": "📏"
+    },
+    {
+     "en": "crayon",
+     "ja": "クレヨン",
+     "emoji": "🖍️"
+    },
+    {
+     "en": "apple",
+     "ja": "りんご",
+     "emoji": "🍎"
+    },
+    {
+     "en": "strawberry",
+     "ja": "いちご",
+     "emoji": "🍓"
+    },
+    {
+     "en": "tomato",
+     "ja": "トマト",
+     "emoji": "🍅"
+    },
+    {
+     "en": "circle",
+     "ja": "丸",
+     "emoji": "⚪"
+    },
+    {
+     "en": "triangle",
+     "ja": "三角",
+     "emoji": "🔺"
+    },
+    {
+     "en": "cross",
+     "ja": "ばつ",
+     "emoji": "❌"
+    },
+    {
+     "en": "heart",
+     "ja": "ハート",
+     "emoji": "❤️"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "How many ~?",
+     "ja": "数をたずねるときは How many ～? と言います。",
+     "pattern": "How many (apples)?",
+     "qa": [
+      [
+       "How many (apples)?",
+       "(Ten) (apples)."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 4,
+   "page": 14,
+   "title": "I like blue.",
+   "topic": "Colors, likes",
+   "verified": true,
+   "phrases": [
+    "I like (blue).",
+    "Do you like (blue)?",
+    "Yes, I do.",
+    "No, I don't.",
+    "I don't like (blue)."
+   ],
+   "words": [
+    {
+     "en": "red",
+     "ja": "赤",
+     "emoji": "🔴"
+    },
+    {
+     "en": "blue",
+     "ja": "青",
+     "emoji": "🔵"
+    },
+    {
+     "en": "green",
+     "ja": "緑",
+     "emoji": "🟢"
+    },
+    {
+     "en": "yellow",
+     "ja": "黄色",
+     "emoji": "🟡"
+    },
+    {
+     "en": "pink",
+     "ja": "ピンク",
+     "emoji": "🩷"
+    },
+    {
+     "en": "black",
+     "ja": "黒",
+     "emoji": "⚫"
+    },
+    {
+     "en": "white",
+     "ja": "白",
+     "emoji": "⚪"
+    },
+    {
+     "en": "orange",
+     "ja": "オレンジ",
+     "emoji": "🟠"
+    },
+    {
+     "en": "purple",
+     "ja": "むらさき",
+     "emoji": "🟣"
+    },
+    {
+     "en": "brown",
+     "ja": "茶色",
+     "emoji": "🟤"
+    },
+    {
+     "en": "soccer",
+     "ja": "サッカー",
+     "emoji": "⚽"
+    },
+    {
+     "en": "baseball",
+     "ja": "野球",
+     "emoji": "⚾"
+    },
+    {
+     "en": "basketball",
+     "ja": "バスケットボール",
+     "emoji": "🏀"
+    },
+    {
+     "en": "dodgeball",
+     "ja": "ドッジボール",
+     "emoji": "🤾"
+    },
+    {
+     "en": "swimming",
+     "ja": "水泳",
+     "emoji": "🏊"
+    },
+    {
+     "en": "ice cream",
+     "ja": "アイスクリーム",
+     "emoji": "🍨"
+    },
+    {
+     "en": "pudding",
+     "ja": "プリン",
+     "emoji": "🍮"
+    },
+    {
+     "en": "milk",
+     "ja": "牛乳",
+     "emoji": "🥛"
+    },
+    {
+     "en": "orange juice",
+     "ja": "オレンジジュース",
+     "emoji": "🧃"
+    },
+    {
+     "en": "onion",
+     "ja": "たまねぎ",
+     "emoji": "🧅"
+    },
+    {
+     "en": "green pepper",
+     "ja": "ピーマン",
+     "emoji": "🫑"
+    },
+    {
+     "en": "cucumber",
+     "ja": "きゅうり",
+     "emoji": "🥒"
+    },
+    {
+     "en": "carrot",
+     "ja": "にんじん",
+     "emoji": "🥕"
+    },
+    {
+     "en": "rainbow",
+     "ja": "にじ",
+     "emoji": "🌈"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "I like ~.",
+     "ja": "好きなものを伝えるときは I like ～. と言います。",
+     "pattern": "I like (blue).",
+     "qa": [
+      [
+       "Do you like (blue)?",
+       "Yes, I do. / No, I don't."
+      ]
+     ],
+     "neg": "I don't like (blue).",
+     "q": "Do you like (blue)?"
+    }
+   ]
+  },
+  {
+   "unit": 5,
+   "page": 18,
+   "title": "What do you like?",
+   "topic": "Sports, food, fruit",
+   "verified": true,
+   "phrases": [
+    "What do you like?",
+    "I like (tennis).",
+    "What (sport) do you like?",
+    "I like (soccer)."
+   ],
+   "words": [
+    {
+     "en": "color",
+     "ja": "色",
+     "emoji": "🎨"
+    },
+    {
+     "en": "sport",
+     "ja": "スポーツ",
+     "emoji": "🏅"
+    },
+    {
+     "en": "tennis",
+     "ja": "テニス",
+     "emoji": "🎾"
+    },
+    {
+     "en": "volleyball",
+     "ja": "バレーボール",
+     "emoji": "🏐"
+    },
+    {
+     "en": "table tennis",
+     "ja": "卓球",
+     "emoji": "🏓"
+    },
+    {
+     "en": "food",
+     "ja": "食べ物",
+     "emoji": "🍽️"
+    },
+    {
+     "en": "hamburger",
+     "ja": "ハンバーガー",
+     "emoji": "🍔"
+    },
+    {
+     "en": "pizza",
+     "ja": "ピザ",
+     "emoji": "🍕"
+    },
+    {
+     "en": "spaghetti",
+     "ja": "スパゲッティ",
+     "emoji": "🍝"
+    },
+    {
+     "en": "steak",
+     "ja": "ステーキ",
+     "emoji": "🥩"
+    },
+    {
+     "en": "salad",
+     "ja": "サラダ",
+     "emoji": "🥗"
+    },
+    {
+     "en": "cake",
+     "ja": "ケーキ",
+     "emoji": "🍰"
+    },
+    {
+     "en": "noodle",
+     "ja": "めん",
+     "emoji": "🍜"
+    },
+    {
+     "en": "egg",
+     "ja": "たまご",
+     "emoji": "🥚"
+    },
+    {
+     "en": "rice ball",
+     "ja": "おにぎり",
+     "emoji": "🍙"
+    },
+    {
+     "en": "jam",
+     "ja": "ジャム",
+     "emoji": "🍯"
+    },
+    {
+     "en": "fruit",
+     "ja": "果物",
+     "emoji": "🍇"
+    },
+    {
+     "en": "grapes",
+     "ja": "ぶどう",
+     "emoji": "🍇"
+    },
+    {
+     "en": "pineapple",
+     "ja": "パイナップル",
+     "emoji": "🍍"
+    },
+    {
+     "en": "peach",
+     "ja": "もも",
+     "emoji": "🍑"
+    },
+    {
+     "en": "melon",
+     "ja": "メロン",
+     "emoji": "🍈"
+    },
+    {
+     "en": "banana",
+     "ja": "バナナ",
+     "emoji": "🍌"
+    },
+    {
+     "en": "kiwi fruit",
+     "ja": "キウイ",
+     "emoji": "🥝"
+    },
+    {
+     "en": "lemon",
+     "ja": "レモン",
+     "emoji": "🍋"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "What ~ do you like?",
+     "ja": "何が好きかたずねるときは What ～ do you like? と言います。",
+     "pattern": "What (sport) do you like?",
+     "qa": [
+      [
+       "What (sport) do you like?",
+       "I like (soccer)."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 6,
+   "page": 22,
+   "title": "ALPHABET",
+   "topic": "Uppercase letters",
+   "verified": true,
+   "phrases": [
+    "(The \"A\" card), please.",
+    "Here you are.",
+    "Thank you.",
+    "You're welcome."
+   ],
+   "words": [
+    {
+     "en": "alphabet",
+     "ja": "アルファベット",
+     "emoji": "🔤"
+    },
+    {
+     "en": "card",
+     "ja": "カード",
+     "emoji": "🃏"
+    },
+    {
+     "en": "twenty-one",
+     "ja": "21"
+    },
+    {
+     "en": "twenty-two",
+     "ja": "22"
+    },
+    {
+     "en": "twenty-three",
+     "ja": "23"
+    },
+    {
+     "en": "twenty-four",
+     "ja": "24"
+    },
+    {
+     "en": "twenty-five",
+     "ja": "25"
+    },
+    {
+     "en": "twenty-six",
+     "ja": "26"
+    },
+    {
+     "en": "twenty-seven",
+     "ja": "27"
+    },
+    {
+     "en": "twenty-eight",
+     "ja": "28"
+    },
+    {
+     "en": "twenty-nine",
+     "ja": "29"
+    },
+    {
+     "en": "thirty",
+     "ja": "30"
+    },
+    {
+     "en": "zero",
+     "ja": "0",
+     "emoji": "0️⃣"
+    },
+    {
+     "en": "book",
+     "ja": "本",
+     "emoji": "📕"
+    },
+    {
+     "en": "drum",
+     "ja": "ドラム",
+     "emoji": "🥁"
+    },
+    {
+     "en": "fish",
+     "ja": "魚",
+     "emoji": "🐟"
+    },
+    {
+     "en": "gorilla",
+     "ja": "ゴリラ",
+     "emoji": "🦍"
+    },
+    {
+     "en": "hat",
+     "ja": "ぼうし",
+     "emoji": "🎩"
+    },
+    {
+     "en": "ink",
+     "ja": "インク",
+     "emoji": "🖋️"
+    },
+    {
+     "en": "jet",
+     "ja": "ジェット機",
+     "emoji": "✈️"
+    },
+    {
+     "en": "king",
+     "ja": "王様",
+     "emoji": "🤴"
+    },
+    {
+     "en": "monkey",
+     "ja": "サル",
+     "emoji": "🐒"
+    },
+    {
+     "en": "notebook",
+     "ja": "ノート",
+     "emoji": "📓"
+    },
+    {
+     "en": "pig",
+     "ja": "ぶた",
+     "emoji": "🐷"
+    },
+    {
+     "en": "queen",
+     "ja": "女王",
+     "emoji": "👸"
+    },
+    {
+     "en": "rabbit",
+     "ja": "うさぎ",
+     "emoji": "🐰"
+    },
+    {
+     "en": "sun",
+     "ja": "太陽",
+     "emoji": "☀️"
+    },
+    {
+     "en": "tree",
+     "ja": "木",
+     "emoji": "🌳"
+    },
+    {
+     "en": "umbrella",
+     "ja": "かさ",
+     "emoji": "☂️"
+    },
+    {
+     "en": "violin",
+     "ja": "バイオリン",
+     "emoji": "🎻"
+    },
+    {
+     "en": "watch",
+     "ja": "うで時計",
+     "emoji": "⌚"
+    },
+    {
+     "en": "box",
+     "ja": "箱",
+     "emoji": "📦"
+    },
+    {
+     "en": "yacht",
+     "ja": "ヨット",
+     "emoji": "⛵"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "~, please.",
+     "ja": "ほしいものをたのむときは ～, please. と言います。",
+     "pattern": "(The \"A\" card), please.",
+     "qa": [
+      [
+       "(The \"A\" card), please.",
+       "Here you are."
+      ],
+      [
+       "Thank you.",
+       "You're welcome."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 7,
+   "page": 26,
+   "title": "This is for you.",
+   "topic": "Shapes, making cards",
+   "verified": true,
+   "phrases": [
+    "What do you want?",
+    "(A star), please.",
+    "Here you are.",
+    "This is for you.",
+    "Thank you.",
+    "You're welcome."
+   ],
+   "words": [
+    {
+     "en": "big",
+     "ja": "大きい",
+     "emoji": "🐘"
+    },
+    {
+     "en": "small",
+     "ja": "小さい",
+     "emoji": "🐭"
+    },
+    {
+     "en": "square",
+     "ja": "四角",
+     "emoji": "🟥"
+    },
+    {
+     "en": "rectangle",
+     "ja": "長方形",
+     "emoji": "▭"
+    },
+    {
+     "en": "star",
+     "ja": "星",
+     "emoji": "⭐"
+    },
+    {
+     "en": "diamond",
+     "ja": "ひし形",
+     "emoji": "🔷"
+    },
+    {
+     "en": "bus",
+     "ja": "バス",
+     "emoji": "🚌"
+    },
+    {
+     "en": "flower",
+     "ja": "花",
+     "emoji": "🌷"
+    },
+    {
+     "en": "shop",
+     "ja": "店",
+     "emoji": "🏪"
+    },
+    {
+     "en": "balloon",
+     "ja": "風船",
+     "emoji": "🎈"
+    },
+    {
+     "en": "house",
+     "ja": "家",
+     "emoji": "🏠"
+    },
+    {
+     "en": "car",
+     "ja": "車",
+     "emoji": "🚗"
+    },
+    {
+     "en": "candy",
+     "ja": "あめ",
+     "emoji": "🍬"
+    },
+    {
+     "en": "dog",
+     "ja": "犬",
+     "emoji": "🐶"
+    },
+    {
+     "en": "cat",
+     "ja": "ねこ",
+     "emoji": "🐱"
+    },
+    {
+     "en": "panda",
+     "ja": "パンダ",
+     "emoji": "🐼"
+    },
+    {
+     "en": "mouse",
+     "ja": "ねずみ",
+     "emoji": "🐭"
+    },
+    {
+     "en": "bear",
+     "ja": "くま",
+     "emoji": "🐻"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "What do you want?",
+     "ja": "ほしいものをたずねるときは What do you want? と言います。",
+     "pattern": "(A star), please.",
+     "qa": [
+      [
+       "What do you want?",
+       "(A star), please."
+      ]
+     ]
+    },
+    {
+     "point": "This is for you.",
+     "ja": "ものを手わたすときは This is for you. と言います。",
+     "pattern": "This is for you.",
+     "qa": [
+      [
+       "This is for you.",
+       "Thank you."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 8,
+   "page": 30,
+   "title": "What's this?",
+   "topic": "Quiz: what is it?",
+   "verified": true,
+   "phrases": [
+    "What's this?",
+    "Hint, please.",
+    "It's (a fruit).",
+    "It's (green).",
+    "It's (a melon).",
+    "That's right."
+   ],
+   "words": [
+    {
+     "en": "hint",
+     "ja": "ヒント",
+     "emoji": "💡"
+    },
+    {
+     "en": "sea",
+     "ja": "海",
+     "emoji": "🌊"
+    },
+    {
+     "en": "elephant",
+     "ja": "ゾウ",
+     "emoji": "🐘"
+    },
+    {
+     "en": "horse",
+     "ja": "馬",
+     "emoji": "🐴"
+    },
+    {
+     "en": "spider",
+     "ja": "クモ",
+     "emoji": "🕷️"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "What's this?",
+     "ja": "これは何かたずねるときは What's this? と言います。",
+     "pattern": "It's (a melon).",
+     "qa": [
+      [
+       "What's this?",
+       "It's (a melon)."
+      ],
+      [
+       "Hint, please.",
+       "It's (green)."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 9,
+   "page": 34,
+   "title": "Who are you?",
+   "topic": "Picture book: animals, body parts",
+   "verified": true,
+   "phrases": [
+    "Are you (a dog)?",
+    "Yes, I am.",
+    "No, I'm not.",
+    "Who are you?",
+    "I'm (a dog).",
+    "Who am I?",
+    "Hint, please."
+   ],
+   "words": [
+    {
+     "en": "cow",
+     "ja": "牛",
+     "emoji": "🐮"
+    },
+    {
+     "en": "dragon",
+     "ja": "竜",
+     "emoji": "🐉"
+    },
+    {
+     "en": "snake",
+     "ja": "へび",
+     "emoji": "🐍"
+    },
+    {
+     "en": "tiger",
+     "ja": "トラ",
+     "emoji": "🐯"
+    },
+    {
+     "en": "sheep",
+     "ja": "ひつじ",
+     "emoji": "🐑"
+    },
+    {
+     "en": "chicken",
+     "ja": "にわとり",
+     "emoji": "🐔"
+    },
+    {
+     "en": "wild boar",
+     "ja": "いのしし",
+     "emoji": "🐗"
+    },
+    {
+     "en": "long",
+     "ja": "長い",
+     "emoji": "📏"
+    },
+    {
+     "en": "shiny",
+     "ja": "ぴかぴかの",
+     "emoji": "✨"
+    },
+    {
+     "en": "scary",
+     "ja": "こわい",
+     "emoji": "👻"
+    },
+    {
+     "en": "round",
+     "ja": "丸い",
+     "emoji": "⚪"
+    },
+    {
+     "en": "furry",
+     "ja": "ふわふわの",
+     "emoji": "🧸"
+    },
+    {
+     "en": "head",
+     "ja": "頭",
+     "emoji": "🙆"
+    },
+    {
+     "en": "eyes",
+     "ja": "目",
+     "emoji": "👀"
+    },
+    {
+     "en": "ears",
+     "ja": "耳",
+     "emoji": "👂"
+    },
+    {
+     "en": "nose",
+     "ja": "鼻",
+     "emoji": "👃"
+    },
+    {
+     "en": "mouth",
+     "ja": "口",
+     "emoji": "👄"
+    },
+    {
+     "en": "shoulders",
+     "ja": "かた",
+     "emoji": "🤷"
+    },
+    {
+     "en": "knees",
+     "ja": "ひざ",
+     "emoji": "🦵"
+    },
+    {
+     "en": "toes",
+     "ja": "足の指",
+     "emoji": "🦶"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "Are you ~?",
+     "ja": "相手がだれかたしかめるときは Are you ～? と言います。",
+     "pattern": "Are you (a dog)?",
+     "qa": [
+      [
+       "Are you (a dog)?",
+       "Yes, I am. / No, I'm not."
+      ],
+      [
+       "Who are you?",
+       "I'm (a dog)."
+      ]
+     ]
+    }
+   ]
+  }
+ ]
 }

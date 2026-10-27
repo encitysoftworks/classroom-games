@@ -2,213 +2,628 @@
  "book": "Sunshine English Course 3",
  "publisher": "Kairyudo",
  "grade": "JHS3",
- "edition": "2025",
- "source": "Outline from ALTopedia Sunshine (2025) page, which matches Wyatt's newest edition. ALTopedia lists pages and grammar points, not program numbers; 'unit' here is our own grouping by page. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "edition": "2025 (7 Programs)",
+ "source": "Checked 2026-10-27 against Wyatt's Sunshine English Course 3 (2025, Kairyudo) teacher's book: contents page and each Program's Scenes pages (target sentences, New Words, Word Box, example dialogs). One unit per Program; Readings, Power-Ups, Steps and Projects are left out.",
  "units": [
   {
    "unit": 1,
-   "page": 8,
-   "title": "I've eaten it before.",
-   "topic": "Present perfect (experience), ask ~ to, It's ~ for ~ to",
-   "grammar": "Present perfect (experience), ask ~ to, It's ~ for ~ to",
-   "verified": false,
+   "page": 7,
+   "title": "Japanese Bentos Are Interesting!",
+   "topic": "ask/tell/want ~ to, It is ~ (for me) to, present perfect (experience)",
+   "verified": true,
    "phrases": [
-    "I've eaten it before.",
-    "Have you ever (been to Kyoto)?",
+    "Please make our bentos for tomorrow.",
+    "Sorry, I have no time.",
     "I'll ask someone to make them.",
-    "It's hard for me to read this kanji."
+    "Can I ask you to (carry my suitcase)?",
+    "Sure. / Sorry, I can't.",
+    "It's hard for me to read this kanji.",
+    "It is (fun) for me to (run a marathon).",
+    "I've eaten it before. It was so-so.",
+    "Have you ever tried this cake?",
+    "No, I haven't. It's too expensive.",
+    "Have you ever been to (Kochi)?",
+    "Yes, I've been there twice. / No, I've never been there."
    ],
    "words": [
     {
+     "en": "bento",
+     "ja": "弁当",
+     "emoji": "🍱"
+    },
+    {
+     "en": "lunch",
+     "ja": "昼食",
+     "emoji": "🥪"
+    },
+    {
+     "en": "someone",
+     "ja": "だれか",
+     "emoji": "🧑"
+    },
+    {
+     "en": "schoolyard",
+     "ja": "校庭",
+     "emoji": "🏫"
+    },
+    {
+     "en": "suitcase",
+     "ja": "スーツケース",
+     "emoji": "🧳"
+    },
+    {
+     "en": "walk the dog",
+     "ja": "犬を散歩させる",
+     "emoji": "🐕"
+    },
+    {
+     "en": "water the flowers",
+     "ja": "花に水をやる",
+     "emoji": "🌷"
+    },
+    {
+     "en": "clean my room",
+     "ja": "部屋をそうじする",
+     "emoji": "🧹"
+    },
+    {
+     "en": "window",
+     "ja": "窓",
+     "emoji": "🪟"
+    },
+    {
+     "en": "chair",
+     "ja": "いす",
+     "emoji": "🪑"
+    },
+    {
+     "en": "eel",
+     "ja": "うなぎ",
+     "emoji": "🐟"
+    },
+    {
+     "en": "musical instrument",
+     "ja": "楽器",
+     "emoji": "🎻"
+    },
+    {
+     "en": "marathon",
+     "ja": "マラソン",
+     "emoji": "🏃"
+    },
+    {
+     "en": "run a marathon",
+     "ja": "マラソンを走る",
+     "emoji": "🏃"
+    },
+    {
+     "en": "easy",
+     "ja": "簡単な",
+     "emoji": "👌"
+    },
+    {
+     "en": "difficult",
+     "ja": "難しい",
+     "emoji": "😣"
+    },
+    {
+     "en": "fun",
+     "ja": "楽しい",
+     "emoji": "😄"
+    },
+    {
+     "en": "important",
+     "ja": "大切な",
+     "emoji": "❗"
+    },
+    {
+     "en": "interesting",
+     "ja": "おもしろい",
+     "emoji": "🤔"
+    },
+    {
+     "en": "study English",
+     "ja": "英語を勉強する",
+     "emoji": "📚"
+    },
+    {
+     "en": "watch foreign movies",
+     "ja": "外国の映画を見る",
+     "emoji": "🎬"
+    },
+    {
+     "en": "cream puff",
+     "ja": "シュークリーム",
+     "emoji": "🧁"
+    },
+    {
+     "en": "eaten",
+     "ja": "eatの過去分詞",
+     "emoji": "🍽️"
+    },
+    {
+     "en": "so-so",
+     "ja": "まあまあ",
+     "emoji": "😐"
+    },
+    {
      "en": "ever",
-     "ja": "今までに"
+     "ja": "今までに",
+     "emoji": "❓"
     },
     {
-     "en": "never",
-     "ja": "一度も〜ない"
-    },
-    {
-     "en": "before",
-     "ja": "以前に"
-    },
-    {
-     "en": "once",
-     "ja": "一度"
+     "en": "been",
+     "ja": "beの過去分詞",
+     "emoji": "📍"
     },
     {
      "en": "twice",
-     "ja": "二度"
+     "ja": "2回",
+     "emoji": "✌️"
     },
     {
-     "en": "ask",
-     "ja": "頼む"
+     "en": "never",
+     "ja": "一度も〜ない",
+     "emoji": "🚫"
     },
     {
-     "en": "hard",
-     "ja": "難しい"
+     "en": "sell out",
+     "ja": "売り切れる",
+     "emoji": "🈵"
     },
     {
-     "en": "kanji",
-     "ja": "漢字"
+     "en": "expensive",
+     "ja": "高価な",
+     "emoji": "💴"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "ask / tell / want + 人 + to ~",
+     "ja": "「(人)に〜するように頼む／言う／〜してほしい」は ask [tell / want] + 人 + to + 動詞の原形で表します。",
+     "pattern": "I'll ask (someone) to (make them).",
+     "qa": [
+      [
+       "Can I ask you to (carry my suitcase)?",
+       "Sure. / Sorry, I can't."
+      ]
+     ]
+    },
+    {
+     "point": "It is ~ (for 人) to ...",
+     "ja": "「(人にとって)…することは〜だ」は It is ~ (for 人) to + 動詞の原形で表します。",
+     "pattern": "It's (hard) for me to (read this kanji)."
+    },
+    {
+     "point": "現在完了形（経験）",
+     "ja": "「〜したことがある」は have [has] + 過去分詞で表します。ever, never, before, once, twice などとよく使います。",
+     "pattern": "I've (eaten) it before.",
+     "qa": [
+      [
+       "Have you ever (been to Kochi)?",
+       "Yes, I've (been there twice). / No, I've never (been there)."
+      ]
+     ],
+     "table": [
+      [
+       "eat",
+       "ate",
+       "eaten"
+      ],
+      [
+       "see",
+       "saw",
+       "seen"
+      ],
+      [
+       "be",
+       "was / were",
+       "been"
+      ],
+      [
+       "try",
+       "tried",
+       "tried"
+      ]
+     ],
+     "neg": "I've never (been there).",
+     "q": "Have you ever (tried this cake)?"
     }
    ]
   },
   {
    "unit": 2,
-   "page": 18,
-   "title": "I've been playing it for only four hours.",
-   "topic": "Present perfect (continuation, completion), perfect continuous",
-   "grammar": "Present perfect (continuation, completion), perfect continuous",
-   "verified": false,
+   "page": 17,
+   "title": "Good Night. Sleep Tight.",
+   "topic": "present perfect (completion, continuation), present perfect progressive",
+   "verified": true,
    "phrases": [
+    "You look happy.",
+    "I've just gotten a new video game!",
+    "How do you like it?",
+    "I haven't started playing it yet.",
+    "Can you (lend me your book)?",
+    "OK. I've already [just] (read it).",
     "I've known it for years.",
-    "I've just gotten a new video game.",
-    "I've been playing it for (four hours).",
-    "Have you finished (your homework) yet?"
+    "How long have you known (Yusuke)?",
+    "I've known him for (five years) [since I was (nine)].",
+    "I've been playing it for only four hours.",
+    "Don't play it too long.",
+    "Stop it right now.",
+    "Has (Anya) left yet?",
+    "Not yet. She has been (drying her hair)."
    ],
    "words": [
     {
-     "en": "for",
-     "ja": "〜の間"
-    },
-    {
-     "en": "since",
-     "ja": "〜以来"
-    },
-    {
-     "en": "just",
-     "ja": "ちょうど"
-    },
-    {
-     "en": "already",
-     "ja": "すでに"
+     "en": "gotten",
+     "ja": "getの過去分詞",
+     "emoji": "🎁"
     },
     {
      "en": "yet",
-     "ja": "もう・まだ"
+     "ja": "もう・まだ",
+     "emoji": "⏳"
+    },
+    {
+     "en": "done",
+     "ja": "doの過去分詞",
+     "emoji": "✅"
+    },
+    {
+     "en": "already",
+     "ja": "すでに",
+     "emoji": "✔️"
+    },
+    {
+     "en": "just",
+     "ja": "ちょうど",
+     "emoji": "⏱️"
+    },
+    {
+     "en": "hurry",
+     "ja": "急ぐこと",
+     "emoji": "🏃"
+    },
+    {
+     "en": "in a hurry",
+     "ja": "急いで",
+     "emoji": "🏃"
     },
     {
      "en": "video game",
      "ja": "テレビゲーム",
      "emoji": "🎮"
+    },
+    {
+     "en": "base",
+     "ja": "基礎を置く",
+     "emoji": "📘"
+    },
+    {
+     "en": "be based on",
+     "ja": "〜にもとづいている",
+     "emoji": "📘"
+    },
+    {
+     "en": "since",
+     "ja": "〜以来",
+     "emoji": "📅"
+    },
+    {
+     "en": "diary",
+     "ja": "日記",
+     "emoji": "📔"
+    },
+    {
+     "en": "keep a diary",
+     "ja": "日記をつける",
+     "emoji": "📔"
+    },
+    {
+     "en": "live here",
+     "ja": "ここに住む",
+     "emoji": "🏠"
+    },
+    {
+     "en": "for years",
+     "ja": "何年も",
+     "emoji": "📆"
+    },
+    {
+     "en": "rope",
+     "ja": "なわ",
+     "emoji": "🪢"
+    },
+    {
+     "en": "jump rope",
+     "ja": "なわとびをする",
+     "emoji": "🪢"
+    },
+    {
+     "en": "title",
+     "ja": "題名",
+     "emoji": "🏷️"
+    },
+    {
+     "en": "dry",
+     "ja": "かわかす",
+     "emoji": "💨"
+    },
+    {
+     "en": "hair",
+     "ja": "髪",
+     "emoji": "💇"
+    },
+    {
+     "en": "right now",
+     "ja": "今すぐ",
+     "emoji": "⏰"
+    },
+    {
+     "en": "choose her clothes",
+     "ja": "服を選ぶ",
+     "emoji": "👗"
+    },
+    {
+     "en": "sleep",
+     "ja": "眠る",
+     "emoji": "😴"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "現在完了形（完了）",
+     "ja": "「(ちょうど／もう)〜したところだ」は have [has] + 過去分詞で表します。just, already, yet とよく使います。",
+     "pattern": "I've just (gotten a new video game).",
+     "qa": [
+      [
+       "Has (Anya) left yet?",
+       "Not yet. / Yes, she has."
+      ]
+     ],
+     "neg": "I haven't (started) (playing it) yet.",
+     "q": "Have you (eaten) yet?"
+    },
+    {
+     "point": "現在完了形（継続）",
+     "ja": "「(ずっと)〜している」は have [has] + 過去分詞で表します。期間は for ~、始まりは since ~ で表します。",
+     "pattern": "I've (known) it for years.",
+     "qa": [
+      [
+       "How long have you (known Yusuke)?",
+       "I've (known him) for (five years). / since (I was nine)."
+      ]
+     ],
+     "q": "How long have you (known Yusuke)?"
+    },
+    {
+     "point": "現在完了進行形",
+     "ja": "動作が「(ずっと)〜し続けている」は have [has] been + 動詞の -ing 形で表します。",
+     "pattern": "I've been (playing it) for (four hours).",
+     "qa": [
+      [
+       "How long have you been (reading this book)?",
+       "For (two hours)."
+      ]
+     ]
     }
    ]
   },
   {
    "unit": 3,
-   "page": 30,
-   "title": "Warm milk makes you sleep well.",
-   "topic": "make + O + C / make + O + verb, tell + O + that",
-   "grammar": "make + O + C / make + O + verb, tell + O + that",
-   "verified": false,
+   "page": 29,
+   "title": "Hot Sport Today",
+   "topic": "tell ~ that, make + person + adjective / verb",
+   "verified": true,
    "phrases": [
+    "Can I join you?",
+    "I'll tell him that you want to come.",
+    "My teacher often tells me that (health is important).",
+    "Mao, wake up!",
+    "Oh, I fell asleep.",
     "The morning practice made you sleepy.",
+    "(Watching movies) always [sometimes] makes me (happy).",
+    "I'm so tired today.",
+    "You should get some rest.",
+    "I'll go to bed early tonight.",
     "Warm milk makes you sleep well.",
-    "I'll tell him that you want to come."
+    "What makes you (smile)?",
+    "(My dog) makes me (smile)."
    ],
    "words": [
     {
-     "en": "make",
-     "ja": "〜にする"
+     "en": "basketball",
+     "ja": "バスケットボール",
+     "emoji": "🏀"
+    },
+    {
+     "en": "practice",
+     "ja": "練習する",
+     "emoji": "🏋️"
+    },
+    {
+     "en": "family",
+     "ja": "家族",
+     "emoji": "👪"
+    },
+    {
+     "en": "smartphone",
+     "ja": "スマートフォン",
+     "emoji": "📱"
+    },
+    {
+     "en": "video games",
+     "ja": "テレビゲーム",
+     "emoji": "🎮"
+    },
+    {
+     "en": "health",
+     "ja": "健康",
+     "emoji": "💪"
+    },
+    {
+     "en": "wake",
+     "ja": "目を覚ます",
+     "emoji": "⏰"
+    },
+    {
+     "en": "wake up",
+     "ja": "起きる",
+     "emoji": "⏰"
+    },
+    {
+     "en": "fall asleep",
+     "ja": "眠りこむ",
+     "emoji": "😴"
     },
     {
      "en": "sleepy",
-     "ja": "ねむい",
+     "ja": "眠い",
      "emoji": "😪"
     },
     {
-     "en": "warm",
-     "ja": "温かい"
-    },
-    {
-     "en": "tell",
-     "ja": "伝える"
-    },
-    {
      "en": "happy",
-     "ja": "うれしい"
+     "ja": "幸せな",
+     "emoji": "😊"
     },
     {
-     "en": "let",
-     "ja": "〜させる"
+     "en": "tired",
+     "ja": "疲れた",
+     "emoji": "😩"
     },
     {
-     "en": "help",
-     "ja": "手伝う"
+     "en": "excited",
+     "ja": "わくわくした",
+     "emoji": "🤩"
+    },
+    {
+     "en": "comfortable",
+     "ja": "心地よい",
+     "emoji": "🛋️"
+    },
+    {
+     "en": "hungry",
+     "ja": "おなかがすいた",
+     "emoji": "🍽️"
+    },
+    {
+     "en": "eating sweets",
+     "ja": "お菓子を食べること",
+     "emoji": "🍬"
+    },
+    {
+     "en": "playing sports",
+     "ja": "スポーツをすること",
+     "emoji": "⚽"
+    },
+    {
+     "en": "running",
+     "ja": "走ること",
+     "emoji": "🏃"
+    },
+    {
+     "en": "dessert",
+     "ja": "デザート",
+     "emoji": "🍰"
+    },
+    {
+     "en": "rest",
+     "ja": "休息",
+     "emoji": "🛌"
+    },
+    {
+     "en": "get rest",
+     "ja": "休息をとる",
+     "emoji": "🛌"
+    },
+    {
+     "en": "lend",
+     "ja": "貸す",
+     "emoji": "🤝"
+    },
+    {
+     "en": "laugh",
+     "ja": "笑う",
+     "emoji": "😆"
+    },
+    {
+     "en": "cry",
+     "ja": "泣く",
+     "emoji": "😢"
+    },
+    {
+     "en": "bake",
+     "ja": "焼く",
+     "emoji": "🎂"
+    },
+    {
+     "en": "smile",
+     "ja": "ほほえむ",
+     "emoji": "🙂"
+    },
+    {
+     "en": "milk",
+     "ja": "牛乳",
+     "emoji": "🥛"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "tell + 人 + that ~",
+     "ja": "「(人)に〜ということを伝える」は tell + 人 + that + 文で表します。that は省略できます。",
+     "pattern": "I'll tell (him) that (you want to come)."
+    },
+    {
+     "point": "make + 人 + 形容詞",
+     "ja": "「(人)を〜(の状態)にする」は make + 人 + 形容詞で表します。",
+     "pattern": "The (morning practice) made you (sleepy).",
+     "qa": [
+      [
+       "What makes you (happy)?",
+       "(Watching movies) makes me (happy)."
+      ]
+     ]
+    },
+    {
+     "point": "make + 人 + 動詞の原形",
+     "ja": "「(人)に〜させる」は make + 人 + 動詞の原形で表します。",
+     "pattern": "(Warm milk) makes you (sleep well).",
+     "qa": [
+      [
+       "What makes you (smile)?",
+       "(My dog) makes me (smile)."
+      ]
+     ]
     }
    ]
   },
   {
    "unit": 4,
-   "page": 39,
-   "title": "Power Up 1: Explain a train change",
-   "topic": "Travel directions",
-   "grammar": "Travel directions",
-   "verified": false,
+   "page": 55,
+   "title": "Sign Languages, Not Just Gestures!",
+   "topic": "participles as modifiers, indirect questions",
+   "verified": true,
    "phrases": [
-    "Take the (Nippo Line) to (Miyazaki).",
-    "Change trains at (Oita).",
-    "It takes about (one hour)."
-   ],
-   "words": [
-    {
-     "en": "train",
-     "ja": "電車",
-     "emoji": "🚆"
-    },
-    {
-     "en": "change",
-     "ja": "乗りかえる"
-    },
-    {
-     "en": "line",
-     "ja": "路線"
-    },
-    {
-     "en": "platform",
-     "ja": "ホーム"
-    }
-   ]
-  },
-  {
-   "unit": 5,
-   "page": 48,
-   "title": "Reading 1: The Meaning of Life",
-   "topic": "Story reading",
-   "grammar": "Story reading",
-   "verified": false,
-   "phrases": [],
-   "words": [
-    {
-     "en": "meaning",
-     "ja": "意味"
-    },
-    {
-     "en": "life",
-     "ja": "人生"
-    }
-   ]
-  },
-  {
-   "unit": 6,
-   "page": 56,
-   "title": "I mean the man wearing glasses.",
-   "topic": "Indirect questions, participle modifiers",
-   "grammar": "Indirect questions, participle modifiers",
-   "verified": false,
-   "phrases": [
-    "Do you understand what they're talking about?",
+    "That waiter looks like Ken!",
+    "Which waiter?",
     "I mean the man wearing glasses.",
-    "This is a straw made of paper."
+    "Who is the (boy) (sitting in front of you)?",
+    "(He) is (Ken).",
+    "This restaurant is eco-friendly.",
+    "This is a straw made of paper.",
+    "Do you know any (songs) (sung) by (YOASOBI)?",
+    "Yes. I like (\"Monster\") the best.",
+    "Are they using sign language?",
+    "Do you understand what they're talking about?",
+    "I'm afraid I don't.",
+    "Do you know when (the school festival) is held?",
+    "Yes. It's held in (November)."
    ],
    "words": [
     {
-     "en": "understand",
-     "ja": "理解する"
-    },
-    {
-     "en": "wearing",
-     "ja": "身につけている"
+     "en": "waiter",
+     "ja": "ウェイター",
+     "emoji": "🤵"
     },
     {
      "en": "glasses",
@@ -216,45 +631,59 @@
      "emoji": "👓"
     },
     {
+     "en": "hmm",
+     "ja": "うーん",
+     "emoji": "🤔"
+    },
+    {
+     "en": "behind",
+     "ja": "〜の後ろに",
+     "emoji": "🔙"
+    },
+    {
+     "en": "in front of",
+     "ja": "〜の前に",
+     "emoji": "⬆️"
+    },
+    {
+     "en": "near",
+     "ja": "〜の近くに",
+     "emoji": "📍"
+    },
+    {
+     "en": "sit",
+     "ja": "座る",
+     "emoji": "🪑"
+    },
+    {
+     "en": "stand",
+     "ja": "立つ",
+     "emoji": "🧍"
+    },
+    {
+     "en": "eco-friendly",
+     "ja": "環境にやさしい",
+     "emoji": "🌱"
+    },
+    {
      "en": "straw",
-     "ja": "ストロー"
+     "ja": "ストロー",
+     "emoji": "🥤"
     },
     {
      "en": "paper",
-     "ja": "紙"
+     "ja": "紙",
+     "emoji": "📄"
     },
     {
      "en": "made of",
-     "ja": "〜でできた"
-    }
-   ]
-  },
-  {
-   "unit": 7,
-   "page": 66,
-   "title": "He is the manga artist who drew Black Jack.",
-   "topic": "Relative pronouns (who / which / that, subject)",
-   "grammar": "Relative pronouns (who / which / that, subject)",
-   "verified": false,
-   "phrases": [
-    "He is the manga artist who drew (Black Jack).",
-    "They're chocolates which look like stones.",
-    "It's a movie that has dramatic scenes."
-   ],
-   "words": [
-    {
-     "en": "manga artist",
-     "ja": "漫画家"
+     "ja": "〜でできた",
+     "emoji": "🧱"
     },
     {
-     "en": "chocolate",
-     "ja": "チョコレート",
-     "emoji": "🍫"
-    },
-    {
-     "en": "stone",
-     "ja": "石",
-     "emoji": "🪨"
+     "en": "song",
+     "ja": "歌",
+     "emoji": "🎵"
     },
     {
      "en": "movie",
@@ -262,69 +691,491 @@
      "emoji": "🎬"
     },
     {
-     "en": "dramatic",
-     "ja": "劇的な"
+     "en": "sign language",
+     "ja": "手話",
+     "emoji": "🤟"
     },
     {
-     "en": "scene",
-     "ja": "場面"
+     "en": "afraid",
+     "ja": "残念に思う",
+     "emoji": "😔"
+    },
+    {
+     "en": "forgot",
+     "ja": "forgetの過去形",
+     "emoji": "💭"
+    },
+    {
+     "en": "held",
+     "ja": "holdの過去分詞",
+     "emoji": "🎪"
+    },
+    {
+     "en": "concert",
+     "ja": "コンサート",
+     "emoji": "🎤"
+    },
+    {
+     "en": "school festival",
+     "ja": "文化祭",
+     "emoji": "🎪"
+    },
+    {
+     "en": "chorus contest",
+     "ja": "合唱コンクール",
+     "emoji": "🎶"
+    },
+    {
+     "en": "field trip",
+     "ja": "遠足",
+     "emoji": "🚌"
+    },
+    {
+     "en": "Italy",
+     "ja": "イタリア",
+     "emoji": "🇮🇹"
+    },
+    {
+     "en": "cap",
+     "ja": "帽子",
+     "emoji": "🧢"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "名詞を後ろから修飾する -ing 形",
+     "ja": "「〜している(人・もの)」は 名詞 + 動詞の -ing 形 + 語句で表します。",
+     "pattern": "the (man) (wearing glasses)",
+     "qa": [
+      [
+       "Who is the (boy) (sitting in front of you)?",
+       "(He) is (Ken)."
+      ]
+     ]
+    },
+    {
+     "point": "名詞を後ろから修飾する過去分詞",
+     "ja": "「〜された(もの)」は 名詞 + 過去分詞 + 語句で表します。",
+     "pattern": "a (straw) (made of paper)",
+     "qa": [
+      [
+       "Do you know any (songs) (sung by YOASOBI)?",
+       "Yes. I like (\"Monster\") the best."
+      ]
+     ]
+    },
+    {
+     "point": "間接疑問文",
+     "ja": "疑問詞で始まる疑問文を文の中に入れるときは、疑問詞 + 主語 + 動詞の語順にします。",
+     "pattern": "Do you understand what (they're talking about)?",
+     "qa": [
+      [
+       "Do you know when (the school festival) is held?",
+       "Yes. It's held in (November)."
+      ]
+     ]
     }
    ]
   },
   {
-   "unit": 8,
-   "page": 81,
-   "title": "This is the drink that I like the best.",
-   "topic": "Relative pronouns (object), contact clauses",
-   "grammar": "Relative pronouns (object), contact clauses",
-   "verified": false,
+   "unit": 5,
+   "page": 65,
+   "title": "The Story of Chocolate",
+   "topic": "relative pronouns who / which / that (subject)",
+   "verified": true,
    "phrases": [
-    "That's one thing we can do for the environment.",
-    "I have a bottle which I bought yesterday.",
-    "This is the drink that I like the best."
+    "Do you know about (Tezuka Osamu)?",
+    "He is the manga artist who drew Black Jack, right?",
+    "He loved chocolate.",
+    "That's the same as me!",
+    "I want to be a (doctor) who (helps a lot of people).",
+    "I'll give you something interesting.",
+    "They're chocolates which look like stones.",
+    "They look so hard!",
+    "This is an animal which (is the largest on land) and (has a long trunk). What is it?",
+    "Have you ever seen this movie?",
+    "It's a movie that has many dramatic scenes.",
+    "Sounds good!",
+    "Let's go to a (restaurant) that (serves good steak).",
+    "Yes, let's go. / Maybe next time. [I'm afraid I can't.]"
    ],
    "words": [
+    {
+     "en": "manga artist",
+     "ja": "マンガ家",
+     "emoji": "✏️"
+    },
+    {
+     "en": "draw",
+     "ja": "描く",
+     "emoji": "🖍️"
+    },
+    {
+     "en": "chocolate",
+     "ja": "チョコレート",
+     "emoji": "🍫"
+    },
+    {
+     "en": "doctor",
+     "ja": "医者",
+     "emoji": "🩺"
+    },
+    {
+     "en": "soccer player",
+     "ja": "サッカー選手",
+     "emoji": "⚽"
+    },
+    {
+     "en": "comedian",
+     "ja": "コメディアン",
+     "emoji": "🎭"
+    },
+    {
+     "en": "musician",
+     "ja": "音楽家",
+     "emoji": "🎸"
+    },
+    {
+     "en": "Europe",
+     "ja": "ヨーロッパ",
+     "emoji": "🌍"
+    },
+    {
+     "en": "stone",
+     "ja": "石",
+     "emoji": "🪨"
+    },
+    {
+     "en": "hard",
+     "ja": "かたい",
+     "emoji": "🪨"
+    },
+    {
+     "en": "male",
+     "ja": "オス",
+     "emoji": "♂️"
+    },
+    {
+     "en": "female",
+     "ja": "メス",
+     "emoji": "♀️"
+    },
+    {
+     "en": "neck",
+     "ja": "首",
+     "emoji": "🦒"
+    },
+    {
+     "en": "stripe",
+     "ja": "しま模様",
+     "emoji": "🦓"
+    },
+    {
+     "en": "trunk",
+     "ja": "(象の)鼻",
+     "emoji": "🐘"
+    },
+    {
+     "en": "tallest",
+     "ja": "最も背が高い",
+     "emoji": "📏"
+    },
+    {
+     "en": "mountain",
+     "ja": "山",
+     "emoji": "⛰️"
+    },
+    {
+     "en": "China",
+     "ja": "中国",
+     "emoji": "🇨🇳"
+    },
+    {
+     "en": "dramatic",
+     "ja": "劇的な",
+     "emoji": "🎭"
+    },
+    {
+     "en": "scene",
+     "ja": "場面",
+     "emoji": "🎞️"
+    },
+    {
+     "en": "magazine",
+     "ja": "雑誌",
+     "emoji": "📰"
+    },
+    {
+     "en": "jeans",
+     "ja": "ジーンズ",
+     "emoji": "👖"
+    },
+    {
+     "en": "park",
+     "ja": "公園",
+     "emoji": "🌳"
+    },
+    {
+     "en": "shop",
+     "ja": "店",
+     "emoji": "🏪"
+    },
+    {
+     "en": "tennis court",
+     "ja": "テニスコート",
+     "emoji": "🎾"
+    },
+    {
+     "en": "restaurant",
+     "ja": "レストラン",
+     "emoji": "🍽️"
+    },
+    {
+     "en": "steak",
+     "ja": "ステーキ",
+     "emoji": "🥩"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "関係代名詞 who（主格）",
+     "ja": "人について説明を加えるときは、人 + who + 動詞 ~ で表します。",
+     "pattern": "the (manga artist) who (drew Black Jack)",
+     "qa": [
+      [
+       "What do you want to be?",
+       "I want to be a (doctor) who (helps a lot of people)."
+      ]
+     ]
+    },
+    {
+     "point": "関係代名詞 which（主格）",
+     "ja": "もの・動物について説明を加えるときは、もの + which + 動詞 ~ で表します。",
+     "pattern": "(chocolates) which (look like stones)"
+    },
+    {
+     "point": "関係代名詞 that（主格）",
+     "ja": "that は人にもものにも使えます。",
+     "pattern": "a (movie) that (has many dramatic scenes)",
+     "qa": [
+      [
+       "Let's go to a (restaurant) that (serves good steak).",
+       "Yes, let's go. / Maybe next time."
+      ]
+     ]
+    }
+   ]
+  },
+  {
+   "unit": 6,
+   "page": 79,
+   "title": "The Great Pacific Garbage Patch",
+   "topic": "relative pronouns which / that (object), contact clauses",
+   "verified": true,
+   "phrases": [
+    "What do you have?",
+    "I have a bottle which I bought yesterday.",
+    "What's in it?",
+    "Green tea with honey!",
+    "My favorite (comic book) is (ONE PIECE). It's a (comic book) which (I have read many times).",
+    "I'm thirsty.",
+    "Let's go to that store.",
+    "This is the drink that I like the best.",
+    "Are you really thirsty?",
+    "The (fruit) that (the boy has) is a (banana).",
+    "There are too many plastic bottles!",
+    "We must reduce such waste.",
+    "I'll use my own bottle.",
+    "That's one thing we can do for the environment.",
+    "(Beef stew) is a dish (I like the best)."
+   ],
+   "words": [
+    {
+     "en": "bottle",
+     "ja": "びん・ボトル",
+     "emoji": "🍶"
+    },
+    {
+     "en": "water bottle",
+     "ja": "水筒",
+     "emoji": "🧴"
+    },
+    {
+     "en": "green tea",
+     "ja": "緑茶",
+     "emoji": "🍵"
+    },
+    {
+     "en": "honey",
+     "ja": "はちみつ",
+     "emoji": "🍯"
+    },
+    {
+     "en": "comic book",
+     "ja": "マンガ本",
+     "emoji": "📚"
+    },
+    {
+     "en": "music",
+     "ja": "音楽",
+     "emoji": "🎵"
+    },
+    {
+     "en": "skating",
+     "ja": "スケート",
+     "emoji": "⛸️"
+    },
+    {
+     "en": "Canadian",
+     "ja": "カナダの",
+     "emoji": "🇨🇦"
+    },
+    {
+     "en": "ice",
+     "ja": "氷",
+     "emoji": "🧊"
+    },
+    {
+     "en": "ice hockey",
+     "ja": "アイスホッケー",
+     "emoji": "🏒"
+    },
+    {
+     "en": "beaver",
+     "ja": "ビーバー",
+     "emoji": "🦫"
+    },
+    {
+     "en": "thirsty",
+     "ja": "のどがかわいた",
+     "emoji": "🥤"
+    },
+    {
+     "en": "store",
+     "ja": "店",
+     "emoji": "🏪"
+    },
+    {
+     "en": "drink",
+     "ja": "飲み物",
+     "emoji": "🥤"
+    },
+    {
+     "en": "balloon",
+     "ja": "風船",
+     "emoji": "🎈"
+    },
+    {
+     "en": "cotton candy",
+     "ja": "わたあめ",
+     "emoji": "🍭"
+    },
+    {
+     "en": "stick",
+     "ja": "つえ・棒",
+     "emoji": "🦯"
+    },
+    {
+     "en": "banana",
+     "ja": "バナナ",
+     "emoji": "🍌"
+    },
+    {
+     "en": "plastic",
+     "ja": "プラスチックの",
+     "emoji": "🧴"
+    },
+    {
+     "en": "reduce",
+     "ja": "減らす",
+     "emoji": "📉"
+    },
+    {
+     "en": "waste",
+     "ja": "むだ・ごみ",
+     "emoji": "🗑️"
+    },
     {
      "en": "environment",
      "ja": "環境",
      "emoji": "🌏"
     },
     {
-     "en": "bottle",
-     "ja": "ボトル",
-     "emoji": "🍶"
+     "en": "own",
+     "ja": "自分自身の",
+     "emoji": "🙋"
     },
     {
-     "en": "reuse",
-     "ja": "再利用する",
-     "emoji": "♻️"
+     "en": "stew",
+     "ja": "シチュー",
+     "emoji": "🍲"
     },
     {
-     "en": "plastic",
-     "ja": "プラスチック"
+     "en": "dish",
+     "ja": "料理",
+     "emoji": "🍽️"
     },
     {
-     "en": "reduce",
-     "ja": "減らす"
+     "en": "curry and rice",
+     "ja": "カレーライス",
+     "emoji": "🍛"
     },
     {
-     "en": "recycle",
-     "ja": "リサイクルする",
-     "emoji": "♻️"
+     "en": "fried chicken",
+     "ja": "フライドチキン",
+     "emoji": "🍗"
+    },
+    {
+     "en": "river",
+     "ja": "川",
+     "emoji": "🏞️"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "関係代名詞 which（目的格）",
+     "ja": "もの + which + 主語 + 動詞 ~ で「(主語)が〜する(もの)」を表します。",
+     "pattern": "a (bottle) which (I bought yesterday)"
+    },
+    {
+     "point": "関係代名詞 that（目的格）",
+     "ja": "that は人にもものにも使えます。",
+     "pattern": "the (drink) that (I like the best)"
+    },
+    {
+     "point": "接触節（関係代名詞の省略）",
+     "ja": "目的格の関係代名詞は省略でき、名詞 + 主語 + 動詞 ~ の形になります。",
+     "pattern": "one (thing) (we can do)",
+     "qa": [
+      [
+       "What food do you like?",
+       "(Beef stew) is a dish (I like the best)."
+      ]
+     ]
     }
    ]
   },
   {
-   "unit": 9,
-   "page": 96,
-   "title": "If I were you, I would use a robot vacuum cleaner.",
-   "topic": "Subjunctive (if / wish)",
-   "grammar": "Subjunctive (if / wish)",
-   "verified": false,
+   "unit": 7,
+   "page": 95,
+   "title": "Robots Can Improve Quality of Life",
+   "topic": "subjunctive: If I were ~, If I had ~, I wish ~",
+   "verified": true,
    "phrases": [
+    "You should clean this room.",
+    "I know.",
+    "If I were you, I would use a robot vacuum cleaner.",
+    "It's too expensive.",
+    "If I were (a bird), I would (fly to many places).",
+    "I want a robot.",
+    "To clean my room, of course!",
     "If you had a robot, you wouldn't do anything.",
+    "If I had (one million yen), I would (travel abroad).",
+    "That robot is very powerful.",
+    "Maybe it can lift you up.",
     "I wish the robot would take me to school.",
-    "If I were you, I would (use a robot vacuum cleaner)."
+    "That's amazing!",
+    "I wish I could (talk with Oda Nobunaga)."
    ],
    "words": [
     {
@@ -334,81 +1185,153 @@
     },
     {
      "en": "vacuum cleaner",
-     "ja": "掃除機"
+     "ja": "掃除機",
+     "emoji": "🧹"
     },
     {
-     "en": "wish",
-     "ja": "〜ならいいのに"
+     "en": "expensive",
+     "ja": "高価な",
+     "emoji": "💴"
     },
     {
-     "en": "if I were you",
-     "ja": "もし私があなたなら"
+     "en": "fever",
+     "ja": "熱",
+     "emoji": "🤒"
     },
     {
-     "en": "future",
-     "ja": "未来"
-    }
-   ]
-  },
-  {
-   "unit": 10,
-   "page": 106,
-   "title": "Reading 2: Malala's Voice for the Future",
-   "topic": "Story reading",
-   "grammar": "Story reading",
-   "verified": false,
-   "phrases": [],
-   "words": [
-    {
-     "en": "education",
-     "ja": "教育",
-     "emoji": "📚"
+     "en": "dictionary",
+     "ja": "辞書",
+     "emoji": "📖"
     },
     {
-     "en": "voice",
-     "ja": "声"
+     "en": "bird",
+     "ja": "鳥",
+     "emoji": "🐦"
     },
     {
-     "en": "right",
-     "ja": "権利"
+     "en": "panda",
+     "ja": "パンダ",
+     "emoji": "🐼"
     },
     {
-     "en": "peace",
-     "ja": "平和",
+     "en": "fish",
+     "ja": "魚",
+     "emoji": "🐟"
+    },
+    {
+     "en": "fly",
+     "ja": "飛ぶ",
      "emoji": "🕊️"
-    }
-   ]
-  },
-  {
-   "unit": 11,
-   "page": 112,
-   "title": "Special Project: JHS Memories",
-   "topic": "Speech",
-   "grammar": "Speech",
-   "verified": false,
-   "phrases": [
-    "My best memory of junior high school is (the chorus contest).",
-    "I'll never forget (it)."
-   ],
-   "words": [
-    {
-     "en": "memory",
-     "ja": "思い出"
     },
     {
-     "en": "chorus contest",
-     "ja": "合唱コンクール",
+     "en": "sleep all day",
+     "ja": "一日中寝る",
+     "emoji": "😴"
+    },
+    {
+     "en": "swim in the deep sea",
+     "ja": "深海を泳ぐ",
+     "emoji": "🌊"
+    },
+    {
+     "en": "belong to",
+     "ja": "〜に所属する",
+     "emoji": "👥"
+    },
+    {
+     "en": "rock",
+     "ja": "ロック(音楽)",
+     "emoji": "🎸"
+    },
+    {
+     "en": "band",
+     "ja": "バンド",
+     "emoji": "🥁"
+    },
+    {
+     "en": "vocalist",
+     "ja": "ボーカル",
      "emoji": "🎤"
     },
     {
-     "en": "graduation",
-     "ja": "卒業",
-     "emoji": "🎓"
+     "en": "musical",
+     "ja": "ミュージカル",
+     "emoji": "🎭"
     },
     {
-     "en": "school trip",
-     "ja": "修学旅行",
-     "emoji": "🚌"
+     "en": "abroad",
+     "ja": "外国へ",
+     "emoji": "✈️"
+    },
+    {
+     "en": "travel",
+     "ja": "旅行する",
+     "emoji": "🧳"
+    },
+    {
+     "en": "powerful",
+     "ja": "力強い",
+     "emoji": "💪"
+    },
+    {
+     "en": "lift",
+     "ja": "持ち上げる",
+     "emoji": "🏋️"
+    },
+    {
+     "en": "heater",
+     "ja": "暖房器具",
+     "emoji": "🔥"
+    },
+    {
+     "en": "shake hands with",
+     "ja": "〜と握手する",
+     "emoji": "🤝"
+    },
+    {
+     "en": "classroom",
+     "ja": "教室",
+     "emoji": "🏫"
+    },
+    {
+     "en": "amazing",
+     "ja": "すばらしい",
+     "emoji": "🤩"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "If I were ~, I would ...",
+     "ja": "現在の事実と違うことを仮定して「もし〜なら、…するのに」は If + 主語 + 過去形 ~, 主語 + would + 動詞の原形で表します。be 動詞は主語に関係なく were を使うことが多いです。",
+     "pattern": "If I were (you), I would (use a robot vacuum cleaner).",
+     "qa": [
+      [
+       "What would you do if you were (an animal)?",
+       "If I were (a bird), I would (fly to many places)."
+      ]
+     ]
+    },
+    {
+     "point": "If I had ~, I would ...",
+     "ja": "「もし〜を持っていたら、…だろう」は If + 主語 + had ~, 主語 + would + 動詞の原形で表します。",
+     "pattern": "If (you) had (a robot), (you) wouldn't (do anything).",
+     "qa": [
+      [
+       "What would you do if you had (one million yen)?",
+       "If I had (one million yen), I would (travel abroad)."
+      ]
+     ]
+    },
+    {
+     "point": "I wish ~",
+     "ja": "実現しそうにない願望「〜ならいいのに」は I wish + 主語 + would [could / 過去形] ~ で表します。",
+     "pattern": "I wish (the robot) would (take me to school).",
+     "qa": [
+      [
+       "Who would you like to meet?",
+       "I wish I could (talk with Oda Nobunaga)."
+      ]
+     ]
     }
    ]
   }

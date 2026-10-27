@@ -2,23 +2,32 @@
  "book": "Junior Sunshine 5",
  "publisher": "Kairyudo",
  "grade": "ES5",
- "edition": "2020 outline (newest edition not on ALTopedia)",
- "source": "Outline from ALTopedia, which only has the 2020 edition; Wyatt's books are the newest edition, so units and pages may differ. Words and phrases drafted by Claude from general knowledge; verified=false until Wyatt checks against the book.",
+ "edition": "newest edition (8 lessons)",
+ "source": "Checked 2026-10-27 against Wyatt's Junior Sunshine 5 (newest edition, Kairyudo): lesson pages and the 5年で学習した表現のまとめ (p.120). Words are the ones printed in the lessons; the separate Word Book booklet was not in the scan.",
  "units": [
   {
    "unit": 1,
-   "page": 6,
-   "title": "Nice to meet you.",
-   "topic": "Self-introductions, alphabet, name tags",
-   "verified": false,
+   "page": 14,
+   "title": "Hello, everyone.",
+   "topic": "Self-introduction, likes and wants, spelling names",
+   "verified": true,
    "phrases": [
-    "Hello. I'm (Ken).",
-    "Nice to meet you.",
-    "Nice to meet you, too.",
+    "Hello.",
+    "My name is (Chiba Haruhi).",
+    "What (sport) do you like?",
+    "I like (soccer).",
+    "Me too.",
     "How do you spell your name?",
-    "K-E-N."
+    "(B-E-N). (Ben).",
+    "What do you want?",
+    "I want (a new racket)."
    ],
    "words": [
+    {
+     "en": "hello",
+     "ja": "こんにちは",
+     "emoji": "👋"
+    },
     {
      "en": "name",
      "ja": "名前",
@@ -26,103 +35,227 @@
     },
     {
      "en": "spell",
-     "ja": "つづる"
+     "ja": "つづる",
+     "emoji": "🔤"
     },
     {
-     "en": "nice to meet you",
-     "ja": "はじめまして",
-     "emoji": "🤝"
+     "en": "red",
+     "ja": "赤",
+     "emoji": "🔴"
     },
     {
-     "en": "one to twenty",
-     "ja": "1〜20"
+     "en": "yellow",
+     "ja": "黄色",
+     "emoji": "🟡"
+    },
+    {
+     "en": "green",
+     "ja": "緑",
+     "emoji": "🟢"
+    },
+    {
+     "en": "orange",
+     "ja": "オレンジ",
+     "emoji": "🟠"
+    },
+    {
+     "en": "basketball",
+     "ja": "バスケットボール",
+     "emoji": "🏀"
+    },
+    {
+     "en": "baseball",
+     "ja": "野球",
+     "emoji": "⚾"
+    },
+    {
+     "en": "tennis",
+     "ja": "テニス",
+     "emoji": "🎾"
+    },
+    {
+     "en": "soccer",
+     "ja": "サッカー",
+     "emoji": "⚽"
+    },
+    {
+     "en": "apple",
+     "ja": "りんご",
+     "emoji": "🍎"
+    },
+    {
+     "en": "peach",
+     "ja": "もも",
+     "emoji": "🍑"
+    },
+    {
+     "en": "cat",
+     "ja": "ねこ",
+     "emoji": "🐱"
+    },
+    {
+     "en": "dog",
+     "ja": "犬",
+     "emoji": "🐶"
+    },
+    {
+     "en": "video games",
+     "ja": "テレビゲーム",
+     "emoji": "🎮"
+    },
+    {
+     "en": "racket",
+     "ja": "ラケット",
+     "emoji": "🏸"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "My name is ~.",
+     "ja": "名前を伝えるときは My name is ～. と言います。",
+     "pattern": "My name is (Haruhi).",
+     "qa": [
+      [
+       "How do you spell your name?",
+       "(H-A-R-U-H-I). (Haruhi)."
+      ]
+     ]
+    },
+    {
+     "point": "What ~ do you like?",
+     "ja": "何が好きかたずねるときは What ～ do you like? と言います。",
+     "pattern": "I like (soccer).",
+     "qa": [
+      [
+       "What (sport) do you like?",
+       "I like (soccer)."
+      ]
+     ]
+    },
+    {
+     "point": "I want ~.",
+     "ja": "ほしいものを伝えるときは I want ～. と言います。",
+     "pattern": "I want (a new racket).",
+     "qa": [
+      [
+       "What do you want?",
+       "I want (a new racket)."
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: 気分など, 色, 果物・野菜, スポーツ"
   },
   {
    "unit": 2,
-   "page": 12,
-   "title": "When is your birthday?",
-   "topic": "Months, ordinal numbers, birthdays",
-   "verified": false,
+   "page": 24,
+   "title": "When is your special day?",
+   "topic": "Months, dates, birthdays, special days",
+   "verified": true,
    "phrases": [
     "When is your birthday?",
-    "My birthday is (April 5th).",
-    "What do you want for your birthday?",
-    "I want (a bike)."
+    "My birthday is (June 5th).",
+    "When is your special day?",
+    "My special day is (November 13th).",
+    "It's my friend's birthday.",
+    "Why?"
    ],
    "words": [
     {
      "en": "January",
-     "ja": "1月"
+     "ja": "1月",
+     "emoji": "⛄"
     },
     {
      "en": "February",
-     "ja": "2月"
+     "ja": "2月",
+     "emoji": "👹"
     },
     {
      "en": "March",
-     "ja": "3月"
+     "ja": "3月",
+     "emoji": "🎎"
     },
     {
      "en": "April",
-     "ja": "4月"
+     "ja": "4月",
+     "emoji": "🌸"
     },
     {
      "en": "May",
-     "ja": "5月"
+     "ja": "5月",
+     "emoji": "🎏"
     },
     {
      "en": "June",
-     "ja": "6月"
+     "ja": "6月",
+     "emoji": "☔"
     },
     {
      "en": "July",
-     "ja": "7月"
+     "ja": "7月",
+     "emoji": "🎋"
     },
     {
      "en": "August",
-     "ja": "8月"
+     "ja": "8月",
+     "emoji": "🏖️"
     },
     {
      "en": "September",
-     "ja": "9月"
+     "ja": "9月",
+     "emoji": "🎑"
     },
     {
      "en": "October",
-     "ja": "10月"
+     "ja": "10月",
+     "emoji": "🎃"
     },
     {
      "en": "November",
-     "ja": "11月"
+     "ja": "11月",
+     "emoji": "🍂"
     },
     {
      "en": "December",
-     "ja": "12月"
+     "ja": "12月",
+     "emoji": "🎄"
     },
     {
-     "en": "first",
+     "en": "1st",
      "ja": "1日"
     },
     {
-     "en": "second",
+     "en": "2nd",
      "ja": "2日"
     },
     {
-     "en": "third",
+     "en": "3rd",
      "ja": "3日"
     },
     {
-     "en": "fifth",
+     "en": "5th",
      "ja": "5日"
     },
     {
-     "en": "tenth",
-     "ja": "10日"
+     "en": "12th",
+     "ja": "12日"
     },
     {
-     "en": "twentieth",
+     "en": "13th",
+     "ja": "13日"
+    },
+    {
+     "en": "15th",
+     "ja": "15日"
+    },
+    {
+     "en": "20th",
      "ja": "20日"
+    },
+    {
+     "en": "31st",
+     "ja": "31日"
     },
     {
      "en": "birthday",
@@ -130,84 +263,67 @@
      "emoji": "🎂"
     },
     {
-     "en": "present",
-     "ja": "プレゼント",
-     "emoji": "🎁"
+     "en": "special day",
+     "ja": "特別な日",
+     "emoji": "⭐"
+    },
+    {
+     "en": "Doll's Day",
+     "ja": "ひなまつり",
+     "emoji": "🎎"
+    },
+    {
+     "en": "Children's Day",
+     "ja": "こどもの日",
+     "emoji": "🎏"
+    },
+    {
+     "en": "Star Festival",
+     "ja": "七夕",
+     "emoji": "🎋"
+    },
+    {
+     "en": "New Year's Eve",
+     "ja": "大みそか",
+     "emoji": "🔔"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "When is ~?",
+     "ja": "日付をたずねるときは When is ～? と言います。",
+     "pattern": "My birthday is (June 5th).",
+     "qa": [
+      [
+       "When is your birthday?",
+       "My birthday is (June 5th)."
+      ],
+      [
+       "When is your special day?",
+       "My special day is (November 13th)."
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: 日づけ, 月, 年中行事など"
   },
   {
    "unit": 3,
-   "page": 18,
+   "page": 34,
    "title": "What do you have on Mondays?",
-   "topic": "School subjects, timetable",
-   "verified": false,
+   "topic": "School subjects, timetable, future jobs",
+   "verified": true,
    "phrases": [
-    "What do you have on (Monday)?",
-    "I have (math) on (Monday).",
-    "What subject do you like?",
-    "I like (P.E.).",
-    "Why?"
+    "What do you have on (Mondays)?",
+    "I have (math, English, and science) on (Mondays).",
+    "I like (math).",
+    "Do you like (math)?",
+    "Yes, I do.",
+    "No, I don't.",
+    "I want to be (a pilot).",
+    "That's nice."
    ],
    "words": [
-    {
-     "en": "Japanese",
-     "ja": "国語",
-     "emoji": "🇯🇵"
-    },
-    {
-     "en": "English",
-     "ja": "英語",
-     "emoji": "🔤"
-    },
-    {
-     "en": "math",
-     "ja": "算数",
-     "emoji": "➕"
-    },
-    {
-     "en": "science",
-     "ja": "理科",
-     "emoji": "🔬"
-    },
-    {
-     "en": "social studies",
-     "ja": "社会",
-     "emoji": "🗾"
-    },
-    {
-     "en": "music",
-     "ja": "音楽",
-     "emoji": "🎵"
-    },
-    {
-     "en": "arts and crafts",
-     "ja": "図工",
-     "emoji": "🎨"
-    },
-    {
-     "en": "P.E.",
-     "ja": "体育",
-     "emoji": "🏃"
-    },
-    {
-     "en": "home economics",
-     "ja": "家庭科",
-     "emoji": "🍳"
-    },
-    {
-     "en": "calligraphy",
-     "ja": "書写",
-     "emoji": "🖌️"
-    },
-    {
-     "en": "moral education",
-     "ja": "道徳"
-    },
-    {
-     "en": "period for integrated studies",
-     "ja": "総合"
-    },
     {
      "en": "Monday",
      "ja": "月曜日"
@@ -227,36 +343,192 @@
     {
      "en": "Friday",
      "ja": "金曜日"
-    }
-   ]
-  },
-  {
-   "unit": 4,
-   "page": 26,
-   "title": "Can you do this?",
-   "topic": "Can / can't, animals, weather",
-   "grammar": "can / can't",
-   "verified": false,
-   "phrases": [
-    "Can you (swim)?",
-    "Yes, I can. / No, I can't.",
-    "I can (run fast).",
-    "(He/She) can (cook)."
-   ],
-   "words": [
-    {
-     "en": "swim",
-     "ja": "泳ぐ",
-     "emoji": "🏊"
     },
     {
-     "en": "run fast",
-     "ja": "速く走る",
+     "en": "Japanese",
+     "ja": "国語",
+     "emoji": "📖"
+    },
+    {
+     "en": "English",
+     "ja": "英語",
+     "emoji": "🔤"
+    },
+    {
+     "en": "math",
+     "ja": "算数",
+     "emoji": "📐"
+    },
+    {
+     "en": "science",
+     "ja": "理科",
+     "emoji": "🔬"
+    },
+    {
+     "en": "social studies",
+     "ja": "社会",
+     "emoji": "🌏"
+    },
+    {
+     "en": "P.E.",
+     "ja": "体育",
      "emoji": "🏃"
     },
     {
-     "en": "jump high",
-     "ja": "高く跳ぶ"
+     "en": "music",
+     "ja": "音楽",
+     "emoji": "🎵"
+    },
+    {
+     "en": "arts and crafts",
+     "ja": "図画工作",
+     "emoji": "🎨"
+    },
+    {
+     "en": "home economics",
+     "ja": "家庭科",
+     "emoji": "🍳"
+    },
+    {
+     "en": "calligraphy",
+     "ja": "書写",
+     "emoji": "🖌️"
+    },
+    {
+     "en": "moral education",
+     "ja": "道徳",
+     "emoji": "💗"
+    },
+    {
+     "en": "the period for integrated studies",
+     "ja": "総合的な学習の時間",
+     "emoji": "⭐"
+    },
+    {
+     "en": "class activities",
+     "ja": "学級活動",
+     "emoji": "👥"
+    },
+    {
+     "en": "recess",
+     "ja": "休み時間",
+     "emoji": "⏸️"
+    },
+    {
+     "en": "lunch time",
+     "ja": "給食の時間",
+     "emoji": "🍱"
+    },
+    {
+     "en": "cleaning time",
+     "ja": "そうじの時間",
+     "emoji": "🧹"
+    },
+    {
+     "en": "musician",
+     "ja": "音楽家",
+     "emoji": "🎻"
+    },
+    {
+     "en": "scientist",
+     "ja": "科学者",
+     "emoji": "🧪"
+    },
+    {
+     "en": "basketball player",
+     "ja": "バスケットボール選手",
+     "emoji": "🏀"
+    },
+    {
+     "en": "programmer",
+     "ja": "プログラマー",
+     "emoji": "💻"
+    },
+    {
+     "en": "police officer",
+     "ja": "警察官",
+     "emoji": "👮"
+    },
+    {
+     "en": "vet",
+     "ja": "獣医",
+     "emoji": "🐕"
+    },
+    {
+     "en": "teacher",
+     "ja": "先生",
+     "emoji": "🧑‍🏫"
+    },
+    {
+     "en": "pilot",
+     "ja": "パイロット",
+     "emoji": "✈️"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "What do you have on ~?",
+     "ja": "何曜日に何の教科があるかたずねるときは What do you have on ～? と言います。",
+     "pattern": "I have (math) on (Mondays).",
+     "qa": [
+      [
+       "What do you have on (Mondays)?",
+       "I have (math, English, and science) on (Mondays)."
+      ]
+     ]
+    },
+    {
+     "point": "Do you like ~?",
+     "ja": "好きかどうかたずねるときは Do you like ～? と言います。",
+     "pattern": "Do you like (math)?",
+     "qa": [
+      [
+       "Do you like (math)?",
+       "Yes, I do. / No, I don't."
+      ]
+     ]
+    },
+    {
+     "point": "I want to be ~.",
+     "ja": "なりたい職業を伝えるときは I want to be ～. と言います。",
+     "pattern": "I want to be (a pilot)."
+    }
+   ],
+   "note": "Word Book: 曜日, 教科など, 文房具, 職業"
+  },
+  {
+   "unit": 4,
+   "page": 50,
+   "title": "I can draw pictures well.",
+   "topic": "Things I can / can't do",
+   "verified": true,
+   "phrases": [
+    "I can (play shogi).",
+    "I like (video games).",
+    "I can't (play the piano).",
+    "What can you do?",
+    "He can (play the guitar)."
+   ],
+   "words": [
+    {
+     "en": "play video games",
+     "ja": "テレビゲームをする",
+     "emoji": "🎮"
+    },
+    {
+     "en": "play shogi",
+     "ja": "将棋をする",
+     "emoji": "♟️"
+    },
+    {
+     "en": "play badminton",
+     "ja": "バドミントンをする",
+     "emoji": "🏸"
+    },
+    {
+     "en": "dance",
+     "ja": "おどる",
+     "emoji": "💃"
     },
     {
      "en": "cook",
@@ -264,9 +536,24 @@
      "emoji": "🍳"
     },
     {
+     "en": "draw pictures",
+     "ja": "絵を描く",
+     "emoji": "🎨"
+    },
+    {
+     "en": "sing",
+     "ja": "歌う",
+     "emoji": "🎤"
+    },
+    {
      "en": "sing well",
      "ja": "上手に歌う",
      "emoji": "🎤"
+    },
+    {
+     "en": "play the violin",
+     "ja": "バイオリンをひく",
+     "emoji": "🎻"
     },
     {
      "en": "play the piano",
@@ -274,80 +561,274 @@
      "emoji": "🎹"
     },
     {
-     "en": "ride a unicycle",
-     "ja": "一輪車に乗る"
+     "en": "play the recorder",
+     "ja": "リコーダーをふく",
+     "emoji": "🪈"
     },
     {
-     "en": "skate",
-     "ja": "スケートをする",
-     "emoji": "⛸️"
+     "en": "play the guitar",
+     "ja": "ギターをひく",
+     "emoji": "🎸"
     },
     {
-     "en": "ski",
-     "ja": "スキーをする",
-     "emoji": "⛷️"
+     "en": "play baseball",
+     "ja": "野球をする",
+     "emoji": "⚾"
     },
     {
-     "en": "fly",
-     "ja": "飛ぶ",
-     "emoji": "🦅"
+     "en": "play soccer",
+     "ja": "サッカーをする",
+     "emoji": "⚽"
     },
     {
-     "en": "sunny",
-     "ja": "晴れ",
-     "emoji": "☀️"
+     "en": "play tennis",
+     "ja": "テニスをする",
+     "emoji": "🎾"
     },
     {
-     "en": "rainy",
-     "ja": "雨",
-     "emoji": "🌧️"
+     "en": "play basketball",
+     "ja": "バスケットボールをする",
+     "emoji": "🏀"
     },
     {
-     "en": "cloudy",
-     "ja": "くもり",
-     "emoji": "☁️"
+     "en": "swim",
+     "ja": "泳ぐ",
+     "emoji": "🏊"
     },
     {
-     "en": "snowy",
-     "ja": "雪",
-     "emoji": "❄️"
+     "en": "swim fast",
+     "ja": "速く泳ぐ",
+     "emoji": "🏊"
+    },
+    {
+     "en": "run",
+     "ja": "走る",
+     "emoji": "🏃"
+    },
+    {
+     "en": "run fast",
+     "ja": "速く走る",
+     "emoji": "🏃"
+    },
+    {
+     "en": "jump rope",
+     "ja": "なわとびをする",
+     "emoji": "🪢"
+    },
+    {
+     "en": "do judo",
+     "ja": "柔道をする",
+     "emoji": "🥋"
+    },
+    {
+     "en": "do kendo",
+     "ja": "剣道をする",
+     "emoji": "🤺"
+    },
+    {
+     "en": "skateboard",
+     "ja": "スケートボードをする",
+     "emoji": "🛹"
+    },
+    {
+     "en": "play kendama",
+     "ja": "けん玉をする",
+     "emoji": "🎯"
+    },
+    {
+     "en": "make paper cranes",
+     "ja": "折り鶴を作る",
+     "emoji": "🕊️"
+    },
+    {
+     "en": "snap my fingers",
+     "ja": "指を鳴らす",
+     "emoji": "🫰"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "I can ~.",
+     "ja": "できることを伝えるときは I can ～. と言います。",
+     "pattern": "I can (play shogi).",
+     "qa": [
+      [
+       "What can you do?",
+       "I can (swim)."
+      ]
+     ],
+     "neg": "I can't (play tennis).",
+     "q": "Can you (swim)?"
+    }
+   ],
+   "note": "Word Book: スポーツ, 楽器, 動作, 遊び"
   },
   {
    "unit": 5,
-   "page": 38,
-   "title": "Where is your treasure?",
-   "topic": "Directions, prepositions, everyday objects",
-   "verified": false,
+   "page": 60,
+   "title": "Where is the station?",
+   "topic": "Places in town, positions, directions",
+   "verified": true,
    "phrases": [
-    "Where is (the treasure)?",
+    "Where is (your bag)?",
     "It's (on) the (desk).",
+    "Turn right [left].",
     "Go straight.",
-    "Turn right / left.",
-    "You can see it on your (right)."
+    "You can see it on your right [left].",
+    "What is your favorite place?",
+    "My favorite place is (the zoo).",
+    "My house is by (the park)."
    ],
    "words": [
     {
-     "en": "on",
-     "ja": "〜の上に"
+     "en": "clock",
+     "ja": "時計",
+     "emoji": "🕰️"
     },
     {
-     "en": "in",
-     "ja": "〜の中に"
+     "en": "T-shirt",
+     "ja": "Tシャツ",
+     "emoji": "👕"
+    },
+    {
+     "en": "school bag",
+     "ja": "かばん",
+     "emoji": "🎒"
+    },
+    {
+     "en": "on",
+     "ja": "〜の上に",
+     "emoji": "⬆️"
     },
     {
      "en": "under",
-     "ja": "〜の下に"
+     "ja": "〜の下に",
+     "emoji": "⬇️"
+    },
+    {
+     "en": "in",
+     "ja": "〜の中に",
+     "emoji": "📥"
     },
     {
      "en": "by",
-     "ja": "〜のそばに"
+     "ja": "〜のそばに",
+     "emoji": "↔️"
     },
     {
-     "en": "go straight",
-     "ja": "まっすぐ進む",
-     "emoji": "⬆️"
+     "en": "wall",
+     "ja": "かべ",
+     "emoji": "🧱"
+    },
+    {
+     "en": "chair",
+     "ja": "いす",
+     "emoji": "🪑"
+    },
+    {
+     "en": "basket",
+     "ja": "かご",
+     "emoji": "🧺"
+    },
+    {
+     "en": "desk",
+     "ja": "机",
+     "emoji": "🗄️"
+    },
+    {
+     "en": "station",
+     "ja": "駅",
+     "emoji": "🚉"
+    },
+    {
+     "en": "park",
+     "ja": "公園",
+     "emoji": "🌳"
+    },
+    {
+     "en": "lake",
+     "ja": "湖",
+     "emoji": "🏞️"
+    },
+    {
+     "en": "hamburger shop",
+     "ja": "ハンバーガー店",
+     "emoji": "🍔"
+    },
+    {
+     "en": "pizza shop",
+     "ja": "ピザ店",
+     "emoji": "🍕"
+    },
+    {
+     "en": "post office",
+     "ja": "郵便局",
+     "emoji": "🏣"
+    },
+    {
+     "en": "zoo",
+     "ja": "動物園",
+     "emoji": "🦁"
+    },
+    {
+     "en": "school",
+     "ja": "学校",
+     "emoji": "🏫"
+    },
+    {
+     "en": "library",
+     "ja": "図書館",
+     "emoji": "📚"
+    },
+    {
+     "en": "convenience store",
+     "ja": "コンビニ",
+     "emoji": "🏪"
+    },
+    {
+     "en": "flower shop",
+     "ja": "花屋",
+     "emoji": "💐"
+    },
+    {
+     "en": "fire station",
+     "ja": "消防署",
+     "emoji": "🚒"
+    },
+    {
+     "en": "hospital",
+     "ja": "病院",
+     "emoji": "🏥"
+    },
+    {
+     "en": "museum",
+     "ja": "博物館",
+     "emoji": "🦖"
+    },
+    {
+     "en": "police station",
+     "ja": "警察署",
+     "emoji": "👮"
+    },
+    {
+     "en": "movie theater",
+     "ja": "映画館",
+     "emoji": "🎬"
+    },
+    {
+     "en": "amusement park",
+     "ja": "遊園地",
+     "emoji": "🎡"
+    },
+    {
+     "en": "supermarket",
+     "ja": "スーパー",
+     "emoji": "🛒"
+    },
+    {
+     "en": "restaurant",
+     "ja": "レストラン",
+     "emoji": "🍽️"
     },
     {
      "en": "turn right",
@@ -360,148 +841,50 @@
      "emoji": "⬅️"
     },
     {
-     "en": "block",
-     "ja": "区画"
-    },
-    {
-     "en": "treasure",
-     "ja": "宝物",
-     "emoji": "💎"
-    },
-    {
-     "en": "box",
-     "ja": "箱",
-     "emoji": "📦"
-    },
-    {
-     "en": "cup",
-     "ja": "カップ",
-     "emoji": "☕"
-    },
-    {
-     "en": "cap",
-     "ja": "ぼうし",
-     "emoji": "🧢"
+     "en": "go straight",
+     "ja": "まっすぐ行く",
+     "emoji": "⬆️"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "Where is ~?",
+     "ja": "場所をたずねるときは Where is ～? と言います。",
+     "pattern": "It's (on) the (desk).",
+     "qa": [
+      [
+       "Where is (your clock)?",
+       "It's (on) the (desk)."
+      ]
+     ]
+    },
+    {
+     "point": "Go straight. / Turn right.",
+     "ja": "道案内では Go straight. / Turn right [left]. と言います。",
+     "pattern": "Go straight. Turn (right).",
+     "qa": [
+      [
+       "Where is (the station)?",
+       "Go straight. Turn (left). You can see it on your (right)."
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: 身の回りのもの, 建物など, 位置, 道案内"
   },
   {
    "unit": 6,
-   "page": 48,
-   "title": "My Hero",
-   "topic": "Describing people (he/she)",
-   "grammar": "he / she is ~",
-   "verified": false,
-   "phrases": [
-    "Who is your hero?",
-    "My hero is (my mother).",
-    "She is (kind).",
-    "She can (cook well).",
-    "He is good at (soccer)."
-   ],
-   "words": [
-    {
-     "en": "hero",
-     "ja": "ヒーロー",
-     "emoji": "🦸"
-    },
-    {
-     "en": "kind",
-     "ja": "やさしい"
-    },
-    {
-     "en": "brave",
-     "ja": "勇敢な"
-    },
-    {
-     "en": "strong",
-     "ja": "強い",
-     "emoji": "💪"
-    },
-    {
-     "en": "cool",
-     "ja": "かっこいい",
-     "emoji": "😎"
-    },
-    {
-     "en": "funny",
-     "ja": "おもしろい",
-     "emoji": "😂"
-    },
-    {
-     "en": "smart",
-     "ja": "かしこい"
-    },
-    {
-     "en": "friendly",
-     "ja": "親しみやすい"
-    },
-    {
-     "en": "he",
-     "ja": "彼"
-    },
-    {
-     "en": "she",
-     "ja": "彼女"
-    },
-    {
-     "en": "good at",
-     "ja": "〜が得意"
-    }
-   ]
-  },
-  {
-   "unit": 7,
-   "page": 56,
-   "title": "Happy New Year",
-   "topic": "New Year traditions",
-   "verified": false,
-   "phrases": [
-    "Happy New Year!",
-    "What do you do at New Year?",
-    "I (eat osechi)."
-   ],
-   "words": [
-    {
-     "en": "New Year",
-     "ja": "お正月",
-     "emoji": "🎍"
-    },
-    {
-     "en": "New Year's card",
-     "ja": "年賀状",
-     "emoji": "💌"
-    },
-    {
-     "en": "rice cake",
-     "ja": "もち",
-     "emoji": "🍡"
-    },
-    {
-     "en": "otoshidama",
-     "ja": "お年玉",
-     "emoji": "🧧"
-    },
-    {
-     "en": "shrine",
-     "ja": "神社",
-     "emoji": "⛩️"
-    }
-   ]
-  },
-  {
-   "unit": 8,
-   "page": 60,
+   "page": 70,
    "title": "What would you like?",
-   "topic": "Ordering food, prices",
-   "grammar": "I'd like ~",
-   "verified": false,
+   "topic": "Food, drinks, ordering, prices",
+   "verified": true,
    "phrases": [
     "What would you like?",
-    "I'd like (spaghetti).",
+    "I'd like (curry and rice).",
+    "What's this?",
+    "It's (miso soup).",
     "How much is it?",
-    "It's (500) yen.",
-    "Here you are."
+    "It's (250) yen."
    ],
    "words": [
     {
@@ -510,9 +893,19 @@
      "emoji": "🍝"
     },
     {
-     "en": "pizza",
-     "ja": "ピザ",
-     "emoji": "🍕"
+     "en": "curry",
+     "ja": "カレー",
+     "emoji": "🍛"
+    },
+    {
+     "en": "curry and rice",
+     "ja": "カレーライス",
+     "emoji": "🍛"
+    },
+    {
+     "en": "sushi",
+     "ja": "すし",
+     "emoji": "🍣"
     },
     {
      "en": "hamburger",
@@ -520,9 +913,44 @@
      "emoji": "🍔"
     },
     {
+     "en": "borscht",
+     "ja": "ボルシチ",
+     "emoji": "🥣"
+    },
+    {
+     "en": "kebab",
+     "ja": "ケバブ",
+     "emoji": "🍢"
+    },
+    {
+     "en": "tacos",
+     "ja": "タコス",
+     "emoji": "🌮"
+    },
+    {
+     "en": "fish and chips",
+     "ja": "フィッシュアンドチップス",
+     "emoji": "🐟"
+    },
+    {
+     "en": "steak",
+     "ja": "ステーキ",
+     "emoji": "🥩"
+    },
+    {
      "en": "French fries",
      "ja": "フライドポテト",
      "emoji": "🍟"
+    },
+    {
+     "en": "tempura",
+     "ja": "てんぷら",
+     "emoji": "🍤"
+    },
+    {
+     "en": "rice",
+     "ja": "ごはん",
+     "emoji": "🍚"
     },
     {
      "en": "salad",
@@ -535,24 +963,19 @@
      "emoji": "🥣"
     },
     {
-     "en": "rice ball",
-     "ja": "おにぎり",
-     "emoji": "🍙"
+     "en": "miso soup",
+     "ja": "みそ汁",
+     "emoji": "🥣"
     },
     {
-     "en": "curry and rice",
-     "ja": "カレーライス",
-     "emoji": "🍛"
+     "en": "bread",
+     "ja": "パン",
+     "emoji": "🍞"
     },
     {
-     "en": "fried chicken",
-     "ja": "からあげ",
-     "emoji": "🍗"
-    },
-    {
-     "en": "ice cream",
-     "ja": "アイスクリーム",
-     "emoji": "🍨"
+     "en": "grilled fish",
+     "ja": "焼き魚",
+     "emoji": "🐟"
     },
     {
      "en": "cake",
@@ -560,73 +983,135 @@
      "emoji": "🍰"
     },
     {
-     "en": "juice",
-     "ja": "ジュース",
-     "emoji": "🧃"
+     "en": "ice cream",
+     "ja": "アイスクリーム",
+     "emoji": "🍨"
     },
     {
-     "en": "milk",
-     "ja": "牛乳",
+     "en": "pizza",
+     "ja": "ピザ",
+     "emoji": "🍕"
+    },
+    {
+     "en": "yogurt",
+     "ja": "ヨーグルト",
      "emoji": "🥛"
     },
     {
-     "en": "hundred",
-     "ja": "百"
+     "en": "coffee",
+     "ja": "コーヒー",
+     "emoji": "☕"
     },
     {
-     "en": "thousand",
-     "ja": "千"
+     "en": "orange juice",
+     "ja": "オレンジジュース",
+     "emoji": "🧃"
+    },
+    {
+     "en": "tom yam kung",
+     "ja": "トムヤムクン",
+     "emoji": "🍲"
     },
     {
      "en": "yen",
      "ja": "円",
      "emoji": "💴"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "I'd like ~.",
+     "ja": "ていねいに注文するときは I'd like ～. と言います。",
+     "pattern": "I'd like (curry and rice).",
+     "qa": [
+      [
+       "What would you like?",
+       "I'd like (curry and rice)."
+      ]
+     ]
+    },
+    {
+     "point": "How much is it?",
+     "ja": "値段をたずねるときは How much is it? と言います。",
+     "pattern": "It's (250) yen.",
+     "qa": [
+      [
+       "How much is it?",
+       "It's (250) yen."
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: 食べ物, 飲み物, デザート, 味覚など"
   },
   {
-   "unit": 9,
-   "page": 68,
+   "unit": 7,
+   "page": 86,
    "title": "I love my town.",
-   "topic": "Hometown, places, adjectives",
-   "verified": false,
+   "topic": "Places and good points of our town",
+   "verified": true,
    "phrases": [
-    "I love my town.",
-    "We have (a big park).",
-    "We don't have (a zoo).",
-    "I want (a library).",
-    "My town is (beautiful)."
+    "This is my town.",
+    "We have (a stadium).",
+    "We can (play baseball).",
+    "It's (big).",
+    "How is it?"
    ],
    "words": [
     {
-     "en": "park",
-     "ja": "公園",
-     "emoji": "🌳"
+     "en": "big",
+     "ja": "大きい",
+     "emoji": "🐘"
     },
     {
-     "en": "zoo",
-     "ja": "動物園",
-     "emoji": "🦁"
+     "en": "small",
+     "ja": "小さい",
+     "emoji": "🐭"
     },
     {
-     "en": "aquarium",
-     "ja": "水族館",
-     "emoji": "🐠"
+     "en": "long",
+     "ja": "長い",
+     "emoji": "📏"
     },
     {
-     "en": "museum",
-     "ja": "博物館",
-     "emoji": "🏛️"
+     "en": "short",
+     "ja": "短い",
+     "emoji": "✂️"
+    },
+    {
+     "en": "high",
+     "ja": "高い",
+     "emoji": "🌡️"
+    },
+    {
+     "en": "low",
+     "ja": "低い",
+     "emoji": "❄️"
+    },
+    {
+     "en": "old",
+     "ja": "古い",
+     "emoji": "🏚️"
+    },
+    {
+     "en": "new",
+     "ja": "新しい",
+     "emoji": "✨"
+    },
+    {
+     "en": "tall",
+     "ja": "高い",
+     "emoji": "🏢"
+    },
+    {
+     "en": "bookstore",
+     "ja": "書店",
+     "emoji": "📚"
     },
     {
      "en": "library",
      "ja": "図書館",
-     "emoji": "📚"
-    },
-    {
-     "en": "station",
-     "ja": "駅",
-     "emoji": "🚉"
+     "emoji": "📖"
     },
     {
      "en": "hospital",
@@ -634,19 +1119,34 @@
      "emoji": "🏥"
     },
     {
-     "en": "supermarket",
-     "ja": "スーパー",
-     "emoji": "🛒"
+     "en": "amusement park",
+     "ja": "遊園地",
+     "emoji": "🎡"
     },
     {
-     "en": "convenience store",
-     "ja": "コンビニ",
-     "emoji": "🏪"
+     "en": "department store",
+     "ja": "デパート",
+     "emoji": "🏬"
     },
     {
-     "en": "swimming pool",
-     "ja": "プール",
-     "emoji": "🏊"
+     "en": "stadium",
+     "ja": "スタジアム",
+     "emoji": "🏟️"
+    },
+    {
+     "en": "temple",
+     "ja": "寺",
+     "emoji": "🛕"
+    },
+    {
+     "en": "strawberry farm",
+     "ja": "いちご農園",
+     "emoji": "🍓"
+    },
+    {
+     "en": "park",
+     "ja": "公園",
+     "emoji": "🌳"
     },
     {
      "en": "beach",
@@ -654,50 +1154,188 @@
      "emoji": "🏖️"
     },
     {
-     "en": "mountain",
-     "ja": "山",
-     "emoji": "⛰️"
-    },
-    {
-     "en": "river",
-     "ja": "川",
-     "emoji": "🏞️"
-    },
-    {
-     "en": "famous",
-     "ja": "有名な"
-    },
-    {
-     "en": "beautiful",
-     "ja": "美しい"
-    },
-    {
-     "en": "big",
-     "ja": "大きい"
-    },
-    {
-     "en": "small",
-     "ja": "小さい"
-    },
-    {
-     "en": "old",
-     "ja": "古い"
-    },
-    {
-     "en": "new",
-     "ja": "新しい"
-    },
-    {
-     "en": "mango",
-     "ja": "マンゴー",
-     "emoji": "🥭"
-    },
-    {
-     "en": "chicken nanban",
-     "ja": "チキン南蛮",
-     "emoji": "🍗"
+     "en": "aquarium",
+     "ja": "水族館",
+     "emoji": "🐬"
     }
-   ]
+   ],
+   "grammar": [
+    {
+     "point": "We have ~.",
+     "ja": "町にあるものを伝えるときは We have ～. と言います。",
+     "pattern": "We have (a stadium)."
+    },
+    {
+     "point": "We can ~.",
+     "ja": "町でできることを伝えるときは We can ～. と言います。",
+     "pattern": "We can (play baseball)."
+    },
+    {
+     "point": "It's ~.",
+     "ja": "様子を伝えるときは It's ～. と言います。",
+     "pattern": "It's (big).",
+     "qa": [
+      [
+       "How is it?",
+       "It's (big)."
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: 動作, 建物など, 状態など, 様子など"
+  },
+  {
+   "unit": 8,
+   "page": 96,
+   "title": "My Hero",
+   "topic": "Describing people: what they can do, are good at",
+   "verified": true,
+   "phrases": [
+    "Who is your hero?",
+    "My hero is (Ms. Sato Nana).",
+    "(She) can (dance well).",
+    "(She) is good at (singing).",
+    "(She) is (kind).",
+    "Are you good at (cooking)?",
+    "Yes, I am.",
+    "No, I'm not."
+   ],
+   "words": [
+    {
+     "en": "hero",
+     "ja": "ヒーロー",
+     "emoji": "🦸"
+    },
+    {
+     "en": "he",
+     "ja": "彼",
+     "emoji": "👦"
+    },
+    {
+     "en": "she",
+     "ja": "彼女",
+     "emoji": "👧"
+    },
+    {
+     "en": "good at",
+     "ja": "〜が得意",
+     "emoji": "👍"
+    },
+    {
+     "en": "singing",
+     "ja": "歌うこと",
+     "emoji": "🎤"
+    },
+    {
+     "en": "cooking",
+     "ja": "料理",
+     "emoji": "🍳"
+    },
+    {
+     "en": "swimming",
+     "ja": "水泳",
+     "emoji": "🏊"
+    },
+    {
+     "en": "dancing",
+     "ja": "ダンス",
+     "emoji": "💃"
+    },
+    {
+     "en": "kind",
+     "ja": "親切な",
+     "emoji": "💗"
+    },
+    {
+     "en": "strong",
+     "ja": "強い",
+     "emoji": "💪"
+    },
+    {
+     "en": "brave",
+     "ja": "勇敢な",
+     "emoji": "🦁"
+    },
+    {
+     "en": "great",
+     "ja": "すばらしい",
+     "emoji": "🌟"
+    },
+    {
+     "en": "father",
+     "ja": "父",
+     "emoji": "👨"
+    },
+    {
+     "en": "mother",
+     "ja": "母",
+     "emoji": "👩"
+    },
+    {
+     "en": "brother",
+     "ja": "兄弟",
+     "emoji": "👦"
+    },
+    {
+     "en": "sister",
+     "ja": "姉妹",
+     "emoji": "👧"
+    },
+    {
+     "en": "grandfather",
+     "ja": "祖父",
+     "emoji": "👴"
+    },
+    {
+     "en": "grandmother",
+     "ja": "祖母",
+     "emoji": "👵"
+    }
+   ],
+   "grammar": [
+    {
+     "point": "He / She can ~.",
+     "ja": "他の人ができることは He [She] can ～. と言います。",
+     "pattern": "(She) can (dance well)."
+    },
+    {
+     "point": "be good at ~",
+     "ja": "得意なことは be good at ～ で表します。",
+     "pattern": "(She) is good at (singing).",
+     "qa": [
+      [
+       "Are you good at (cooking)?",
+       "Yes, I am. / No, I'm not."
+      ]
+     ],
+     "table": [
+      [
+       "I",
+       "am good at (singing)."
+      ],
+      [
+       "you",
+       "are good at (singing)."
+      ],
+      [
+       "he / she",
+       "is good at (singing)."
+      ]
+     ]
+    },
+    {
+     "point": "Who is your hero?",
+     "ja": "ヒーローをたずねるときは Who is your hero? と言います。",
+     "pattern": "My hero is (my mother).",
+     "qa": [
+      [
+       "Who is your hero?",
+       "My hero is (my mother). (She) is (kind)."
+      ]
+     ]
+    }
+   ],
+   "note": "Word Book: 動作, 職業, 家族・人, 性格など"
   }
  ]
 }
