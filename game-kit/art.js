@@ -315,6 +315,8 @@ const PIC={
   g+=d.e(100,92,56,52,"#fff")+d.p("M60 64 Q76 50 94 62 Q86 84 64 82Z",O,null)+d.p("M130 100 Q150 92 154 108 Q144 122 132 114Z",O,null);
   g+=d.c(80,92,7,O,null)+d.c(120,92,7,O,null)+d.e(100,144,46,30,"#ffb3c8")+d.e(84,144,7,9,C.pink2,null)+d.e(116,144,7,9,C.pink2,null);return g;},
 "bird":()=>d.shadow(100,186,50)+d.p("M150 100 L190 84 L186 112Z",C.blue2)+d.e(100,110,60,46,C.blue)+d.e(96,128,36,26,"#d7efff")+d.p("M78 100 Q110 80 140 110 Q110 120 78 100Z",C.blue2)+d.c(64,92,7,O,null)+d.p("M40 96 L22 104 L40 110Z",C.orange)+d.l("M86 156 L80 176 M110 156 L116 176",C.orange2,4),
+"ui:kid-a":()=>d.c(100,100,96,"#d7efff",null)+d.p("M30 200 Q30 140 100 140 Q170 140 170 200Z",C.blue)+headFace(100,92,52,{mood:"open"}),
+"ui:kid-b":()=>d.c(100,100,96,"#ffe3ec",null)+d.p("M30 200 Q30 140 100 140 Q170 140 170 200Z",C.pink)+headFace(100,92,52,{mood:"smile",girl:true,hair:"#5a3a24"}),
 "stop":()=>{let pts="";for(let i=0;i<8;i++){const a=Math.PI/8+i*Math.PI/4;pts+=`${(100+Math.cos(a)*80).toFixed(1)},${(96+Math.sin(a)*80).toFixed(1)} `;}
   return d.r(94,150,12,48,2,C.grey)+d.poly(pts,C.red,O,5)+d.t(100,114,"STOP",50,"#fff",800);},
 "bus":()=>d.shadow(100,190,80)+d.r(24,24,152,150,20,C.yellow)+d.r(38,40,124,60,8,"#cfe8ff")+d.r(60,30,80,22,4,O,null)+d.t(100,48,"BUS",18,"#fff",800)+d.c(52,140,10,"#fff")+d.c(148,140,10,"#fff")+d.r(80,130,40,20,4,"#fff")+d.r(38,174,30,20,6,O,null)+d.r(132,174,30,20,6,O,null)+d.l("M100 40 L100 100",O,3),

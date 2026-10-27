@@ -53,7 +53,7 @@ textarea{resize:vertical;min-height:70px}
 .unitinfo .t{font-size:20px;font-weight:800}
 .tag{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;background:#3a2f22;color:#ffcf8a}
 .tag.ok{background:#1f3a27;color:var(--ok)}
-.phr{color:var(--muted);font-size:14px;margin:2px 0 10px}
+.phr{color:var(--muted);font-size:14px;margin:2px 0 10px;white-space:pre-line}
 .listbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0 8px}
 .listbar .grow{flex:1}
 .count{color:var(--muted);font-size:14px;font-weight:800}
@@ -117,6 +117,36 @@ kbd{display:inline-block;min-width:22px;text-align:center;background:var(--panel
 .dots i.on{background:var(--c)}
 .track{flex:1;height:6px;background:var(--panel2);border-radius:3px;overflow:hidden;max-width:520px}
 .track b{display:block;height:100%;width:0;background:var(--c);border-radius:3px}
+/* grammar slide: who = blue, action = green, question word = purple, the unit word = orange */
+:root{--g-subj:#2f69b8;--g-verb:#2e8a3c;--g-ask:#8a4fd1;--g-slot:#c8630f;--g-slotBg:#fff1dc}
+.card.gram{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2.6vh}
+.ghead{display:flex;align-items:center;gap:1.4vw;align-self:stretch;justify-content:center}
+.gchip{font-family:var(--f-display);font-weight:400;font-size:2.4vh;background:var(--c);color:var(--ink);padding:.5vh 1.2vw;border-radius:999px}
+.gpoint{font-family:var(--f-en);font-weight:700;font-size:3.6vh;color:#7d7262}
+.gpat{font-family:var(--f-en);font-weight:700;font-size:8vh;line-height:1.35;text-align:center}
+.card.dense .gpat{font-size:6vh}
+.gp{border-bottom:.08em solid currentColor}
+.g-subj{color:var(--g-subj)}.g-verb{color:var(--g-verb)}.g-ask{color:var(--g-ask)}.g-slot{color:var(--g-slot)}
+.gslot{display:inline-block;background:var(--g-slotBg);border:.05em dashed var(--g-slot);border-bottom-style:solid;border-radius:.18em;padding:0 .2em;line-height:1.3;cursor:pointer}
+.gslot img{height:1.25em;width:auto;vertical-align:middle;margin:-.15em .15em 0 0}
+.gslot img.px{image-rendering:pixelated}
+.glegend{display:flex;gap:1.6vw;justify-content:center;flex-wrap:wrap;font-family:var(--f-body);font-size:2.2vh;font-weight:800;line-height:1.3;margin-top:.6vh}
+.glegend i{display:inline-block;width:1.1em;height:.3em;background:currentColor;border-radius:.15em;vertical-align:middle;margin-right:.35em}
+.chat{display:grid;gap:1.4vh;width:min(100%,62vw)}
+.bub{display:flex;align-items:center;gap:1.2vw}
+.bub.r{flex-direction:row-reverse}
+.bub img{width:8.5vh;height:8.5vh;flex:none}
+.bub .say{font-family:var(--f-en);font-weight:700;font-size:4.8vh;line-height:1.35;background:#f4eee2;border-radius:2.4vh;padding:1vh 1.6vw;line-height:1.25}
+.bub.r .say{background:#e6f1fb}
+.bub .gp{border-bottom-width:.07em}
+.card.dense .bub .say{font-size:3.8vh}.card.dense .bub img{width:7vh;height:7vh}.card.dense .gform{font-size:3.6vh}.card.dense .gtab{font-size:3.4vh}.card.dense{gap:1.8vh}
+.gextra{display:flex;gap:3vw;align-items:center;justify-content:center;flex-wrap:wrap}
+.gtab{border-collapse:collapse;font-family:var(--f-en);font-weight:700;font-size:4vh}
+.gtab td{padding:.3vh 1.2vw;border-bottom:2px solid var(--cardEdge)}
+.gforms{display:grid;gap:1vh}
+.gform{font-family:var(--f-en);font-weight:700;font-size:4.4vh;display:flex;align-items:center;gap:.4em;flex-wrap:wrap}
+.gform .gp{border-bottom-width:.07em}
+.gtag{font-family:var(--f-body);font-size:.55em;font-weight:800;background:#efe6d6;color:#6b604f;border-radius:999px;padding:.1em .6em}
 .blank{position:fixed;inset:0;background:#000;z-index:50;transition:opacity .4s}
 .blank.off{opacity:0;pointer-events:none}
 
@@ -443,8 +473,10 @@ body.jp .kq-prompt .ja{color:#6b6358}
       <label class="opt"><input type="checkbox" id="oSpeak"> <span>Read aloud automatically<small>The speaker button always works.</small></span></label>
       <label class="opt"><input type="checkbox" id="oShuffle"> <span>Shuffle the words</span></label>
       <label class="opt"><input type="checkbox" id="oTitle"> <span>Start with a unit title slide</span></label>
+      <label class="opt"><input type="checkbox" id="oGram"> <span>Grammar slide after the words<small>文法の導入</small></span></label>
       <div class="go">
         <button class="btn primary" id="startBtn">Start ▶</button>
+        <button class="btn" id="gramBtn">Grammar</button>
         <button class="btn" id="missBtn">What's missing?</button>
         <button class="btn" id="flashBtn">Fast flash</button>
       </div>
@@ -564,6 +596,7 @@ body.jp .kq-prompt .ja{color:#6b6358}
     <li><kbd>Space</kbd> <kbd>→</kbd> <kbd>Enter</kbd> <kbd>Page Down</kbd> or a click: next step, then next word</li>
     <li><kbd>←</kbd> <kbd>Page Up</kbd>: back</li>
     <li><kbd>1</kbd>–<kbd>4</kbd>: jump to word / picture / sentence / Japanese</li>
+    <li>Grammar slides: <kbd>Space</kbd> also swaps in new words. <kbd>W</kbd> or a click on the word swaps it any time</li>
     <li><kbd>S</kbd>: say the word (and the sentence, once it is showing)</li>
     <li><kbd>J</kbd>: show or hide the Japanese right away</li>
     <li><kbd>E</kbd>: edit this word (sentence, Japanese, picture)</li>
@@ -2101,6 +2134,8 @@ const PIC={
   g+=d.e(100,92,56,52,"#fff")+d.p("M60 64 Q76 50 94 62 Q86 84 64 82Z",O,null)+d.p("M130 100 Q150 92 154 108 Q144 122 132 114Z",O,null);
   g+=d.c(80,92,7,O,null)+d.c(120,92,7,O,null)+d.e(100,144,46,30,"#ffb3c8")+d.e(84,144,7,9,C.pink2,null)+d.e(116,144,7,9,C.pink2,null);return g;},
 "bird":()=>d.shadow(100,186,50)+d.p("M150 100 L190 84 L186 112Z",C.blue2)+d.e(100,110,60,46,C.blue)+d.e(96,128,36,26,"#d7efff")+d.p("M78 100 Q110 80 140 110 Q110 120 78 100Z",C.blue2)+d.c(64,92,7,O,null)+d.p("M40 96 L22 104 L40 110Z",C.orange)+d.l("M86 156 L80 176 M110 156 L116 176",C.orange2,4),
+"ui:kid-a":()=>d.c(100,100,96,"#d7efff",null)+d.p("M30 200 Q30 140 100 140 Q170 140 170 200Z",C.blue)+headFace(100,92,52,{mood:"open"}),
+"ui:kid-b":()=>d.c(100,100,96,"#ffe3ec",null)+d.p("M30 200 Q30 140 100 140 Q170 140 170 200Z",C.pink)+headFace(100,92,52,{mood:"smile",girl:true,hair:"#5a3a24"}),
 "stop":()=>{let pts="";for(let i=0;i<8;i++){const a=Math.PI/8+i*Math.PI/4;pts+=`${(100+Math.cos(a)*80).toFixed(1)},${(96+Math.sin(a)*80).toFixed(1)} `;}
   return d.r(94,150,12,48,2,C.grey)+d.poly(pts,C.red,O,5)+d.t(100,114,"STOP",50,"#fff",800);},
 "bus":()=>d.shadow(100,190,80)+d.r(24,24,152,150,20,C.yellow)+d.r(38,40,124,60,8,"#cfe8ff")+d.r(60,30,80,22,4,O,null)+d.t(100,48,"BUS",18,"#fff",800)+d.c(52,140,10,"#fff")+d.c(148,140,10,"#fff")+d.r(80,130,40,20,4,"#fff")+d.r(38,174,30,20,6,O,null)+d.r(132,174,30,20,6,O,null)+d.l("M100 40 L100 100",O,3),
@@ -2145,7 +2180,7 @@ const OWN="my-lists";
 
 /* ---------- saved settings (this browser) ---------- */
 const SKEY="vocabIntro.v1";
-const DEF={opts:{sent:true,ja:true,speak:false,shuffle:false,title:true},edits:{},extra:{},lists:[],off:{},last:null,miss:{count:6,words:true},flash:{speed:2500,word:"after"}};
+const DEF={opts:{sent:true,ja:true,speak:false,shuffle:false,title:true,gram:true},edits:{},extra:{},lists:[],off:{},last:null,miss:{count:6,words:true},flash:{speed:2500,word:"after"}};
 let S;
 try{S=Object.assign({},DEF,JSON.parse(localStorage.getItem(SKEY)||"{}"));}catch(e){S=JSON.parse(JSON.stringify(DEF));}
 S.opts=Object.assign({},DEF.opts,S.opts);
@@ -2258,7 +2293,8 @@ function renderSetup(){
   const u=getUnit(cur.book,cur.unit);
   $("#unitTitle").textContent=u?(u.own?u.title:"Unit "+u.unit+" · "+u.title):(cur.book===OWN?"Make a list with + New list":"");
   $("#unitTag").innerHTML=u&&!u.own?(u.verified?`<span class="tag ok">checked with the book</span>`:`<span class="tag">draft words, not checked with the book yet</span>`):"";
-  $("#unitPhr").textContent=u&&u.phrases&&u.phrases.length?"Target phrases: "+u.phrases.join("  ·  "):"";
+  const gs=grammarOf(u);
+  $("#unitPhr").textContent=(u&&u.phrases&&u.phrases.length?"Target phrases: "+u.phrases.join("  ·  "):"")+(gs.length?"\nGrammar: "+gs.map(g=>g.point).join("  ·  ")+(gs[0].auto?" (made from the target phrases)":""):"");
   $("#addBtn").disabled=!u;
   const ws=wordsOf(cur.book,cur.unit),off=offSet();
   $("#words").innerHTML=ws.length?ws.map(w=>{const p=picFor(w.en),sent=sentenceOf(w,u);
@@ -2272,9 +2308,10 @@ function renderSetup(){
   const n=ws.filter(w=>!off.has(w.id)).length;
   $("#count").textContent=`${n} of ${ws.length} words chosen`;
   ["#startBtn","#missBtn","#flashBtn"].forEach(s=>$(s).disabled=!n);
+  $("#gramBtn").disabled=!grammarOf(u).length;
 }
-function setOpts(){$("#oSent").checked=S.opts.sent;$("#oJa").checked=S.opts.ja;$("#oSpeak").checked=S.opts.speak;$("#oShuffle").checked=S.opts.shuffle;$("#oTitle").checked=S.opts.title;}
-[["#oSent","sent"],["#oJa","ja"],["#oSpeak","speak"],["#oShuffle","shuffle"],["#oTitle","title"]].forEach(([s,k])=>$(s).addEventListener("change",e=>{S.opts[k]=e.target.checked;save();}));
+function setOpts(){$("#oSent").checked=S.opts.sent;$("#oJa").checked=S.opts.ja;$("#oSpeak").checked=S.opts.speak;$("#oShuffle").checked=S.opts.shuffle;$("#oTitle").checked=S.opts.title;$("#oGram").checked=S.opts.gram;}
+[["#oSent","sent"],["#oJa","ja"],["#oSpeak","speak"],["#oShuffle","shuffle"],["#oTitle","title"],["#oGram","gram"]].forEach(([s,k])=>$(s).addEventListener("change",e=>{S.opts[k]=e.target.checked;save();}));
 bookSel.addEventListener("change",()=>{cur.book=bookSel.value;cur.unit=null;remember();renderSetup();});
 unitSel.addEventListener("change",()=>{cur.unit=unitSel.value;remember();renderSetup();});
 function remember(){S.last={book:cur.book,unit:cur.unit};save();}
@@ -2371,16 +2408,96 @@ function go(name){
 function chosen(){const off=offSet();return wordsOf(cur.book,cur.unit).filter(w=>!off.has(w.id));}
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 
+/* ---------- grammar ---------- */
+/* a unit's grammar points: the checked "grammar" list in the word bank, or one made from its target phrases */
+function grammarOf(u){
+  if(!u)return [];
+  if(Array.isArray(u.grammar)&&u.grammar.length)return u.grammar.filter(g=>g&&g.pattern);
+  const phr=(u.phrases||[]).filter(p=>!/ \/ /.test(p));
+  const stmt=phr.find(p=>/\([^)]+\)/.test(p)&&!/\?$/.test(p));
+  if(!stmt)return [];
+  const qa=[];(u.phrases||[]).forEach((p,i,a)=>{const n=a[i+1];if(/\?$/.test(p)&&n&&!/\?$/.test(n))qa.push([p,n]);});
+  return [{point:stmt.replace(/\([^)]*\)/g,"~"),pattern:stmt,qa:qa.slice(0,2),auto:true}];
+}
+const gbase=t=>lc(t).replace(/^(a|an|the)\s+/,"");
+function inUnitOf(u){const uw=new Set(((u&&u.words)||[]).map(w=>gbase(w.en)));
+  return t=>{const b=gbase(t);return uw.has(b)||uw.has(b.replace(/es$/,""))||uw.has(b.replace(/s$/,""))||uw.has(b.replace(/ies$/,"y"));};}
+/* which slot of a phrase takes the unit's words */
+function mainSlot(p,u){const slots=[...p.matchAll(/\(([^)]+)\)/g)];if(!slots.length)return null;
+  const inU=inUnitOf(u);let m=slots.find(x=>!isNum(x[1])&&inU(x[1]));
+  if(!m)m=[...slots].reverse().find(x=>!isNum(x[1]))||slots[slots.length-1];return m;}
+const PRON=/^(i|you|he|she|it|we|they|this|that|my|your|his|her|our|their|there)$/i;
+const ASK=/^(do|does|did|are|is|am|was|were|can|will|have|has|what|where|when|who|whose|how|which|why)$/i;
+const CONTR=/^(i|you|he|she|it|we|they|that|what|there|who|where|how)(['’](?:m|re|s|ll|ve|d))$/i;
+const GLAB={subj:["who","だれが"],verb:["action","する・です"],ask:["question","たずねる"],slot:["word","ことば"]};
+/* a phrase as colored parts. word: the unit word in the slot (null keeps the book's example) */
+function gramHTML(p,u,word,labels){
+  const m=mainSlot(p,u),q=/\?\s*$/.test(p);
+  const plain=s=>esc(s.replace(/\(([^)]*)\)/g,"$1"));
+  const used=new Set(),part=(t,k)=>{used.add(k);return `<span class="gp g-${k}">${esc(t)}</span>`;};
+  const pre=m?p.slice(0,m.index):p,post=m?p.slice(m.index+m[0].length):"";
+  let html="",subj=false,verb=false,first=true;
+  pre.split(/(\s+)/).forEach(tok=>{
+    if(!tok)return;if(/^\s+$/.test(tok)){html+=" ";return;}
+    if(/\(/.test(tok)){html+=plain(tok);first=false;return;}
+    const bare=tok.replace(/[,.!?]+$/,""),tail=tok.slice(bare.length),c=CONTR.exec(bare);
+    if(c&&!subj){html+=part(c[1],/^(what|who|where|how)$/i.test(c[1])?"ask":"subj")+part(c[2],"verb")+esc(tail);subj=verb=true;}
+    else if(first&&q&&ASK.test(bare)){html+=part(bare,"ask")+esc(tail);}
+    else if(!subj&&PRON.test(bare)){html+=part(bare,"subj")+esc(tail);subj=true;}
+    else if(subj&&!verb){html+=part(bare,"verb")+esc(tail);verb=true;}
+    else html+=plain(tok);
+    first=false;
+  });
+  if(m){const ex=m[1],w=word?fitSlot(word,ex,m.index===0):ex,pk=word||gbase(ex),pi=picFor(pk);
+    used.add("slot");html+=`<span class="gp g-slot gslot" data-swap="1">${pi?`<img src="${pi.src}" class="${pi.kind==="px"?"px":""}" alt="">`:""}${esc(w)}</span>`;}
+  html+=plain(post);
+  if(labels)html=`<div class="gline">${html}</div><div class="glegend">${["subj","ask","verb","slot"].filter(k=>used.has(k)).map(k=>`<span class="g-${k}"><i></i>${GLAB[k][0]} <span lang="ja">${GLAB[k][1]}</span></span>`).join("")}</div>`;
+  return html;
+}
+/* steps of a grammar slide: pattern, word swaps, each question and answer, form table, not, question, Japanese */
+function gramSteps(item){const g=item.g,s=["pattern"];
+  for(let i=1;i<item.swap.length;i++)s.push("swap"+i);
+  (g.qa||[]).forEach((x,i)=>{s.push("qa"+i+"q");if(x[1])s.push("qa"+i+"a");});
+  if(g.table&&g.table.length)s.push("table");if(g.neg)s.push("neg");if(g.q)s.push("q");
+  if(g.ja&&S.opts.ja)s.push("ja");return s;}
+function grammarItems(ws){const u=getUnit(cur.book,cur.unit),gs=grammarOf(u);
+  const pics=shuffle(ws.filter(w=>picFor(w.en))).map(w=>w.en);
+  return gs.map((g,gi)=>{const m=mainSlot(g.pattern,u),ex=m?gbase(m[1]):"";
+    const pool=pics.filter(e=>{const b=gbase(e);return b!==ex&&b+"s"!==ex&&b+"es"!==ex;}).slice(0,4);
+    return {grammar:true,g,gi,n:gs.length,swap:m?[null].concat(pool):[null]};});}
+function stepsOf(w){return w.grammar?gramSteps(w):w.en?stepsFor(w):[];}
+function swapNow(w){let n=0;stepsOf(w).slice(0,step+1).forEach(x=>{if(/^swap/.test(x))n++;});return w.swap[(n+(w.extra||0))%w.swap.length];}
+function renderGrammar(card,w){
+  const u=getUnit(cur.book,cur.unit),g=w.g,word=swapNow(w);
+  card.classList.add("gram");if(g.table&&g.table.length||g.neg||g.q||(g.qa||[]).length>1)card.classList.add("dense");
+  const bub=(t,side,s)=>`<div class="bub ${side} rv" data-s="${s}"><img src="${Kit.art?Kit.art.url(side==="l"?"ui:kid-a":"ui:kid-b"):""}" alt=""><div class="say">${gramHTML(t,u,word,false)}</div></div>`;
+  card.innerHTML=`<div class="ghead"><span class="gchip">Grammar${w.n>1?` ${w.gi+1} / ${w.n}`:""}</span><span class="gpoint">${esc(g.point||"")}</span></div>
+    <div class="gpat rv" data-s="pattern">${gramHTML(g.pattern,u,word,true)}</div>
+    ${(g.qa||[]).length?`<div class="chat">${g.qa.map((x,i)=>bub(x[0],"l","qa"+i+"q")+(x[1]?bub(x[1],"r","qa"+i+"a"):"")).join("")}</div>`:""}
+    ${g.table&&g.table.length||g.neg||g.q?`<div class="gextra">
+      ${g.table&&g.table.length?`<table class="gtab rv" data-s="table">${g.table.map(r=>`<tr><td class="g-subj">${esc(r[0])}</td><td class="g-verb">${esc(r[1]||"")}</td>${r[2]?`<td>${esc(r[2])}</td>`:""}</tr>`).join("")}</table>`:""}
+      <div class="gforms">${g.neg?`<div class="gform rv" data-s="neg"><span class="gtag">not</span>${gramHTML(g.neg,u,word,false)}</div>`:""}
+      ${g.q?`<div class="gform rv" data-s="q"><span class="gtag">?</span>${gramHTML(g.q,u,word,false)}</div>`:""}</div></div>`:""}
+    <div class="ja rv" data-s="ja" lang="ja">${g.ja&&(S.opts.ja||jaForce)?esc(g.ja):""}</div>`;
+}
+function swapWord(dir){const w=deck[idx];if(!w||!w.grammar||w.swap.length<2)return;
+  w.extra=((w.extra||0)+dir+w.swap.length*10)%w.swap.length;renderSlide();
+  if(S.opts.speak)say(lc(($("#slide .gpat")||{}).textContent||"").replace(/\s+/g," "));}
+function startGrammar(){
+  const ws=chosen(),items=grammarItems(ws);if(!items.length){toast("This unit has no grammar point yet.");return;}
+  deck=items.concat([{end:true,gram:true}]);idx=0;step=0;jaForce=false;go("show");renderSlide();
+}
+
 /* ---------- slideshow ---------- */
 let deck=[],idx=0,step=0,jaForce=false;
-const STEP_NAMES=["word","pic","sent","ja"];
 function stepsFor(w){const u=getUnit(cur.book,cur.unit),s=["word","pic"];
   if(S.opts.sent&&sentenceOf(w,u))s.push("sent");if(S.opts.ja&&w.ja)s.push("ja");return s;}
 function startShow(){
   const ws=chosen();if(!ws.length)return;
-  deck=S.opts.shuffle?shuffle(ws):ws;
+  deck=S.opts.shuffle?shuffle(ws):ws.slice();
   const u=getUnit(cur.book,cur.unit);
   if(S.opts.title&&u)deck=[{title:true}].concat(deck);
+  if(S.opts.gram)deck=deck.concat(grammarItems(ws));
   deck.push({end:true});
   idx=0;step=0;jaForce=false;go("show");renderSlide();
 }
@@ -2392,9 +2509,12 @@ function renderSlide(){
     card.classList.add("title");
     card.innerHTML=`<div></div><div class="unitNo">${u.own?"Today's words":"Unit "+esc(u.unit)}</div><div class="unitTitle">${esc(u.title)}</div><div class="unitSub">${b?esc(b.book):""}</div>`;
   }else if(w.end){
+    const nw=deck.filter(d=>d.en).length;
     card.classList.add("title");
-    card.innerHTML=`<div></div><div class="bigMsg">Great job!</div><div class="unitSub" style="margin-bottom:3vh">${deck.filter(d=>d.en).length} new words</div>
-      <div class="endBtns"><button class="btn alt" data-act="miss">What's missing?</button><button class="btn alt" data-act="flash">Fast flash</button><button class="btn" data-act="again">Again</button><button class="btn" data-act="home">Word list</button></div>`;
+    card.innerHTML=`<div></div><div class="bigMsg">Great job!</div><div class="unitSub" style="margin-bottom:3vh">${nw?nw+" new words":"Grammar done"}</div>
+      <div class="endBtns"><button class="btn alt" data-act="miss">What's missing?</button><button class="btn alt" data-act="flash">Fast flash</button>${w.gram?"":`<button class="btn alt" data-act="gram">Grammar</button>`}<button class="btn" data-act="again">Again</button><button class="btn" data-act="home">Word list</button></div>`;
+  }else if(w.grammar){
+    renderGrammar(card,w);
   }else{
     const p=picFor(w.en),sent=sentenceOf(w,u),steps=stepsFor(w);
     card.innerHTML=`<div class="word rv" data-s="word">${esc(w.en)}</div>
@@ -2405,42 +2525,46 @@ function renderSlide(){
   }
   applyStep();
   const words=deck.filter(d=>d.en),pos=deck.slice(0,idx+1).filter(d=>d.en).length;
-  $("#sProg").textContent=w.en?`${pos} / ${words.length}`:"";
+  $("#sProg").textContent=w.en?`${pos} / ${words.length}`:w.grammar?"Grammar":"";
   $("#sPrev").disabled=idx===0;
 }
 function applyStep(){
   const w=deck[idx];const card=$("#slide");
-  const steps=w.en?stepsFor(w):[];
+  const steps=stepsOf(w);
   card.querySelectorAll(".rv").forEach(el=>{const s=el.dataset.s,i=steps.indexOf(s);
-    const on=(i>=0&&i<=step)||(s==="ja"&&jaForce&&w.ja);el.classList.toggle("off",!on);});
+    const on=(i>=0&&i<=step)||(s==="ja"&&jaForce&&(w.ja||(w.g&&w.g.ja)));el.classList.toggle("off",!on);});
   $("#sDots").innerHTML=steps.map((s,i)=>`<i class="${i<=step?"on":""}" title="${s}"></i>`).join("");
 }
 function fitText(el){if(!el)return;el.style.fontSize="";let fs=parseFloat(getComputedStyle(el).fontSize);const max=el.parentElement.clientWidth*0.94;
   while(el.scrollWidth>max&&fs>20){fs*=0.92;el.style.fontSize=fs+"px";}}
 function next(){
-  const w=deck[idx];
-  if(w.en){const steps=stepsFor(w);if(step<steps.length-1){step++;applyStep();onReveal(steps[step]);return;}}
-  if(idx<deck.length-1){idx++;step=0;jaForce=false;renderSlide();if(deck[idx].en)onReveal("word");}
+  const w=deck[idx],steps=stepsOf(w);
+  if(step<steps.length-1){step++;if(w.grammar&&/^swap/.test(steps[step]))renderSlide();else applyStep();onReveal(steps[step]);return;}
+  if(idx<deck.length-1){idx++;step=0;jaForce=false;renderSlide();onReveal(stepsOf(deck[idx])[0]);}
 }
 function prev(){
-  const w=deck[idx];
-  if(w.en&&step>0){step--;applyStep();return;}
-  if(idx>0){idx--;const p=deck[idx];step=p.en?stepsFor(p).length-1:0;jaForce=false;renderSlide();}
+  const w=deck[idx],steps=stepsOf(w);
+  if(step>0){step--;if(w.grammar&&/^swap/.test(steps[step+1]))renderSlide();else applyStep();return;}
+  if(idx>0){idx--;step=Math.max(0,stepsOf(deck[idx]).length-1);jaForce=false;renderSlide();}
 }
-function jumpStep(n){const w=deck[idx];if(!w.en)return;const steps=stepsFor(w);step=Math.min(n,steps.length-1);applyStep();}
-function onReveal(s){if(!S.opts.speak)return;const w=deck[idx],u=getUnit(cur.book,cur.unit);
+function jumpStep(n){const w=deck[idx],steps=stepsOf(w);if(!steps.length)return;step=Math.min(n,steps.length-1);if(w.grammar)renderSlide();else applyStep();}
+function onReveal(s){if(!S.opts.speak||!s)return;const w=deck[idx],u=getUnit(cur.book,cur.unit);
+  if(w.grammar){const el=$(`#slide [data-s="${/^swap/.test(s)?"pattern":s}"]`);if(el&&s!=="ja"&&s!=="table")say(el.textContent.replace(/\s+/g," ").replace(/(who|action|question|word)(?=\s|$)/g,""));return;}
   if(s==="word")say(w.en);else if(s==="sent")say(sentenceOf(w,u));}
-function sayNow(){const w=deck[idx];if(!w||!w.en)return;const u=getUnit(cur.book,cur.unit),steps=stepsFor(w);
+function sayNow(){const w=deck[idx];if(!w)return;
+  if(w.grammar){const steps=stepsOf(w);let s=steps[step];if(/^swap/.test(s)||s==="ja"||s==="table")s="pattern";const was=S.opts.speak;S.opts.speak=true;onReveal(s);S.opts.speak=was;return;}
+  if(!w.en)return;const u=getUnit(cur.book,cur.unit),steps=stepsFor(w);
   const si=steps.indexOf("sent");say(si>=0&&step>=si?w.en+". "+sentenceOf(w,u):w.en);}
 $("#slide").addEventListener("click",e=>{const a=e.target.closest("[data-act]");
-  if(a){const act=a.dataset.act;if(act==="miss")startMissing();else if(act==="flash")startFlash();else if(act==="again")startShow();else go("setup");return;}
+  if(a){const act=a.dataset.act;if(act==="miss")startMissing();else if(act==="flash")startFlash();else if(act==="gram")startGrammar();else if(act==="again")(deck[idx].gram?startGrammar:startShow)();else go("setup");return;}
+  if(e.target.closest("[data-swap]")){swapWord(1);return;}
   next();});
 $("#sNext").onclick=next;$("#sPrev").onclick=prev;$("#sHome").onclick=()=>go("setup");
 $("#sSay").onclick=sayNow;
 $("#sJa").onclick=()=>toggleJa();
 $("#sEdit").onclick=()=>{const w=deck[idx];if(w&&w.en)openEdit(w.id,"show");};
-function toggleJa(){const w=deck[idx];if(!w||!w.en)return;jaForce=!jaForce;
-  const el=$("#slide .ja");if(el&&!el.textContent)el.textContent=w.ja;applyStep();}
+function toggleJa(){const w=deck[idx];if(!w||!(w.en||w.grammar))return;jaForce=!jaForce;
+  const el=$("#slide .ja"),t=w.grammar?(w.g.ja||""):w.ja;if(el&&!el.textContent)el.textContent=t;applyStep();}
 
 /* ---------- speech ---------- */
 let voice=null;
@@ -2534,7 +2658,7 @@ function flashWordMode(){S.flash.word=WORDMODES[(WORDMODES.indexOf(S.flash.word)
 $("#fWord").onclick=flashWordMode;
 
 /* ---------- starts ---------- */
-$("#startBtn").onclick=startShow;$("#missBtn").onclick=startMissing;$("#flashBtn").onclick=startFlash;
+$("#startBtn").onclick=startShow;$("#gramBtn").onclick=startGrammar;$("#missBtn").onclick=startMissing;$("#flashBtn").onclick=startFlash;
 
 /* ---------- full screen, blank, idle bar, toast, help ---------- */
 function fs(){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(e){}}
@@ -2566,7 +2690,8 @@ document.addEventListener("keydown",e=>{
     if(fwd){e.preventDefault();next();}else if(back){e.preventDefault();prev();}
     else if(k==="s"||k==="S")sayNow();else if(k==="j"||k==="J")toggleJa();
     else if(k==="e"||k==="E"){const w=deck[idx];if(w&&w.en){e.preventDefault();openEdit(w.id,"show");}}
-    else if(/^[1-4]$/.test(k))jumpStep(Number(k)-1);
+    else if(/^[1-9]$/.test(k))jumpStep(Number(k)-1);
+    else if((k==="w"||k==="W")&&deck[idx].grammar)swapWord(1);
   }else if(screen==="missing"){
     if(fwd){e.preventDefault();missNext();}else if(k==="w"||k==="W"){S.miss.words=!S.miss.words;save();renderMissing();}
   }else if(screen==="flash"){
