@@ -18,6 +18,7 @@ If GitHub Pages is turned on, the same pages are also here (replace `encitysoftw
 | Picture Lock (kit demo game) | https://encitysoftworks.github.io/classroom-games/game-kit/starters/picture-lock.html |
 | Word Party (kit starter game) | https://encitysoftworks.github.io/classroom-games/game-kit/starters/word-party.html |
 | Textbook word bank | https://encitysoftworks.github.io/classroom-games/textbook-db/viewer/word-bank.html |
+| Vocab Intro (teacher tool) | https://encitysoftworks.github.io/classroom-games/vocab-intro.html |
 | Sentence Box | https://encitysoftworks.github.io/classroom-games/sentence-box/ (needs setup, see `sentence-box/Code.gs`) |
 
 Note: the hub's **Edit page** button only works on the Claude link. The QR codes inside each game still point at the Claude links.
@@ -28,6 +29,7 @@ Note: the hub's **Edit page** button only works on the Claude link. The QR codes
 |---|---|
 | `index.html` | The hub page that lists every game |
 | `keypad.html`, `maze.html` | Finished games |
+| `vocab-intro.html` | Teacher tool for introducing a unit's new words on the projector |
 | `game-kit/` | Shared code and look for new games, plus starter games. See `game-kit/README.md` |
 | `textbook-db/` | Vocabulary and phrases for each textbook unit (Let's Try, Junior Sunshine, Sunshine). Still a draft until checked against the textbooks |
 | `sentence-box/` | A page where students send sentences anonymously to a Google Sheet |
