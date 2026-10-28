@@ -23,8 +23,9 @@ RENAME = {
     "sentence-box/Sentence Box.html": "sentence-box/index.html",
     "vocab-intro/Vocab Intro.html": "vocab-intro.html",
     "memory-imposter/Memory Imposter.html": "memory-imposter.html",
+    "word-dash/Word Dash.html": "word-dash.html",
 }
-FOLDERS = ["game-kit", "textbook-db", "sentence-box", "vocab-intro", "memory-imposter"]
+FOLDERS = ["game-kit", "textbook-db", "sentence-box", "vocab-intro", "memory-imposter", "word-dash"]
 SKIP_DIRS = {"uploads", "__pycache__"}
 
 def files():
