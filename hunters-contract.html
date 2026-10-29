@@ -1,6 +1,6 @@
 <title>Hunter's Contract</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Pinyon+Script&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
 <!--
   Hunter's Contract: a small gothic boss-rush action game (retro 3D, PSX look), keyboard only.
   Built on the Classroom Game Kit + retro 3D add-on. Do not edit inside the KIT blocks:
@@ -278,9 +278,29 @@ body{background-image:radial-gradient(900px 420px at 50% -10%,#1d1f30 0%,rgba(12
 .notice li{margin-bottom:4px}
 .notice .ja,body.jp .notice .ja{color:#5d5244}
 .notice .reward{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed #8a7a5c;padding-top:10px;font-size:16px}
-.notice label{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:18px;flex-wrap:wrap}
-.notice input{font:italic 22px var(--f-gothic);background:transparent;border:0;border-bottom:2px solid #3b3026;color:#20180f;padding:2px 6px;width:min(240px,60%)}
-.notice input:focus{outline:none;border-bottom-color:#6b2a1e}
+.sign{margin-top:12px;border-top:1px dashed #8a7a5c;padding-top:10px;display:grid;gap:9px}
+.sign h4{font:400 15px var(--f-display);letter-spacing:.2em;text-align:center;color:#6b2a1e}
+.sline{display:grid;grid-template-columns:4.6em 1fr;align-items:end;gap:8px;transition:opacity .3s}
+.sline.wait{opacity:.4}
+.sline .lbl{font:400 15px var(--f-display);letter-spacing:.08em;color:#6b2a1e;padding-bottom:4px}
+.sline .txt{position:relative;font:italic 24px/1.3 var(--f-gothic);border-bottom:1px solid #8a7a5c;min-height:1.45em;white-space:pre-wrap;overflow-wrap:anywhere}
+.sline .txt span{position:relative}
+.txt .g{color:rgba(42,33,22,.3)}
+.txt .k{color:#140d06}
+.txt .cur{box-shadow:inset 0 -3px 0 #6b2a1e}
+.txt .caret{display:inline-block;width:2px;height:.9em;background:#6b2a1e;vertical-align:-.1em;margin-left:2px}
+.txt .blot{position:absolute;left:50%;top:50%;width:22px;height:20px;margin:-10px 0 0 -11px;pointer-events:none}
+.sline .hint{grid-column:2;font-size:14px;color:#5d5244;margin-top:-4px}
+.sline .hint .ja{display:inline;margin-left:6px}
+.sig{font:400 34px/1.1 "Pinyon Script","Snell Roundhand","Apple Chancery",cursive;font-style:normal}
+.txt.sig{font:400 34px/1.15 "Pinyon Script","Snell Roundhand","Apple Chancery",cursive}
+.imehint{text-align:center;font:700 15px var(--f-body,sans-serif);color:#8f2723;margin:0}
+.seal{position:absolute;right:16px;bottom:12px;width:86px;height:86px;opacity:0;transform:scale(2.4) rotate(-24deg);pointer-events:none}
+.seal.on{animation:stamp .34s cubic-bezier(.55,0,.85,.35) forwards}
+@keyframes stamp{0%{opacity:0;transform:scale(2.4) rotate(-24deg)}70%{opacity:1;transform:scale(.9) rotate(-9deg)}100%{opacity:1;transform:scale(1) rotate(-9deg)}}
+@media (prefers-reduced-motion:reduce){.seal.on{animation:none;opacity:1;transform:rotate(-9deg)}}
+.signtip{font-size:16px;line-height:1.5}
+.signtip b{color:var(--accent)}
 .side{display:flex;flex-direction:column;gap:12px}
 .card{background:var(--panel);border:1px solid var(--edge);border-radius:6px;padding:12px 14px}
 .card h3{font:400 18px var(--f-display);color:var(--accent);margin-bottom:6px}
@@ -377,7 +397,7 @@ body.jp .helpline .ja{display:block}
         </div>
         <p class="best" id="best"></p>
         <div class="go">
-          <button class="btn primary big" id="goHunt" type="button">Sign and hunt<span class="ja">サインして狩りへ</span></button>
+          <p class="signtip" id="signTip"><b>Sign the contract to begin.</b> Type on the paper: the beast's name, the oath, then your name.<span class="ja">紙に入力してサインしよう：化け物の名前、ちかい、自分の名前。</span></p>
           <button class="btn" id="replayCut" type="button" hidden>Watch the intro again<span class="ja">オープニングをもう一度</span></button>
         </div>
       </div>
@@ -1366,6 +1386,7 @@ const BOSSES={
       reward:["Reward: 300 silver coins","報酬：銀貨300枚"]},
     journal:["The Bell Warden rang the chapel bell for a hundred years. Now the yard is quiet.","鐘の番人は百年のあいだ礼拝堂の鐘を鳴らしていた。今、庭は静かだ。"],
     phase2:["The bell begins to ring.","鐘が鳴りはじめた。"],
+    oath:["I will silence the bell.","わたしは鐘を止めることをちかう。"],
     moves:{
       claw:{dur:1.6,track:0.62,hits:[{t:0.85,limb:"R",range:3.5,arc:130,dmg:20,parry:true}],step:[0.7,0.9,3.2],weight:d=>d<4.6?3:0},
       clawL:{dur:1.6,track:0.62,hits:[{t:0.85,limb:"L",range:3.5,arc:130,dmg:20,parry:true}],step:[0.7,0.9,3.2],weight:d=>d<4.6?2:0},
@@ -1420,6 +1441,10 @@ const SFX={
   empty:()=>tone(180,0.12,"square",0.03,150),
   foot:()=>{tone(85,0.08,"sine",0.04,55);noise(0.05,0.015);},
   eye:()=>tone(1150,0.08,"sine",0.012,1000),
+  pen:()=>{noise(0.035,0.012);tone(2300+Math.random()*500,0.025,"triangle",0.004);},
+  blot:()=>tone(150,0.14,"sine",0.035,95),
+  line:()=>{noise(0.12,0.02);tone(660,0.12,"sine",0.012,620);},
+  seal:()=>{tone(60,0.4,"sine",0.12,38);noise(0.18,0.07);tone(330,0.5,"sine",0.015,300,0.05);},
   bell:()=>{tone(196,2.6,"sine",0.09);tone(392,2.2,"sine",0.04);tone(588,1.6,"sine",0.025);tone(466,1.8,"triangle",0.015);},
   roar:()=>{tone(68,1.3,"sawtooth",0.07,48);tone(101,1.2,"sawtooth",0.045,62);noise(0.9,0.05);},
   thud:()=>{tone(55,0.45,"sine",0.12,32);noise(0.3,0.08);},
@@ -1443,15 +1468,64 @@ function renderBoard(){
     <p class="tale">${n.tale[0]}</p><p class="ja" style="text-align:center;margin-top:-8px;margin-bottom:10px">${n.tale[1]}</p>
     <ul>${n.clues.map(c=>`<li>${c[0]}<span class="ja">${c[1]}</span></li>`).join("")}</ul>
     <div class="reward"><span>${n.reward[0]}<span class="ja">${n.reward[1]}</span></span><span>Bring 5 healing vials.<span class="ja">回復の小びんは5本まで</span></span></div>
-    <label>Hunter's name: <input id="hName" maxlength="14" autocomplete="off" spellcheck="false" placeholder="your name"></label>`;
-  const inp=$("#hName");inp.value=st.get("name","");
-  inp.oninput=()=>{inp.value=inp.value.replace(/[^A-Za-z .'-]/g,"");st.set("name",inp.value.trim());};
-  inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();startHunt();}};
+    <div class="sign" id="sign"></div>${SEAL}`;
+  SG.step=0;SG.pos=[0,0];SG.blots=[{},{}];SG.name=st.get("name","");SG.ime=false;
+  SG.lines=[B.name[0].replace(/^The /,""),B.oath[0]];SG.pos=SG.lines.map(skipMarks0);
+  renderSign();
   const B0=BOSSES[G.bossKey];$("#replayCut").hidden=!(B0.intro&&st.get("cut_"+G.bossKey,false));
   const best=st.get("best_"+G.bossKey,null);
   $("#best").innerHTML=best?bi(["Your best: Rank "+best.rank+" ("+best.score+" points)","ベスト：ランク"+best.rank+"（"+best.score+"点）"]):"";
 }
-$("#goHunt").onclick=()=>startHunt();
+
+/* ---------- signing the contract: type the beast's name, the oath, then your name ---------- */
+const SG={step:0,pos:[0,0],blots:[{},{}],name:"",lines:["",""],ime:false};
+const skipMarks=(t,i)=>{while(i<t.length&&!/[A-Za-z ]/.test(t[i]))i++;return i;};
+const skipMarks0=t=>skipMarks(t,0);
+const BLOT=r=>`<svg class="blot" viewBox="0 0 22 20" style="transform:rotate(${r}deg)" aria-hidden="true"><path fill="#1c1209" fill-opacity=".72" d="M11 3c3 0 2 2 4 2s3 1 3 4-2 2-1 4-1 4-4 4-2-1-4-1-4 1-5-2 1-3 0-5 0-5 3-5 1-5 4-5z"/><circle cx="19" cy="4" r="1.3" fill="#1c1209" fill-opacity=".7"/><circle cx="3" cy="16" r="1" fill="#1c1209" fill-opacity=".7"/></svg>`;
+const SEAL=`<svg class="seal" id="seal" viewBox="0 0 100 100" aria-hidden="true">
+  <path fill="#8f2320" d="M50 4c8 0 10 5 17 7s13 1 16 8 0 11 3 17 9 9 8 16-7 9-8 16-1 12-8 15-11 1-17 4-9 9-16 9-10-6-17-8-13-1-16-8 0-11-3-17-8-9-8-16 6-10 8-17 1-12 8-15 11 0 17-3 8-8 16-8z"/>
+  <circle cx="50" cy="50" r="31" fill="none" stroke="#5e1513" stroke-width="3"/>
+  <path fill="#5e1513" d="M26 58c6-2 10-12 24-16 14 4 18 14 24 16-6 4-14 5-24 5s-18-1-24-5z"/><path fill="#5e1513" d="M38 48c2-8 7-12 12-12s10 4 12 12c-4-2-8-3-12-3s-8 1-12 3z"/>
+  <path fill="#b8403a" fill-opacity=".45" d="M30 22c8-6 22-8 30-4-10 0-20 3-26 9z"/></svg>`;
+function renderSign(){
+  const el=$("#sign");if(!el)return;
+  const row=(i,lbl,hint)=>{const t=SG.lines[i],p=SG.pos[i],act=SG.step===i,done=SG.step>i;
+    const chars=[...t].map((c,j)=>{const cls=j<p||done?"k":"g",cur=act&&j===p?" cur":"",b=SG.blots[i][j];
+      return `<span class="${cls}${cur}">${b!=null?BLOT(b):""}${c===" "?" ":c}</span>`;}).join("");
+    return `<div class="sline${SG.step<i?" wait":""}"><span class="lbl">${lbl}</span><div class="txt">${chars}</div>${act?`<div class="hint">${hint}</div>`:""}</div>`;};
+  const nm=SG.name.replace(/[<>&"]/g,"");
+  el.innerHTML=`<h4>Contract</h4>
+    ${row(0,"Beast",`Type the beast's name.<span class="ja">化け物の名前を打とう。</span>`)}
+    ${row(1,"Oath",`Type the oath.<span class="ja">${BOSSES[G.bossKey].oath[1]}</span>`)}
+    <div class="sline${SG.step<2?" wait":""}"><span class="lbl">Signed</span><div class="txt sig">${nm}${SG.step===2?'<span class="caret"></span>':""}</div>${SG.step===2?`<div class="hint">${nm?"Press <kbd>Enter</kbd> to sign. (Backspace to change)":"Type your name in English letters."}<span class="ja">${nm?"Enterでサイン":"名前をローマ字で書こう"}</span></div>`:""}</div>
+    ${SG.ime?`<p class="imehint">Switch the keyboard to English input (英数).<span class="ja">英数入力に切りかえてね。</span></p>`:""}`;
+}
+function sealContract(){
+  SG.step=3;st.set("name",SG.name.trim());renderSign();
+  const s=$("#seal");s.classList.remove("on");void s.offsetWidth;s.classList.add("on");
+  setTimeout(()=>{sfx("seal");},230);
+  setTimeout(()=>{if(scr.current==="board"&&SG.step===3)startHunt();},1250);
+}
+document.addEventListener("keydown",e=>{
+  if(scr.current!=="board"||SG.step>2||e.ctrlKey||e.metaKey||e.altKey)return;
+  const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"))return;
+  if(e.key==="Process"||e.isComposing){if(!SG.ime){SG.ime=true;renderSign();}return;}
+  if(SG.ime){SG.ime=false;}
+  if(SG.step<2){
+    if(e.key.length!==1)return;e.preventDefault();if(e.repeat)return;
+    const i=SG.step,line=SG.lines[i],want=line[SG.pos[i]];
+    if(e.key.toLowerCase()===want.toLowerCase()){
+      SG.pos[i]=skipMarks(line,SG.pos[i]+1);sfx("pen");
+      if(SG.pos[i]>=line.length){SG.step++;sfx("line");}
+    }else if(SG.blots[i][SG.pos[i]]==null){SG.blots[i][SG.pos[i]]=Math.round(Math.random()*360);sfx("blot");}
+    else sfx("blot");
+    renderSign();return;
+  }
+  /* step 2: the signature */
+  if(e.key==="Enter"){e.preventDefault();if(/[A-Za-z]/.test(SG.name))sealContract();return;}
+  if(e.key==="Backspace"){e.preventDefault();SG.name=SG.name.slice(0,-1);renderSign();return;}
+  if(e.key.length===1){e.preventDefault();if(/[A-Za-z .'-]/.test(e.key)&&SG.name.length<14){SG.name+=e.key;sfx("pen");}renderSign();}
+});
 $("#replayCut").onclick=()=>{st.set("cut_"+G.bossKey,false);startHunt();};
 
 /* ---------- 3D helpers ---------- */
@@ -2220,7 +2294,7 @@ function showResult(){
   if(!diff&&(!old||score>old.score))st.set("best_"+G.bossKey,{rank,score});
   $("#result").innerHTML=`<div class="result">
     <h2>Contract complete</h2><p class="ja">契約完了</p>
-    <div class="rank">${rank}<small>${name}, ${title[0].toLowerCase()}</small></div><p class="ja">${title[1]}</p>
+    <div class="rank">${rank}<small><span class="sig">${name.replace(/[<>&"]/g,"")}</span>, ${title[0].toLowerCase()}</small></div><p class="ja">${title[1]}</p>
     <div class="stats"><span>Time</span><b>${Kit.fmtTime(time)}</b><span>Hits taken</span><b>${s.hits}</b><span>Parries</span><b>${s.parries}</b><span>Critical strikes</span><b>${s.crits}</b><span>Vials used</span><b>${s.vialsUsed} / 5</b><span>Score</span><b>${score}</b></div>
     ${notes.length?`<ul class="notes">${notes.map(n=>`<li>${n[0]}<span class="ja">${n[1]}</span></li>`).join("")}</ul>`:""}
     <p class="journal">Journal: ${D.journal[0]}<span class="ja">${D.journal[1]}</span></p>
