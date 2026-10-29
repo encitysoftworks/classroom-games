@@ -440,6 +440,7 @@ kbd{display:inline-block;min-width:22px;text-align:center;font:700 13px var(--f-
 .hud3.cine .lb{height:11%}
 .pbars,.bossbar{transition:opacity .35s}
 .hud3.cine .pbars,.hud3.cine .bossbar{opacity:0}
+.fade{position:absolute;inset:0;background:#000;opacity:0}
 @media (prefers-reduced-motion:reduce){.lb,.pbars,.bossbar{transition:none}}
 .helpline{margin-top:8px;color:var(--muted);font-size:14px;text-align:center;line-height:2}
 .helpline .ja{display:none}
@@ -488,6 +489,7 @@ body.jp .helpline .ja{display:block}
         </div>
         <div class="bossbar"><div class="nm" id="bossName"></div><div class="bar"><i class="fill" id="bossFill"></i></div></div>
         <div class="ping" id="ping"></div>
+        <div class="fade" id="fade"></div>
         <div class="banner" id="banner"></div>
         <div class="prompt" id="prompt"></div>
         <div class="veil" id="veil" hidden></div>
@@ -1468,7 +1470,10 @@ const BOSSES={
       sweep:{dur:2.1,track:0.75,spin:{from:0.85,to:1.2},hits:[{t:1.05,limb:"both",range:3.8,arc:360,dmg:22,parry:true}],weight:(d,ph)=>ph>1&&d<4.4?2:0},
       toll:{dur:2.5,track:0.3,toll:true,hits:[{t:1.15,ring:true,dmg:18}],weight:(d,ph)=>ph>1?1.6:0}
     },
+    gone:["The bell is silent.","鐘は静かになった。"],
     build:buildWarden,
+    finale:{dur:8.4,run:(t,dt)=>wardenFinale(t,dt),
+      start:B=>{B.x=0;B.z=-4;B.a=0;P.x=0.3;P.z=-1.6;P.a=Math.PI;P.m.g.visible=true;}},
     /* first-time intro: walk in, the bell tolls, the "statue" ahead wakes */
     intro:{from:[0,14],to:[0,6],dur:8.4,glide:1.3,line:["It still rings the bell.","まだ鐘を鳴らしている。"],run:(t,dt)=>wardenIntro(t,dt)}
   },
@@ -1499,6 +1504,11 @@ const BOSSES={
       blink:{dur:2.1,track:0,blink:true,anim:umbAnim,hits:[{t:1.15,raise:0.55,limb:"R",s:-1,range:3.1,arc:130,dmg:24,parry:true}],weight:(d,ph)=>ph>1?2.2:0}
     },
     build:buildDimitri,
+    finale:{dur:9.4,run:(t,dt)=>dimitriFinale(t,dt),
+      start:B=>{B.x=0;B.z=-4;B.a=0;P.x=0;P.z=1.4;P.a=Math.PI;P.m.g.visible=true;
+        /* the umbrella he drops when he is shot (its own copy, so it stays when he fades) */
+        if(G.umb)G.stage.scene.remove(G.umb);const u=G.umb=B.m.um.clone(true);u.traverse(o=>{if(o.material){o.material=o.material.clone();o.material.opacity=1;o.material.transparent=false;o.material.emissive&&o.material.emissive.setHex(0);}});
+        u.position.set(0.5,0.06,-3.3);u.rotation.set(0,0.4,Math.PI/2);u.visible=false;G.stage.scene.add(u);}},
     /* first-time intro: a tilted camera down the wet street; the lamps go dark one by one toward him */
     intro:{from:[0,15],to:[0,6],dur:8.6,glide:1.3,line:["He doesn't own a car.","彼は車を持っていない。"],run:(t,dt)=>dimitriIntro(t,dt),
       start:()=>{const m=G.boss.m;G.boss.a=Math.PI;m.shield.visible=true;m.um.visible=false;P.m.g.visible=true;},
@@ -2069,8 +2079,8 @@ function startHunt(){
   [G.trail,G.btR,G.btL].forEach(t=>t.clear());
   if(G.ringMesh){G.ringMesh.visible=false;}
   if(G.mark)G.mark.visible=false;
-  if(G.ghost){G.stage.scene.remove(G.ghost.m.g);G.ghost=null;}if(G.rain)G.rain.frozen=false;
-  G.paused=false;G.over=false;G.freeze=0;G.shake=0;G.kx=G.kz=0;G.time=0;G.running=false;G.cw=0;G.cz=0;
+  if(G.ghost){G.stage.scene.remove(G.ghost.m.g);G.ghost=null;}if(G.umb){G.stage.scene.remove(G.umb);G.umb=null;}if(G.rain)G.rain.frozen=false;
+  G.paused=false;G.over=false;G.final=false;$("#fade").style.opacity=0;$("#banner").classList.remove("on");G.freeze=0;G.shake=0;G.kx=G.kz=0;G.time=0;G.running=false;G.cw=0;G.cz=0;
   lastVials=-1;veil(null);prompt(null);
   $("#bossName").innerHTML=D.name[0]+` <span class="ja inl">${D.name[1]}</span>`;
   G.stage.camera.position.set(0,12,16);
@@ -2099,7 +2109,7 @@ function tick(dt){
   /* slow motion during the critical strike */
   /* slow motion on the stab, and slower still on the rip */
   const ct=P.state==="crit"?P.t:-1,sdt=ct>0.88&&ct<1.3?dt*0.3:ct>0.28&&ct<0.4?dt*0.5:dt;
-  if(G.running&&!G.over)G.time+=sdt;
+  if(G.running&&!G.over&&!G.final)G.time+=sdt;
   player(sdt);boss(sdt);updFx(sdt);camera(dt);hud();
 }
 
@@ -2145,6 +2155,8 @@ function tryAction(){
   const k=buf.k,s=P.state,busy=s!=="move";
   if(k==="light"&&s==="light"&&P.t>=ACT.light.chain&&P.combo<2&&P.sta>0){P.combo++;buf=null;begin("light");return;}
   if(busy)return;
+  /* the boss is down: E (or J) starts its finisher */
+  if(G.boss&&G.boss.state==="final"&&(k==="crit"||k==="light")){buf=null;startFinisher();return;}
   if((k==="crit"||k==="light")&&canCrit()){buf=null;begin("crit");return;}
   if(k==="crit"){buf=null;return;}
   if(k==="heal"){buf=null;if(P.vials<=0){sfx("empty");ping("No vials left");return;}if(P.hp>=P.max){return;}begin("heal");return;}
@@ -2153,14 +2165,14 @@ function tryAction(){
   buf=null;begin(k);
 }
 function swingHits(A,dmg,kind){
-  const B=G.boss;if(!B||B.state==="dead"||B.state==="intro")return false;
+  const B=G.boss;if(!B||B.state==="dead"||B.state==="intro"||B.state==="final")return false;
   const t=toBoss();if(t.d-1.1>A.range)return false;
   if(Math.abs(wrapA(t.a-P.a))*180/Math.PI>A.arc/2+15)return false;
   damageBoss(dmg,P.x+t.dx*0.6,1.6,P.z+t.dz*0.6,kind);return true;
 }
 const HITSTOP={light:0.07,heavy:0.12,crit:0.24,gun:0.02},SHAKE={light:0.08,heavy:0.18,crit:0.32,gun:0};
 function damageBoss(dmg,x,y,z,kind){
-  const B=G.boss;B.hp-=dmg;
+  const B=G.boss;if(B.state==="final")return;B.hp-=dmg;
   if(kind!=="gun"&&B.state!=="stagger")B.flinch=0.2;
   const big=kind==="crit";
   const back=Math.min(P.rally,dmg*(big?1.5:0.85));if(back>0){P.hp=Math.min(P.max,P.hp+back);P.rally-=back;}
@@ -2168,7 +2180,7 @@ function damageBoss(dmg,x,y,z,kind){
   sfx(big?"crit":"hit");
   G.freeze=HITSTOP[kind];G.shake=Math.max(G.shake,SHAKE[kind]);
   const d=Math.hypot(x-P.x,z-P.z)||1;G.kx+=(x-P.x)/d*(big?0.5:0.25);G.kz+=(z-P.z)/d*(big?0.5:0.25);
-  if(B.hp<=0)bossDies();
+  if(B.hp<=0)bossDown();
 }
 function player(dt){
   const m=P.m;
@@ -2288,7 +2300,7 @@ function walkPose(T,moving,dt){
 function slam(sh){const v=new THREE.Vector3();P.m.tip.getWorldPosition(v);shock(v.x,v.z,1.5);fx("dust",v.x,0.2,v.z,6);G.shake=Math.max(G.shake,sh);}
 function shoot(){
   const B=G.boss,v=new THREE.Vector3();P.m.muzzle.getWorldPosition(v);sfx("gun");fx("smoke",v.x,v.y,v.z,5);
-  if(!B||B.state==="dead"||B.state==="intro")return;
+  if(!B||B.state==="dead"||B.state==="intro"||B.state==="final")return;
   const t=toBoss();
   if(t.d>11||Math.abs(wrapA(t.a-P.a))>0.6)return;
   if(B.state==="guard"){guardBreak(B);return;}
@@ -2304,7 +2316,7 @@ function shoot(){
     P.stats.parries++;if(perfect)P.stats.perfects++;P.gunDur=ACT.gun.dur;
     sfx("parry");if(perfect)tone(1760,0.7,"sine",0.03,1320,0.08);ping(perfect?"PERFECT PARRY":"PARRY");
     fx("spark",B.x,2.2,B.z,perfect?20:12);G.freeze=perfect?0.26:0.18;G.shake=Math.max(G.shake,perfect?0.22:0.16);
-  }else{B.hp-=3;fx("spark",B.x,1.8,B.z,3);if(B.hp<=0)bossDies();}
+  }else{B.hp-=3;fx("spark",B.x,1.8,B.z,3);if(B.hp<=0)bossDown();}
 }
 
 /* ---------- the boss ---------- */
@@ -2464,6 +2476,11 @@ function boss(dt){
       T.head=kf(u,[[0.12,-0.6],[0.8,0.6]]);k=0.6;
       if(P.state==="crit"&&P.thrust){T.chest=1.35+Math.sin(G.clock*40)*0.03;T.head=0.8;T.by-=0.05;}
       if(B.stagger<=0&&P.state!=="crit"){B.state="getup";B.t=0;}break;}
+    /* out of health: down on its knees, waiting for the finisher */
+    case "final":{B.t+=dt;const u=B.t;
+      T.chest=kf(u,[[0,-0.3],[0.15,-0.4,"in"],[0.9,1.3]])+Math.sin(G.clock*1.7)*0.03;T.by=kf(u,[[0,0.2],[0.15,0.3],[0.9,-0.95]]);
+      T.head=kf(u,[[0.15,-0.6],[0.9,0.6]]);bothArms(T,kf(u,[[0,-1.6],[0.15,-2.0,"in"],[0.9,-0.15]]),kf(u,[[0,1],[0.9,0.25]]),-0.1);k=0.5;
+      if(Math.random()<dt*1.5)fx("mist",B.x+(Math.random()-0.5),1+Math.random(),B.z+(Math.random()-0.5),1);break;}
     case "getup":B.t+=dt;k=0.12;T.chest=0.6;if(B.t>=0.8){B.state="idle";B.cd=0.3;}break;
     case "counter":case "guard":case "broken":T=duelState(B,dt,t,T);k=B.state==="guard"?0.3:0.6;break;
     case "roar":{B.t+=dt;const u=B.t,tr=u>0.45&&u<1.6?Math.sin(G.clock*50)*0.05:0;
@@ -2471,7 +2488,8 @@ function boss(dt){
       bothArms(T,kf(u,[[0,-0.1],[0.45,-1.6],[1.6,-1.5],[2.0,-0.1]])+tr,kf(u,[[0,0.15],[0.45,1.5],[1.6,1.4],[2.0,0.15]]),-0.6);
       T.head=kf(u,[[0,0],[0.45,-0.75],[1.6,-0.7],[2.0,0]]);k=0.6;
       {const rc=B.D.roarColor||[0x4aa6c0,0x1a3a4a];m.eyeM.emissive.setHex(rc[0]);m.bellM.emissive.setHex(rc[1]);if(B.D.duel&&G.rain)G.rain.frozen=true;}
-      m.antlers.forEach(a=>a.traverse(c=>{if(c.isMesh)c.material=M(0x7fa7b8);}));
+      /* pale horns: its own material, so a fade or stone effect elsewhere can never touch it */
+      if(!m.hornM){m.hornM=Kit3D.mat(0x7fa7b8);m.antlers.forEach(a=>a.traverse(c=>{if(c.isMesh)c.material=m.hornM;}));}
       if(u>0.5&&!B.pushed){B.pushed=true;const d=Math.hypot(P.x-B.x,P.z-B.z)||1;if(d<5&&P.state!=="dead"){P.state="hurt";P.t=0;P.hurtV=[(P.x-B.x)/d*8,(P.z-B.z)/d*8];}
         fx("ash",B.x,2.5,B.z,12);shock(B.x,B.z,4.5,0x4a5a6a);G.shake=Math.max(G.shake,0.25);}
       if(u>=2.0){B.state="idle";B.cd=0.4;}break;}
@@ -2493,7 +2511,8 @@ function boss(dt){
   poseBoss(T,k);
   G.btR.update(B.trR,m.armR.tip,m.armR.el);G.btL.update(B.trL,m.armL.tip,m.armL.el);
   updRing(dt);
-  prompt(canCrit()&&P.state==="move"?`<kbd>E</kbd> Critical strike!<span class="ja">Eでとどめの一撃！</span>`:null);
+  prompt(B.state==="final"&&P.state==="move"?`<kbd>E</kbd> Finish it<span class="ja">Eでとどめ</span>`:
+    canCrit()&&P.state==="move"?`<kbd>E</kbd> Critical strike!<span class="ja">Eでとどめの一撃！</span>`:null);
 }
 /* ---------- duel boss (Dimitri): umbrella swings, counters, guard, blink + afterimage ---------- */
 /* a swing with the umbrella; each hit can start rising early (raise) and hold up there: a delayed swing */
@@ -2639,7 +2658,7 @@ function updRing(dt){const B=G.boss,R=B&&B.ring;if(!R)return;
    A boss with an `intro` plays it the first time its contract is taken (Space, Enter or J skips).
    intro.run(t, dt) poses the scene and returns the camera {pos, look, fov}; after intro.dur seconds
    the camera glides into the fight view over intro.glide seconds, with no cut. */
-const cutLook=new THREE.Vector3(),cutPos=new THREE.Vector3();
+const cutLook=new THREE.Vector3(),cutPos=new THREE.Vector3(),STONE=new THREE.Color(0x77736c);
 function gameView(){const B=G.boss,d=Math.hypot(B.x-P.x,B.z-P.z),back=1+clamp((d-4)/14,0,0.55);
   const fx_=lerp(P.x,B.x,0.4),fz=lerp(P.z,B.z,0.4);
   return {pos:new THREE.Vector3(fx_,10*back,fz+6.2*back),look:new THREE.Vector3(fx_,1,fz),focus:new THREE.Vector3(fx_,0,fz)};}
@@ -2653,10 +2672,14 @@ function startCut(D){
 function once(key,fn){if(!G.cut.fired[key]){G.cut.fired[key]=true;fn();}}
 function cutTick(dt){
   const C=G.cut,I=C.I,c=G.stage.camera;C.t+=dt;G.cw=1;
-  if(C.skip){endCut(true);return;}
+  if(I.final){if(C.skip&&C.t>0.4)C.out=C.out??0;C.skip=false;
+    if(C.out!=null)C.out+=dt*2;
+    if(C.t>=I.dur||C.out>=1.2){finishEnd();return;}}
+  else if(C.skip){endCut(true);return;}
   const v=I.run(Math.min(C.t,I.dur+I.glide),dt);
+  if(I.final)$("#fade").style.opacity=Math.min(1,Math.max(v.fade||0,C.out||0));
   cutPos.set(v.pos[0],v.pos[1],v.pos[2]);cutLook.set(v.look[0],v.look[1],v.look[2]);let fov=v.fov||50,roll=v.roll||0;
-  if(C.t>=I.dur){
+  if(C.t>=I.dur&&!I.final){
     once("show",()=>{P.x=I.to[0];P.z=I.to[1];P.m.g.visible=true;P.m.g.position.set(P.x,0,P.z);P.m.g.rotation.y=P.a;HP=H_REST();poseHunter(HP,1);});
     const k=ease(Math.min(1,(C.t-I.dur)/I.glide)),w=gameView();
     cutPos.lerp(w.pos,k);cutLook.lerp(w.look,k);fov=lerp(fov,50,k);G.cw=1-k;roll*=1-k;
@@ -2769,11 +2792,97 @@ function playerDies(){
     $("#vAgain").onclick=startHunt;$("#vBoard").onclick=()=>scr.show("board");G.veilEnter=startHunt;},1500);
 }
 function clue(){const c=BOSSES[G.bossKey].notice.clues;const i=P.stats.parries===0?0:G.boss.phase>1?2:1;return `Tip: ${c[i][0]}<span class="ja">${c[i][1]}</span>`;}
-function bossDies(){
-  const B=G.boss;if(B.state==="dead")return;B.hp=0;B.state="dead";B.dead=0;B.move=null;B.ring=null;if(G.ringMesh)G.ringMesh.visible=false;showMark(0,0,false);
-  const fade=new Set();B.m.g.traverse(o=>{if(o.material&&o.material!==B.m.shadowMat)fade.add(o.material);});B.fade=[...fade];
-  setGlow(null);G.over=true;G.running=false;P.iframe=99;prompt(null);sfx("win");
-  setTimeout(()=>banner("The hunt is over",B.D.gone||["The beast is gone.","化け物は消えた。"],false,0),900);if(G.ghost)G.ghost.m.g.visible=false;
+/* at 0 health the boss does not die yet: it drops to its knees and waits for the finisher */
+function bossDown(){
+  const B=G.boss;if(B.state==="final"||B.state==="done")return;
+  B.hp=0;B.state="final";B.t=0;B.y=0;B.move=null;B.ring=null;if(G.ringMesh)G.ringMesh.visible=false;showMark(0,0,false);
+  setGlow(null);G.btR.clear();G.btL.clear();B.m.g.visible=true;if(B.m.shield){B.m.shield.visible=false;B.m.um.visible=true;}
+  if(G.ghost)G.ghost.m.g.visible=false;
+  G.final=true;P.iframe=99;G.freeze=0.25;G.shake=Math.max(G.shake,0.2);sfx("thud");
+}
+/* the finisher is a cutscene (boss.finale); it ends on black, then the results */
+function startFinisher(){
+  const B=G.boss,F=B.D.finale;G.over=true;B.state="finale";held.clear();buf=null;P.state="move";P.m.vial.visible=false;
+  /* its own copies of the materials (colors are shared through M), so it can fade or turn to stone alone */
+  const mats=[];B.m.g.traverse(o=>{if(o.material&&o.material!==B.m.shadowMat){o.material=o.material.clone();mats.push(o.material);}});
+  B.fade=mats;B.col0=mats.map(x=>x.color.clone());B.em0=mats.map(x=>x.emissive?x.emissive.clone():null);
+  G.cut={t:0,I:{dur:F.dur,glide:0,final:true,run:F.run},fired:{}};
+  if(F.start)F.start(B);
+  prompt(`<kbd>Space</kbd> Skip<span class="ja">スペースでスキップ</span>`);
+}
+function finishEnd(){
+  G.cut=null;G.running=false;G.boss.state="done";$("#fade").style.opacity=1;prompt(null);showResult();
+}
+/* place the hunter by hand during a finale */
+function huntAt(T,k){P.m.g.position.set(P.x,0,P.z);P.m.g.rotation.y=P.a;poseHunter(T,k);}
+function walkAway(t,from,dt){   /* turn around, then walk off slowly; returns true while walking */
+  if(t<from)return false;const HT=H_REST();
+  P.a=lerp(Math.PI,0,ease(Math.min(1,(t-from)/0.6)));
+  const w=t>from+0.5;if(w){P.z+=1.5*dt;}walkPose(HT,w?1:0,w?dt*0.75:dt);HT.lean=0.08;
+  if(w&&Math.floor(P.walk/Math.PI)!==Math.floor((P.walk-dt*8.25)/Math.PI))sfx("foot");
+  huntAt(HT,0.3);return true;}
+
+/* Bell Warden, "Silence": the cleaver goes into the bell; it sinks back into the statue it pretended to be */
+function wardenFinale(t,dt){
+  const B=G.boss,m=B.m;
+  if(!walkAway(t,3.8,dt)){const HT=H_REST();
+    HT.rx=kf(t,[[0,-0.1],[0.7,0.9],[0.9,-1.45,"in"],[3.1,-1.35],[3.3,-0.6,"in"],[3.8,-0.1]]);
+    HT.wr=kf(t,[[0,0.5],[0.7,0.2],[0.9,1.5,"in"],[3.1,1.5],[3.8,0.5]]);
+    HT.re=kf(t,[[0,-0.35],[0.7,-1.3],[0.9,-0.05,"in"],[3.1,-0.2],[3.8,-0.35]]);
+    HT.twist=kf(t,[[0,0],[0.7,-0.5],[0.9,0.55,"in"],[3.1,0.45],[3.5,0]]);
+    HT.lean=kf(t,[[0,0],[0.7,-0.25],[0.9,0.5,"in"],[3.1,0.45],[3.5,0.05]]);
+    HT.by=kf(t,[[0,0],[0.7,-0.1],[0.9,-0.32],[3.1,-0.3],[3.5,0]]);HT.hl=kf(t,[[0.7,0],[0.9,-0.55],[3.1,-0.5],[3.5,0]]);
+    HT.lx=kf(t,[[0,0.1],[0.9,-0.6],[3.1,-0.6],[3.5,0.1]]);HT.hd=kf(t,[[0.9,0.25],[3.1,0.3],[3.5,0]]);
+    huntAt(HT,t<0.05?1:0.45);}
+  if(t>=0.9)once("stab",()=>{const v=new THREE.Vector3();m.bellG.getWorldPosition(v);
+    tone(150,0.7,"sine",0.08,90);noise(0.2,0.08);fx("spark",v.x,v.y,v.z,8);fx("ash",v.x,v.y,v.z,8);G.shake=0.14;});
+  if(t>=3.1)once("pull",()=>{sfx("slash");const v=new THREE.Vector3();m.bellG.getWorldPosition(v);fx("ash",v.x,v.y,v.z,6);});
+  /* the bell stops; the body sinks back down into the old statue crouch */
+  const T=bossRest(),j=t>0.9&&t<1.3?Math.sin((t-0.9)/0.4*Math.PI):0;
+  T.chest=kf(t,[[0,0.35],[0.9,0.35],[1.6,0.5],[2.6,1.35]])-0.35*j;T.by=kf(t,[[0,-0.95],[2.4,-0.95]])+0.15*j;
+  T.head=kf(t,[[0,-0.25],[0.9,-0.3],[1.6,0],[2.6,0.9]])-0.6*j;bothArms(T,kf(t,[[0,-0.15],[2.4,-0.05]])-0.5*j,kf(t,[[0,0.25],[2.4,0.25]])+0.4*j,-0.1);
+  m.bellG.rotation.x=t<0.9?-0.45+Math.sin(t*2.2)*0.12:lerp(m.bellG.rotation.x,-0.45,0.1);
+  /* the eyes go out, last to first, then it turns to stone */
+  m.eyes.forEach((e,i)=>{const off=t>2.0+(6-i)*0.14;if(off&&e.visible)tone(900-i*60,0.1,"sine",0.01,700);e.visible=!off;});
+  const q=ease(clamp((t-2.2)/1.4,0,1));if(q>0)B.fade.forEach((x,i)=>{x.color.copy(B.col0[i]).lerp(STONE,q);if(B.em0[i])x.emissive.copy(B.em0[i]).multiplyScalar(1-q);});
+  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;poseBoss(T,t<0.05?1:0.25);
+  if(t>=5.0)once("gone",()=>{sfx("win");banner("The hunt is over",B.D.gone,false,0);});
+  if(t>=6.0)once("toll",()=>{tone(196,3.2,"sine",0.025);tone(392,2.6,"sine",0.01);});
+  const fade=clamp((t-6.8)/1.2,0,1);
+  /* side close-up for the stab; then behind the statue, the hunter walking out through the gate */
+  if(t<3.8){const k=ease(t/3.8);return {pos:[lerp(3.4,2.7,k),lerp(1.4,1.6,k),lerp(-1.4,-1.9,k)],look:[0,1.3,-2.6],fov:42,roll:0.05,fade};}
+  const k=ease(clamp((t-3.8)/4.6,0,1));
+  return {pos:[lerp(-1.6,-1.2,k),lerp(2.0,2.6,k),lerp(-7.2,-6.6,k)],look:[0,1.1,lerp(-1,P.z,0.7)],fov:44,fade};
+}
+
+/* Dimitri, "Quick draw": he stands; both draw; the hunter is faster */
+function dimitriFinale(t,dt){
+  const B=G.boss,m=B.m;
+  if(!walkAway(t,5.4,dt)){const HT=H_REST(),aim=kf(t,[[1.5,0.1],[1.65,-1.6,"in"],[1.85,-1.6],[1.9,-2.2,"in"],[2.1,-1.6],[4.4,-1.6],[5.0,0.1]]);
+    HT.lx=aim;HT.le=-0.05;HT.twist=kf(t,[[1.5,0],[1.65,-0.45],[4.4,-0.4],[5.0,0]]);HT.rx=kf(t,[[1.5,-0.1],[1.65,0.3],[4.4,0.3],[5.0,-0.1]]);HT.coat=kf(t,[[1.5,0],[1.65,-0.3],[2.2,0]]);
+    HT.hd=kf(t,[[4.4,0],[5.0,0.25],[5.4,0.15]]);huntAt(HT,t<0.05?1:0.6);}
+  if(t>=1.9)once("shot",()=>{const v=new THREE.Vector3();P.m.muzzle.getWorldPosition(v);sfx("gun");fx("smoke",v.x,v.y,v.z,6);
+    fx("spark",B.x,1.6,B.z,6);fx("mist",B.x,1.6,B.z,4);m.um.visible=false;G.umb.visible=true;});
+  if(t>=2.25)once("clatter",()=>{tone(700,0.15,"triangle",0.02,500);noise(0.12,0.05);});
+  /* he rises, waits, draws a hair late; the shot rocks him; he tips his hat, kneels and is gone */
+  const T=bossRest(),j=t>1.9&&t<2.5?Math.sin((t-1.9)/0.6*Math.PI):0;
+  T.chest=kf(t,[[0,1.3],[0.8,0.45],[3.6,0.5],[4.6,1.25]])-0.45*j;T.by=kf(t,[[0,-0.95],[0.8,0],[3.6,0],[4.6,-0.95]])+0.1*j;
+  T.head=kf(t,[[0,0.6],[0.8,0],[2.6,0.1],[3.0,0.3],[3.4,0.1],[4.6,0.6]])-0.6*j;
+  T.lx=kf(t,[[0.8,-0.1],[1.6,-0.1],[1.8,-1.4,"in"],[1.95,-1.5],[2.3,-0.3],[2.6,-0.3],[2.9,-2.6],[3.3,-2.6],[3.6,-0.2]]);
+  T.le=kf(t,[[1.8,-0.05],[2.3,-0.3],[2.9,-1.7],[3.3,-1.7],[3.6,-0.3]]);T.lz=0.3;T.twist=kf(t,[[1.6,0],[1.8,0.35],[2.3,0]]);
+  T.rx=kf(t,[[1.9,-0.1],[2.2,0.15],[4.6,-0.1]]);T.rz=-0.2;
+  if(t>=2.9)once("tip",()=>sfx("tip"));
+  const q=clamp((t-3.7)/1.1,0,1);if(q>0){B.fade.forEach(x=>{x.transparent=true;x.opacity=1-q;});
+    if(Math.random()<0.25&&q<1)fx("mist",B.x+(Math.random()-0.5)*0.8,0.6+Math.random()*1.6,B.z+(Math.random()-0.5)*0.8,1);}
+  if(q>=1)m.g.visible=false;
+  if(t>=4.2&&G.rain)G.rain.frozen=false;
+  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;poseBoss(T,t<0.05?1:0.45);
+  if(t>=6.2)once("gone",()=>{sfx("win");banner("The hunt is over",B.D.gone,false,0);});
+  const fade=clamp((t-7.8)/1.2,0,1);
+  /* a wide, tilted standoff; after the shot, straight behind him, so he hides the hunter until he is gone */
+  if(t<1.95)return {pos:[lerp(6.4,5.8,t/1.95),1.3,-1.4],look:[0,1.45,-1.4],fov:46,roll:0.12,fade};
+  const k=ease(clamp((t-4.8)/4.6,0,1));
+  return {pos:[0,lerp(1.6,2.0,k),lerp(-7.4,-6.6,k)],look:[0,lerp(1.55,1.2,k),lerp(-2,P.z,k)],fov:lerp(38,42,k),fade};
 }
 function showResult(){
   const D=BOSSES[G.bossKey],s=P.stats,time=G.time;
@@ -2800,7 +2909,7 @@ function showResult(){
   scr.show("result");
 }
 
-window.HC={G,P,BOSSES,parryHit,shoot,bossStart};   /* for testing in the console */
+window.HC={G,P,BOSSES,parryHit,shoot,bossStart,bossDown,THREE};   /* for testing in the console */
 scr.show("board");
 })();
 </script>
