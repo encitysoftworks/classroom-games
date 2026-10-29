@@ -375,11 +375,7 @@ body.jp .helpline .ja{display:block}
           <p>When you get hit, part of your health turns orange. Hit the beast quickly to win it back.</p>
           <p class="ja">ダメージを受けるとオレンジ色になります。すぐに攻撃すると体力がもどります。</p>
         </div>
-        <div class="card">
-          <h3>Difficulty <span class="ja inl">むずかしさ</span></h3>
-          <div class="seg" id="setDiff"></div>
-          <p class="best" id="best"></p>
-        </div>
+        <p class="best" id="best"></p>
         <div class="go">
           <button class="btn primary big" id="goHunt" type="button">Sign and hunt<span class="ja">サインして狩りへ</span></button>
         </div>
@@ -1385,7 +1381,7 @@ const BOSSES={
 /* ---------- state ---------- */
 const G={stage:null,loop:null,boss:null,bossKey:"warden",paused:false,over:false,freeze:0,shake:0,time:0,running:false};
 const P={hp:100,max:100,rally:0,rallyT:0,sta:100,staT:0,vials:5,state:"move",t:0,x:0,z:6,a:Math.PI,vx:0,vz:0,iframe:0,combo:0,hitDone:false,hurtV:[0,0],stats:null};
-let diff=st.get("diff",0);   /* 0 hunter, 1 gentle */
+const diff=0;   /* one difficulty (the gentle mode was removed) */
 const DMG=()=>diff?0.5:1, SLOW=()=>diff?1.18:1;
 
 /* ---------- input: held keys + a short buffer of presses ---------- */
@@ -1445,7 +1441,6 @@ function renderBoard(){
   const inp=$("#hName");inp.value=st.get("name","");
   inp.oninput=()=>{inp.value=inp.value.replace(/[^A-Za-z .'-]/g,"");st.set("name",inp.value.trim());};
   inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();startHunt();}};
-  Kit.seg("#setDiff",[{html:bi(["Hunter","ハンター"],true)},{html:bi(["Gentle: half damage, slower beast","やさしい：ダメージ半分"],true)}],(o,i)=>i===diff,(o,i)=>{diff=i;st.set("diff",i);renderBoard();});
   const best=st.get("best_"+G.bossKey,null);
   $("#best").innerHTML=best?bi(["Your best: Rank "+best.rank+" ("+best.score+" points)","ベスト：ランク"+best.rank+"（"+best.score+"点）"]):"";
 }
@@ -2126,7 +2121,6 @@ function showResult(){
   if(s.vialsUsed===0)notes.push(["You used no vials.","回復を使わなかった。"]);
   if(s.parries>=3)notes.push(["Sharp eyes: "+s.parries+" parries!","パリィ"+s.parries+"回！"]);
   if(time<D.par*0.7)notes.push(["A fast hunt!","スピード狩り！"]);
-  if(diff)notes.push(["Gentle hunt","やさしいモード"]);
   const name=st.get("name","")||"Hunter";
   const old=st.get("best_"+G.bossKey,null);
   if(!diff&&(!old||score>old.score))st.set("best_"+G.bossKey,{rank,score});
