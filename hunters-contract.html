@@ -279,7 +279,7 @@ body{background-image:radial-gradient(900px 420px at 50% -10%,#1d1f30 0%,rgba(12
 .notice .ja,body.jp .notice .ja{color:#5d5244}
 .notice .reward{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed #8a7a5c;padding-top:10px;font-size:16px}
 /* the notice board: wooden planks, lamp light, nailed posters that sway a little */
-.wall{position:relative;max-width:1120px;margin:4px auto 0;padding:16px 22px 30px;border-radius:6px;min-height:min(560px,64vh);
+.wall{position:relative;max-width:1120px;margin:4px auto 0;padding:16px 22px 30px;border-radius:6px;min-height:max(430px,calc(100vh - 200px));
   background:radial-gradient(520px 300px at 12% 0%,rgba(255,190,110,.16),transparent 70%),
     repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 62px,rgba(0,0,0,.45) 62px 64px),
     repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 3px,rgba(0,0,0,.04) 3px 9px,rgba(0,0,0,0) 9px 37px),
@@ -302,7 +302,7 @@ body{background-image:radial-gradient(900px 420px at 50% -10%,#1d1f30 0%,rgba(12
 .poster .hole{position:absolute;background:#22160d;box-shadow:0 0 0 2px rgba(92,58,22,.55),0 0 0 4px rgba(120,80,30,.25),inset 0 2px 3px rgba(0,0,0,.8);border-radius:42% 58% 55% 45%/50% 40% 60% 50%}
 .poster .burn{position:absolute;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(70,40,12,.55),rgba(110,70,25,.25) 45%,transparent 70%)}
 @keyframes sway{0%,100%{transform:rotate(-.55deg)}50%{transform:rotate(.65deg)}}
-.poster:hover,.poster.focus{transform:scale(1.5);z-index:30;transition:transform .45s cubic-bezier(.3,.7,.3,1),z-index 0s 0s}
+.poster:hover,.poster.focus{transform:translateY(var(--ty,0px)) scale(var(--z,1.5));z-index:30;transition:transform .45s cubic-bezier(.3,.7,.3,1),z-index 0s 0s}
 .poster:hover .tilt,.poster.focus .tilt{transform:rotate(0deg)}
 .poster:hover .swing,.poster.focus .swing{filter:drop-shadow(0 16px 14px rgba(0,0,0,.6))}
 .poster .wanted{font:400 12px var(--f-display);letter-spacing:.3em;text-align:center;color:#6b2a1e}
@@ -326,7 +326,7 @@ body{background-image:radial-gradient(900px 420px at 50% -10%,#1d1f30 0%,rgba(12
 @media (prefers-reduced-motion:reduce){.poster .swing,.scrap{animation:none}}
 .notice{background:var(--parch)!important}
 /* "name your mark" bar at the bottom */
-.markbar{position:sticky;bottom:0;z-index:20;max-width:1120px;margin:10px auto 0;background:#15131a;border:1px solid #5b412c;border-radius:6px;padding:10px 16px;
+.markbar{position:sticky;bottom:0;z-index:40;max-width:1120px;margin:10px auto 0;background:#15131a;border:1px solid #5b412c;border-radius:6px;padding:10px 16px;
   display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:end;box-shadow:0 -6px 18px rgba(0,0,0,.5)}
 .markbar .lbl{font:400 17px var(--f-display);letter-spacing:.08em;color:var(--accent);padding-bottom:6px}
 .markbar .txt{position:relative;font:italic 30px/1.25 var(--f-gothic);border-bottom:2px solid #6b5a3a;min-height:1.35em;white-space:pre-wrap;color:#efe3c4}
@@ -1617,9 +1617,17 @@ function renderBoard(){
   /* posters first, with the scraps tucked between them */
   const all=[];posters.forEach((p,i)=>{all.push(p);if(scraps[i])all.push(scraps[i]);});
   $("#cork").innerHTML=all.join("");
+  /* zoom only as far as fits above the name bar */
+  $("#cork").querySelectorAll(".poster").forEach(p=>{p.addEventListener("pointerenter",()=>fitZoom(p));p.addEventListener("pointerleave",()=>{p.style.removeProperty("--z");});});
   $("#cork").querySelectorAll(".again").forEach(b=>b.onclick=()=>{G.bossKey=b.dataset.k;st.set("cut_"+G.bossKey,false);startHunt();});
   renderBar();
 }
+function fitZoom(p){
+  if(p.classList.contains("focus")||p.matches(":hover")&&p.style.getPropertyValue("--z"))return;
+  const bottom=Math.min($("#markbar").getBoundingClientRect().top,innerHeight)-12,top=p.getBoundingClientRect().top,h=p.offsetHeight;
+  /* as big as fits between the top of the screen and the name bar; slide it up if it needs the room */
+  const z=clamp((bottom-8)/h,1.05,1.5),ty=Math.max(8-top,Math.min(0,bottom-(top+z*h)));
+  p.style.setProperty("--z",z.toFixed(3));p.style.setProperty("--ty",ty.toFixed(0)+"px");}
 function renderBar(){
   const f=SG.focus,full=f?namesOf(f).find(n=>n.toLowerCase().startsWith(SG.typed.toLowerCase()))||typeName(f):"";
   const chars=SG.typed||f?[...(full||SG.typed)].map((c,j)=>{const b=SG.blots[0][j];
@@ -1627,7 +1635,7 @@ function renderBar(){
     :`<span class="cur">${SG.blots[0][0]!=null?BLOT(SG.blots[0][0]):""}&nbsp;</span><span class="ph">type a name from the board</span>`;
   $("#markbar").innerHTML=`<span class="lbl">Name your mark</span><div class="txt">${chars}</div>
     <div class="hint">${SG.ime?`Switch the keyboard to English input (英数).<span class="ja">英数入力に切りかえてね。</span>`:`Copy a name from a poster. Point at a poster to read it.<span class="ja">ポスターの名前を打とう。マウスを乗せると大きく読める。</span>`}</div>`;
-  document.querySelectorAll(".poster").forEach(p=>p.classList.toggle("focus",p.dataset.k===f&&SG.typed.length>0));
+  document.querySelectorAll(".poster").forEach(p=>{const on=p.dataset.k===f&&SG.typed.length>0;if(on&&!p.classList.contains("focus"))fitZoom(p);p.classList.toggle("focus",on);});
 }
 function openSheet(){
   const B=BOSSES[G.bossKey];SG.step=1;SG.blots[1]={};SG.lines=[B.name[0],B.oath[0]];SG.pos=[0,skipMarks0(B.oath[0])];
