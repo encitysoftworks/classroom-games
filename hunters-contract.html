@@ -278,6 +278,76 @@ body{background-image:radial-gradient(900px 420px at 50% -10%,#1d1f30 0%,rgba(12
 .notice li{margin-bottom:4px}
 .notice .ja,body.jp .notice .ja{color:#5d5244}
 .notice .reward{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed #8a7a5c;padding-top:10px;font-size:16px}
+/* the notice board: wooden planks, lamp light, nailed posters that sway a little */
+.wall{position:relative;max-width:1120px;margin:4px auto 0;padding:16px 22px 30px;border-radius:6px;min-height:min(560px,64vh);
+  background:radial-gradient(520px 300px at 12% 0%,rgba(255,190,110,.16),transparent 70%),
+    repeating-linear-gradient(180deg,rgba(0,0,0,0) 0 62px,rgba(0,0,0,.45) 62px 64px),
+    repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 3px,rgba(0,0,0,.04) 3px 9px,rgba(0,0,0,0) 9px 37px),
+    linear-gradient(#4b3524,#36261a);
+  box-shadow:inset 0 0 0 9px #24170e,inset 0 0 0 11px #5b412c,inset 0 0 90px rgba(0,0,0,.65),0 10px 0 #000}
+.walltop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:2px 4px 10px}
+.wtitle{font:400 20px var(--f-display);letter-spacing:.12em;color:#e3cf9f;text-shadow:0 2px 0 #000}
+.cork{display:flex;flex-wrap:wrap;gap:40px 46px;justify-content:center;align-items:flex-start;padding:8px 0 10px;position:relative}
+.poster{position:relative;width:250px;background:var(--paper);color:#2a2116;padding:24px 18px 16px;font-family:var(--f-gothic);
+  box-shadow:0 7px 0 rgba(0,0,0,.45),inset 0 0 44px rgba(90,60,20,.38);transform-origin:50% 9px;
+  animation:sway 7s ease-in-out infinite;animation-delay:var(--d,0s);transform:rotate(var(--r,0deg));transition:box-shadow .25s;cursor:default;z-index:1}
+.poster:before,.scrap:before{content:"";position:absolute;left:50%;top:5px;width:11px;height:11px;margin-left:-5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#9a9aa2,#3a3a40 60%,#1a1a1e);box-shadow:0 2px 0 rgba(0,0,0,.6)}
+@keyframes sway{0%,100%{transform:rotate(var(--r,0deg))}50%{transform:rotate(calc(var(--r,0deg) + 1.1deg))}}
+.poster:hover,.poster.focus{animation:none;transform:rotate(0deg) scale(1.5);z-index:6;box-shadow:0 18px 30px rgba(0,0,0,.6),inset 0 0 44px rgba(90,60,20,.38);transition:transform .22s ease,box-shadow .22s}
+.poster .wanted{font:400 12px var(--f-display);letter-spacing:.3em;text-align:center;color:#6b2a1e}
+.poster h2{font:400 25px/1.1 var(--f-display);text-align:center;color:#20180f;margin:4px 0 2px}
+.poster .ja,body.jp .poster .ja{color:#5d5244}
+.poster .jn{text-align:center;font-size:11px}
+.poster .tier{text-align:center;font-size:12px;margin:4px 0 6px;color:#4a3a28}
+.poster .dots{letter-spacing:.15em;color:#8f2723}
+.poster .tale{font-size:12.5px;line-height:1.35;font-style:italic;text-align:center;margin:0 0 6px}
+.poster ul{margin:0 0 6px;padding-left:15px;font-size:11.5px;line-height:1.35}
+.poster li{margin-bottom:2px}
+.poster .rew{border-top:1px dashed #8a7a5c;padding-top:5px;font-size:11px;display:flex;justify-content:space-between;gap:6px}
+.poster .hint{font-size:10.5px;color:#6b5a44;text-align:center;margin-top:6px}
+.poster .again{display:block;margin:6px auto 0;font:inherit;font-size:10.5px;background:none;border:1px solid #8a7a5c;color:#4a3a28;border-radius:3px;padding:2px 6px;cursor:pointer}
+.stamp{position:absolute;right:10px;top:34px;width:46px;height:46px;border:3px solid rgba(143,39,35,.85);border-radius:50%;color:rgba(143,39,35,.9);
+  font:400 26px/40px var(--f-display);text-align:center;transform:rotate(-16deg)}
+.stamp small{position:absolute;left:-6px;right:-6px;bottom:-14px;font:700 8px var(--f-body,sans-serif);letter-spacing:.1em}
+.scrap{position:relative;width:150px;padding:20px 12px 14px;background:#d9cfb4;color:#3a3024;font:400 20px/1.15 "Pinyon Script","Snell Roundhand",cursive;text-align:center;
+  box-shadow:0 5px 0 rgba(0,0,0,.4),inset 0 0 30px rgba(90,60,20,.4);transform:rotate(var(--r,0deg));transform-origin:50% 9px;animation:sway 9s ease-in-out infinite;animation-delay:var(--d,0s);
+  clip-path:polygon(0 0,100% 0,100% 82%,92% 88%,84% 80%,73% 94%,62% 84%,50% 97%,38% 85%,26% 95%,14% 84%,6% 92%,0 85%);opacity:.85}
+.scrap small{display:block;font:italic 11px var(--f-gothic);margin-top:4px}
+@media (prefers-reduced-motion:reduce){.poster,.scrap{animation:none}}
+/* "name your mark" bar at the bottom */
+.markbar{position:sticky;bottom:0;z-index:20;max-width:1120px;margin:10px auto 0;background:#15131a;border:1px solid #5b412c;border-radius:6px;padding:10px 16px;
+  display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:end;box-shadow:0 -6px 18px rgba(0,0,0,.5)}
+.markbar .lbl{font:400 17px var(--f-display);letter-spacing:.08em;color:var(--accent);padding-bottom:6px}
+.markbar .txt{position:relative;font:italic 30px/1.25 var(--f-gothic);border-bottom:2px solid #6b5a3a;min-height:1.35em;white-space:pre-wrap;color:#efe3c4}
+.markbar .txt span{position:relative}
+.markbar .txt .g{color:rgba(239,227,196,.28)}
+.markbar .txt .k{color:#f3e7c8}
+.markbar .txt .cur{box-shadow:inset 0 -3px 0 var(--accent)}
+.markbar .txt .blot path,.markbar .txt .blot circle{fill:#b8483b}
+.markbar .ph{color:rgba(239,227,196,.3);font-size:22px}
+.markbar .hint{grid-column:2;font-size:14px;color:var(--muted)}
+.markbar .hint .ja{display:inline;margin-left:6px}
+/* the contract sheet that slides up once the name is written */
+.sheetwrap{position:fixed;inset:0;z-index:40;background:rgba(5,5,8,.6);display:flex;align-items:flex-end;justify-content:center;padding:0 12px}
+.sheet{width:min(620px,100%);margin-bottom:18px;animation:slideup .35s cubic-bezier(.2,.8,.3,1)}
+@keyframes slideup{from{transform:translateY(110%) rotate(-.6deg)}to{transform:translateY(0) rotate(-.6deg)}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+.sheet .back{font-size:13px;color:#5d5244;text-align:center;margin-top:8px}
+/* controls popup */
+.ctlwrap{position:fixed;inset:0;z-index:50;background:rgba(5,5,8,.7);display:flex;align-items:center;justify-content:center;padding:12px}
+.ctl{background:#16151c;border:1px solid #5b412c;border-radius:8px;padding:18px 20px;max-width:760px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 12px 0 #000}
+.ctl h3{font:400 24px var(--f-display);color:var(--accent);letter-spacing:.08em;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.kb{display:grid;gap:6px;margin:4px 0 14px;justify-items:start}
+.kb .row{display:flex;gap:6px}
+.kb .key{width:44px;height:44px;border-radius:6px;background:#24222b;border:1px solid #3a3742;box-shadow:0 3px 0 #000;color:#6a6672;font:700 15px var(--f-body,sans-serif);display:flex;align-items:center;justify-content:center;position:relative}
+.kb .key.on{color:#140d06;border-color:#000}
+.kb .key.wide{width:300px}.kb .key.esc{width:60px}
+.kb .key i{position:absolute;bottom:-1px;left:0;right:0;font:700 8px var(--f-body,sans-serif);font-style:normal;text-align:center;color:#140d06;opacity:.8}
+.ctl .c-move{background:#7aa0c8}.ctl .c-atk{background:#d0a050}.ctl .c-gun{background:#e3cf9f}.ctl .c-dodge{background:#8fc08a}.ctl .c-heal{background:#c86a5a}.ctl .c-crit{background:#b08ad8}.ctl .c-esc{background:#9a96a4}
+.legend{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center;font-size:15px}
+.legend .sw{width:14px;height:14px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:-2px}
+.ctl .tipbox{margin-top:14px;border-top:1px solid var(--edge);padding-top:10px;font-size:15px}
+.ctl .tipbox b{color:var(--accent)}
 .clist{display:grid;gap:8px}
 .citem{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;text-align:left;background:#14151d;border:1px solid var(--edge);border-radius:4px;padding:10px 12px;color:var(--text);cursor:pointer;font:inherit}
 .citem:hover{border-color:#6b5a3a}
@@ -385,39 +455,14 @@ body.jp .helpline .ja{display:block}
 
   <main>
   <section class="screen" id="board">
-    <div class="board">
-      <article class="notice" id="notice"></article>
-      <div class="side">
-        <div class="card">
-          <h3>Contracts <span class="ja inl">契約</span></h3>
-          <p class="signtip" style="margin:0 0 8px">Type a name on the paper to choose.<span class="ja">紙に名前を打って選ぼう。</span></p>
-          <div class="clist" id="clist"></div>
-        </div>
-        <div class="card">
-          <h3>Controls <span class="ja inl">そうさ</span></h3>
-          <div class="keys">
-            <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span><span>Move<span class="ja inl">いどう</span></span>
-            <span><kbd>J</kbd></span><span>Saw cleaver (fast)<span class="ja inl">こうげき</span></span>
-            <span><kbd>K</kbd></span><span>Heavy swing<span class="ja inl">強こうげき</span></span>
-            <span><kbd>L</kbd></span><span>Pistol: shoot a glowing attack to stop it<span class="ja inl">光ったら撃つ</span></span>
-            <span><kbd>Space</kbd></span><span>Dodge<span class="ja inl">回避</span></span>
-            <span><kbd>Q</kbd></span><span>Drink a healing vial<span class="ja inl">回復</span></span>
-            <span><kbd>E</kbd></span><span>Critical strike (after a stop)<span class="ja inl">とどめの一撃</span></span>
-            <span><kbd>Esc</kbd></span><span>Pause<span class="ja inl">一時停止</span></span>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Getting hurt <span class="ja inl">ダメージ</span></h3>
-          <p>When you get hit, part of your health turns orange. Hit the beast quickly to win it back.</p>
-          <p class="ja">ダメージを受けるとオレンジ色になります。すぐに攻撃すると体力がもどります。</p>
-        </div>
-        <p class="best" id="best"></p>
-        <div class="go">
-          <p class="signtip" id="signTip"><b>Sign the contract to begin.</b> Type on the paper: the name, the oath, then your name.<span class="ja">紙に入力してサインしよう：化け物の名前、ちかい、自分の名前。</span></p>
-          <button class="btn" id="replayCut" type="button" hidden>Watch the intro again<span class="ja">オープニングをもう一度</span></button>
-        </div>
-      </div>
+    <div class="wall" id="wall">
+      <div class="walltop"><span class="wtitle">Hunters' Notice Board<span class="ja inl">ハンターの掲示板</span></span>
+        <button class="btn" id="ctlBtn" type="button">Controls<span class="ja">そうさ</span></button></div>
+      <div class="cork" id="cork"></div>
     </div>
+    <div class="markbar" id="markbar"></div>
+    <div class="sheetwrap" id="sheetwrap" hidden><article class="notice sheet" id="sheet"></article></div>
+    <div class="ctlwrap" id="ctlwrap" hidden></div>
   </section>
 
   <section class="screen" id="play" hidden>
@@ -1423,23 +1468,19 @@ const BOSSES={
       clues:[
         ["Do not swing when he is not attacking. He will stop you and hit back.","彼が攻撃していない時に振るな。止められて、反撃される。"],
         ["When he opens his umbrella, shoot it. Then attack!","かさを開いたら、ピストルで撃て。それから攻撃！"],
-        ["Some swings wait. Watch the glow, not his arm.","わざと遅らせる攻撃がある。腕ではなく、光を見ろ。"]],
+        ["Only one swing in each attack glows. Shoot that one. Dodge the rest.","光る攻撃は一回だけ。それを撃て。ほかはよけろ。"]],
       reward:["Reward: 800 silver coins","報酬：銀貨800枚"]},
     oath:["I will end his long night.","わたしは彼の長い夜を終わらせるとちかう。"],
     journal:["Dimitri was a hunter once. Tonight he can finally go home. He will walk; he doesn't own a car.","ディミトリはかつてハンターだった。今夜、やっと家に帰れる。歩いて帰る。車を持っていないから。"],
     phase2:["The rain stops falling.","雨が止まった。"],
     gone:["The hunter rests.","ハンターは眠った。"],
-    duel:true,roarColor:[0xb08aff,0x3a2a6a],
+    duel:true,roarColor:[0xb08aff,0x3a2a6a],window:0.12,perfect:0.06,poise:true,
     /* raise = when the umbrella starts going up (early raise + hold = a delayed swing); s = swing side */
     moves:{
-      cut:{dur:1.35,track:0.5,anim:umbAnim,hits:[{t:0.62,limb:"R",s:-1,range:3.1,arc:120,dmg:24,parry:true}],step:[0.4,0.62,4],weight:(d,ph)=>d<4.2?(ph>1?1.5:3):0},
-      cutLate:{dur:1.75,track:0.85,anim:umbAnim,hits:[{t:1.05,raise:0.1,limb:"R",s:-1,range:3.1,arc:120,dmg:24,parry:true}],step:[0.85,1.05,4],weight:(d,ph)=>d<4.2?2:0},
-      double:{dur:1.95,track:1.0,anim:umbAnim,hits:[{t:0.55,limb:"R",s:-1,range:3.1,arc:120,dmg:20,parry:true},{t:1.15,raise:0.72,limb:"R",s:1,range:3.2,arc:120,dmg:22,parry:true}],step:[0.35,0.55,3.5],weight:(d,ph)=>d<4.2?2:0},
-      doubleLate:{dur:2.25,track:1.25,anim:umbAnim,hits:[{t:0.55,limb:"R",s:-1,range:3.1,arc:120,dmg:20,parry:true},{t:1.5,raise:0.72,limb:"R",s:1,range:3.2,arc:120,dmg:22,parry:true}],step:[0.35,0.55,3.5],weight:(d,ph)=>d<4.2?1.6:0},
+      string:{gen:makeString,weight:(d,ph)=>d<4.4?4:0},
       thrust:{dur:1.55,track:0.55,anim:thrustAnim,hits:[{t:0.78,limb:"R",range:3.0,arc:60,dmg:26,parry:true}],step:[0.58,0.8,11],weight:d=>d>3.6&&d<7.5?2.4:0},
       thrustLate:{dur:1.8,track:0.8,anim:thrustAnim,hits:[{t:1.05,raise:0.2,limb:"R",range:3.0,arc:60,dmg:26,parry:true}],step:[0.85,1.07,11],weight:d=>d>3.6&&d<7.5?1.5:0},
       palm:{dur:1.4,track:0.5,anim:palmAnim,hits:[{t:0.7,limb:"L",range:2.6,arc:90,dmg:20,parry:true,push:true}],step:[0.5,0.7,3],weight:(d,ph)=>d<3.4?(ph>1?1.6:0.8):0},
-      flurry:{dur:2.3,track:1.2,anim:umbAnim,hits:[{t:0.45,limb:"R",s:-1,range:3.1,arc:120,dmg:18,parry:true},{t:0.85,raise:0.55,limb:"R",s:1,range:3.1,arc:120,dmg:18,parry:true},{t:1.6,raise:1.0,limb:"R",s:-1,range:3.3,arc:130,dmg:24,parry:true}],step:[0.3,0.45,3.5],weight:(d,ph)=>ph>1&&d<4.4?3:0},
       backstep:{dur:0.75,track:0.75,anim:backAnim,hits:[],back:[0.08,0.4,9],weight:(d,ph)=>ph===1&&d<2.8?1.8:0},
       guard:{guard:true,hits:[],weight:(d,ph)=>d<7?(ph>1?0.4:1.6):0},
       shot:{dur:1.25,track:0.7,anim:shotAnim,hits:[{t:0.8,shot:true,dmg:16}],weight:(d,ph)=>d>6.5?(ph>1?1.2:0.7):0},
@@ -1467,6 +1508,7 @@ document.addEventListener("keydown",e=>{
   const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"))return;
   const k=KEYMAP[e.code];if(!k)return;
   if(scr.current!=="play")return;
+  if(!$("#ctlwrap").hidden){e.preventDefault();if(k==="pause"||k==="enter")showControls(false);return;}
   e.preventDefault();
   if(k==="pause"){if(!e.repeat)togglePause();return;}
   if(G.cut){if(!e.repeat&&(k==="dodge"||k==="enter"||k==="light"))G.cut.skip=true;return;}
@@ -1517,43 +1559,9 @@ const scr=Kit.screens({onShow(id){
 $("#goHome").onclick=()=>scr.show("board");
 const ORDER=Object.keys(BOSSES);
 const typeName=k=>BOSSES[k].typeName||BOSSES[k].name[0].replace(/^The /,"");
-function renderBoard(){
-  if(!BOSSES[G.bossKey])G.bossKey=ORDER[0];
-  SG.step=0;SG.blots=[{},{}];SG.name=st.get("name","");SG.ime=false;SG.pos=[0,0];
-  renderNotice();renderList();
-}
-function renderNotice(){
-  const B=BOSSES[G.bossKey],n=B.notice;
-  $("#notice").innerHTML=`<div class="wanted">${n.head||"WANTED"}</div>
-    <h1>${B.name[0]}</h1><p class="ja" style="text-align:center">${B.name[1]}</p>
-    <p class="tale">${n.tale[0]}</p><p class="ja" style="text-align:center;margin-top:-8px;margin-bottom:10px">${n.tale[1]}</p>
-    <ul>${n.clues.map(c=>`<li>${c[0]}<span class="ja">${c[1]}</span></li>`).join("")}</ul>
-    <div class="reward"><span>${n.reward[0]}<span class="ja">${n.reward[1]}</span></span><span>Bring 5 healing vials.<span class="ja">回復の小びんは5本まで</span></span></div>
-    <div class="sign" id="sign"></div>${SEAL}`;
-  SG.lines=[typeName(G.bossKey),B.oath[0]];SG.pos[1]=skipMarks0(SG.lines[1]);
-  renderSign();
-  $("#replayCut").hidden=!(B.intro&&st.get("cut_"+G.bossKey,false));
-  const best=st.get("best_"+G.bossKey,null);
-  $("#best").innerHTML=best?bi(["Your best: Rank "+best.rank+" ("+best.score+" points)","ベスト：ランク"+best.rank+"（"+best.score+"点）"]):"";
-}
-function renderList(){
-  $("#clist").innerHTML=ORDER.map((k,i)=>{const B=BOSSES[k],best=st.get("best_"+k,null);
-    return `<button type="button" class="citem${k===G.bossKey?" on":""}" data-k="${k}"><span class="num">${["I","II","III","IV","V","VI"][i]}</span>
-      <span class="nm">${B.name[0]} <span class="ja inl">${B.name[1]}</span></span>
-      <span class="tier"><span class="dots">${"●".repeat(B.danger)}${"○".repeat(3-B.danger)}</span> ${B.tier[0]}<span class="ja inl">${B.tier[1]}</span></span>
-      <span class="rk">${best?best.rank+"<small>best</small>":""}</span></button>`;}).join("");
-  $("#clist").querySelectorAll(".citem").forEach(b=>b.onclick=()=>{b.blur();G.bossKey=b.dataset.k;st.set("sel",G.bossKey);renderBoard();});
-}
-/* typing the name picks the contract: switch to whichever contract the letters so far still match */
-function pickByTyping(ch){
-  const sofar=SG.lines[0].slice(0,SG.pos[0]).toLowerCase()+ch.toLowerCase();
-  if(typeName(G.bossKey).toLowerCase().startsWith(sofar))return true;
-  const k=ORDER.find(k=>typeName(k).toLowerCase().startsWith(sofar));if(!k)return false;
-  G.bossKey=k;st.set("sel",k);const keep=SG.pos[0];renderNotice();renderList();SG.pos[0]=keep;return true;
-}
-
-/* ---------- signing the contract: type the beast's name, the oath, then your name ---------- */
-const SG={step:0,pos:[0,0],blots:[{},{}],name:"",lines:["",""],ime:false};
+const namesOf=k=>[typeName(k),BOSSES[k].name[0]];
+/* ---------- the notice board: posters, the "name your mark" bar, the contract sheet ---------- */
+const SG={step:0,typed:"",focus:null,blots:[{},{}],pos:[0,0],name:"",lines:["",""],ime:false};
 const skipMarks=(t,i)=>{while(i<t.length&&!/[A-Za-z ]/.test(t[i]))i++;return i;};
 const skipMarks0=t=>skipMarks(t,0);
 const BLOT=r=>`<svg class="blot" viewBox="0 0 22 20" style="transform:rotate(${r}deg)" aria-hidden="true"><path fill="#1c1209" fill-opacity=".72" d="M11 3c3 0 2 2 4 2s3 1 3 4-2 2-1 4-1 4-4 4-2-1-4-1-4 1-5-2 1-3 0-5 0-5 3-5 1-5 4-5z"/><circle cx="19" cy="4" r="1.3" fill="#1c1209" fill-opacity=".7"/><circle cx="3" cy="16" r="1" fill="#1c1209" fill-opacity=".7"/></svg>`;
@@ -1562,6 +1570,42 @@ const SEAL=`<svg class="seal" id="seal" viewBox="0 0 100 100" aria-hidden="true"
   <circle cx="50" cy="50" r="31" fill="none" stroke="#5e1513" stroke-width="3"/>
   <path fill="#5e1513" d="M26 58c6-2 10-12 24-16 14 4 18 14 24 16-6 4-14 5-24 5s-18-1-24-5z"/><path fill="#5e1513" d="M38 48c2-8 7-12 12-12s10 4 12 12c-4-2-8-3-12-3s-8 1-12 3z"/>
   <path fill="#b8403a" fill-opacity=".45" d="M30 22c8-6 22-8 30-4-10 0-20 3-26 9z"/></svg>`;
+const SCRAPS=[["Lost: one black umbrella. Ask for D.","黒いかさをなくした。Dまで。",3,-1.2],["The bell rings at midnight. Do not listen.","真夜中に鐘が鳴る。聞くな。",-4,-2.6],["Room for rent. No hunters.","部屋かします。ハンターおことわり。",5,-0.4]];
+function renderBoard(){
+  Object.assign(SG,{step:0,typed:"",focus:null,blots:[{},{}],pos:[0,0],name:st.get("name",""),ime:false});
+  $("#sheetwrap").hidden=true;
+  const rot=[-2.2,1.8,-1.2,2.4,-1.8,1.4];
+  const posters=ORDER.map((k,i)=>{const B=BOSSES[k],n=B.notice,best=st.get("best_"+k,null);
+    return `<article class="poster" data-k="${k}" style="--r:${rot[i%rot.length]}deg;--d:${-i*2.3}s">
+      <div class="wanted">${n.head||"WANTED"}</div><h2>${B.name[0]}</h2><p class="ja jn">${B.name[1]}</p>
+      <p class="tier"><span class="dots">${"●".repeat(B.danger)}${"○".repeat(3-B.danger)}</span> ${B.tier[0]}<span class="ja inl">${B.tier[1]}</span></p>
+      <p class="tale">${n.tale[0]}<span class="ja">${n.tale[1]}</span></p>
+      <ul>${n.clues.map(c=>`<li>${c[0]}<span class="ja">${c[1]}</span></li>`).join("")}</ul>
+      <div class="rew"><span>${n.reward[0]}<span class="ja">${n.reward[1]}</span></span><span>5 vials<span class="ja">回復5本</span></span></div>
+      ${best?`<div class="stamp">${best.rank}<small>BEST</small></div>`:""}
+      ${B.intro&&st.get("cut_"+k,false)?`<button class="again" type="button" data-k="${k}">Watch the intro again<span class="ja inl">オープニング</span></button>`:""}
+    </article>`;});
+  const scraps=SCRAPS.map(([en,ja,r,d])=>`<div class="scrap" style="--r:${r}deg;--d:${d}s">${en}<small class="ja">${ja}</small></div>`);
+  /* posters first, with the scraps tucked between them */
+  const all=[];posters.forEach((p,i)=>{all.push(p);if(scraps[i])all.push(scraps[i]);});
+  $("#cork").innerHTML=all.join("");
+  $("#cork").querySelectorAll(".again").forEach(b=>b.onclick=()=>{G.bossKey=b.dataset.k;st.set("cut_"+G.bossKey,false);startHunt();});
+  renderBar();
+}
+function renderBar(){
+  const f=SG.focus,full=f?namesOf(f).find(n=>n.toLowerCase().startsWith(SG.typed.toLowerCase()))||typeName(f):"";
+  const chars=SG.typed||f?[...(full||SG.typed)].map((c,j)=>{const b=SG.blots[0][j];
+    return `<span class="${j<SG.typed.length?"k":"g"}${j===SG.typed.length?" cur":""}">${b!=null?BLOT(b):""}${c}</span>`;}).join("")
+    :`<span class="cur">${SG.blots[0][0]!=null?BLOT(SG.blots[0][0]):""}&nbsp;</span><span class="ph">type a name from the board</span>`;
+  $("#markbar").innerHTML=`<span class="lbl">Name your mark</span><div class="txt">${chars}</div>
+    <div class="hint">${SG.ime?`Switch the keyboard to English input (英数).<span class="ja">英数入力に切りかえてね。</span>`:`Copy a name from a poster. Point at a poster to read it.<span class="ja">ポスターの名前を打とう。マウスを乗せると大きく読める。</span>`}</div>`;
+  document.querySelectorAll(".poster").forEach(p=>p.classList.toggle("focus",p.dataset.k===f&&SG.typed.length>0));
+}
+function openSheet(){
+  const B=BOSSES[G.bossKey];SG.step=1;SG.blots[1]={};SG.lines=[B.name[0],B.oath[0]];SG.pos=[0,skipMarks0(B.oath[0])];
+  $("#sheet").innerHTML=`<div class="wanted">CONTRACT</div><h1 style="font-size:34px">${B.name[0]}</h1><p class="ja" style="text-align:center">${B.name[1]}</p><div class="sign" id="sign"></div>${SEAL}<p class="back"><kbd>Esc</kbd> Back to the board<span class="ja inl">掲示板にもどる</span></p>`;
+  $("#sheetwrap").hidden=false;renderSign();
+}
 function renderSign(){
   const el=$("#sign");if(!el)return;
   const row=(i,lbl,hint)=>{const t=SG.lines[i],p=SG.pos[i],act=SG.step===i,done=SG.step>i;
@@ -1569,9 +1613,7 @@ function renderSign(){
       return `<span class="${cls}${cur}">${b!=null?BLOT(b):""}${c===" "?" ":c}</span>`;}).join("");
     return `<div class="sline${SG.step<i?" wait":""}"><span class="lbl">${lbl}</span><div class="txt">${chars}</div>${act?`<div class="hint">${hint}</div>`:""}</div>`;};
   const nm=SG.name.replace(/[<>&"]/g,"");
-  el.innerHTML=`<h4>Contract</h4>
-    ${row(0,"Name",`Type a name from the contracts.<span class="ja">契約の名前を打とう。</span>`)}
-    ${row(1,"Oath",`Type the oath.<span class="ja">${BOSSES[G.bossKey].oath[1]}</span>`)}
+  el.innerHTML=`${row(1,"Oath",`Type the oath.<span class="ja">${BOSSES[G.bossKey].oath[1]}</span>`)}
     <div class="sline${SG.step<2?" wait":""}"><span class="lbl">Signed</span><div class="txt sig">${nm}${SG.step===2?'<span class="caret"></span>':""}</div>${SG.step===2?`<div class="hint">${nm?"Press <kbd>Enter</kbd> to sign. (Backspace to change)":"Type your name in English letters."}<span class="ja">${nm?"Enterでサイン":"名前をローマ字で書こう"}</span></div>`:""}</div>
     ${SG.ime?`<p class="imehint">Switch the keyboard to English input (英数).<span class="ja">英数入力に切りかえてね。</span></p>`:""}`;
 }
@@ -1579,31 +1621,66 @@ function sealContract(){
   SG.step=3;st.set("name",SG.name.trim());renderSign();
   const s=$("#seal");s.classList.remove("on");void s.offsetWidth;s.classList.add("on");
   setTimeout(()=>{sfx("seal");},230);
-  setTimeout(()=>{if(scr.current==="board"&&SG.step===3)startHunt();},1250);
+  setTimeout(()=>{if(scr.current==="board"&&SG.step===3){$("#sheetwrap").hidden=true;startHunt();}},1250);
+}
+/* typing a mark: letters must follow one of the names on the board */
+function typeMark(ch){
+  const want=(SG.typed+ch).toLowerCase();
+  const hit=ORDER.find(k=>namesOf(k).some(n=>n.toLowerCase().startsWith(want))&&k===SG.focus)||ORDER.find(k=>namesOf(k).some(n=>n.toLowerCase().startsWith(want)));
+  if(!hit){if(SG.blots[0][SG.typed.length]==null)SG.blots[0][SG.typed.length]=Math.round(Math.random()*360);sfx("blot");renderBar();return;}
+  SG.typed+=ch;SG.focus=hit;sfx("pen");
+  if(namesOf(hit).some(n=>n.toLowerCase()===SG.typed.toLowerCase())){G.bossKey=hit;st.set("sel",hit);sfx("line");renderBar();openSheet();return;}
+  renderBar();
 }
 document.addEventListener("keydown",e=>{
-  if(scr.current!=="board"||SG.step>2||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(scr.current!=="board"||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(!$("#ctlwrap").hidden){if(e.key==="Escape"||e.key==="Enter"){e.preventDefault();showControls(false);}return;}
+  if(SG.step>2)return;
   const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"))return;
-  if(e.key==="Process"||e.isComposing){if(!SG.ime){SG.ime=true;renderSign();}return;}
-  if(SG.ime){SG.ime=false;}
-  if(SG.step<2){
+  if(e.key==="Process"||e.isComposing){if(!SG.ime){SG.ime=true;SG.step?renderSign():renderBar();}return;}
+  if(SG.ime){SG.ime=false;SG.step?renderSign():renderBar();}
+  if(e.key==="Escape"&&SG.step>0){e.preventDefault();renderBoard();return;}
+  if(SG.step===0){
+    if(e.key==="Backspace"){e.preventDefault();if(SG.blots[0][SG.typed.length]!=null)delete SG.blots[0][SG.typed.length];else if(SG.typed){SG.typed=SG.typed.slice(0,-1);if(!SG.typed)SG.focus=null;}renderBar();return;}
     if(e.key.length!==1)return;e.preventDefault();if(e.repeat)return;
-    const i=SG.step;
-    if(i===0&&SG.pos[0]===0&&e.key===" ")return;
-    const ok=i===0?pickByTyping(e.key):e.key.toLowerCase()===SG.lines[i][SG.pos[i]].toLowerCase(),line=SG.lines[i];
-    if(ok){
-      SG.pos[i]=skipMarks(line,SG.pos[i]+1);sfx("pen");
-      if(SG.pos[i]>=line.length){SG.step++;sfx("line");}
-    }else if(SG.blots[i][SG.pos[i]]==null){SG.blots[i][SG.pos[i]]=Math.round(Math.random()*360);sfx("blot");}
-    else sfx("blot");
-    renderSign();return;
-  }
+    if(!SG.typed&&e.key===" ")return;
+    typeMark(e.key);return;}
+  if(SG.step===1){
+    if(e.key.length!==1)return;e.preventDefault();if(e.repeat)return;
+    const line=SG.lines[1];
+    if(e.key.toLowerCase()===line[SG.pos[1]].toLowerCase()){SG.pos[1]=skipMarks(line,SG.pos[1]+1);sfx("pen");if(SG.pos[1]>=line.length){SG.step=2;sfx("line");}}
+    else{if(SG.blots[1][SG.pos[1]]==null)SG.blots[1][SG.pos[1]]=Math.round(Math.random()*360);sfx("blot");}
+    renderSign();return;}
   /* step 2: the signature */
   if(e.key==="Enter"){e.preventDefault();if(/[A-Za-z]/.test(SG.name))sealContract();return;}
   if(e.key==="Backspace"){e.preventDefault();SG.name=SG.name.slice(0,-1);renderSign();return;}
   if(e.key.length===1){e.preventDefault();if(/[A-Za-z .'-]/.test(e.key)&&SG.name.length<14){SG.name+=e.key;sfx("pen");}renderSign();}
 });
-$("#replayCut").onclick=()=>{st.set("cut_"+G.bossKey,false);startHunt();};
+/* ---------- controls popup: a drawn keyboard with the keys that matter ---------- */
+const KEYS={W:["c-move","move"],A:["c-move","move"],S:["c-move","move"],D:["c-move","move"],J:["c-atk","attack"],K:["c-atk","heavy"],L:["c-gun","pistol"],Q:["c-heal","heal"],E:["c-crit","crit"]};
+function showControls(on){
+  const w=$("#ctlwrap");
+  if(!on){w.hidden=true;return;}
+  const key=(c)=>{const k=KEYS[c];return `<span class="key${k?" on "+k[0]:""}">${c}${k?`<i>${k[1]}</i>`:""}</span>`;};
+  const rows=["QWERTYUIOP","ASDFGHJKL","ZXCVBNM"].map((r,i)=>`<div class="row" style="margin-left:${i*22}px">${[...r].map(key).join("")}</div>`).join("");
+  w.innerHTML=`<div class="ctl" role="dialog" aria-label="Controls"><h3>Controls <span class="ja inl">そうさ</span><button class="btn" id="ctlClose" type="button">Close (Esc)<span class="ja">とじる</span></button></h3>
+    <div class="kb"><div class="row"><span class="key esc on c-esc">Esc<i>pause</i></span></div>${rows}<div class="row" style="margin-left:88px"><span class="key wide on c-dodge">Space<i>dodge</i></span></div></div>
+    <div class="legend">
+      <span><span class="sw c-move"></span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span><span>Move<span class="ja inl">いどう</span></span>
+      <span><span class="sw c-atk"></span><kbd>J</kbd></span><span>Saw cleaver (fast). Press again for a combo.<span class="ja inl">こうげき（れんぞく）</span></span>
+      <span><span class="sw c-atk"></span><kbd>K</kbd></span><span>Heavy swing<span class="ja inl">強こうげき</span></span>
+      <span><span class="sw c-gun"></span><kbd>L</kbd></span><span>Pistol: shoot a glowing attack just before it hits<span class="ja inl">光った攻撃を当たる直前に撃つ</span></span>
+      <span><span class="sw c-dodge"></span><kbd>Space</kbd></span><span>Dodge<span class="ja inl">回避</span></span>
+      <span><span class="sw c-heal"></span><kbd>Q</kbd></span><span>Drink a healing vial (5 per hunt)<span class="ja inl">回復（5本）</span></span>
+      <span><span class="sw c-crit"></span><kbd>E</kbd></span><span>Critical strike, when the enemy is down<span class="ja inl">たおれた敵にとどめの一撃</span></span>
+      <span><span class="sw c-esc"></span><kbd>Esc</kbd></span><span>Pause<span class="ja inl">一時停止</span></span>
+    </div>
+    <div class="tipbox"><b>Getting hurt.</b> When you get hit, part of your health turns orange. Hit back quickly to win it back.<span class="ja">ダメージを受けるとオレンジ色になる。すぐに攻撃すると体力がもどる。</span></div></div>`;
+  w.hidden=false;$("#ctlClose").onclick=()=>showControls(false);w.onclick=e=>{if(e.target===w)showControls(false);};
+}
+document.body.appendChild($("#ctlwrap"));
+$("#ctlBtn").onclick=()=>{$("#ctlBtn").blur();showControls(true);};
+$("#sheetwrap").onclick=e=>{if(e.target===$("#sheetwrap")&&SG.step<3)renderBoard();};
 
 /* ---------- 3D helpers ---------- */
 const matCache={};
@@ -1971,8 +2048,8 @@ function stopLoop(){if(G.loop){G.loop.stop();G.loop=null;}}
 function togglePause(){if(G.over||!G.boss)return;pause(!G.paused);}
 function pause(on){
   if(G.over)return;G.paused=on;held.clear();buf=null;
-  if(on){veil(`<h2>Paused</h2><p class="ja">一時停止</p><div class="row"><button class="btn primary" id="vRes" type="button">Resume (Esc)<span class="ja">つづける</span></button><button class="btn" id="vBoard" type="button">Leave the hunt<span class="ja">契約ボードへ</span></button></div>`);
-    $("#vRes").onclick=()=>pause(false);$("#vBoard").onclick=()=>scr.show("board");G.veilEnter=()=>pause(false);}
+  if(on){veil(`<h2>Paused</h2><p class="ja">一時停止</p><div class="row"><button class="btn primary" id="vRes" type="button">Resume (Esc)<span class="ja">つづける</span></button><button class="btn" id="vCtl" type="button">Controls<span class="ja">そうさ</span></button><button class="btn" id="vBoard" type="button">Leave the hunt<span class="ja">契約ボードへ</span></button></div>`);
+    $("#vRes").onclick=()=>pause(false);$("#vCtl").onclick=()=>showControls(true);$("#vBoard").onclick=()=>scr.show("board");G.veilEnter=()=>pause(false);}
   else veil(null);
 }
 
@@ -2179,7 +2256,11 @@ function shoot(){
   const h=parryHit();
   if(h){
     /* a perfect parry (the last tenth of a second) keeps it down longer and makes the critical strike stronger */
-    const perfect=B.mt>=h.t-PERFECT;
+    const perfect=B.mt>=h.t-(B.D.perfect||PERFECT);
+    /* poise: against a duelist a normal parry only rocks him back; a perfect one, or a second in a row, opens him up */
+    if(B.D.poise&&!perfect&&!(B.poise>=1)){B.poise=1;B.move=null;setGlow(null);G.btR.clear();G.btL.clear();B.state="broken";B.t=0;B.bdur=0.8;
+      P.stats.parries++;P.gunDur=ACT.gun.dur;sfx("parry");ping("PARRY 1/2");fx("spark",B.x,1.8,B.z,8);G.freeze=0.12;G.shake=Math.max(G.shake,0.1);return;}
+    B.poise=0;
     B.state="stagger";B.t=0;B.stagger=(perfect?3.4:2.4)*SLOW();B.move=null;B.critDone=false;B.reel=null;B.perfect=perfect;setGlow(null);G.btR.clear();G.btL.clear();
     P.stats.parries++;if(perfect)P.stats.perfects++;P.gunDur=ACT.gun.dur;
     sfx("parry");if(perfect)tone(1760,0.7,"sine",0.03,1320,0.08);ping(perfect?"PERFECT PARRY":"PARRY");
@@ -2191,7 +2272,7 @@ function shoot(){
 /* The claws glow from WARN seconds before the hit, but a shot only parries in the last WINDOW seconds. */
 const WARN=0.5,WINDOW=0.2,PERFECT=0.1;
 function parryHit(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null;
-  return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-WINDOW&&B.mt<=h.t+0.06)||null;}
+  const W=B.D.window||WINDOW;return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-W&&B.mt<=h.t+0.06)||null;}
 function parryOpen(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null;
   return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-WARN&&B.mt<=h.t+0.06)||null;}
 function setGlow(limb){const m=G.boss.m,on=0x8a6a20;
@@ -2200,7 +2281,7 @@ function bossStart(state,move){
   const B=G.boss;
   if(state==="move"&&B.D.moves[move].guard){B.state="guard";B.t=0;B.gt=2+Math.random()*1.2;B.m.shield.visible=true;B.m.um.visible=false;sfx("dodge");B.last.push(move);if(B.last.length>3)B.last.shift();return;}
   B.state=state;B.t=0;B.mt=0;B.blinked=false;B.m.g.visible=true;
-  if(state==="move"){B.moveKey=move;B.move=B.D.moves[move];B.hitsDone=B.move.hits.map(()=>false);
+  if(state==="move"){B.moveKey=move;const tpl=B.D.moves[move];B.move=tpl.gen?tpl.gen(B):tpl;B.hitsDone=B.move.hits.map(()=>false);
     if(B.move.leap){B.leapFrom=[B.x,B.z];}
     B.last.push(move);if(B.last.length>3)B.last.shift();}
   if(state==="roar"){B.move=null;setGlow(null);sfx("roar");G.shake=Math.max(G.shake,0.18);
@@ -2217,7 +2298,7 @@ function pickMove(){
 function hitPlayer(dmg,fromX,fromZ){
   if(P.iframe>0||P.state==="dead"||G.over)return false;
   dmg=Math.round(dmg*DMG()*(G.boss.phase>1?1.1:1));
-  P.hp-=dmg;P.rally=Math.min(P.max,P.rally+dmg);P.rallyT=1.3;
+  P.hp-=dmg;P.rally=Math.min(P.max,P.rally+dmg);P.rallyT=1.3;G.boss.poise=0;
   P.stats.hits++;P.stats.dmgTaken+=dmg;
   const dx=P.x-fromX,dz=P.z-fromZ,d=Math.hypot(dx,dz)||1;P.hurtV=[dx/d*8,dz/d*8];
   P.m.vial.visible=false;
@@ -2310,7 +2391,9 @@ function boss(dt){
           const q=(Tm-L.from)/(L.to-L.from);B.x=lerp(B.leapFrom[0],B.leapTo[0],q);B.z=lerp(B.leapFrom[1],B.leapTo[1],q);B.y=Math.sin(q*Math.PI)*3.4;}
         else if(B.y>0){B.y=0;showMark(0,0,false);sfx("thud");G.shake=Math.max(G.shake,0.35);fx("dust",B.x,0.3,B.z,16);shock(B.x,B.z,3.4);}}
       if(mv.charge){const C=mv.charge;if(Tm>C.from&&Tm<C.to){B.x+=Math.sin(B.a)*C.speed*dt/sl;B.z+=Math.cos(B.a)*C.speed*dt/sl;B.walking=1;B.walk+=dt*10;if(Math.random()<0.4)fx("dust",B.x,0.2,B.z,1);}}
+      if(B.D.duel)mv.hits.forEach(h=>{if(h.lunge&&Tm>h.t-0.18&&Tm<h.t&&t.d>1.8){B.x+=Math.sin(B.a)*4.5*dt/sl;B.z+=Math.cos(B.a)*4.5*dt/sl;}});
       mv.hits.forEach((h,i)=>{if(B.hitsDone[i])return;
+        if(h.feint){if(Tm>=h.t)B.hitsDone[i]=true;return;}
         if(h.contact){if(Tm>h.from&&Tm<h.to&&Math.hypot(P.x-B.x,P.z-B.z)<1.9){B.hitsDone[i]=true;hitPlayer(h.dmg,B.x,B.z);}else if(Tm>=h.to)B.hitsDone[i]=true;return;}
         if(Tm<h.t)return;B.hitsDone[i]=true;
         if(h.area){if(Math.hypot(P.x-B.x,P.z-B.z)<h.area)hitPlayer(h.dmg,B.x,B.z);return;}
@@ -2375,12 +2458,27 @@ function boss(dt){
 /* ---------- duel boss (Dimitri): umbrella swings, counters, guard, blink + afterimage ---------- */
 /* a swing with the umbrella; each hit can start rising early (raise) and hold up there: a delayed swing */
 function umbAnim(Tm,T,mv){
-  const hs=mv.hits.filter(h=>h.limb==="R");let h=hs[0];for(const x of hs)if(Tm>=(x.raise??x.t-0.75))h=x;
-  const raise=h.raise??h.t-0.75,u=Tm<h.t-0.3?Math.min(-0.3,-0.75+(Tm-raise)):Tm-h.t,c=clawKeys(u,h.s||-1);
+  const hs=mv.hits.filter(h=>h.limb==="R"),h=hs.find(x=>Tm<x.t+0.12)||hs[hs.length-1],raise=h.raise;
+  let u=raise!=null&&Tm<h.t-0.3?Math.min(-0.3,-0.75+(Tm-raise)):Tm-h.t;
+  if(h.feint&&u>-0.3)u=Math.max(-0.68,-0.3-(u+0.3)*1.3);   /* a feint: up, then it pulls back without swinging */
+  const c=clawKeys(u,h.s||-1);
   const hold=Tm>raise+0.45&&Tm<h.t-0.3?Math.sin((G.clock||0)*3)*0.05:0;
   T.rx=c.x+hold;T.rz=c.z;T.re=c.e;Object.assign(T,{chest:c.chest,twist:c.twist,by:c.by,head:c.head});
   T.lx=-0.1;T.lz=0.35;T.le=-0.5;
   return {R:u>-0.07&&u<0.15};}
+/* his normal attack: a string of 2-4 swings; only one of them glows (parryable).
+   Some swings are delayed (raised early and held); some strings have a feint. */
+function makeString(B){
+  const ph2=B.phase>1,n=ph2?3+(Math.random()<0.5?1:0):2+Math.floor(Math.random()*3);
+  const pi=n>1&&Math.random()<0.75?1+Math.floor(Math.random()*(n-1)):0;
+  const hits=[];let t=0.5,s=-1,prev=null;
+  for(let i=0;i<n;i++){
+    if(i>0&&Math.random()<(ph2?0.25:0.2)){const ft=prev.t+0.55;hits.push({t:ft,feint:true,limb:"R",s,raise:prev.t+0.12});t=ft+0.5;prev={t:ft};}
+    const late=i>0&&Math.random()<(ph2?0.35:0.3);
+    if(i>0)t=prev.t+(late?0.95:0.42+Math.random()*0.1);
+    hits.push({t,limb:"R",s,range:3.1,arc:120,dmg:20,parry:i===pi,lunge:true,raise:late?prev.t+0.16:undefined});
+    prev=hits[hits.length-1];s=-s;}
+  return {dur:prev.t+0.7,track:prev.t-0.2,anim:umbAnim,hits,weight:()=>0};}
 function thrustAnim(Tm,T,mv){const h=mv.hits[0],raise=h.raise??h.t-0.6,u=Tm<h.t-0.12?Math.min(-0.12,-0.6+(Tm-raise)):Tm-h.t;
   T.rx=kf(u,[[-0.6,-0.3],[-0.3,0.1],[-0.12,0.25],[0,-1.55,"in"],[0.25,-1.5],[0.7,-0.3]]);T.re=kf(u,[[-0.6,-0.3],[-0.12,-1.9],[0,-0.02,"in"],[0.7,-0.3]]);T.rz=-0.05;
   T.chest=kf(u,[[-0.6,0.45],[-0.12,0.15],[0,0.95,"in"],[0.3,0.95],[0.7,0.45]]);T.twist=kf(u,[[-0.6,0],[-0.12,0.55],[0,-0.35,"in"],[0.7,0]]);
@@ -2421,7 +2519,7 @@ function counterCheck(){const B=G.boss;if(!B||!B.D.duel||!G.running||G.over)retu
   const t=toBoss();return t.d<4.2&&Math.abs(wrapA(Math.atan2(-t.dx,-t.dz)-B.a))<1.3;}
 function startCounter(hitT){const B=G.boss;B.m.shield.visible=false;B.m.um.visible=true;
   B.state="counter";B.t=0;B.ct=Math.max(0.1,hitT-0.03);B.move=null;setGlow(null);}
-function guardBreak(B){B.state="broken";B.t=0;B.m.shield.visible=false;B.m.um.visible=true;
+function guardBreak(B){B.state="broken";B.t=0;B.bdur=1.6;B.m.shield.visible=false;B.m.um.visible=true;
   sfx("parry");ping("GUARD BROKEN");fx("spark",B.x,1.5,B.z,14);G.freeze=0.14;G.shake=Math.max(G.shake,0.14);P.gunDur=ACT.gun.dur;}
 function duelState(B,dt,t,T){
   B.t+=dt;const u=B.t,turn=r=>{const want=Math.atan2(-t.dx,-t.dz);B.a+=clamp(wrapA(want-B.a),-r*dt,r*dt);};
@@ -2435,7 +2533,7 @@ function duelState(B,dt,t,T){
     T.chest=kf(u,[[0,0.45],[0.12,-0.35,"in"],[1.0,0.1],[1.6,0.45]]);T.by=kf(u,[[0.12,0.15],[1.0,-0.3],[1.6,0]]);T.head=kf(u,[[0.12,-0.6],[1.6,0]]);
     T.rx=kf(u,[[0,-1.4],[0.12,-2.6,"in"],[1.6,-0.3]]);T.rz=-0.8;T.lx=kf(u,[[0.12,-1.4],[1.6,-0.1]]);T.lz=0.8;
     if(u<0.3){B.x-=Math.sin(B.a)*2*dt;B.z-=Math.cos(B.a)*2*dt;}
-    if(u>=1.6){B.state="idle";B.open=0.5;B.cd=0.9;}return T;}
+    if(u>=(B.bdur||1.6)){B.state="idle";B.open=B.bdur<1?0.3:0.5;B.cd=B.bdur<1?0.5:0.9;B.bdur=0;}return T;}
   /* counter: flick the swing aside, then a stab while you stagger */
   const c=B.ct,r=c+0.5;turn(6);
   T.rx=kf(u,[[0,-0.4],[c-0.05,-1.2],[c,-1.6,"in"],[c+0.15,-1.5],[r-0.12,0.2],[r,-1.6,"in"],[r+0.3,-1.5],[r+0.8,-0.3]]);
@@ -2653,7 +2751,7 @@ function showResult(){
   scr.show("result");
 }
 
-window.HC={G,P,BOSSES};   /* for testing in the console */
+window.HC={G,P,BOSSES,parryHit,shoot,bossStart};   /* for testing in the console */
 scr.show("board");
 })();
 </script>
