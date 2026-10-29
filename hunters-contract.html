@@ -2114,7 +2114,7 @@ function bossDies(){
   const B=G.boss;if(B.state==="dead")return;B.hp=0;B.state="dead";B.dead=0;B.move=null;B.ring=null;if(G.ringMesh)G.ringMesh.visible=false;showMark(0,0,false);
   const fade=new Set();B.m.g.traverse(o=>{if(o.material&&o.material!==B.m.shadowMat)fade.add(o.material);});B.fade=[...fade];
   setGlow(null);G.over=true;G.running=false;P.iframe=99;prompt(null);sfx("win");
-  setTimeout(()=>banner("The hunt is over",["The beast is gone.","けものは消えた。"],false,0),900);
+  setTimeout(()=>banner("The hunt is over",["The beast is gone.","化け物は消えた。"],false,0),900);
 }
 function showResult(){
   const D=BOSSES[G.bossKey],s=P.stats,time=G.time;
