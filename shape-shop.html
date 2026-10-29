@@ -1,0 +1,1430 @@
+<title>Shape Shop</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Bungee&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<!--
+  STARTER GAME built on the Classroom Game Kit. Copy this file to start a new game.
+  The kit lives between the KIT:CSS / KIT:JS markers and the word bank in <script id="kit-wordbank">.
+  Do not edit inside those blocks: run  python3 game-kit/update-kit.py "<game>.html"  to refresh them.
+  Everything after "GAME" below is this game's own code.
+-->
+<style>
+/*KIT:CSS START*/
+/* =====================================================================
+   CLASSROOM GAME KIT  v1  styles
+   Paste between the KIT:CSS markers (or run update-kit.py).
+   A game restyles itself by changing the tokens below in its own :root block AFTER the kit.
+   One dark "game console" look on purpose, like The Keypad Game.
+   ===================================================================== */
+:root{
+  --bg:#14161d; --panel:#1e212b; --panel2:#272b37; --edge:#3a3f50; --text:#f2eee5; --muted:#aeacba; --dim:#7d7b8c;
+  --accent:#ff7a3d; --ink:#1b1a17; --go:#7fd18b; --oops:#ff8f6b; --paper:#fffaf0;
+  --f-display:"Bungee","Arial Black",Impact,sans-serif;
+  --f-body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans",system-ui,sans-serif;
+  --f-letter:"Andika","Century Gothic","Trebuchet MS",sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+html,body{height:100%}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);background-image:radial-gradient(1000px 480px at 50% -10%,#262a3a 0%,rgba(20,22,29,0) 65%);color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.app{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 40px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;margin:0;line-height:1.15;text-wrap:balance}
+h3{font-size:15px;letter-spacing:.04em}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Japanese support: <span class="ja"> shows only when body.jp */
+.ja{display:none}
+body.jp .ja{display:block;font-size:.82em;color:var(--muted);line-height:1.45;font-weight:500;letter-spacing:0;font-family:var(--f-body)}
+body.jp .ja.inl{display:inline;margin-left:6px}
+
+/* buttons + switches */
+.btn{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font:700 15px/1.25 var(--f-body);color:var(--text);background:var(--panel2);border:2px solid var(--edge);border-radius:8px;padding:9px 16px;cursor:pointer;box-shadow:0 3px 0 #07080b;text-align:center}
+.btn:hover{border-color:var(--dim)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #07080b}
+.btn.primary{background:var(--accent);color:var(--ink);border-color:color-mix(in srgb,var(--accent) 60%,#000)}
+.btn.primary .ja{color:inherit;opacity:.78}
+.btn.small{font-size:13px;padding:6px 10px}
+.btn.big{font-size:18px;padding:13px 24px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.tog{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:2px solid var(--edge);border-radius:20px;padding:5px 12px 5px 8px;cursor:pointer;font-size:13px;font-weight:700}
+.tog::before{content:"";width:28px;height:16px;border-radius:9px;background:var(--edge);flex:none}
+.tog[aria-pressed="true"]::before{background:var(--go);background-image:radial-gradient(circle at 21px 8px,#fff 5px,transparent 5.5px)}
+.tog[aria-pressed="false"]::before{background-image:radial-gradient(circle at 7px 8px,#cfc8de 5px,transparent 5.5px)}
+.rowbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:4px 8px;border-bottom:2px dashed var(--edge);margin-bottom:12px}
+.brand{background:none;border:0;cursor:pointer;display:flex;align-items:baseline;gap:10px;padding:4px 0;font-family:var(--f-display);font-size:22px;color:var(--accent)}
+.brand span{font:700 13px var(--f-body);color:var(--muted)}
+.tb-tools{display:flex;gap:8px;flex-wrap:wrap}
+
+/* home */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:24px;align-items:center;margin-bottom:20px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:6px}
+.hero h1{font-size:clamp(38px,6vw,64px);text-shadow:0 4px 0 #000}
+.hero .lead{font-size:18px;margin-top:10px;max-width:34em}
+.hero-pic{display:flex;justify-content:center}
+.hero-pic svg{width:min(260px,100%);height:auto}
+.panel{background:var(--panel);border:2px solid var(--edge);border-radius:12px;padding:16px 18px;box-shadow:0 4px 0 #07080b;min-width:0}
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.role{display:flex;flex-direction:column;gap:8px}
+.role h2{font-size:22px;color:var(--accent)}
+.role .who{font-weight:800;color:var(--muted);font-size:14px}
+.role .btn{align-self:flex-start}
+.say{list-style:none;padding:0;margin:2px 0 4px;display:flex;flex-wrap:wrap;gap:6px}
+.say li{background:var(--panel2);border-radius:6px;padding:4px 10px;font-weight:700;font-size:15px}
+.say li::before{content:"\201C";color:var(--accent);margin-right:2px}.say li::after{content:"\201D";color:var(--accent);margin-left:2px}
+.more{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.note{color:var(--muted);font-size:14px}
+
+/* settings rows (Kit.seg) */
+.settings{display:flex;flex-direction:column;gap:12px}
+.set-row{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
+.set-row h3{min-width:140px;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{display:flex;flex-direction:column;align-items:center;background:var(--panel2);border:2px solid var(--edge);border-radius:8px;padding:6px 12px;font-weight:700;font-size:14px;cursor:pointer;line-height:1.2}
+.seg button .ja{font-size:11px}
+.seg button small{font:400 12px var(--f-letter);opacity:.85;max-width:12em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.seg button[aria-pressed="true"] .ja{color:inherit;opacity:.78}
+details.custom{border-top:2px dashed var(--edge);padding-top:10px}
+details.custom summary{cursor:pointer;font-weight:800;color:var(--accent);font-size:15px;margin-bottom:6px}
+
+/* class code */
+.classcode{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;border-top:2px dashed var(--edge);padding-top:12px}
+.cc{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.cc b{font-family:var(--f-display);font-size:30px;letter-spacing:.12em;color:var(--accent);font-weight:400}
+.kit-cname,.cc-name{color:var(--muted);font-weight:700;font-size:14px}
+.kit-entry{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-left:auto}
+.kit-entry input{width:9em;font:400 18px var(--f-display);letter-spacing:.12em;text-transform:uppercase;background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px;padding:6px 10px}
+.kit-err{color:var(--oops);font-weight:700;font-size:14px;width:100%}
+.kit-err:empty{display:none}
+
+/* HUD */
+.hud{display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap;background:var(--panel);border:2px solid var(--edge);border-radius:12px;padding:6px 12px;margin-bottom:8px}
+.rolechip{font:800 13px var(--f-body);background:var(--accent);color:var(--ink);border-radius:14px;padding:3px 12px;text-transform:uppercase;letter-spacing:.05em}
+.lights{display:flex;gap:6px;align-items:center}
+.lights i{width:18px;height:18px;border-radius:50%;background:#3d2a26;border:2px solid #000;box-shadow:inset 0 -3px 0 rgba(0,0,0,.35)}
+.lights i.on{background:var(--go)}
+.lights i.now{background:var(--oops)}
+.stat{font:700 15px var(--f-body);color:var(--muted);font-variant-numeric:tabular-nums}
+.stat b{color:var(--text);font-family:var(--f-display);font-weight:400;font-size:18px;margin-left:4px}
+.hud .badge{margin-left:auto;font-size:13px;color:var(--muted);font-weight:700}
+.hud .badge b{font-family:var(--f-display);font-weight:400;color:var(--accent);letter-spacing:.1em;font-size:16px}
+.phrases{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.phrases b{font-size:13px;color:var(--muted);margin-right:4px}
+.phrases span.p{background:var(--panel2);border-radius:6px;padding:3px 9px;font-weight:700;font-size:14px}
+.display.shake,.kit-shake{animation:kit-shake .4s}
+@keyframes kit-shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+
+/* solo partner */
+.kit-partner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--panel2);border:2px solid var(--edge);border-radius:10px;padding:8px 12px}
+.kit-robot{font-size:30px;line-height:1}
+.kit-bub{flex:1;min-width:0;font-weight:800;font-size:17px}
+.kit-bub .ja{font-weight:500}
+
+/* traps (no flashing: movement and sound only) */
+.kit-trap-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5;border-radius:12px}
+.kit-trap-layer.block{pointer-events:auto;cursor:default}
+.kt{position:absolute;line-height:1;user-select:none}
+.kt-wordwrap{transform:translateX(-50%);z-index:2}
+.kt-word{display:flex;flex-direction:column;align-items:center;font-family:var(--f-display);font-size:40px;color:#fff;-webkit-text-stroke:2px #000;text-shadow:0 4px 0 #000;white-space:nowrap;animation:kt-pop .35s ease-out both}
+body.jp .kt-word .ja{-webkit-text-stroke:0;text-shadow:none;font-size:16px;color:#fff;background:rgba(0,0,0,.6);border-radius:6px;padding:2px 8px;text-align:center}
+@keyframes kt-pop{from{transform:scale(.3)}70%{transform:scale(1.12)}to{transform:scale(1)}}
+.kit-pic{image-rendering:pixelated;vertical-align:middle}
+.kt .kit-pic{display:block}
+.kt-glove{font-size:90px;animation:kt-glove 2s ease-in-out both}
+@keyframes kt-glove{0%{transform:translate(-50%,-50%) scale(.2)}35%{transform:translate(-50%,-50%) scale(2.4)}50%{transform:translate(-50%,-50%) scale(1.9)}65%{transform:translate(-50%,-50%) scale(2.3)}85%{transform:translate(-50%,-50%) scale(2.2);opacity:1}100%{transform:translate(-50%,-50%) scale(.2);opacity:0}}
+.kt-chicken{font-size:120px;bottom:-140px;animation:kt-chick 2.4s ease-in-out both}
+@keyframes kt-chick{0%{transform:translateY(0)}25%{transform:translateY(-180px) rotate(-8deg)}40%{transform:translateY(-170px) rotate(8deg)}55%{transform:translateY(-180px) rotate(-8deg)}75%{transform:translateY(-175px) rotate(6deg)}100%{transform:translateY(0)}}
+.kt-soot{width:120px;height:110px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#3b3b3f,#141416 70%,rgba(20,20,22,0) 72%);cursor:pointer;pointer-events:auto;transition:opacity .35s,transform .35s}
+.kt-soot.gone{opacity:0;transform:scale(.4);pointer-events:none}
+.kt-hint{left:50%;transform:translateX(-50%);bottom:10px;background:rgba(0,0,0,.78);border-radius:8px;padding:6px 14px;font-weight:800;text-align:center;white-space:nowrap}
+.kt-duck{font-size:100px;bottom:20px;left:-130px;animation:kt-duck 3s linear both}
+@keyframes kt-duck{0%{transform:translateX(0) rotate(-5deg)}12%{transform:translateX(120px) rotate(5deg)}25%{transform:translateX(250px) rotate(-5deg)}37%{transform:translateX(370px) rotate(5deg)}50%{transform:translateX(500px) rotate(-5deg)}62%{transform:translateX(620px) rotate(5deg)}75%{transform:translateX(750px) rotate(-5deg)}87%{transform:translateX(870px) rotate(5deg)}100%{transform:translateX(1000px)}}
+.kt-drop{font-size:38px;animation:kt-drop 1.4s ease-in both}
+@keyframes kt-drop{from{transform:translate(0,0)}to{transform:translate(var(--dx),var(--dy));opacity:.2}}
+.kt-bear{font-size:130px;left:50%;bottom:-150px;animation:kt-bear 2.8s ease-in-out both}
+@keyframes kt-bear{0%{transform:translate(-50%,0)}25%,75%{transform:translate(-50%,-190px)}50%{transform:translate(-50%,-182px)}100%{transform:translate(-50%,0)}}
+.kt-zz{font:400 34px var(--f-display);color:#cfe3ff;animation:kt-zz 2.4s ease-out both}
+@keyframes kt-zz{from{transform:translate(0,0);opacity:0}20%{opacity:1}to{transform:translate(40px,-110px);opacity:0}}
+.kt-cat{font-size:130px;cursor:pointer;pointer-events:auto;animation:kt-catin .5s ease-out both}
+@keyframes kt-catin{from{transform:translateY(-60px);opacity:0}to{transform:none;opacity:1}}
+.kt-cat.bye{animation:kt-catout .6s ease-in both}
+@keyframes kt-catout{to{transform:translateX(400px)}}
+.kt-heart{font-size:34px;animation:kt-zz 1.2s ease-out both}
+
+/* end screen */
+.kit-result{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.kit-rtitle{font-size:clamp(30px,5vw,48px)}
+.kit-stars{display:flex;gap:6px}.kit-stars svg{width:46px;height:46px}
+.kit-nums{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.kit-nums div{background:var(--panel);border:2px solid var(--edge);border-radius:10px;padding:8px 16px;min-width:110px}
+.kit-nums small{display:block;color:var(--muted);font-weight:700;font-size:13px}
+.kit-nums b{font-family:var(--f-display);font-weight:400;font-size:26px;font-variant-numeric:tabular-nums}
+.kit-swap{display:flex;align-items:center;gap:14px;background:var(--accent);color:var(--ink);border-radius:12px;padding:12px 20px;font-family:var(--f-display);font-size:26px}
+.kit-swap .ja{color:inherit;opacity:.78}
+.kit-swap svg{width:54px;height:54px;flex:none}
+
+/* teacher page */
+.kit-teacher{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+.kit-tcol{display:flex;flex-direction:column;gap:14px;min-width:0}
+.kit-th{font-size:24px;color:var(--accent);margin-bottom:8px}
+.kit-steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.kit-share{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.kit-bigcode{font-family:var(--f-display);font-size:54px;letter-spacing:.14em;color:var(--accent);line-height:1}
+.kit-qr{background:#fff;border-radius:8px;padding:6px;line-height:0}
+.kit-qr canvas{width:220px;height:220px;image-rendering:pixelated}
+.kit-link{width:100%;box-sizing:border-box;font:13px var(--f-body);background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px;padding:6px 8px}
+.kit-pairs h3{margin-bottom:8px}
+.kit-pairrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.kit-npairs{width:4.5em;font:700 16px var(--f-body);background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px;padding:4px 8px}
+.kit-codes{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.kit-codecard{background:var(--panel2);border-radius:8px;padding:6px 10px;display:flex;flex-direction:column}
+.kit-codecard b{font-family:var(--f-display);font-weight:400;font-size:20px;letter-spacing:.08em;color:var(--accent)}
+.kit-copyarea{width:100%;box-sizing:border-box;margin-top:8px;background:var(--bg);color:var(--text);border:2px solid var(--edge);border-radius:8px}
+.kit-veil{position:fixed;inset:0;background:rgba(8,9,12,.92);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.kit-veil-card{background:var(--panel);border:2px solid var(--edge);border-radius:14px;padding:22px;max-width:720px;width:100%;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.kit-veil .kit-bigcode{font-size:clamp(60px,14vw,150px)}
+.kit-vurl{word-break:break-all}
+.kit-toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--go);color:var(--ink);font-weight:800;border-radius:10px;padding:8px 16px;z-index:60;box-shadow:0 4px 0 #000}
+.kit-toast .ja{color:#1f3b24}
+
+/* ===== other game styles ===== */
+/* countdown ring */
+.kit-count{position:relative;width:96px;height:96px;flex:none}
+.kit-count svg{width:100%;height:100%;transform:rotate(-90deg)}
+.kit-count circle{fill:none;stroke-width:9}
+.kc-bg{stroke:var(--panel2)}
+.kc-fg{stroke:var(--go);stroke-dasharray:100;stroke-linecap:round;transition:stroke-dashoffset .1s linear}
+.kit-count.low .kc-fg{stroke:var(--oops)}
+.kit-count b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:400 34px var(--f-display);font-variant-numeric:tabular-nums}
+/* team scoreboard */
+.kit-teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kit-team{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;align-items:center;gap:2px 10px;background:var(--panel);border:3px solid var(--tc);border-radius:12px;padding:8px 12px}
+.kit-team .kt-em{font-size:40px;line-height:1;grid-row:span 2}
+.kit-team .kt-nm{font-weight:800;color:var(--tc)}
+.kit-team b{font:400 42px/1 var(--f-display);grid-row:span 2;font-variant-numeric:tabular-nums}
+.kit-team .kt-btns{display:flex;gap:6px}
+.kit-team.bump b{animation:kt-pop .35s ease-out}
+/* quiz */
+.kq{display:flex;flex-direction:column;gap:14px;align-items:stretch}
+.kq-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;background:var(--paper);color:var(--ink);border-radius:14px;padding:14px;text-align:center}
+.kq-em{font-size:110px;line-height:1.05}
+.kq-ear{font-size:80px;line-height:1}
+.kq-listen{font:400 26px var(--f-display)}
+.kq-word{font:700 clamp(44px,8vw,84px)/1.1 var(--f-letter)}
+.kq-ja{font:800 clamp(40px,7vw,72px)/1.2 var(--f-body)}
+body.jp .kq-prompt .ja{color:#6b6358}
+.kq-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kq-c{display:flex;align-items:center;gap:12px;min-height:76px;background:var(--key,#f6f1e3);color:var(--ink);border:3px solid transparent;border-radius:12px;box-shadow:0 5px 0 #8f8873,0 6px 0 #000;cursor:pointer;padding:8px 14px;font:700 clamp(20px,3vw,32px)/1.15 var(--f-letter);text-align:left;overflow-wrap:anywhere}
+.kq-c:active{transform:translateY(4px);box-shadow:0 1px 0 #8f8873,0 2px 0 #000}
+.kq-c i{font:400 22px var(--f-display);font-style:normal;color:#8a8270;flex:none;width:1.2em}
+.kq-c span{flex:1;min-width:0}
+.kq-cem{font-size:52px;line-height:1}
+.kq-c.picked{border-color:var(--accent)}
+.kq-c.right{background:#c9f0cf;border-color:#2f8a4a}
+.kq-c.wrong{background:#ffe0d4;border-color:var(--oops)}
+.kq-c.dim{opacity:.4}
+/* bingo card */
+.kit-bingo{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));gap:6px;max-width:620px;margin:0 auto}
+.kit-bingo button{position:relative;aspect-ratio:1;max-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:var(--paper);color:var(--ink);border:3px solid #d9d0bd;border-radius:10px;cursor:pointer;padding:4px;font:700 14px/1.1 var(--f-letter);overflow:hidden;overflow-wrap:anywhere;text-align:center}
+.kit-bingo .bem{font-size:clamp(28px,6vw,52px);line-height:1}
+.kit-bingo .bja{font:800 clamp(14px,2.6vw,22px)/1.2 var(--f-body)}
+.kit-bingo button.on{border-color:var(--accent)}
+.kit-bingo button.on::after{content:"";position:absolute;inset:12%;border-radius:50%;background:color-mix(in srgb,var(--accent) 45%,transparent);border:4px solid var(--accent);animation:kt-pop .25s ease-out}
+.kit-bingo button.free{background:var(--accent);font-family:var(--f-display);font-weight:400}
+.kit-bingo button.called{box-shadow:inset 0 0 0 4px var(--go)}
+
+/* retro 3D stage (Kit3D): the canvas is drawn small and scaled up with crisp pixels */
+.k3d-stage{position:relative;width:100%;aspect-ratio:16/10;max-width:100%;background:#000;border-radius:12px;overflow:hidden}
+.k3d-canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+
+@media (max-width:820px){
+  .hero,.roles,.kit-teacher{grid-template-columns:minmax(0,1fr)}
+  .hero-pic{display:none}
+  .kit-entry{margin-left:0}
+  .set-row h3{min-width:0;width:100%}
+  .kq-choices{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  .kt-glove,.kt-chicken,.kt-duck,.kt-bear{animation-duration:2.2s}
+}
+/*KIT:CSS END*/
+</style>
+<style>
+/* GAME: Shape Shop. Studio screen = canvas on the left, shop counter + bag + picture card on the right. */
+:root{--accent:#ffb63d}
+.studio{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:12px;align-items:start}
+.board{max-width:calc((100vh - 190px)*800/560);margin:0 auto;background:#b98b52;border:4px solid #0d0904;border-radius:12px;padding:8px;box-shadow:0 4px 0 #07080b}
+#art{display:block;width:100%;height:auto;border-radius:6px;touch-action:none;user-select:none;-webkit-user-select:none}
+#art .shp{cursor:grab}
+#art .shp.locked{cursor:default}
+#art .shp.sel{filter:drop-shadow(0 0 2px #ff7a3d) drop-shadow(0 0 2px #ff7a3d)}
+#art .ghost{pointer-events:none}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin:8px auto 0;align-items:center;max-width:calc((100vh - 190px)*800/560)}
+#cardPanel{margin-top:10px}
+#cardPanel .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:4px}
+.tools .btn{padding:5px 10px;font-size:13px;flex-direction:row;gap:6px}
+.tools .btn svg{width:18px;height:18px}
+.tools .btn:disabled{opacity:.4;cursor:default}
+.tools .sp{flex:1}
+.side{display:flex;flex-direction:column;gap:10px;min-width:0}
+.side .panel{padding:10px 12px}
+.side h3{font-size:15px;margin-bottom:6px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.side h3 .ja{display:none}
+body.jp .side h3 .ja{display:inline;font-size:12px}
+.clerk{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+.clerk svg{width:64px;height:64px;flex:none}
+.bub{position:relative;background:var(--paper);color:var(--ink);border-radius:12px;padding:6px 12px;font:700 18px/1.25 var(--f-letter);flex:1;min-height:44px;display:flex;flex-direction:column;justify-content:center}
+.bub .ja{color:#7a7266}
+.bub:before{content:"";position:absolute;left:-8px;top:16px;border:8px solid transparent;border-left:0;border-right-color:var(--paper)}
+.step{font:800 12px var(--f-body);color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:6px 0 4px}
+.sizes,.cols,.shps,.nums{display:grid;gap:5px}
+.sizes{grid-template-columns:1fr 1fr;margin-bottom:5px}
+.cols{grid-template-columns:repeat(6,minmax(0,1fr));margin-bottom:5px}
+.shps{grid-template-columns:repeat(7,minmax(0,1fr))}
+.nums{grid-template-columns:repeat(5,minmax(0,1fr))}
+.pb{background:var(--panel2);border:2px solid var(--edge);border-radius:8px;cursor:pointer;color:var(--text);padding:3px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font:700 11px/1.1 var(--f-letter);min-width:0;touch-action:none}
+.pb[aria-pressed="true"]{border-color:var(--accent);background:#3d3420;box-shadow:0 0 0 2px var(--accent)}
+.pb svg{width:28px;height:28px;display:block}
+.pb .ja{display:none}
+body.jp .pb .ja{display:block;font-size:9px}
+.sizes .pb{flex-direction:row;gap:6px;font-size:14px;padding:4px}
+.sizes .pb svg{width:auto;height:26px}
+.nums .pb{font:400 22px/1 var(--f-display);padding:6px 2px}
+.say{display:block;width:100%;margin-top:8px;font:700 17px/1.25 var(--f-letter);background:#2f8a4a;color:#fff;border:2px solid #174a26;border-radius:10px;padding:8px 10px;cursor:pointer;box-shadow:0 3px 0 #07080b}
+.say .ja{color:#dff5e4}
+.say:disabled{background:var(--panel2);color:var(--dim);border-color:var(--edge);cursor:default}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font:700 13px var(--f-body);margin-top:6px}
+.bag{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.bag .pb{position:relative;padding:4px 2px}
+.bag .pb svg{width:36px;height:36px}
+.bag .pb b{font:400 13px var(--f-display);color:var(--accent)}
+.bag .pb.z0 svg{width:24px;height:24px;margin:6px 0}
+.bagempty{color:var(--dim);font-size:13px;grid-column:1/-1}
+.list{display:flex;flex-direction:column;gap:3px;margin:0;padding:0;list-style:none}
+.list li{display:flex;align-items:center;gap:8px;background:var(--panel2);border-radius:6px;padding:2px 8px;font:700 15px var(--f-letter)}
+.list li svg.ico{width:24px;height:24px;flex:none}
+.list li .ck{margin-left:auto;width:20px;height:20px;flex:none}
+.list li.ok{opacity:.55}
+.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-top:6px}
+.cards .pb svg{width:100%;height:auto}
+.cards .pb small{font-size:11px}
+.cardhead{display:flex;align-items:center;gap:10px}
+.cardhead svg{width:84px;height:auto;background:var(--paper);border-radius:6px;flex:none}
+.cardhead b{font:400 22px var(--f-display)}
+.hint{font-size:13px;color:var(--muted);margin-top:4px}
+.veil{position:fixed;inset:0;background:rgba(8,9,12,.9);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.veil .panel{max-width:760px;width:100%;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+.veil img{max-width:100%;border-radius:8px;background:#fff}
+.resart svg{width:min(460px,100%);height:auto;border-radius:8px;border:4px solid #0d0904;display:block;margin:0 auto 8px}
+.gift{font:400 26px var(--f-display);color:var(--accent);margin:4px 0}
+.hero-pic svg{border-radius:12px;border:4px solid #0d0904}
+@media (max-width:900px){.studio{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="shapeDefs">
+  <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1a8"/><stop offset=".45" stop-color="#e2b33a"/><stop offset="1" stop-color="#9c7314"/></linearGradient>
+  <linearGradient id="gSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#bfc5cc"/><stop offset="1" stop-color="#7c848d"/></linearGradient>
+</defs></svg>
+
+<div class="app">
+  <header class="topbar">
+    <button class="brand" id="goHome" type="button">Shape Shop <span>シェイプショップ</span></button>
+    <div class="tb-tools">
+      <button class="tog" id="jpToggle" type="button" aria-pressed="true">日本語サポート</button>
+      <button class="tog" id="sndToggle" type="button" aria-pressed="true">Sound</button>
+    </div>
+  </header>
+
+  <main>
+  <section class="screen" id="home">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Colors, shapes and shopping (Let's Try! 1)</p>
+        <h1>Buy shapes. Make a picture!</h1>
+        <p class="lead">"What do you want?" "A red triangle, please." "How many?" "Two, please." Order shapes from the shop and make a house, a car, a panda or anything you like.</p>
+        <p class="ja">お店で形を注文して、絵を作ろう！</p>
+      </div>
+      <div class="hero-pic" id="heroPic"></div>
+    </div>
+    <div class="roles">
+      <div class="panel role">
+        <p class="who">Two friends, one Chromebook.</p>
+        <h2>Shop with a partner</h2><p class="ja">ペアで1台：ひとりはお客さん、ひとりはお店の人</p>
+        <ul class="say"><li>What do you want?</li><li>A big red triangle, please.</li><li>How many? / Two, please.</li><li>Here you are. / Thank you.</li></ul>
+        <button class="btn primary big" id="startPair" type="button">Play with a partner<span class="ja">ペアで遊ぶ</span></button>
+      </div>
+      <div class="panel role">
+        <p class="who">The computer runs the shop.</p>
+        <h2>Solo shopping</h2><p class="ja">ひとりで：コンピューターがお店の人</p>
+        <ul class="say"><li>Listen: What do you want?</li><li>Click your order and say it.</li><li>Listen: How many?</li></ul>
+        <button class="btn primary big" id="startSolo" type="button">Shop by myself<span class="ja">ひとりで遊ぶ</span></button>
+      </div>
+    </div>
+    <div class="more">
+      <button class="btn" id="startFree" type="button">Free drawing (all shapes, no shop)<span class="ja">自由にかく（お店なし）</span></button>
+      <button class="btn" id="toTeacher" type="button">Teacher page<span class="ja">先生用ページ</span></button>
+    </div>
+    <div class="panel" id="homeSlot"></div>
+  </section>
+
+  <section class="screen" id="studio" hidden>
+    <div class="hud">
+      <span class="rolechip" id="modeChip">With a partner</span>
+      <span class="stat">Time<b id="tTime">0:00</b></span>
+      <span class="stat">Shapes<b id="tShapes">0</b></span>
+      <button class="btn small" id="swapBtn" type="button">Swap roles<span class="ja">役割を交代</span></button>
+      <button class="btn small" id="studioQuit" type="button">Home<span class="ja">ホーム</span></button>
+    </div>
+    <div class="studio">
+      <div>
+        <div class="board">
+          <svg id="art" viewBox="0 0 800 560" aria-label="Your picture">
+            <rect width="800" height="560" fill="#fffaf0"/>
+            <g id="ghost"></g><g id="shapes"></g>
+          </svg>
+        </div>
+        <div class="tools" id="tools">
+          <button class="btn" data-t="left" type="button"><svg viewBox="0 0 24 24"><path d="M9 4H4v5M4.5 8.5A8 8 0 1 1 6 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>Turn<span class="ja">回す</span></button>
+          <button class="btn" data-t="right" type="button"><svg viewBox="0 0 24 24"><path d="M15 4h5v5M19.5 8.5A8 8 0 1 0 18 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>Turn<span class="ja">回す</span></button>
+          <button class="btn" data-t="bigger" type="button">Bigger<span class="ja">大きく</span></button>
+          <button class="btn" data-t="smaller" type="button">Smaller<span class="ja">小さく</span></button>
+          <button class="btn" data-t="front" type="button">To front<span class="ja">前へ</span></button>
+          <button class="btn" data-t="back" type="button">To back<span class="ja">うしろへ</span></button>
+          <button class="btn" data-t="copy" type="button">Copy<span class="ja">コピー</span></button>
+          <button class="btn" data-t="bag" type="button">Back to bag<span class="ja">ふくろへ</span></button>
+          <span class="sp"></span>
+          <button class="btn" id="clearBtn" type="button">Clear<span class="ja">全部もどす</span></button>
+          <button class="btn primary" id="saveBtn" type="button">Save picture<span class="ja">絵を保存</span></button>
+        </div>
+        <p class="hint" id="toolHint">Drag shapes from your bag onto the paper. Click a shape to turn it or make it bigger.<span class="ja">ふくろから紙に形をドラッグしよう。形をクリックすると回したり大きくしたりできます。</span></p>
+        <div class="panel" id="cardPanel">
+          <div id="cardHead"></div>
+          <ul class="list" id="shopList"></ul>
+          <details id="cardPick"><summary>Choose a picture card<span class="ja inl">絵カードをえらぶ</span></summary><div class="cards" id="cards"></div></details>
+        </div>
+      </div>
+      <div class="side">
+        <div class="panel" id="bagPanel">
+          <h3>My bag<span class="ja">わたしのふくろ</span></h3>
+          <div class="bag" id="bag"></div>
+        </div>
+        <div class="panel" id="shopPanel">
+          <h3 id="shopTitle">Shop<span class="ja">お店</span></h3>
+          <div class="clerk"><span id="clerkPic"></span><div class="bub" id="bub"></div></div>
+          <div id="shopPick">
+            <div class="step" id="step1"></div>
+            <div class="sizes" id="padSize"></div>
+            <div class="cols" id="padCol"></div>
+            <div class="shps" id="padShape"></div>
+            <button class="say" id="orderBtn" type="button" disabled></button>
+          </div>
+          <div id="shopNum" hidden>
+            <div class="step" id="step2"></div>
+            <div class="nums" id="padNum"></div>
+            <button class="linkbtn" id="numBack" type="button">Change the order<span class="ja">注文を変える</span></button>
+          </div>
+          <div id="shopGive" hidden>
+            <div class="step" id="step3"></div>
+            <button class="say" id="giveBtn" type="button"></button>
+          </div>
+        </div>
+        <div class="panel" id="freePanel" hidden>
+          <h3>Shapes<span class="ja">形</span></h3>
+          <div class="sizes" id="freeSize"></div>
+          <div class="cols" id="freeCol"></div>
+          <div class="shps" id="freeShape"></div>
+          <p class="hint">Click or drag a shape onto the paper.<span class="ja">形をクリックするか、紙にドラッグしよう。</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="result" hidden></section>
+  <section class="screen" id="teacher" hidden></section>
+  </main>
+</div>
+
+<div class="veil" id="saveVeil" hidden role="dialog" aria-label="Save picture">
+  <div class="panel"><h2>Your picture<span class="ja">あなたの絵</span></h2><img id="saveImg" alt="Your shape picture">
+    <p class="note">Click Download, or right-click the picture and choose "Save image as".<span class="ja">「ダウンロード」を押すか、絵を右クリックして「名前を付けて画像を保存」</span></p>
+    <div class="rowbtns"><button class="btn primary" id="saveLink" type="button" hidden>Download<span class="ja">ダウンロード</span></button><button class="btn" id="saveClose" type="button">Close<span class="ja">閉じる</span></button></div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+/*KIT:JS START*/
+/* =====================================================================
+   CLASSROOM GAME KIT  v1
+   Shared parts for Wyatt's English classroom games (pair, team, whole-class or solo) (single-file HTML, Chromebooks, no server).
+   Everything lives on window.Kit. Paste this file between the KIT:JS markers of a game
+   (or run update-kit.py). Read README.md for the how-to.
+
+   Parts
+     Kit.$ / $$ / esc / bi / store(prefix)          DOM helpers, English+Japanese pairs, localStorage
+     Kit.mulberry32 / hash32 / hashStr / rng / ri / shuffle / pickN / RND / randomSeeds
+     Kit.codec({...})                                short class codes or pair codes, link#CODE
+     Kit.link                                        the game's share link (handles the artifact URL)
+     Kit.qr(canvas, text, px)                        QR code (needs the qrcode-generator script tag)
+     Kit.sound / Kit.speech                          beeps and funny sounds, computer voice
+     Kit.toggle / Kit.setupToggles                   日本語サポート and Sound switches (body.jp)
+     Kit.seg                                         a row of pick-one buttons for settings
+     Kit.screens                                     one <section class="screen"> at a time
+     Kit.toast                                       small message at the bottom
+     Kit.timer / fmtTime / score                     time + mistakes scoring and stars
+     Kit.traps({...})                                funny traps for wrong answers (no flashing)
+     Kit.codeEntry / Kit.badges                      "type the class code" box, code badges
+     Kit.teacher({...})                              teacher page: code, QR, link, projector, pair codes
+     Kit.result({...})                               end screen: stars, numbers, optional Swap roles!
+     Kit.soloPartner({...})                          the computer partner bubble for solo practice
+     Kit.words                                       textbook word bank (grade / book / unit picker)
+   Other game styles (whole class, teams, solo drills)
+     Kit.keys / Kit.fullscreen                       keyboard shortcuts and fullscreen for the projector
+     Kit.countdown({...})                            countdown ring (no flashing)
+     Kit.teams({...})                                team scoreboard with big +1 buttons
+     Kit.quiz                                        multiple-choice questions from the word bank (5 types)
+     Kit.bingo                                       bingo cards, calling order, line check
+   ===================================================================== */
+(function(){
+"use strict";
+const Kit={version:1};
+
+/* ---------- DOM + text ---------- */
+Kit.$=(s,r=document)=>r.querySelector(s);
+Kit.$$=(s,r=document)=>[...r.querySelectorAll(s)];
+Kit.esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+/* bi(["English","日本語"]) -> English with Japanese under it (shown only when body.jp). inline=true keeps it on one line. */
+Kit.bi=(p,inline)=>`<span class="en">${p[0]}</span><span class="ja${inline?" inl":""}">${p[1]||""}</span>`;
+Kit.store=prefix=>({
+  get(k,d){try{const v=localStorage.getItem(prefix+"_"+k);return v==null?d:JSON.parse(v);}catch(e){return d;}},
+  set(k,v){try{localStorage.setItem(prefix+"_"+k,JSON.stringify(v));}catch(e){}}
+});
+const $=Kit.$,$$=Kit.$$,bi=Kit.bi;
+
+/* ---------- seeded random ----------
+   rng(seed, salt) gives the same numbers on every Chromebook, so partners' screens match.
+   RND is for things that should differ (which page a bomb picks, key order). */
+Kit.mulberry32=function(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};};
+Kit.hash32=function(x){x|=0;x=Math.imul(x^(x>>>16),0x7feb352d);x=Math.imul(x^(x>>>15),0x846ca68b);return(x^(x>>>16))>>>0;};
+Kit.hashStr=function(s){let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return Kit.hash32(h);};
+Kit.rng=(...parts)=>{let h=0x51ed27;for(const p of parts)h=Kit.hash32(h^(typeof p==="number"?Kit.hash32(p):Kit.hashStr(String(p))));return Kit.mulberry32(h);};
+Kit.ri=(r,n)=>Math.floor(r()*n);
+Kit.shuffle=(a,r)=>{for(let i=a.length-1;i>0;i--){const j=Kit.ri(r,i+1);[a[i],a[j]]=[a[j],a[i]];}return a;};
+Kit.pickN=(r,arr,n)=>Kit.shuffle(arr.slice(),r).slice(0,n);
+Kit.RND=Kit.mulberry32((Date.now()^(Math.random()*4294967296))>>>0);
+Kit.randomSeeds=function(n,max){const a=new Uint32Array(n),used=new Set(),out=[];
+  try{crypto.getRandomValues(a);}catch(e){for(let i=0;i<n;i++)a[i]=(Math.random()*4294967296)>>>0;}
+  for(let i=0;i<n;i++){let s=a[i]%max;while(used.has(s))s=(s+1)%max;used.add(s);out.push(s);}return out;};
+/* a bag: hands out items in random order with no repeats until all are used */
+Kit.bag=(items,r)=>{let b=[];return ()=>{if(!b.length)b=Kit.shuffle(items.slice(),r||Kit.RND);return b.shift();};};
+
+/* ---------- codes ----------
+   Kit.codec({game:"pl", fields:[{k:"level",n:3},{k:"rounds",n:5,min:1}], seed:0, check:32})
+     game    a short id; codes from one game never load in another
+     fields  settings, each with n possible values (min..min+n-1). Order matters: only ever ADD fields at the END,
+             and give them a default (def) so old codes keep working is NOT possible; adding a field changes codes.
+             So pick generous n up front (e.g. n:16 for "unit").
+     seed    0 for a class code (settings only, everyone in class types the same code, like The Keypad Game);
+             a number like 262144 for pair codes (each pair gets its own puzzle, like The Maze Game).
+     check   how many checksum values (32 = one typo in 32 slips through)
+   Returns {encode(S, seed) -> "K7QM", decode(str) -> {S, seed, code} | null, fmt(code), length, fromHash()} */
+const ALPH="23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+Kit.ALPH=ALPH;
+Kit.codec=function(o){
+  const fields=o.fields||[],SEEDS=BigInt(o.seed||1),C=BigInt(o.check||32),gid=Kit.hashStr("kit:"+(o.game||"game"));
+  let N=1n;for(const f of fields)N*=BigInt(f.n);
+  const M=N*SEEDS;let L=1;while(32n**BigInt(L)<M*C)L++;
+  if(o.length&&o.length>L)L=o.length;
+  const big=x=>{const lo=Number(x&0xFFFFFFFFn),hi=Number((x>>32n)&0xFFFFFFFFn);return Kit.hash32(lo^Kit.hash32(hi^gid));};
+  const mix=c=>((BigInt(Kit.hash32(gid^(Number(c)*7919+101)))<<32n)|BigInt(Kit.hash32(gid+Number(c)*104729)))%M;
+  function encode(S,seed){
+    let x=0n;for(const f of fields){const v=(S[f.k]??f.def??f.min??0)-(f.min||0);if(!(v>=0&&v<f.n))throw new Error("Kit.codec: "+f.k+" out of range");x=x*BigInt(f.n)+BigInt(v);}
+    x=x*SEEDS+BigInt(seed||0)%SEEDS;
+    const c=BigInt(big(x))%C;let v=c*M+(x+mix(c))%M,out="";
+    for(let i=0;i<L;i++){out=ALPH[Number(v%32n)]+out;v/=32n;}return out;
+  }
+  function clean(str){return (str||"").toUpperCase().replace(/[\s\-_.]/g,"").replace(/O/g,"0").replace(/I/g,"1");}
+  function decode(str){
+    const s=clean(str);if(s.length!==L)return null;
+    let v=0n;for(const ch of s){const i=ALPH.indexOf(ch);if(i<0)return null;v=v*32n+BigInt(i);}
+    if(v>=C*M)return null;
+    const c=v/M,x=((v%M)-mix(c)+M)%M;if(BigInt(big(x))%C!==c)return null;
+    let rest=x;const seed=Number(rest%SEEDS);rest/=SEEDS;const vals=[],S={};
+    for(let i=fields.length-1;i>=0;i--){const n=BigInt(fields[i].n);vals[i]=Number(rest%n)+(fields[i].min||0);rest/=n;}
+    fields.forEach((f,i)=>S[f.k]=vals[i]);
+    if(o.valid&&!o.valid(S))return null;
+    return {S,seed,code:s};
+  }
+  const fmt=c=>c.length>=6?c.slice(0,Math.ceil(c.length/2)-(c.length===7?1:0))+"-"+c.slice(Math.ceil(c.length/2)-(c.length===7?1:0)):c;
+  function fromHash(){try{return decode(decodeURIComponent((location.hash||"").replace(/^#/,"")));}catch(e){return null;}}
+  return {encode,decode,fmt,fromHash,length:L,fields};
+};
+
+/* ---------- the game's share link ----------
+   Inside claude.ai the page runs in a sandbox, so we use the artifact URL you pass in.
+   Hosted anywhere else (GitHub Pages later), it uses its own address. */
+Kit.link={
+  base(artifactUrl){try{const h=location.hostname||"";if(/^https?:$/.test(location.protocol)&&h&&!/claude|anthropic|claudeusercontent/i.test(h))return location.origin+location.pathname;}catch(e){}return artifactUrl||"";},
+  withCode(base,code){return base?base.replace(/#.*$/,"")+(code?"#"+code:""):"";}
+};
+
+/* ---------- QR code (needs <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js">) ---------- */
+Kit.qr=function(cv,text,px){
+  if(typeof window.qrcode!=="function"||!text||!cv)return false;
+  try{const q=window.qrcode(0,"M");q.addData(text);q.make();
+    const n=q.getModuleCount(),size=n+8,scale=Math.max(2,Math.floor(px/size));
+    cv.width=cv.height=size*scale;const g=cv.getContext("2d");
+    g.fillStyle="#fff";g.fillRect(0,0,cv.width,cv.height);g.fillStyle="#000";
+    for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(q.isDark(r,c))g.fillRect((c+4)*scale,(r+4)*scale,scale,scale);
+    return true;}catch(e){return false;}
+};
+
+/* ---------- sound ----------
+   Kit.sound.play("boing"). Add your own with Kit.sound.add("name", ()=>{tone(...)}).
+   Built in: click key bump ok nope boing bawk achoo wipe splash quack snore boo meow purr done win */
+const sound={on:true,_ac:null};
+sound.ac=function(){if(!sound._ac){try{sound._ac=new (window.AudioContext||window.webkitAudioContext)();}catch(e){sound._ac=null;}}const a=sound._ac;if(a&&a.state==="suspended")a.resume().catch(()=>{});return a;};
+sound.tone=function(f,dur,type,vol,f2,delay){
+  const a=sound.on&&sound.ac();if(!a)return;
+  try{const t=a.currentTime+(delay||0),o=a.createOscillator(),g=a.createGain();
+  o.type=type||"square";o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+dur);
+  g.gain.setValueAtTime(vol||0.05,t);g.gain.exponentialRampToValueAtTime(0.0008,t+dur);
+  o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+0.02);}catch(e){}
+};
+sound.noise=function(dur,vol,delay){const a=sound.on&&sound.ac();if(!a)return;try{const len=Math.floor(a.sampleRate*dur),buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);
+  const src=a.createBufferSource(),g=a.createGain();src.buffer=buf;g.gain.value=vol;src.connect(g);g.connect(a.destination);src.start(a.currentTime+(delay||0));}catch(e){}};
+const tone=sound.tone,noise=sound.noise;
+const SFX={
+  click:()=>tone(900,0.04,"triangle",0.04,700),
+  key:()=>tone(660,0.05,"square",0.03,520),
+  bump:()=>tone(110,0.12,"sawtooth",0.04,80),
+  ok:()=>{tone(523,0.12,"triangle",0.05);tone(784,0.2,"triangle",0.05,null,0.1);},
+  nope:()=>{tone(330,0.15,"square",0.04,300);tone(220,0.25,"square",0.04,200,0.15);},
+  boing:()=>{tone(140,0.45,"sine",0.12,700);tone(700,0.4,"sine",0.08,180,0.3);},
+  bawk:()=>[0,0.22,0.44].forEach(d=>tone(760,0.16,"sawtooth",0.04,520,d)),
+  achoo:()=>{tone(500,0.3,"triangle",0.05,700);noise(0.4,0.12,0.35);},
+  wipe:()=>noise(0.12,0.05),
+  splash:()=>{noise(0.6,0.12);tone(900,0.3,"sine",0.03,300,0.05);},
+  quack:()=>[0,0.35,0.7,1.05].forEach(d=>tone(330,0.14,"square",0.05,240,d)),
+  snore:()=>{tone(70,0.9,"sawtooth",0.06,95);tone(95,0.9,"sawtooth",0.05,70,1.1);},
+  boo:()=>{tone(180,0.7,"sine",0.07,90);tone(240,0.7,"triangle",0.04,120,0.05);},
+  meow:()=>tone(650,0.45,"triangle",0.06,900),
+  purr:()=>tone(60,0.35,"sawtooth",0.04,55),
+  done:()=>[523,659,784].forEach((f,i)=>tone(f,0.18,"triangle",0.05,null,i*0.09)),
+  win:()=>{[523,659,784,1046].forEach((f,i)=>tone(f,0.22,"square",0.04,null,i*0.11));tone(1318,0.5,"triangle",0.05,null,0.46);}
+};
+sound.play=n=>{if(SFX[n])SFX[n]();};
+sound.add=(n,fn)=>{SFX[n]=fn;};
+Kit.sound=sound;
+
+/* ---------- computer voice ---------- */
+const speech={can:(()=>{try{return "speechSynthesis" in window&&typeof SpeechSynthesisUtterance==="function";}catch(e){return false;}})(),voice:null,_t:[]};
+speech.pick=function(){try{const vs=speechSynthesis.getVoices();speech.voice=vs.find(v=>/^en[-_]US/i.test(v.lang)&&/google|samantha|natural/i.test(v.name))||vs.find(v=>/^en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}catch(e){}};
+if(speech.can){speech.pick();try{speechSynthesis.onvoiceschanged=speech.pick;}catch(e){}}
+speech.say=function(t,rate){if(!speech.can||!sound.on)return false;try{const u=new SpeechSynthesisUtterance(t);u.lang="en-US";if(speech.voice)u.voice=speech.voice;u.rate=rate||0.85;speechSynthesis.speak(u);return true;}catch(e){return false;}};
+/* say each item with a pause between (for "Slowly") */
+speech.sayEach=function(list,gap,rate){speech.hush();list.forEach((w,i)=>speech._t.push(setTimeout(()=>speech.say(w,rate||0.75),i*(gap||1300))));return speech.can&&sound.on;};
+speech.hush=function(){speech._t.forEach(clearTimeout);speech._t=[];try{speech.can&&speechSynthesis.cancel();}catch(e){}};
+Kit.speech=speech;
+
+/* ---------- switches ----------
+   Kit.toggle(button, store, "jp", true, on=>{...}) keeps aria-pressed and the saved value in step.
+   Kit.setupToggles(store, {jp:"#jpToggle", snd:"#sndToggle"}) wires the two standard ones. */
+Kit.toggle=function(btn,st,key,def,onChange){
+  if(typeof btn==="string")btn=$(btn);let v=st.get(key,def);
+  const apply=()=>{if(btn)btn.setAttribute("aria-pressed",String(v));onChange&&onChange(v);};
+  if(btn)btn.addEventListener("click",()=>{v=!v;st.set(key,v);sound.play("click");apply();});
+  apply();return {get value(){return v;},set(x){v=!!x;st.set(key,v);apply();}};
+};
+Kit.setupToggles=function(st,sel){
+  const out={};
+  out.jp=Kit.toggle(sel.jp||"#jpToggle",st,"jp",sel.jpDefault??true,on=>document.body.classList.toggle("jp",on));
+  out.snd=Kit.toggle(sel.snd||"#sndToggle",st,"snd",true,on=>{sound.on=on;if(!on)speech.hush();});
+  return out;
+};
+
+/* ---------- pick-one buttons: Kit.seg(el, [{html, ...}], (o,i)=>isOn, (o,i)=>onPick) ---------- */
+Kit.seg=function(el,opts,isOn,onPick){
+  if(typeof el==="string")el=$(el);
+  el.innerHTML=opts.map((o,i)=>`<button type="button" data-i="${i}" aria-pressed="${!!isOn(o,i)}">${o.html}</button>`).join("");
+  $$("button",el).forEach(b=>b.onclick=()=>{sound.ac();sound.play("click");onPick(opts[+b.dataset.i],+b.dataset.i);});
+};
+
+/* ---------- screens: <section class="screen" id="home">. Kit.screens({onShow(id,prev)}) ---------- */
+Kit.screens=function(o){
+  const api={current:null,show(id){const prev=api.current;$$(".screen").forEach(el=>el.hidden=el.id!==id);api.current=id;
+    speech.hush();o&&o.onShow&&o.onShow(id,prev);window.scrollTo(0,0);}};
+  return api;
+};
+
+/* ---------- toast ---------- */
+let toastT=0;
+Kit.toast=function(html,ms){let el=$("#kitToast");if(!el){el=document.createElement("div");el.id="kitToast";el.className="kit-toast";el.setAttribute("role","status");document.body.appendChild(el);}
+  el.innerHTML=html;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,ms||2600);};
+
+/* ---------- time + mistakes ----------
+   Kit.score({elapsed, oops, par}) : 1000 points, minus 100 per oops, minus 4 per second over par. Never below 100.
+   Stars: 850+ = 3, 600+ = 2, otherwise 1. Every finished game gets at least one star. */
+Kit.fmtTime=s=>Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0");
+Kit.timer=function(onTick){
+  let t0=0,iv=0,el=0,run=false;
+  const api={start(){t0=performance.now();el=0;run=true;clearInterval(iv);iv=setInterval(()=>{el=(performance.now()-t0)/1000;onTick&&onTick(el,Kit.fmtTime(el));},250);onTick&&onTick(0,"0:00");},
+    stop(){if(run)el=(performance.now()-t0)/1000;run=false;clearInterval(iv);iv=0;return el;},
+    get elapsed(){return run?(performance.now()-t0)/1000:el;},get running(){return run;}};
+  return api;
+};
+Kit.score=function(o){
+  const over=Math.max(0,(o.elapsed||0)-(o.par||60));
+  const score=Math.max(100,Math.round((1000-(o.oops||0)*(o.perOops??100)-over*(o.perSec??4))/10)*10);
+  return {score,stars:score>=850?3:score>=600?2:1};
+};
+Kit.STAR=on=>`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4l5.9 12.6 13.7 1.6-10.1 9.4 2.7 13.6L24 34.4l-12.2 6.8 2.7-13.6L4.4 18.2l13.7-1.6z" fill="${on?"#ffd23f":"none"}" stroke="${on?"#9a6f00":"#5b5f70"}" stroke-width="3" stroke-linejoin="round"/></svg>`;
+
+/* ---------- funny traps ----------
+   const T=Kit.traps({layer:"#trapLayer", target:"#chest", area:"#keys"});
+   T.next(done)   plays a random trap (no repeats until all used), then calls done()
+   T.run("cat",done) plays one by name.  T.clear() stops everything (call it when leaving the screen).
+   layer = an empty .kit-trap-layer placed inside a position:relative stage.
+   target = the thing being worked on (traps aim at it); area = the buttons (traps cover them for 2-3 seconds).
+   All movement and sound, nothing flashes. Names: glove chicken soot water duck bear cat (+ any you add with T.add). */
+Kit.traps=function(o){
+  const layer=typeof o.layer==="string"?$(o.layer):o.layer;
+  const R=o.rng||Kit.RND,ri=n=>Kit.ri(R,n);let timers=[];
+  const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
+  const clear=()=>{timers.forEach(clearTimeout);timers=[];layer.innerHTML="";layer.classList.remove("block");};
+  const el=(cls,html,css)=>{const d=document.createElement("div");d.className="kt "+cls;d.innerHTML=html;Object.assign(d.style,css||{});layer.appendChild(d);return d;};
+  const word=(w,left,top)=>el("kt-wordwrap",`<div class="kt-word">${w[0]}<span class="ja">${w[1]||""}</span></div>`,{left,top});
+  const box=sel=>{const s=layer.getBoundingClientRect(),e=(typeof sel==="string"?$(sel):sel);if(!e)return {x:s.width/4,y:s.height/4,w:s.width/2,h:s.height/2};const b=e.getBoundingClientRect();return {x:b.left-s.left,y:b.top-s.top,w:b.width,h:b.height};};
+  const tc=()=>{const b=box(o.target);return {x:b.x+b.w/2,y:b.y+b.h/2};},ar=()=>box(o.area);
+  const play=sound.play;
+  /* drawn sprite from the pictures add-on when the game has it, emoji otherwise */
+  const art=(n,e,px)=>Kit.art?Kit.art("trap:"+n,e,px):e;
+  const T={
+    glove(done){const c=tc();layer.classList.add("block");play("boing");el("kt-glove",art("glove","\u{1F94A}",96),{left:c.x+"px",top:c.y+"px"});word(["BOING!","ボヨーン！"],"50%","8%");later(()=>{clear();done();},2100);},
+    chicken(done){layer.classList.add("block");play("bawk");const k=ar();el("kt-chicken",art("chicken","\u{1F414}",128),{left:(k.x+k.w/2-60)+"px"});word(["BAWK!","コケーッ！"],"50%","8%");later(()=>{clear();done();},2500);},
+    soot(done){
+      play("achoo");const c=tc();word(["ACHOO!","ハックション！"],c.x+"px","6%");layer.classList.add("block");let fin=false;
+      const finish=()=>{if(fin)return;fin=true;clear();done();};
+      later(()=>{const k=ar();let left=0;
+        for(let i=0;i<6;i++){const d=el("kt-soot","",{left:(k.x+(i%3)*k.w/3+ri(30))+"px",top:(k.y+Math.floor(i/3)*k.h/2+ri(20))+"px"});left++;
+          d.onclick=()=>{if(d.classList.contains("gone"))return;d.classList.add("gone");play("wipe");left--;if(!left)finish();};}
+        el("kt-hint",bi(["Click the soot to wipe it off!","すすをクリックしてふき取ろう！"]),{});
+        later(finish,10000);},700);
+    },
+    water(done){layer.classList.add("block");play("splash");const k=ar();
+      for(let i=0;i<16;i++){const d=el("kt-drop",art("drop","\u{1F4A7}",40),{left:(10+ri(60))+"px",top:(10+ri(60))+"px",animationDelay:(i*0.05)+"s"});d.style.setProperty("--dx",(k.x+ri(Math.max(40,k.w)))+"px");d.style.setProperty("--dy",(k.y+ri(Math.max(40,k.h)))+"px");}
+      word(["SPLASH!","バシャッ！"],"50%","8%");later(()=>{clear();done();},2200);},
+    duck(done){layer.classList.add("block");play("quack");el("kt-duck",art("duck","\u{1F986}",104),{});word(["QUACK! QUACK!","ガーガー！"],"50%","8%");later(()=>{clear();done();},3000);},
+    bear(done){layer.classList.add("block");play("snore");el("kt-bear",art("bear","\u{1F43B}",136),{});
+      for(let i=0;i<3;i++)el("kt-zz","Z",{left:"55%",top:"40%",animationDelay:(i*0.6)+"s"});
+      word(["ZZZ... SNORE!","グーグー…"],"50%","8%");later(()=>{clear();done();},2800);},
+    cat(done){
+      play("meow");const k=ar();layer.classList.add("block");let pets=0,fin=false;
+      const cat=el("kt-cat",art("cat","\u{1F431}",136),{left:(k.x+k.w/2-65)+"px",top:(k.y+k.h/2-75)+"px"});
+      const hint=el("kt-hint",bi(["Pet the cat 3 times to move it!","ネコを3回なでて、どいてもらおう！"]),{});
+      const bye=()=>{if(fin)return;fin=true;play("meow");cat.classList.add("bye");hint.remove();later(()=>{clear();done();},650);};
+      cat.onclick=()=>{if(fin)return;pets++;play("purr");el("kt-heart",art("heart","\u{1F497}",40),{left:(k.x+k.w/2+ri(40)-20)+"px",top:(k.y+k.h/2-80)+"px"});if(pets>=3)bye();};
+      later(bye,12000);
+    }
+  };
+  let names=o.names||Object.keys(T),bag=Kit.bag(names,R);
+  return {
+    run(n,done){clear();(T[n]||T.glove)(done||(()=>{}));},
+    next(done){this.run(bag(),done);},
+    add(n,fn){T[n]=(done)=>fn(done,{el,word,later,clear,tc,ar,layer,rng:R});names=names.concat(n);bag=Kit.bag(names,R);},
+    use(list){names=list;bag=Kit.bag(names,R);},
+    clear,word,el,later,get names(){return Object.keys(T);}
+  };
+};
+
+/* ---------- class code helpers ---------- */
+/* every element with class "kitCode" shows the current code */
+Kit.badges=function(code,fmt){$$(".kitCode").forEach(e=>e.textContent=fmt?fmt(code):code);};
+/* Kit.codeEntry(mount, {codec, onCode(decoded), label}) -> a "Type code / Use code" form */
+Kit.codeEntry=function(mount,o){
+  if(typeof mount==="string")mount=$(mount);
+  const f=document.createElement("form");f.className="kit-entry";f.autocomplete="off";
+  f.innerHTML=`<input maxlength="${o.codec.length+2}" placeholder="${o.placeholder||"Type code"}" aria-label="Type a code" spellcheck="false"><button class="btn small" type="submit">${bi(["Use code","このコードを使う"])}</button><p class="kit-err" aria-live="polite"></p>`;
+  const inp=$("input",f),err=$(".kit-err",f);
+  f.onsubmit=e=>{e.preventDefault();const d=o.codec.decode(inp.value);
+    if(!d){err.innerHTML=bi(["That code doesn't work. Check it with your partner or teacher.","そのコードは使えません。パートナーか先生に確認しよう。"]);sound.play("nope");return;}
+    err.innerHTML="";inp.value="";sound.play("ok");o.onCode(d);};
+  mount.appendChild(f);return f;
+};
+
+/* ---------- teacher page ----------
+   Kit.teacher({mount, title, steps:[[en,ja],...], note, artifactUrl, store,
+                getCode()->code, getName()->[en,ja], fmt,
+                pairs: {make(seed)->code, label:[en,ja], max, view(code)->{html} } })
+   Builds: steps + a settings slot on the left; big code, QR, link, copy, projector view on the right.
+   Returns {slot, refresh()}. Move your settings panel into .slot when the teacher screen opens.
+   With pairs, it also makes a numbered list of pair codes to read out or copy. */
+Kit.teacher=function(o){
+  const mount=typeof o.mount==="string"?$(o.mount):o.mount,st=o.store||Kit.store("kit");
+  const fmt=o.fmt||(c=>c);
+  mount.innerHTML=`<div class="kit-teacher">
+   <div class="kit-tcol">
+    <div class="panel"><h2 class="kit-th">${bi(o.title||["Teacher page","先生用ページ"],true)}</h2>
+     <ol class="kit-steps">${(o.steps||[]).map(s=>`<li>${bi(s)}</li>`).join("")}</ol>
+     ${o.note?`<p class="note" style="margin-top:8px">${o.note}</p>`:""}</div>
+    <div class="panel kit-slot"></div>
+    ${o.pairs?`<div class="panel kit-pairs"><h3>${bi(o.pairs.label||["Codes for each pair","ペアごとのコード"],true)}</h3>
+      <div class="kit-pairrow"><label>${bi(["Pairs","ペアの数"],true)} <input type="number" min="1" max="${o.pairs.max||40}" value="${st.get("pairs",16)}" class="kit-npairs"></label>
+      <button class="btn primary small kit-make" type="button">${bi(["Make codes","コードを作る"])}</button>
+      <button class="btn small kit-copycodes" type="button" hidden>${bi(["Copy list","リストをコピー"])}</button></div>
+      <div class="kit-codelist"></div><textarea class="kit-copyarea" hidden rows="6"></textarea></div>`:""}
+   </div>
+   <div class="panel kit-share">
+    <small class="note">${bi(o.pairs?["Game link","ゲームのリンク"]:["Class code","クラスコード"])}</small>
+    ${o.pairs?"":`<div class="kit-bigcode kitCode">----</div><div class="kit-cname"></div>`}
+    <div class="kit-qr"><canvas width="220" height="220"></canvas></div><p class="kit-err kit-qrerr"></p>
+    <input class="kit-link" type="text" aria-label="Game link">
+    <div class="rowbtns"><button class="btn small kit-copy" type="button">${bi(["Copy link","リンクをコピー"])}</button>
+      <button class="btn small kit-reset" type="button">${bi(["Reset link","リセット"])}</button></div>
+    <button class="btn primary kit-proj" type="button">${bi(["Show on the projector","大きく表示"])}</button>
+   </div></div>`;
+  let veil=$("#kitVeil");
+  if(!veil){veil=document.createElement("div");veil.id="kitVeil";veil.className="kit-veil";veil.hidden=true;veil.setAttribute("role","dialog");veil.setAttribute("aria-label","Class code");
+    veil.innerHTML=`<div class="kit-veil-card"><h2 class="kit-vtitle"></h2><div class="kit-bigcode kitCode kit-vcode">----</div><div class="kit-cname"></div><div class="kit-qr"><canvas width="300" height="300" style="width:300px;height:300px"></canvas></div><p class="note kit-vurl"></p><button class="btn kit-close" type="button">${bi(["Close","閉じる"])}</button></div>`;
+    document.body.appendChild(veil);
+    $(".kit-close",veil).onclick=()=>veil.hidden=true;
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")veil.hidden=true;});}
+  const auto=()=>Kit.link.base(o.artifactUrl);
+  let LINK=st.get("link","")||auto();
+  const full=()=>o.pairs?LINK:Kit.link.withCode(LINK,o.getCode());
+  const api={slot:$(".kit-slot",mount),codes:[],
+    refresh(){
+      if(!o.pairs){const code=o.getCode(),nm=o.getName?o.getName():null;Kit.badges(fmt(code));$$(".kit-cname").forEach(e=>e.innerHTML=nm?bi(nm):"");}
+      $(".kit-link",mount).value=full();
+      const ok=Kit.qr($(".kit-qr canvas",mount),full(),440);$(".kit-qr",mount).hidden=!ok;
+      $(".kit-qrerr",mount).innerHTML=ok?"":(LINK?bi(["The QR code tool couldn't load. Check the internet connection, then reopen this page.","QRコードを作れませんでした。インターネット接続を確認してください。"]):bi(["Paste the game's link below to make a QR code.","QRコードを作るには、下にゲームのリンクを貼り付けてください。"]));
+      if(!veil.hidden)drawBig();
+    }};
+  function drawBig(){$(".kit-vtitle",veil).innerHTML=bi(o.pairs?["Open the game","ゲームを開こう"]:["Class code","クラスコード"],true);$(".kit-vcode",veil).hidden=!!o.pairs;$(".kit-vurl",veil).textContent=full();Kit.qr($(".kit-qr canvas",veil),full(),600);}
+  $(".kit-link",mount).addEventListener("change",e=>{LINK=e.target.value.trim().replace(/#.*$/,"")||auto();st.set("link",LINK===auto()?"":LINK);api.refresh();});
+  $(".kit-reset",mount).onclick=()=>{LINK=auto();st.set("link","");api.refresh();};
+  $(".kit-copy",mount).onclick=()=>copyText(full(),$(".kit-link",mount));
+  $(".kit-proj",mount).onclick=()=>{veil.hidden=false;drawBig();$(".kit-close",veil).focus();};
+  if(o.pairs){
+    const list=$(".kit-codelist",mount),cp=$(".kit-copycodes",mount),area=$(".kit-copyarea",mount);
+    $(".kit-make",mount).onclick=()=>{const n=Math.max(1,Math.min(o.pairs.max||40,+$(".kit-npairs",mount).value||1));st.set("pairs",n);
+      api.codes=Kit.randomSeeds(n,o.pairs.seeds||262144).map(s=>o.pairs.make(s));
+      list.innerHTML=`<div class="kit-codes">${api.codes.map((c,i)=>`<div class="kit-codecard"><small>${bi(["Pair "+(i+1),"ペア "+(i+1)],true)}</small><b>${fmt(c)}</b>${o.pairs.view?o.pairs.view(c):""}</div>`).join("")}</div>`;
+      cp.hidden=false;area.hidden=true;sound.play("ok");};
+    cp.onclick=()=>copyText(api.codes.map((c,i)=>`Pair ${i+1}: ${fmt(c)}`).join("\n"),area);
+  }
+  function copyText(t,fallbackEl){const fb=()=>{if(fallbackEl){fallbackEl.hidden=false;if(fallbackEl.tagName==="TEXTAREA")fallbackEl.value=t;fallbackEl.focus();fallbackEl.select();}Kit.toast(bi(["Press Ctrl+C to copy","Ctrl+C でコピー"]));};
+    try{navigator.clipboard.writeText(t).then(()=>Kit.toast(bi(["Copied!","コピーしました"])),fb);}catch(e){fb();}}
+  return api;
+};
+
+/* ---------- end screen ----------
+   Kit.result(mount, {title:[en,ja], art:html, elapsed, oops, score, stars, swap, nums, labels, buttons})
+     stars   1-3, or leave out for no stars (e.g. a team game)
+     swap    true shows the "Swap roles!" card (pair games, not solo)
+     nums    replace the Time / Oops / Score boxes: [{label:[en,ja], value}]  ([] for none)
+     buttons [{label:[en,ja], primary, onClick, hidden}] */
+Kit.result=function(mount,o){
+  if(typeof mount==="string")mount=$(mount);
+  const lab=Object.assign({time:["Time","タイム"],oops:["Oops","ミス"],score:["Score","スコア"]},o.labels||{});
+  const msg=o.title||(o.stars===3?["Amazing!","すごい！"]:o.stars===2?["Great job!","よくできました！"]:["You did it!","クリア！"]);
+  const nums=o.nums||[{label:lab.time,value:Kit.fmtTime(o.elapsed||0)},{label:lab.oops,value:o.oops||0},{label:lab.score,value:o.score}];
+  mount.innerHTML=`<div class="kit-result">${o.art||""}
+    <h1 class="kit-rtitle">${msg[0]}</h1><p class="ja">${msg[1]||""}</p>
+    ${o.stars?`<div class="kit-stars">${[1,2,3].map(i=>Kit.STAR(o.stars>=i)).join("")}</div>`:""}
+    ${nums.length?`<div class="kit-nums">${nums.map(n=>`<div><small>${bi(n.label)}</small><b>${n.value}</b></div>`).join("")}</div>`:""}
+    ${o.swap?`<div class="kit-swap"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 18h28l-7-7M40 30H12l7 7" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><div>${bi(["Swap roles!","役割を交代しよう！"])}</div></div>`:""}
+    <div class="rowbtns"></div></div>`;
+  const row=$(".rowbtns",mount);
+  (o.buttons||[]).forEach(b=>{if(b.hidden)return;const btn=document.createElement("button");btn.type="button";btn.className="btn big"+(b.primary?" primary":"");btn.innerHTML=bi(b.label);btn.onclick=b.onClick;row.appendChild(btn);});
+};
+
+/* ---------- solo practice partner ----------
+   const P=Kit.soloPartner({mount, speak(slow)}); P.tell(["Listen!","聞こう！"]); P.show(true/false)
+   speak(slow) should call Kit.speech.say / sayEach. If the Chromebook has no voice, call P.tell with the words to read. */
+Kit.soloPartner=function(o){
+  const m=typeof o.mount==="string"?$(o.mount):o.mount;m.classList.add("kit-partner");
+  m.innerHTML=`<span class="kit-robot" aria-hidden="true">\u{1F916}</span><div class="kit-bub"></div><button class="btn small" type="button" data-s="0">${bi(["Say it again","もう一度"])}</button><button class="btn small" type="button" data-s="1">${bi(["Slowly","ゆっくり"])}</button>`;
+  $$("button",m).forEach(b=>b.onclick=()=>{sound.ac();o.speak(b.dataset.s==="1");});
+  return {tell(p){$(".kit-bub",m).innerHTML=bi(p);},show(on){m.hidden=!on;}};
+};
+
+/* ---------- textbook word bank ----------
+   Data: the JSON script tag with id kit-wordbank (copied from textbook-db/all-books.json by update-kit.py).
+   Book order is the order in all-books.json. Codes store the book's position, so only ADD books at the end.
+     Kit.words.books()                     [{i, name, grade, gradeLabel:[en,ja], units:[...]}]
+     Kit.words.pick({book, from, to}, {needEmoji, minWords})  -> {words:[{en,ja,emoji}], phrases:[], units:[...]}
+     Kit.words.label(sel)                  ["Let's Try! 2 · Unit 4", "小4 Let's Try! 2 Unit 4"]
+     Kit.words.fields                      codec fields: book (8), from (16), to (16)
+     Kit.words.picker(mount, sel, onChange, {needEmoji})  grade + book + unit range controls */
+const GRADE=g=>{const m=/^(ES|JHS)(\d)$/.exec(g||"");if(!m)return [g||"",g||""];return m[1]==="ES"?["Grade "+m[2],"小"+m[2]]:["JHS "+m[2],"中"+m[2]];};
+const words={_d:null};
+words.load=function(){if(words._d)return words._d;let d={books:[]};try{const el=document.getElementById("kit-wordbank");if(el)d=JSON.parse(el.textContent);}catch(e){}
+  words._d=(d.books||[]).map((b,i)=>({i,name:b.book,grade:b.grade,gradeLabel:GRADE(b.grade),units:(b.units||[]).map(u=>Object.assign({},u,{words:(u.words||[]).filter(w=>w&&w.en)}))}));return words._d;};
+words.books=()=>words.load();
+words.book=i=>words.load()[i]||null;
+words.fields=[{k:"book",n:8,def:0},{k:"from",n:16,def:0},{k:"to",n:16,def:0}];
+words.clamp=function(sel){const bs=words.load();const b=bs[sel.book]?sel.book:0,n=bs[b]?bs[b].units.length:1;let f=Math.min(sel.from||0,n-1),t=Math.min(sel.to??f,n-1);if(t<f)t=f;return {book:b,from:f,to:t};};
+words.pick=function(sel,opt){opt=opt||{};const s=words.clamp(sel),b=words.book(s.book);if(!b)return {words:[],phrases:[],units:[]};
+  const units=b.units.slice(s.from,s.to+1),seen=new Set(),out=[];let phrases=[];
+  units.forEach(u=>{phrases=phrases.concat(u.phrases||[]);u.words.forEach(w=>{const k=w.en.toLowerCase();if(seen.has(k))return;if(opt.needEmoji&&!w.emoji)return;seen.add(k);out.push(w);});});
+  return {words:out,phrases,units,book:b};};
+words.label=function(sel){const s=words.clamp(sel),b=words.book(s.book);if(!b)return ["No word bank","単語データなし"];
+  const u=b.units,us=s.from===s.to?"Unit "+u[s.from].unit:"Units "+u[s.from].unit+"–"+u[s.to].unit;
+  return [b.name+" · "+us,b.gradeLabel[1]+" "+b.name+" "+us.replace("Units","Unit")];};
+words.picker=function(mount,sel,onChange,opt){
+  if(typeof mount==="string")mount=$(mount);opt=opt||{};const bs=words.load();
+  const cur=()=>words.clamp(sel);
+  function render(){
+    const s=cur(),b=bs[s.book];
+    mount.innerHTML=`<div class="set-row"><h3>${bi(["Book","教科書"])}</h3><div class="seg kw-book"></div></div>
+     <div class="set-row"><h3>${bi(["Unit","ユニット"])}</h3><div class="seg kw-unit"></div></div>
+     <p class="note kw-info"></p>`;
+    Kit.seg($(".kw-book",mount),bs.map(x=>({html:`${x.gradeLabel[0]}<small>${Kit.esc(x.name)}</small><span class="ja">${x.gradeLabel[1]}</span>`})),(o,i)=>i===s.book,(o,i)=>{sel.book=i;sel.from=0;sel.to=0;done();});
+    let anchor=null;
+    Kit.seg($(".kw-unit",mount),b.units.map((u,i)=>({html:`${u.unit}<small>${Kit.esc(u.title||"")}</small>`})),(o,i)=>i>=s.from&&i<=s.to,(o,i)=>{
+      /* click = one unit; shift-click (or click next to the current range) = a range */
+      if(window.event&&window.event.shiftKey){sel.from=Math.min(s.from,i);sel.to=Math.max(s.to,i);}else{sel.from=i;sel.to=i;}done();});
+    $$(".kw-unit button",mount).forEach((btn,i)=>{const u=b.units[i];btn.title=(u.topic||"")+(u.verified?"":" (not checked yet)");});
+    const p=words.pick(s,opt),n=p.words.length;
+    $(".kw-info",mount).innerHTML=`${n} words${opt.needEmoji?" with pictures":""}. Shift-click a second unit to mix several units.<span class="ja">${n}語${opt.needEmoji?"（絵あり）":""}。Shiftを押しながらクリックすると、複数のユニットを選べます。</span>`
+      +(opt.minWords&&n<opt.minWords?`<span class="kit-err" style="display:block">${bi(["Not enough words here. Add another unit.","単語が足りません。ユニットを追加してください。"])}</span>`:"");
+  }
+  function done(){Object.assign(sel,cur());render();onChange&&onChange(sel);}
+  render();return {render};
+};
+Kit.words=words;
+
+/* =====================================================================
+   PARTS FOR OTHER GAME STYLES
+   whole-class projector games, team games, quizzes, bingo, solo drills
+   ===================================================================== */
+
+/* ---------- keyboard shortcuts (projector games: Space = next, 1-4 = answer) ----------
+   const off=Kit.keys({" ":next, "ArrowRight":next, "1":()=>pick(0)}, ()=>scr.current==="quiz")
+   Ignored while typing in a box. The second argument decides when the keys are live. */
+Kit.keys=function(map,when){
+  const h=e=>{if(e.ctrlKey||e.metaKey||e.altKey)return;const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.isContentEditable))return;
+    if(when&&!when())return;const fn=map[e.key]||map[e.key.toLowerCase()];if(fn){e.preventDefault();fn(e);}};
+  document.addEventListener("keydown",h);return ()=>document.removeEventListener("keydown",h);
+};
+
+/* ---------- fullscreen for the projector: Kit.fullscreen(button) ---------- */
+Kit.fullscreen=function(btn){
+  if(typeof btn==="string")btn=$(btn);if(!btn)return;
+  const ok=!!(document.documentElement.requestFullscreen);if(!ok){btn.hidden=true;return;}
+  btn.onclick=()=>{try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>Kit.toast(bi(["Fullscreen isn't allowed here","ここでは全画面にできません"])));}catch(e){}};
+};
+
+/* ---------- countdown ring ----------
+   const C=Kit.countdown({mount, seconds:20, onEnd(){...}}); C.start(); C.pause(); C.reset(30); C.add(10)
+   Ticks quietly in the last 5 seconds. Time's up is a sound and a word, never a flash. seconds:0 hides it. */
+Kit.countdown=function(o){
+  const m=typeof o.mount==="string"?$(o.mount):o.mount;m.classList.add("kit-count");
+  m.innerHTML=`<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" class="kc-bg"/><circle cx="50" cy="50" r="44" class="kc-fg" pathLength="100"/></svg><b></b>`;
+  let total=o.seconds||0,left=total,iv=0,last=-1;
+  const fg=$(".kc-fg",m),num=$("b",m);
+  const draw=()=>{const s=Math.ceil(left);num.textContent=s;fg.style.strokeDashoffset=String(total?100-100*left/total:0);m.classList.toggle("low",s<=5&&left>0);m.hidden=!total;};
+  const api={
+    start(){if(!total)return;clearInterval(iv);let t0=performance.now(),l0=left;iv=setInterval(()=>{left=Math.max(0,l0-(performance.now()-t0)/1000);const s=Math.ceil(left);
+      if(s!==last&&s<=5&&s>0)sound.tone(880,0.06,"triangle",0.04);last=s;draw();if(left<=0){clearInterval(iv);iv=0;sound.play("nope");o.onEnd&&o.onEnd();}},100);},
+    pause(){clearInterval(iv);iv=0;},
+    reset(sec){api.pause();if(sec!=null)total=sec;left=total;last=-1;draw();},
+    add(sec){left=Math.min(left+sec,total=Math.max(total,left+sec));draw();},
+    get left(){return left;},get running(){return !!iv;}
+  };
+  draw();return api;
+};
+
+/* ---------- team scoreboard ----------
+   const TB=Kit.teams({mount, n:4, onChange(scores)}); TB.add(2, 1); TB.reset(); TB.scores; TB.leaders()
+   Big + and - buttons for each team, readable from the back of the room. Teams are animals, so no team is "last". */
+Kit.TEAMS=[{em:"\u{1F431}",name:["Cats","ネコ"],c:"#ff9f6b"},{em:"\u{1F436}",name:["Dogs","イヌ"],c:"#6bb8ff"},{em:"\u{1F43C}",name:["Pandas","パンダ"],c:"#c9c4d6"},
+  {em:"\u{1F438}",name:["Frogs","カエル"],c:"#7fd18b"},{em:"\u{1F427}",name:["Penguins","ペンギン"],c:"#9aa7ff"},{em:"\u{1F98A}",name:["Foxes","キツネ"],c:"#ffc35a"}];
+Kit.teams=function(o){
+  const m=typeof o.mount==="string"?$(o.mount):o.mount;m.classList.add("kit-teams");
+  let n=o.n||2,scores=Array(n).fill(0);
+  const api={
+    get scores(){return scores.slice();},get n(){return n;},
+    set(k){n=k;scores=Array(n).fill(0);render();},
+    add(i,pts){if(i<0||i>=n)return;scores[i]=Math.max(0,scores[i]+(pts??1));sound.play(pts<0?"click":"ok");render(i);o.onChange&&o.onChange(api.scores);},
+    reset(){scores=Array(n).fill(0);render();},
+    leaders(){const top=Math.max(...scores);return scores.map((s,i)=>s===top?i:-1).filter(i=>i>=0);},
+    team:i=>Kit.TEAMS[i]
+  };
+  function render(bump){
+    m.innerHTML=scores.map((s,i)=>{const T=Kit.TEAMS[i];return `<div class="kit-team${i===bump?" bump":""}" style="--tc:${T.c}"><span class="kt-em">${T.em}</span><span class="kt-nm">${bi(T.name)}</span><b>${s}</b>
+      <div class="kt-btns"><button type="button" class="btn small" data-t="${i}" data-p="-1" aria-label="Minus one for ${T.name[0]}">−</button><button type="button" class="btn small primary" data-t="${i}" data-p="1" aria-label="Plus one for ${T.name[0]}">+1</button></div></div>`;}).join("");
+    $$("button",m).forEach(b=>b.onclick=()=>api.add(+b.dataset.t,+b.dataset.p));
+  }
+  render();return api;
+};
+
+/* ---------- quiz questions from the word bank ----------
+   Kit.quiz.make(words, {type, choices:4, rng}) -> {type, item, prompt:{html, say}, choices:[...], answer}
+   Kit.quiz.types(words) -> which TYPES work for these words (picture types need emoji)
+   Kit.quiz.render(mount, q, {onAnswer(ok, choice, i), reveal:false, letters:true})
+     shows the prompt and A-D buttons. With reveal:false it only records the pick (projector games reveal later via .reveal()).
+   Kit.quiz.deck(words, n, rng) -> n items with no repeats until all are used */
+const QT={
+  picture:{name:["Picture → word","絵 → 英語"],needs:w=>!!w.emoji,prompt:w=>({html:`<span class="kq-em">${w.emoji}</span>`,say:""}),choice:w=>Kit.esc(w.en)},
+  listen:{name:["Listen → picture","聞いて → 絵"],needs:w=>!!w.emoji,prompt:w=>({html:`<span class="kq-ear" aria-hidden="true">\u{1F442}</span><span class="kq-listen">${bi(["Listen!","聞いて！"])}</span>`,say:w.en}),choice:w=>`<span class="kq-cem">${w.emoji}</span>`},
+  word:{name:["Word → picture","英語 → 絵"],needs:w=>!!w.emoji,prompt:w=>({html:`<span class="kq-word">${Kit.esc(w.en)}</span>`,say:w.en}),choice:w=>`<span class="kq-cem">${w.emoji}</span>`},
+  japanese:{name:["Japanese → English","日本語 → 英語"],needs:w=>!!w.ja,prompt:w=>({html:`<span class="kq-ja">${Kit.esc(w.ja)}</span>`,say:""}),choice:w=>Kit.esc(w.en)},
+  spell:{name:["Spelling","つづり"],needs:w=>/^[a-z]{3,}$/i.test(w.en),prompt:w=>({html:w.emoji?`<span class="kq-em">${w.emoji}</span>`:`<span class="kq-ja">${Kit.esc(w.ja||"")}</span>`,say:w.en}),choice:x=>Kit.esc(x)}
+};
+function misspell(word,r){
+  const out=new Set(),vow="aeiou",w=word.toLowerCase();let tries=0;
+  while(out.size<3&&tries++<60){const i=Kit.ri(r,w.length),k=Kit.ri(r,4);let x=w;
+    if(k===0&&i<w.length-1)x=w.slice(0,i)+w[i+1]+w[i]+w.slice(i+2);
+    else if(k===1)x=w.slice(0,i)+w[i]+w.slice(i);
+    else if(k===2&&w.length>3)x=w.slice(0,i)+w.slice(i+1);
+    else if(vow.includes(w[i]))x=w.slice(0,i)+vow[(vow.indexOf(w[i])+1+Kit.ri(r,4))%5]+w.slice(i+1);
+    if(x!==w)out.add(word[0]===word[0].toUpperCase()?x[0].toUpperCase()+x.slice(1):x);}
+  return [...out];
+}
+Kit.quiz={
+  TYPES:QT,
+  types(words){return Object.keys(QT).filter(t=>words.filter(QT[t].needs).length>=(t==="spell"?1:4));},
+  deck(words,n,r){const b=Kit.bag(words,r||Kit.RND);return Array.from({length:n},()=>b());},
+  make(words,o){
+    o=o||{};const r=o.rng||Kit.RND,T=QT[o.type]||QT.picture,pool=words.filter(T.needs),n=o.choices||4;
+    const item=o.item&&T.needs(o.item)?o.item:pool[Kit.ri(r,pool.length)];
+    if(o.type==="spell"){const opts=Kit.shuffle([item.en].concat(misspell(item.en,r)).slice(0,n),r);
+      return {type:"spell",item,prompt:T.prompt(item),choices:opts.map(x=>({html:T.choice(x),key:x})),answer:opts.indexOf(item.en)};}
+    const key=w=>(o.type==="listen"||o.type==="word")?w.emoji:w.en.toLowerCase();
+    const others=Kit.shuffle(pool.filter(w=>w!==item&&key(w)!==key(item)),r),seen=new Set([key(item)]),wrong=[];
+    for(const w of others){if(wrong.length>=n-1)break;if(seen.has(key(w)))continue;seen.add(key(w));wrong.push(w);}
+    const opts=Kit.shuffle([item].concat(wrong),r);
+    return {type:o.type||"picture",item,prompt:T.prompt(item),choices:opts.map(w=>({html:T.choice(w),key:w.en})),answer:opts.indexOf(item)};
+  },
+  render(mount,q,o){
+    if(typeof mount==="string")mount=$(mount);o=o||{};let picked=-1,done=false;
+    mount.innerHTML=`<div class="kq"><div class="kq-prompt">${q.prompt.html}</div>
+      <div class="kq-choices">${q.choices.map((c,i)=>`<button type="button" class="kq-c" data-i="${i}">${o.letters===false?"":`<i>${"ABCD"[i]||i+1}</i>`}<span>${c.html}</span></button>`).join("")}</div></div>`;
+    const btns=$$(".kq-c",mount);
+    const api={
+      pick(i){if(done||i<0||i>=btns.length)return;sound.ac();picked=i;btns.forEach((b,j)=>b.classList.toggle("picked",j===i));
+        if(o.reveal!==false){const ok=i===q.answer;if(ok){done=true;btns[i].classList.add("right");}else{btns[i].classList.add("wrong","kit-shake");setTimeout(()=>btns[i].classList.remove("kit-shake"),450);}
+          o.onAnswer&&o.onAnswer(ok,q.choices[i],i);}else o.onAnswer&&o.onAnswer(null,q.choices[i],i);},
+      reveal(){done=true;btns.forEach((b,j)=>{b.classList.toggle("right",j===q.answer);b.classList.toggle("dim",j!==q.answer);});},
+      say(rate){if(q.prompt.say)speech.say(q.prompt.say,rate||0.8);},
+      get picked(){return picked;},get done(){return done;}
+    };
+    btns.forEach((b,i)=>b.onclick=()=>api.pick(i));
+    return api;
+  }
+};
+
+/* ---------- bingo ----------
+   Kit.bingo.card(words, size, rng) -> size*size items (centre is FREE when size is odd)
+   Kit.bingo.calls(words, rng) -> the calling order (same on every screen with the same rng seed)
+   Kit.bingo.lines(marked:boolean[], size) -> how many full rows, columns and diagonals
+   Seed the card with the student's number and the caller with the game number, so a card can be checked on the projector. */
+Kit.bingo={
+  card(words,size,r){const n=size*size,mid=size%2?Math.floor(n/2):-1,pick=Kit.pickN(r,words,Math.min(words.length,n-(mid>=0?1:0)));
+    const cells=[];let k=0;for(let i=0;i<n;i++)cells.push(i===mid?{free:true}:(pick[k++]||{free:true}));return cells;},
+  calls(words,r){return Kit.shuffle(words.slice(),r);},
+  lines(m,size){let c=0;const at=(r,k)=>m[r*size+k];
+    for(let r=0;r<size;r++){let a=true,b=true;for(let k=0;k<size;k++){a=a&&at(r,k);b=b&&at(k,r);}c+=a+b;}
+    let d1=true,d2=true;for(let i=0;i<size;i++){d1=d1&&at(i,i);d2=d2&&at(i,size-1-i);}return c+d1+d2;}
+};
+
+window.Kit=Kit;
+})();
+/*KIT:JS END*/
+</script>
+<script>
+/* =====================================================================
+   GAME: Shape Shop
+   One Chromebook per pair: the artist has the paper and the bag, the partner works the shop counter.
+   Solo: the computer voice runs the shop. Free drawing: every shape, no shop.
+   Shapes and colors are the same as The Keypad Game. The class code only holds settings (colors, numbers, big/small).
+   To add a picture card: add an entry to CARDS (slots are drawn in order, back to front).
+   ===================================================================== */
+(function(){
+"use strict";
+const {$,$$,bi,esc}=Kit;
+const ARTIFACT_URL="https://claude.ai/artifact/CpQqHmP8SCE8gQepq31DeS";   /* this game's claude.ai artifact link */
+const st=Kit.store("ss");
+
+/* ---------- shapes + colors (from The Keypad Game) ---------- */
+const SHAPES=[
+ {k:"circle",ja:"まる"},{k:"square",ja:"正方形"},{k:"rectangle",ja:"長方形"},{k:"triangle",ja:"三角"},
+ {k:"diamond",ja:"ダイヤ"},{k:"heart",ja:"ハート"},{k:"star",ja:"星"}];
+const COLORS=[
+ {k:"red",fill:"#e2463b",ja:"赤"},{k:"blue",fill:"#2f6fdc",ja:"青"},{k:"yellow",fill:"#f7d038",ja:"黄色"},
+ {k:"green",fill:"#36a852",ja:"緑"},{k:"pink",fill:"#f59ac0",ja:"ピンク"},{k:"black",fill:"#26262b",ja:"黒"},
+ {k:"purple",fill:"#8b4fc6",ja:"むらさき"},{k:"orange",fill:"#f5892a",ja:"オレンジ"},{k:"white",fill:"#fbfbf7",ja:"白"},
+ {k:"brown",fill:"#8a5a33",ja:"茶色"},{k:"gold",fill:"url(#gGold)",ja:"金"},{k:"silver",fill:"url(#gSilver)",ja:"銀"}];
+const SIZES=[{k:"small",ja:"小さい",sc:1.5},{k:"big",ja:"大きい",sc:2.6}];
+const NUM=["one","two","three","four","five","six","seven","eight","nine","ten"];
+const SI=Object.fromEntries(SHAPES.map((s,i)=>[s.k,i])),CI=Object.fromEntries(COLORS.map((c,i)=>[c.k,i]));
+const INK="#1b1a17";
+function starPts(cx,cy,R,r0){let s="";for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,rr=i%2?r0:R;s+=(cx+rr*Math.cos(a)).toFixed(1)+","+(cy+rr*Math.sin(a)).toFixed(1)+" ";}return s;}
+/* one shape in a 40 x 40 box centred on 20,20 */
+function shapeEl(k,a){
+  if(k==="circle")return `<circle cx="20" cy="20" r="15" ${a}/>`;
+  if(k==="square")return `<rect x="6" y="6" width="28" height="28" ${a}/>`;
+  if(k==="rectangle")return `<rect x="1.5" y="11" width="37" height="18" ${a}/>`;
+  if(k==="triangle")return `<polygon points="20,4 37,34 3,34" ${a}/>`;
+  if(k==="diamond")return `<polygon points="20,1.5 32,20 20,38.5 8,20" ${a}/>`;
+  if(k==="heart")return `<path d="M20 35 C 6 25 2 16 7 10 C 11 5 18 5 20 11.5 C 22 5 29 5 33 10 C 38 16 34 25 20 35 Z" ${a}/>`;
+  return `<polygon points="${starPts(20,21,17,7.2)}" ${a}/>`;
+}
+const ICO=f=>`fill="${f}" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"`;
+const CANV=f=>`fill="${f}" stroke="${INK}" stroke-width="3" stroke-linejoin="round" vector-effect="non-scaling-stroke"`;
+const icon=(s,c,cls)=>`<svg class="${cls||"ico"}" viewBox="0 0 40 40" aria-hidden="true">${shapeEl(SHAPES[s].k,ICO(c<0?"#cfc8b8":COLORS[c].fill))}</svg>`;
+const scaleOf=o=>SIZES[o.z].sc*(o.k||1);
+const tf=o=>`translate(${o.x.toFixed(1)} ${o.y.toFixed(1)}) rotate(${o.r||0}) scale(${scaleOf(o).toFixed(3)}) translate(-20 -20)`;
+
+/* ---------- picture cards (800 x 560 paper). P(shape, color, size, x, y, turn, stretch) ---------- */
+const P=(s,c,z,x,y,r,k)=>({s:SI[s],c:CI[c],z:z==="big"?1:0,x,y,r:r||0,k:k||1});
+const CARDS=[
+ {en:"house",ja:"家",slots:[P("triangle","red","big",400,220,0,2.2),P("square","pink","big",400,370,0,2.2),P("rectangle","brown","small",400,409,90,1.5),
+   P("square","blue","small",350,330),P("square","blue","small",450,330),P("circle","yellow","big",670,120)]},
+ {en:"car",ja:"車",slots:[P("rectangle","red","big",400,235,0,1.5),P("rectangle","red","big",400,330,0,2.6),P("square","blue","small",365,235,0,.9),P("square","blue","small",435,235,0,.9),
+   P("circle","black","big",320,395),P("circle","black","big",480,395),P("circle","silver","small",320,395,0,.8),P("circle","silver","small",480,395,0,.8),P("circle","yellow","small",505,310,0,.7)]},
+ {en:"bus",ja:"バス",slots:[P("rectangle","yellow","big",400,320,0,3),P("square","blue","small",300,290),P("square","blue","small",360,290),P("square","blue","small",420,290),P("square","blue","small",480,290),
+   P("circle","black","big",320,395,0,.9),P("circle","black","big",480,395,0,.9)]},
+ {en:"flower",ja:"花",slots:[P("rectangle","green","small",400,330,90,1.4),P("rectangle","green","small",400,405,90,1.4),P("diamond","green","small",360,390,-50),P("diamond","green","small",440,375,50),
+   P("heart","pink","big",400,148,0,.9),P("heart","pink","big",462,210,90,.9),P("heart","pink","big",400,272,180,.9),P("heart","pink","big",338,210,270,.9),P("circle","yellow","big",400,210,0,.8)]},
+ {en:"balloon",ja:"風船",slots:[P("triangle","red","small",300,226,0,.6),P("triangle","blue","small",420,196,0,.6),P("triangle","yellow","small",520,256,0,.6),
+   P("circle","red","big",300,170,0,1.2),P("circle","blue","big",420,140,0,1.2),P("circle","yellow","big",520,200,0,1.2),P("square","pink","big",400,430,0,1.6),P("heart","yellow","small",400,368)]},
+ {en:"candy",ja:"あめ",slots:[P("triangle","pink","big",300,280,90),P("triangle","pink","big",500,280,-90),P("circle","red","big",400,280,0,1.6),
+   P("star","yellow","small",370,262,0,.8),P("star","yellow","small",430,262,0,.8),P("star","yellow","small",400,312,0,.8)]},
+ {en:"cat",ja:"ねこ",slots:[P("triangle","orange","small",355,215,-20,1.3),P("triangle","orange","small",445,215,20,1.3),P("circle","orange","big",400,270,0,1.6),
+   P("circle","green","small",375,260,0,.6),P("circle","green","small",425,260,0,.6),P("triangle","pink","small",400,292,180,.5)]},
+ {en:"panda",ja:"パンダ",slots:[P("circle","black","small",345,215,0,1.2),P("circle","black","small",455,215,0,1.2),P("circle","white","big",400,285,0,1.7),
+   P("diamond","black","small",370,282,40,.8),P("diamond","black","small",430,282,-40,.8),P("triangle","black","small",400,320,180,.5)]}
+];
+
+/* ---------- settings (class code) ---------- */
+const codec=Kit.codec({game:"shape-shop",fields:[{k:"colors",n:3},{k:"max",n:2},{k:"sizes",n:2}],length:4});
+const DEFAULT={colors:2,max:1,sizes:1};
+let S=(codec.decode(st.get("code",""))||{}).S||Object.assign({},DEFAULT);
+const fromLink=codec.fromHash();
+if(fromLink){S=fromLink.S;setTimeout(()=>Kit.toast(bi(["Class code "+fromLink.code+" loaded","クラスコード "+fromLink.code+" を読み込みました"])),300);}
+const code=()=>codec.encode(S);
+const nColors=()=>[6,9,12][S.colors],maxNum=()=>[5,10][S.max],sizesOn=()=>S.sizes===1;
+const cardOk=c=>c.slots.every(s=>s.c<nColors());
+
+/* ---------- words ---------- */
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+function desc(c,s,z,n){const w=(sizesOn()?SIZES[z].k+" ":"")+COLORS[c].k+" "+SHAPES[s].k+(n>1?"s":"");
+  return n==null?(/^[aeiou]/.test(w)?"an ":"a ")+w:n+" "+w;}
+const descJa=(c,s,z,n)=>(sizesOn()?SIZES[z].ja:"")+COLORS[c].ja+"の"+SHAPES[s].ja+(n?" "+n+"こ":"");
+const ASK=["What do you want?","何がほしいですか？"],HOW=["How many?","いくつですか？"],HERE=["Here you are.","はい、どうぞ。"],
+  THANKS=["Thank you.","ありがとう。"],WELCOME=["You're welcome.","どういたしまして。"];
+const say=t=>Kit.speech.say(t);
+
+/* ---------- switches + screens ---------- */
+const T=Kit.setupToggles(st,{});
+const scr=Kit.screens({onShow(id){
+  if(id!=="studio"){timer.stop();}
+  if(id==="home")$("#homeSlot").appendChild(panel);
+  if(id==="teacher"){teach.slot.appendChild(panel);teach.refresh();}
+}});
+$("#goHome").onclick=()=>scr.show("home");
+
+/* ---------- settings panel (moved between home and teacher page) ---------- */
+const panel=document.createElement("div");panel.className="settings";
+panel.innerHTML=`<div class="set-row"><h3>${bi(["Colors","色の数"])}</h3><div class="seg" id="setCols"></div></div>
+ <div class="set-row"><h3>${bi(["Numbers","数"])}</h3><div class="seg" id="setMax"></div></div>
+ <div class="set-row"><h3>${bi(["Big and small","大きい・小さい"])}</h3><div class="seg" id="setSizes"></div></div>
+ <div class="classcode"><div class="cc">${bi(["Class code","クラスコード"],true)}<b class="kitCode">----</b></div><div id="ccEntry"></div>
+  <p class="note">The class code only changes these settings. You don't need it to play.<span class="ja">クラスコードは設定だけです。なくても遊べます。</span></p></div>`;
+Kit.codeEntry($("#ccEntry",panel),{codec,onCode(d){Object.assign(S,d.S);changed();Kit.toast(bi(["Code "+d.code+" loaded","コード "+d.code+" を読み込みました"]));}});
+function changed(){st.set("code",code());renderSettings();if(scr.current==="teacher")teach.refresh();}
+function renderSettings(){
+  Kit.seg($("#setCols",panel),[6,9,12].map(n=>({html:String(n)})),(o,i)=>S.colors===i,(o,i)=>{S.colors=i;changed();});
+  Kit.seg($("#setMax",panel),[5,10].map(n=>({html:"1–"+n})),(o,i)=>S.max===i,(o,i)=>{S.max=i;changed();});
+  Kit.seg($("#setSizes",panel),[{html:bi(["Off","なし"])},{html:bi(["On","あり"])}],(o,i)=>S.sizes===i,(o,i)=>{S.sizes=i;changed();});
+  Kit.badges(code());
+}
+const setName=()=>[[6,9,12][S.colors]+" colors · 1–"+maxNum()+(sizesOn()?" · big/small":""),[6,9,12][S.colors]+"色・1–"+maxNum()+(sizesOn()?"・大小あり":"")];
+const teach=Kit.teacher({mount:"#teacher",store:st,artifactUrl:ARTIFACT_URL,getCode:code,getName:setName,
+  steps:[["Pairs share one Chromebook. One is the customer (artist), one is the shopkeeper.","ペアで1台。ひとりはお客さん（絵をかく人）、ひとりはお店の人。"],
+   ["The customer picks a picture card and orders: \"A big red triangle, please.\" \"Two, please.\"","お客さんは絵カードをえらんで注文します。"],
+   ["Only the shopkeeper touches the shop. Ask \"What do you want?\" and \"How many?\", then tap Here you are.","お店の人だけがお店のボタンをおします。"],
+   ["When the picture is done, swap roles. Solo practice: the computer runs the shop.","絵ができたら役割を交代。ひとり練習ではコンピューターがお店の人。"]],
+  note:bi(["Fewer colors and numbers 1–5 make it easier. Picture cards that need other colors are hidden.","色を少なく、数を1–5にするとかんたんになります。"])});
+$("#toTeacher").onclick=()=>scr.show("teacher");
+
+/* ---------- the clerk (a bear shopkeeper) ---------- */
+$("#clerkPic").innerHTML=`<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="16" cy="16" r="8" fill="#8a5a33" stroke="${INK}" stroke-width="2.5"/><circle cx="48" cy="16" r="8" fill="#8a5a33" stroke="${INK}" stroke-width="2.5"/>
+ <rect x="8" y="46" width="48" height="18" rx="8" fill="#2f6fdc" stroke="${INK}" stroke-width="2.5"/><circle cx="32" cy="32" r="20" fill="#a46a3c" stroke="${INK}" stroke-width="2.5"/>
+ <ellipse cx="32" cy="39" rx="9" ry="7" fill="#f0d9b5" stroke="${INK}" stroke-width="2"/><circle cx="24" cy="28" r="2.6" fill="${INK}"/><circle cx="40" cy="28" r="2.6" fill="${INK}"/>
+ <circle cx="32" cy="36" r="2.6" fill="${INK}"/><path d="M28 41 Q32 44 36 41" fill="none" stroke="${INK}" stroke-width="2" stroke-linecap="round"/><circle cx="19" cy="35" r="3" fill="#f59ac0" opacity=".7"/><circle cx="45" cy="35" r="3" fill="#f59ac0" opacity=".7"/></svg>`;
+
+/* ---------- studio state ---------- */
+const G={mode:"pair",card:-1,shapes:[],bag:{},sel:null,orders:0,id:1,done:false};
+const timer=Kit.timer((s,t)=>$("#tTime").textContent=t);
+const art=$("#art"),gGhost=$("#ghost"),gShapes=$("#shapes");
+const byId=id=>G.shapes.find(o=>o.id===id);
+const bagKey=(c,s,z)=>c+"."+s+"."+z;
+function save(){st.set("save_"+G.mode,{card:G.card,shapes:G.shapes,bag:G.bag,orders:G.orders});}
+
+function startStudio(mode){
+  const sv=st.get("save_"+mode,null)||{};
+  Object.assign(G,{mode,card:typeof sv.card==="number"&&CARDS[sv.card]?sv.card:-1,shapes:Array.isArray(sv.shapes)?sv.shapes:[],bag:sv.bag||{},orders:sv.orders||0,sel:null,done:false});
+  G.id=G.shapes.reduce((m,o)=>Math.max(m,o.id),0)+1;
+  $("#modeChip").textContent=mode==="pair"?"With a partner":mode==="solo"?"Solo shopping":"Free drawing";
+  $("#shopPanel").hidden=mode==="free";$("#bagPanel").hidden=mode==="free";$("#freePanel").hidden=mode!=="free";
+  $("#swapBtn").hidden=mode!=="pair";
+  $("#tools [data-t=copy]").hidden=mode!=="free";
+  $("#tools [data-t=bag]").innerHTML=mode==="free"?bi(["Remove","消す"]):bi(["Back to bag","ふくろへ"]);
+  $("#shopTitle").innerHTML=mode==="pair"?bi(["Shop: only the shopkeeper touches this","お店：お店の人だけがさわります"]):bi(["Shop","お店"]);
+  scr.show("studio");timer.start();
+  shopReset();renderFree();drawAll();
+}
+$("#startPair").onclick=()=>startStudio("pair");
+$("#startSolo").onclick=()=>startStudio("solo");
+$("#startFree").onclick=()=>startStudio("free");
+$("#studioQuit").onclick=()=>scr.show("home");
+$("#swapBtn").onclick=()=>{Kit.sound.play("ok");Kit.toast(bi(["Swap seats! The shopkeeper is the customer now.","交代！お店の人がお客さんになります。"]),3500);};
+
+/* ---------- drawing ---------- */
+function drawAll(){drawGhost();drawShapes();renderBag();renderCard();updateTools();$("#tShapes").textContent=G.shapes.length;}
+const filled=i=>G.shapes.some(o=>o.slot===i);
+function drawGhost(){
+  const c=CARDS[G.card];
+  gGhost.innerHTML=c?c.slots.map((sl,i)=>filled(i)?"":`<g class="ghost" transform="${tf(sl)}" opacity=".35">${shapeEl(SHAPES[sl.s].k,`fill="${COLORS[sl.c].fill}" stroke="#6b6358" stroke-width="2" stroke-dasharray="6 5" vector-effect="non-scaling-stroke"`)}</g>`).join(""):"";
+}
+function drawShapes(){
+  gShapes.innerHTML=G.shapes.map(o=>`<g class="shp${o.slot>=0?" locked":""}${o.id===G.sel?" sel":""}" data-id="${o.id}" transform="${tf(o)}">${shapeEl(SHAPES[o.s].k,CANV(COLORS[o.c].fill))}</g>`).join("");
+}
+/* shapes sent to the back go under everything; then snapped shapes in card order; other free shapes on top */
+function sortShapes(){G.shapes=G.shapes.map((o,i)=>[o,o.back&&o.slot<0?-1000+i:o.slot>=0?o.slot:1000+i]).sort((a,b)=>a[1]-b[1]).map(a=>a[0]);}
+
+/* ---------- bag + free palette ---------- */
+function renderBag(){
+  if(G.mode==="free")return;
+  const ks=Object.keys(G.bag).filter(k=>G.bag[k]>0);
+  $("#bag").innerHTML=ks.length?ks.map(k=>{const [c,s,z]=k.split(".").map(Number);
+    return `<button class="pb tile z${z}" type="button" data-c="${c}" data-s="${s}" data-z="${z}" title="${esc(desc(c,s,z))}">${icon(s,c)}<b>×${G.bag[k]}</b></button>`;}).join("")
+    :`<p class="bagempty">${bi(G.mode==="pair"?["Empty. Order some shapes from the shopkeeper!","からっぽ。お店の人に注文しよう！"]:["Empty. Order some shapes from the shop!","からっぽ。お店で注文しよう！"])}</p>`;
+  $$("#bag .tile").forEach(wireTile);
+}
+const F={c:0,z:1};
+function renderFree(){
+  if(G.mode!=="free")return;
+  $("#freeSize").hidden=!sizesOn();if(!sizesOn())F.z=1;
+  $("#freeSize").innerHTML=SIZES.map((z,i)=>`<button class="pb" type="button" data-i="${i}" aria-pressed="${F.z===i}">${bi([z.k,z.ja])}</button>`).join("");
+  $$("#freeSize .pb").forEach(b=>b.onclick=()=>{Kit.sound.play("click");F.z=+b.dataset.i;renderFree();});
+  $("#freeCol").innerHTML=COLORS.slice(0,nColors()).map((c,i)=>`<button class="pb" type="button" data-i="${i}" aria-pressed="${F.c===i}">${icon(0,i)}${bi([c.k,c.ja])}</button>`).join("");
+  $$("#freeCol .pb").forEach(b=>b.onclick=()=>{Kit.sound.play("click");F.c=+b.dataset.i;renderFree();});
+  $("#freeShape").innerHTML=SHAPES.map((s,i)=>`<button class="pb tile" type="button" data-c="${F.c}" data-s="${i}" data-z="${F.z}">${icon(i,F.c)}${bi([s.k,s.ja])}</button>`).join("");
+  $$("#freeShape .tile").forEach(wireTile);
+}
+
+/* ---------- picture card + shopping list ---------- */
+const CHECK=`<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13l5 5L20 6" fill="none" stroke="#7fd18b" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+function cardSVG(c,vb){return `<svg viewBox="${vb||"0 0 800 560"}" aria-hidden="true"><rect width="800" height="560" fill="#fffaf0"/>${c.slots.map(sl=>`<g transform="${tf(sl)}">${shapeEl(SHAPES[sl.s].k,CANV(COLORS[sl.c].fill))}</g>`).join("")}</svg>`;}
+function renderCard(){
+  const c=CARDS[G.card];
+  $("#cardHead").innerHTML=c?`<div class="cardhead">${cardSVG(c)}<div><small class="note">${bi(["Picture card","絵カード"],true)}</small><br><b>${esc(c.en)}</b><span class="ja">${c.ja}</span></div></div><div class="step">${bi(["Shopping list","買い物リスト"],true)}</div>`
+    :`<h3>${bi(["Free picture","自由な絵"])}</h3><p class="hint">${bi(["Make anything you like, or choose a picture card.","好きな絵を作ろう。絵カードをえらんでもいいよ。"])}</p>`;
+  if(c){const need={},have={};c.slots.forEach((sl,i)=>{const k=bagKey(sl.c,sl.s,sizesOn()?sl.z:1);need[k]=(need[k]||0)+1;if(filled(i))have[k]=(have[k]||0)+1;});
+    $("#shopList").innerHTML=Object.keys(need).map(k=>{const [cc,s,z]=k.split(".").map(Number),n=need[k],ok=(have[k]||0)>=n;
+      return `<li class="${ok?"ok":""}">${icon(s,cc)}<span>${esc(desc(cc,s,z,n))}<span class="ja">${descJa(cc,s,z,n)}</span></span>${ok?CHECK:""}</li>`;}).join("");}
+  else $("#shopList").innerHTML="";
+  const list=[{i:-1}].concat(CARDS.map((c,i)=>({i,c})).filter(o=>cardOk(o.c)));
+  $("#cards").innerHTML=list.map(o=>`<button class="pb" type="button" data-i="${o.i}" aria-pressed="${G.card===o.i}">${o.c?cardSVG(o.c,"150 60 520 440"):`<svg viewBox="0 0 40 40"><rect x="5" y="9" width="30" height="22" rx="3" fill="#fffaf0" stroke="#6b6358" stroke-width="2" stroke-dasharray="4 3"/></svg>`}<small>${o.c?esc(o.c.en):bi(["free","自由"],true)}</small></button>`).join("");
+  $$("#cards .pb").forEach(b=>b.onclick=()=>{Kit.sound.play("click");pickCard(+b.dataset.i);});
+}
+function pickCard(i){
+  G.card=i;G.done=false;G.shapes.forEach(o=>o.slot=-1);
+  G.shapes.forEach(o=>trySnap(o,true));sortShapes();
+  $("#cardPick").open=false;timer.start();save();drawAll();
+}
+
+/* ---------- placing and dragging ---------- */
+function pt(e){const m=art.getScreenCTM();if(!m)return {x:400,y:280};const p=art.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(m.inverse());return {x:q.x,y:q.y};}
+const clampX=v=>Math.max(10,Math.min(790,v)),clampY=v=>Math.max(10,Math.min(550,v));
+function takeFromBag(c,s,z){if(G.mode==="free")return true;const k=bagKey(c,s,z);if(!(G.bag[k]>0))return false;G.bag[k]--;if(!G.bag[k])delete G.bag[k];return true;}
+function backToBag(o){G.shapes=G.shapes.filter(x=>x!==o);if(G.mode!=="free"){const k=bagKey(o.c,o.s,o.z);G.bag[k]=(G.bag[k]||0)+1;}if(G.sel===o.id)G.sel=null;}
+function addShape(c,s,z,x,y){const o={id:G.id++,c,s,z,x,y,r:0,k:1,slot:-1};G.shapes.push(o);return o;}
+function wireTile(b){
+  b.onpointerdown=e=>{
+    if(e.button>0)return;e.preventDefault();Kit.sound.ac();
+    const c=+b.dataset.c,s=+b.dataset.s,z=+b.dataset.z,x0=e.clientX,y0=e.clientY;let o=null;
+    const move=ev=>{
+      if(!o){if(Math.hypot(ev.clientX-x0,ev.clientY-y0)<6)return;if(!takeFromBag(c,s,z)){end();return;}const p=pt(ev);o=addShape(c,s,z,p.x,p.y);G.sel=o.id;drawShapes();}
+      const p=pt(ev);o.x=p.x;o.y=p.y;const n=gShapes.querySelector(`[data-id="${o.id}"]`);n&&n.setAttribute("transform",tf(o));};
+    const up=ev=>{end();
+      if(!o){if(!takeFromBag(c,s,z))return;o=addShape(c,s,z,clampX(400+Kit.ri(Kit.RND,160)-80),clampY(280+Kit.ri(Kit.RND,120)-60));G.sel=o.id;Kit.sound.play("bump");dropped(o);return;}
+      const r=art.getBoundingClientRect();
+      if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom){backToBag(o);Kit.sound.play("click");save();drawAll();return;}
+      dropped(o);};
+    function end(){window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);}
+    window.addEventListener("pointermove",move);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up);
+  };
+}
+art.addEventListener("pointerdown",e=>{
+  if(e.button>0)return;
+  const g=e.target.closest(".shp");
+  if(!g){if(G.sel){G.sel=null;drawShapes();updateTools();}return;}
+  const o=byId(+g.dataset.id);if(!o)return;
+  if(o.slot>=0){Kit.toast(bi(["That shape is stuck on the card. Great job!","その形はカードにピッタリ！"]));return;}
+  e.preventDefault();G.sel=o.id;
+  if(!o.back)G.shapes=G.shapes.filter(x=>x!==o).concat(o);drawShapes();updateTools();
+  const p0=pt(e),off={x:o.x-p0.x,y:o.y-p0.y},node=gShapes.querySelector(`[data-id="${o.id}"]`);let moved=false;
+  const move=ev=>{const p=pt(ev);o.x=clampX(p.x+off.x);o.y=clampY(p.y+off.y);moved=true;node.setAttribute("transform",tf(o));};
+  const up=()=>{window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);if(moved)dropped(o);};
+  window.addEventListener("pointermove",move);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up);
+});
+function dropped(o){o.x=clampX(o.x);o.y=clampY(o.y);if(trySnap(o)){Kit.sound.play("ok");sortShapes();}save();drawAll();checkDone();}
+function trySnap(o,quiet){
+  const c=CARDS[G.card];if(!c)return false;let best=-1,bd=1e9;
+  c.slots.forEach((sl,i)=>{if(filled(i)||sl.s!==o.s||sl.c!==o.c||(sizesOn()&&sl.z!==o.z))return;const d=Math.hypot(sl.x-o.x,sl.y-o.y);if(d<bd){bd=d;best=i;}});
+  if(best<0||bd>(quiet?4:75))return false;
+  const sl=c.slots[best];Object.assign(o,{x:sl.x,y:sl.y,r:sl.r,k:sl.k,slot:best});if(!sizesOn()){if(o.z!==sl.z)o.k=sl.k*SIZES[sl.z].sc/SIZES[o.z].sc;}
+  if(G.sel===o.id)G.sel=null;return true;
+}
+function checkDone(){
+  const c=CARDS[G.card];if(!c||G.done||!c.slots.every((sl,i)=>filled(i)))return;
+  G.done=true;const t=timer.stop();Kit.sound.play("win");setTimeout(()=>showResult(t),900);
+}
+
+/* ---------- tools ---------- */
+function updateTools(){const o=byId(G.sel);$$("#tools [data-t]").forEach(b=>b.disabled=!o);}
+$$("#tools [data-t]").forEach(b=>b.onclick=()=>tool(b.dataset.t));
+function tool(t){
+  const o=byId(G.sel);if(!o)return;Kit.sound.play("click");
+  if(t==="left")o.r=((o.r||0)-15+360)%360;
+  if(t==="right")o.r=((o.r||0)+15)%360;
+  if(t==="bigger")o.k=Math.min(3,+((o.k||1)*1.15).toFixed(3));
+  if(t==="smaller")o.k=Math.max(.35,+((o.k||1)/1.15).toFixed(3));
+  if(t==="front"){o.back=false;G.shapes=G.shapes.filter(x=>x!==o).concat(o);}
+  if(t==="back"){o.back=true;G.shapes=[o].concat(G.shapes.filter(x=>x!==o));sortShapes();}
+  if(t==="copy"&&G.mode==="free"){const n=addShape(o.c,o.s,o.z,clampX(o.x+24),clampY(o.y+24));n.r=o.r;n.k=o.k;G.sel=n.id;}
+  if(t==="bag")backToBag(o);
+  else if(t!=="copy"&&trySnap(o))Kit.sound.play("ok"),sortShapes();
+  save();drawAll();checkDone();
+}
+document.addEventListener("keydown",e=>{
+  if(scr.current!=="studio"||/INPUT|TEXTAREA/.test((e.target||{}).tagName||""))return;
+  const o=byId(G.sel);if(!o)return;
+  const mv={ArrowLeft:[-8,0],ArrowRight:[8,0],ArrowUp:[0,-8],ArrowDown:[0,8]}[e.key];
+  if(mv){e.preventDefault();o.x=clampX(o.x+mv[0]);o.y=clampY(o.y+mv[1]);dropped(o);return;}
+  const k={q:"left",e:"right","+":"bigger","=":"bigger","-":"smaller",Delete:"bag",Backspace:"bag"}[e.key];
+  if(k){e.preventDefault();tool(k);}
+});
+let clearArm=0;
+$("#clearBtn").onclick=()=>{
+  if(!clearArm){clearArm=setTimeout(()=>{clearArm=0;$("#clearBtn").innerHTML=bi(["Clear","全部もどす"]);},3000);$("#clearBtn").innerHTML=bi(["Click again to clear","もう一度クリック"]);return;}
+  clearTimeout(clearArm);clearArm=0;$("#clearBtn").innerHTML=bi(["Clear","全部もどす"]);
+  G.shapes.slice().forEach(backToBag);G.done=false;Kit.sound.play("wipe");timer.start();save();drawAll();
+};
+
+/* ---------- the shop counter ----------
+   pair: prompts for the shopkeeper, who taps what the customer says.
+   solo: the computer bear asks, the student clicks the order and hears it. */
+const O={c:-1,s:-1,z:1,n:0};
+function bub(p,speak){$("#bub").innerHTML=bi(p);if(speak)say(p[0]);}
+function shopStep(n){$("#shopPick").hidden=n!==1;$("#shopNum").hidden=n!==2;$("#shopGive").hidden=n!==3;}
+function shopReset(){
+  if(G.mode==="free")return;
+  Object.assign(O,{c:-1,s:-1,z:1,n:0});shopStep(1);renderPad();
+  const pair=G.mode==="pair";
+  $("#step1").innerHTML=pair?bi(["1. Ask: \"What do you want?\" Tap what you hear.","1.「What do you want?」と聞いて、聞こえた物をタップ"],true):bi(["1. Click your order, then say it","1. 注文をクリックして、言ってみよう"],true);
+  $("#step2").innerHTML=pair?bi(["2. Ask: \"How many?\" Tap the number.","2.「How many?」と聞いて、数をタップ"],true):bi(["2. How many? Click and say it","2. いくつ？クリックして言おう"],true);
+  if(pair)bub(["Shopkeeper: \"What do you want?\"","お店の人：「What do you want?」"]);
+  else setTimeout(()=>{if(scr.current==="studio"&&O.c<0)bub(ASK,true);},400);
+}
+function renderPad(){
+  $("#padSize").hidden=!sizesOn();if(!sizesOn())O.z=1;
+  $("#padSize").innerHTML=SIZES.map((z,i)=>`<button class="pb" type="button" data-i="${i}" aria-pressed="${O.z===i}"><svg viewBox="0 0 40 40" style="width:${i?26:16}px;height:${i?26:16}px">${shapeEl("circle",ICO("#cfc8b8"))}</svg>${bi([z.k,z.ja])}</button>`).join("");
+  $$("#padSize .pb").forEach(b=>b.onclick=()=>{Kit.sound.play("click");O.z=+b.dataset.i;renderPad();});
+  $("#padCol").innerHTML=COLORS.slice(0,nColors()).map((c,i)=>`<button class="pb" type="button" data-i="${i}" aria-pressed="${O.c===i}">${icon(0,i)}${bi([c.k,c.ja])}</button>`).join("");
+  $$("#padCol .pb").forEach(b=>b.onclick=()=>{Kit.sound.play("click");O.c=+b.dataset.i;if(G.mode==="solo")say(COLORS[O.c].k);renderPad();});
+  $("#padShape").innerHTML=SHAPES.map((s,i)=>`<button class="pb" type="button" data-i="${i}" aria-pressed="${O.s===i}">${icon(i,O.c)}${bi([s.k,s.ja])}</button>`).join("");
+  $$("#padShape .pb").forEach(b=>b.onclick=()=>{Kit.sound.play("click");O.s=+b.dataset.i;if(G.mode==="solo")say(SHAPES[O.s].k);renderPad();});
+  const ok=O.c>=0&&O.s>=0,b=$("#orderBtn");b.disabled=!ok;
+  b.innerHTML=!ok?bi(G.mode==="pair"?["Tap a color and a shape","色と形をタップ"]:["Pick a color and a shape","色と形をえらぼう"])
+    :G.mode==="pair"?bi(["OK: "+desc(O.c,O.s,O.z)+" →",descJa(O.c,O.s,O.z)+" →"]):bi([cap(desc(O.c,O.s,O.z))+", please.",descJa(O.c,O.s,O.z)+"をください。"]);
+}
+$("#orderBtn").onclick=()=>{
+  if(O.c<0||O.s<0)return;Kit.sound.ac();
+  $("#padNum").innerHTML=Array.from({length:maxNum()},(_,i)=>`<button class="pb" type="button" data-n="${i+1}">${i+1}</button>`).join("");
+  $$("#padNum .pb").forEach(b=>b.onclick=()=>pickNum(+b.dataset.n));
+  shopStep(2);
+  if(G.mode==="pair")bub(["Shopkeeper: \"How many?\"","お店の人：「How many?」"]);
+  else{say(cap(desc(O.c,O.s,O.z))+", please.");bub(["…","…"]);setTimeout(()=>bub(HOW,true),1700);}
+};
+$("#numBack").onclick=()=>{Kit.sound.play("click");shopStep(1);bub(G.mode==="pair"?["Shopkeeper: \"What do you want?\"","お店の人：「What do you want?」"]:ASK);};
+function pickNum(n){
+  O.n=n;Kit.sound.play("click");
+  const give=$("#giveBtn");shopStep(3);give.disabled=false;
+  if(G.mode==="pair"){
+    $("#step3").innerHTML=bi(["3. Say \"Here you are.\" and tap","3.「Here you are.」と言ってタップ"],true);
+    give.innerHTML=bi(["Here you are! ("+desc(O.c,O.s,O.z,n)+")","はい、どうぞ！（"+descJa(O.c,O.s,O.z,n)+"）"]);
+    bub(["Check: "+desc(O.c,O.s,O.z,n)+"?","確認："+descJa(O.c,O.s,O.z,n)+"？"]);
+  }else{
+    say(cap(NUM[n-1])+", please.");bub(["…","…"]);
+    $("#step3").innerHTML=bi(["3. Say thank you","3. お礼を言おう"],true);give.innerHTML=bi(THANKS);give.disabled=true;
+    setTimeout(()=>{deliver();bub(HERE,true);give.disabled=false;},1500);
+  }
+}
+function deliver(){
+  const k=bagKey(O.c,O.s,O.z);G.bag[k]=(G.bag[k]||0)+O.n;G.orders++;Kit.sound.play("done");save();renderBag();
+}
+$("#giveBtn").onclick=()=>{
+  Kit.sound.ac();
+  if(G.mode==="pair"){deliver();bub(["Customer: \"Thank you.\"","お客さん：「Thank you.」"]);
+    setTimeout(()=>{if(scr.current==="studio")shopReset();},1800);shopStep(0);return;}
+  say(THANKS[0]);shopStep(0);setTimeout(()=>bub(WELCOME,true),1100);setTimeout(()=>{if(scr.current==="studio")shopReset();},2600);
+};
+
+/* ---------- picture export ---------- */
+function pictureSVG(){
+  const c=art.cloneNode(true);c.removeAttribute("id");const gh=c.querySelector("#ghost");gh&&gh.remove();
+  c.querySelectorAll(".sel").forEach(n=>n.classList.remove("sel"));c.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id"));
+  c.setAttribute("xmlns","http://www.w3.org/2000/svg");c.insertAdjacentHTML("afterbegin",`<defs>${$("#shapeDefs").innerHTML}</defs>`);
+  return c.outerHTML.replace(/stroke-width="3"/g,'stroke-width="5"');
+}
+let DL=null;
+try{window.claude&&window.claude.use&&window.claude.use("downloads").then(d=>DL=d).catch(()=>{});}catch(e){}
+function savePicture(){
+  const img=new Image(),cv=document.createElement("canvas");cv.width=1600;cv.height=1120;
+  img.onload=()=>{const g=cv.getContext("2d");g.drawImage(img,0,0,1600,1120);
+    try{$("#saveImg").src=cv.toDataURL("image/png");}catch(e){$("#saveImg").src=img.src;}
+    $("#saveLink").hidden=!DL;$("#saveLink").onclick=()=>cv.toBlob(bl=>{if(!bl||!DL)return;DL.save({filename:(CARDS[G.card]?CARDS[G.card].en:"shape")+"-picture.png",data:bl}).catch(()=>{});});
+    $("#saveVeil").hidden=false;};
+  img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(pictureSVG().replace(/<svg /,'<svg width="1600" height="1120" '));
+}
+$("#saveBtn").onclick=()=>{G.sel=null;drawShapes();updateTools();savePicture();};
+$("#saveClose").onclick=()=>$("#saveVeil").hidden=true;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#saveVeil").hidden=true;});
+
+/* ---------- finished card ---------- */
+function showResult(t){
+  const c=CARDS[G.card];
+  Kit.result("#result",{title:["You made a "+c.en+"!",c.ja+"ができた！"],
+    art:`<div class="resart">${pictureSVG()}</div><p class="gift">"This is for you!"</p><p class="ja">できた絵を友だちに見せて「This is for you.」と言おう！</p>`,
+    nums:[{label:["Time","タイム"],value:Kit.fmtTime(t)},{label:["Shapes","形の数"],value:G.shapes.length},{label:G.mode==="free"?["Picture","絵"]:["Orders","注文"],value:G.mode==="free"?c.en:G.orders}],
+    swap:G.mode==="pair",
+    buttons:[{label:["Next picture card","次の絵カード"],primary:true,onClick:nextCard},
+      {label:["Keep drawing","続けてかく"],onClick:()=>{scr.show("studio");drawAll();}},
+      {label:["Save picture","絵を保存"],onClick:savePicture},
+      {label:["Home","ホーム"],onClick:()=>scr.show("home")}]});
+  scr.show("result");
+}
+function nextCard(){
+  const ok=CARDS.map((c,i)=>i).filter(i=>i!==G.card&&cardOk(CARDS[i]));
+  G.shapes.slice().forEach(backToBag);G.sel=null;
+  scr.show("studio");pickCard(ok.length?ok[Kit.ri(Kit.RND,ok.length)]:-1);
+  if(G.mode!=="free")shopReset();
+}
+
+/* ---------- home ---------- */
+$("#heroPic").innerHTML=cardSVG(CARDS[0],"230 60 540 420");
+renderSettings();
+scr.show("home");
+})();
+</script>
