@@ -378,6 +378,7 @@ body.jp .helpline .ja{display:block}
         <p class="best" id="best"></p>
         <div class="go">
           <button class="btn primary big" id="goHunt" type="button">Sign and hunt<span class="ja">サインして狩りへ</span></button>
+          <button class="btn" id="replayCut" type="button" hidden>Watch the intro again<span class="ja">オープニングをもう一度</span></button>
         </div>
       </div>
     </div>
@@ -1374,7 +1375,9 @@ const BOSSES={
       sweep:{dur:2.1,track:0.75,spin:{from:0.85,to:1.2},hits:[{t:1.05,limb:"both",range:3.8,arc:360,dmg:22,parry:true}],weight:(d,ph)=>ph>1&&d<4.4?2:0},
       toll:{dur:2.5,track:0.3,toll:true,hits:[{t:1.15,ring:true,dmg:18}],weight:(d,ph)=>ph>1?1.6:0}
     },
-    build:buildWarden
+    build:buildWarden,
+    /* first-time intro: walk in, the bell tolls, the "statue" ahead wakes */
+    intro:{from:[0,14],to:[0,6],dur:8.4,glide:1.3,line:["It still rings the bell.","まだ鐘を鳴らしている。"],run:(t,dt)=>wardenIntro(t,dt)}
   }
 };
 
@@ -1394,6 +1397,7 @@ document.addEventListener("keydown",e=>{
   if(scr.current!=="play")return;
   e.preventDefault();
   if(k==="pause"){if(!e.repeat)togglePause();return;}
+  if(G.cut){if(!e.repeat&&(k==="dodge"||k==="enter"||k==="light"))G.cut.skip=true;return;}
   if(k==="enter"){if(!e.repeat&&G.veilEnter)G.veilEnter();return;}
   held.add(k);
   if(!e.repeat&&!["up","down","left","right"].includes(k))buf={k,t:0};
@@ -1414,6 +1418,8 @@ const SFX={
   dodge:()=>noise(0.12,0.03),
   heal:()=>{tone(523,0.25,"sine",0.04,660);tone(784,0.4,"sine",0.03,880,0.15);},
   empty:()=>tone(180,0.12,"square",0.03,150),
+  foot:()=>{tone(85,0.08,"sine",0.04,55);noise(0.05,0.015);},
+  eye:()=>tone(1150,0.08,"sine",0.012,1000),
   bell:()=>{tone(196,2.6,"sine",0.09);tone(392,2.2,"sine",0.04);tone(588,1.6,"sine",0.025);tone(466,1.8,"triangle",0.015);},
   roar:()=>{tone(68,1.3,"sawtooth",0.07,48);tone(101,1.2,"sawtooth",0.045,62);noise(0.9,0.05);},
   thud:()=>{tone(55,0.45,"sine",0.12,32);noise(0.3,0.08);},
@@ -1441,10 +1447,12 @@ function renderBoard(){
   const inp=$("#hName");inp.value=st.get("name","");
   inp.oninput=()=>{inp.value=inp.value.replace(/[^A-Za-z .'-]/g,"");st.set("name",inp.value.trim());};
   inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();startHunt();}};
+  const B0=BOSSES[G.bossKey];$("#replayCut").hidden=!(B0.intro&&st.get("cut_"+G.bossKey,false));
   const best=st.get("best_"+G.bossKey,null);
   $("#best").innerHTML=best?bi(["Your best: Rank "+best.rank+" ("+best.score+" points)","ベスト：ランク"+best.rank+"（"+best.score+"点）"]):"";
 }
 $("#goHunt").onclick=()=>startHunt();
+$("#replayCut").onclick=()=>{st.set("cut_"+G.bossKey,false);startHunt();};
 
 /* ---------- 3D helpers ---------- */
 const matCache={};
@@ -1559,7 +1567,7 @@ function buildWarden(){
   const head=grp(0,1.35,0.35,chest);
   const skull=cyl(0.22,0.15,0.8,7,C.bone,0,0,0.2,head);skull.rotation.x=Math.PI/2;
   const jaw=cyl(0.16,0.1,0.55,6,0xb3a990,0,-0.22,0.28,head);jaw.rotation.x=Math.PI/2;
-  [[-0.11,0.08],[0.11,0.08],[-0.05,0.16],[0.05,0.16],[0,0.0],[-0.16,-0.02],[0.16,-0.02]].forEach(([x,y])=>box(0.06,0.06,0.04,eyeM,x,y,0.6,head));
+  const eyes=[[0,0.0],[-0.11,0.08],[0.11,0.08],[-0.16,-0.02],[0.16,-0.02],[-0.05,0.16],[0.05,0.16]].map(([x,y])=>box(0.06,0.06,0.04,eyeM,x,y,0.6,head));
   const antlers=[];[-1,1].forEach(s=>{const a=grp(0.16*s,0.18,0.05,head);a.rotation.z=-0.55*s;a.rotation.x=-0.3;
     limb(0.03,0.05,0.9,C.horn,0,0,0,a).rotation.x=Math.PI;
     const b=limb(0.02,0.035,0.5,C.horn,0.05*s,0.55,0,a);b.rotation.z=Math.PI+0.7*s;
@@ -1577,7 +1585,7 @@ function buildWarden(){
     return {sh,el,hand,tip};};
   const armR=arm(-1,clawR),armL=arm(1,clawL);
   const sh=shadow(1.4);g.add(sh);
-  return {g,body,legs,chest,head,antlers,bellG,armR,armL,clawR,clawL,eyeM,bellM,shadowMat:sh.material};
+  return {g,body,legs,chest,head,eyes,antlers,bellG,armR,armL,clawR,clawL,eyeM,bellM,shadowMat:sh.material};
 }
 const B_REST=()=>({chest:0.45,twist:0,by:0,head:0,rx:-0.1,rz:-0.15,re:-0.3,lx:-0.1,lz:0.15,le:-0.3});
 let BP=B_REST();
@@ -1682,8 +1690,9 @@ function startHunt(){
   lastVials=-1;veil(null);prompt(null);
   $("#bossName").innerHTML=D.name[0]+` <span class="ja inl">${D.name[1]}</span>`;
   G.stage.camera.position.set(0,12,16);
-  banner(D.name[0],null,false,2600);
-  setTimeout(()=>{if(G.boss&&G.boss.state==="intro")sfx("bell");},400);
+  G.cut=null;P.m.g.visible=true;
+  if(D.intro&&!st.get("cut_"+G.bossKey,false))startCut(D);
+  else{banner(D.name[0],null,false,2600);setTimeout(()=>{if(G.boss&&G.boss.state==="intro")sfx("bell");},400);}
   stopLoop();G.loop=Kit3D.loop(G.stage,tick);
   hud();
 }
@@ -1701,6 +1710,7 @@ function tick(dt){
   if(G.paused)return;
   dt=Math.min(dt,0.05);
   G.clock=(G.clock||0)+dt;
+  if(G.cut){cutTick(dt);return;}
   if(G.freeze>0){G.freeze-=dt;camera(dt,true);return;}
   /* slow motion during the critical strike */
   /* slow motion on the stab, and slower still on the rip */
@@ -2084,6 +2094,77 @@ function updRing(dt){const B=G.boss,R=B&&B.ring;if(!R)return;
   R.r+=8.5*dt/SLOW();const mR=G.ringMesh;mR.position.set(R.x,0.25,R.z);mR.scale.setScalar(R.r);mR.material.opacity=0.55*(1-R.r/16);
   const d=Math.hypot(P.x-R.x,P.z-R.z);if(!R.hit&&Math.abs(d-R.r)<0.6){R.hit=true;hitPlayer(R.dmg,R.x,R.z);}
   if(R.r>16){B.ring=null;mR.visible=false;}}
+
+/* ---------- intro cutscenes ----------
+   A boss with an `intro` plays it the first time its contract is taken (Space, Enter or J skips).
+   intro.run(t, dt) poses the scene and returns the camera {pos, look, fov}; after intro.dur seconds
+   the camera glides into the fight view over intro.glide seconds, with no cut. */
+const cutLook=new THREE.Vector3(),cutPos=new THREE.Vector3();
+function gameView(){const B=G.boss,d=Math.hypot(B.x-P.x,B.z-P.z),back=1+clamp((d-4)/14,0,0.55);
+  const fx_=lerp(P.x,B.x,0.4),fz=lerp(P.z,B.z,0.4);
+  return {pos:new THREE.Vector3(fx_,10*back,fz+6.2*back),look:new THREE.Vector3(fx_,1,fz),focus:new THREE.Vector3(fx_,0,fz)};}
+function startCut(D){
+  const B=G.boss,I=D.intro;
+  G.cut={t:0,I,fired:{}};P.m.g.visible=false;P.x=I.from[0];P.z=I.from[1];P.a=Math.PI;
+  B.state="cut";B.x=0;B.z=-4;B.a=0;B.m.eyes.forEach(e=>e.visible=false);
+  prompt(`<kbd>Space</kbd> Skip<span class="ja">スペースでスキップ</span>`);
+}
+function once(key,fn){if(!G.cut.fired[key]){G.cut.fired[key]=true;fn();}}
+function cutTick(dt){
+  const C=G.cut,I=C.I,c=G.stage.camera;C.t+=dt;G.cw=1;
+  if(C.skip){endCut(true);return;}
+  const v=I.run(Math.min(C.t,I.dur+I.glide),dt);
+  cutPos.set(v.pos[0],v.pos[1],v.pos[2]);cutLook.set(v.look[0],v.look[1],v.look[2]);let fov=v.fov||50;
+  if(C.t>=I.dur){
+    once("show",()=>{P.x=I.to[0];P.z=I.to[1];P.m.g.visible=true;P.m.g.position.set(P.x,0,P.z);P.m.g.rotation.y=P.a;HP=H_REST();poseHunter(HP,1);});
+    const k=ease(Math.min(1,(C.t-I.dur)/I.glide)),w=gameView();
+    cutPos.lerp(w.pos,k);cutLook.lerp(w.look,k);fov=lerp(fov,50,k);G.cw=1-k;
+    if(k>=1){endCut(false);return;}
+  }
+  G.shake=Math.max(0,G.shake-dt*0.9);
+  c.position.copy(cutPos);c.position.x+=(Math.random()-0.5)*G.shake;c.position.y+=(Math.random()-0.5)*G.shake;
+  if(Math.abs(c.fov-fov)>0.05){c.fov=fov;c.updateProjectionMatrix();}
+  c.lookAt(cutLook);
+  updFx(dt);hud();
+}
+function endCut(skipped){
+  const B=G.boss,D=B.D,I=D.intro,c=G.stage.camera;st.set("cut_"+G.bossKey,true);G.cut=null;
+  P.x=I.to[0];P.z=I.to[1];P.a=Math.PI;P.m.g.visible=true;HP=H_REST();
+  B.m.eyes.forEach(e=>e.visible=true);B.x=0;B.z=-4;B.a=0;B.y=0;
+  if(skipped){BP=B_REST();poseBoss(BP,1);banner(D.name[0],I.line,false,2200);}
+  const w=gameView();c.position.copy(w.pos);camFocus.copy(w.focus);c.fov=50;c.updateProjectionMatrix();c.lookAt(w.look);
+  G.cw=0;B.state="idle";B.t=0;B.cd=0.9;G.running=true;prompt(null);
+}
+function wardenIntro(t,dt){
+  const B=G.boss,m=B.m,l3=(a,b,k)=>[lerp(a[0],b[0],k),lerp(a[1],b[1],k),lerp(a[2],b[2],k)];
+  /* 0-3 s: walk in through the gate, first person */
+  const wk=Math.min(1,t/3);P.z=lerp(14,6,wk);P.x=0;
+  const ph=t*7.5,bob=t<3?Math.abs(Math.sin(ph))*0.05:0;
+  if(t<3&&Math.floor(ph/Math.PI)!==Math.floor(Math.max(0,ph-dt*7.5)/Math.PI))sfx("foot");
+  /* 3 s: the bell tolls; look up at the empty bell tower. 4.6 s: a second toll, very close */
+  once("toll1",()=>{});if(t>=3)once("bell1",()=>sfx("bell"));
+  if(t>=4.6)once("bell2",()=>{sfx("bell");sfx("thud");G.shake=0.08;});
+  const ahead=[0,1.3,-8],tower=[-7.5,12.5,-22.7],statue=[0,1.2,-4],risen=[0,2.6,-4];
+  let look=ahead;
+  if(t>=3&&t<4.6)look=l3(ahead,tower,ease((t-3.1)/1.2));
+  else if(t>=4.6&&t<6.6)look=l3(tower,statue,ease((t-4.6)/0.45));
+  else if(t>=6.6)look=l3(statue,risen,ease((t-6.6)/0.8));
+  const fov=t<4.6?50:lerp(50,40,ease((t-4.6)/0.6));
+  /* the "statue" ahead: crouched, then lifts its head, eyes light one by one, then rises */
+  const T=bossRest();
+  T.by=kf(t,[[6.6,-0.95],[7.3,0.35,"in"],[7.8,0.3],[8.4,0.1]]);
+  T.chest=kf(t,[[6.6,1.35],[7.3,-0.45,"in"],[7.8,-0.4],[8.4,0.3]]);
+  T.head=kf(t,[[5.3,0.9],[6.3,-0.15],[6.6,-0.15],[7.3,-0.65],[8.4,-0.1]]);
+  const out=kf(t,[[6.6,0.25],[7.3,1.4],[7.8,1.3],[8.4,0.3]]),ax=kf(t,[[6.6,-0.05],[7.3,-1.3],[7.8,-1.2],[8.4,-0.2]]);
+  bothArms(T,ax,out,kf(t,[[6.6,-0.1],[7.3,-0.7],[8.4,-0.3]]));T.twist=0;
+  m.eyes.forEach((e,i)=>{const on=t>5.3+i*0.14;if(on&&!e.visible)sfx("eye");e.visible=on;});
+  if(t>=6.6)once("rise",()=>{sfx("roar");G.shake=0.15;fx("ash",0,1.5,-4,10);});
+  if(t>=6.9)once("card",()=>banner(B.D.name[0],B.D.intro.line,false,2600));
+  m.bellG.rotation.x=-0.45+(t>3?Math.sin(t*2.2)*0.12:0);
+  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;
+  poseBoss(T,t<0.05?1:0.3);
+  return {pos:[P.x,1.62+bob,P.z],look,fov};
+}
 
 /* ---------- camera: angled overhead, follows you, pulls back to fit the beast;
    during a critical strike it swings in low and close from the side ---------- */
