@@ -278,6 +278,17 @@ body{background-image:radial-gradient(900px 420px at 50% -10%,#1d1f30 0%,rgba(12
 .notice li{margin-bottom:4px}
 .notice .ja,body.jp .notice .ja{color:#5d5244}
 .notice .reward{display:flex;justify-content:space-between;gap:10px;border-top:1px dashed #8a7a5c;padding-top:10px;font-size:16px}
+.clist{display:grid;gap:8px}
+.citem{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;align-items:center;text-align:left;background:#14151d;border:1px solid var(--edge);border-radius:4px;padding:10px 12px;color:var(--text);cursor:pointer;font:inherit}
+.citem:hover{border-color:#6b5a3a}
+.citem.on{border-color:var(--accent);background:#1d1c22;box-shadow:inset 3px 0 0 var(--accent)}
+.citem .num{font:400 22px var(--f-display);color:var(--accent);width:1.4em;text-align:center}
+.citem .nm{font:400 18px var(--f-display);letter-spacing:.04em}
+.citem .nm .ja{font:500 12px var(--f-body,sans-serif)}
+.citem .tier{grid-column:2;font-size:13px;color:var(--muted)}
+.citem .dots{letter-spacing:.15em;color:#b8483b}
+.citem .rk{grid-row:1/span 2;grid-column:3;font:400 26px var(--f-display);color:var(--accent);min-width:1.2em;text-align:center}
+.citem .rk small{display:block;font:500 11px var(--f-body,sans-serif);color:var(--muted)}
 .sign{margin-top:12px;border-top:1px dashed #8a7a5c;padding-top:10px;display:grid;gap:9px}
 .sign h4{font:400 15px var(--f-display);letter-spacing:.2em;text-align:center;color:#6b2a1e}
 .sline{display:grid;grid-template-columns:4.6em 1fr;align-items:end;gap:8px;transition:opacity .3s}
@@ -378,6 +389,11 @@ body.jp .helpline .ja{display:block}
       <article class="notice" id="notice"></article>
       <div class="side">
         <div class="card">
+          <h3>Contracts <span class="ja inl">契約</span></h3>
+          <p class="signtip" style="margin:0 0 8px">Type a name on the paper to choose.<span class="ja">紙に名前を打って選ぼう。</span></p>
+          <div class="clist" id="clist"></div>
+        </div>
+        <div class="card">
           <h3>Controls <span class="ja inl">そうさ</span></h3>
           <div class="keys">
             <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span><span>Move<span class="ja inl">いどう</span></span>
@@ -397,7 +413,7 @@ body.jp .helpline .ja{display:block}
         </div>
         <p class="best" id="best"></p>
         <div class="go">
-          <p class="signtip" id="signTip"><b>Sign the contract to begin.</b> Type on the paper: the beast's name, the oath, then your name.<span class="ja">紙に入力してサインしよう：化け物の名前、ちかい、自分の名前。</span></p>
+          <p class="signtip" id="signTip"><b>Sign the contract to begin.</b> Type on the paper: the name, the oath, then your name.<span class="ja">紙に入力してサインしよう：化け物の名前、ちかい、自分の名前。</span></p>
           <button class="btn" id="replayCut" type="button" hidden>Watch the intro again<span class="ja">オープニングをもう一度</span></button>
         </div>
       </div>
@@ -1376,7 +1392,7 @@ const wrapA=a=>{while(a>Math.PI)a-=TAU;while(a<-Math.PI)a+=TAU;return a;};
    tags: leap:{from,to}  charge:{from,to,speed}  spin:{from,to}  toll:true */
 const BOSSES={
   warden:{
-    name:["The Bell Warden","鐘の番人"],hp:650,par:150,
+    name:["The Bell Warden","鐘の番人"],hp:650,par:150,danger:1,tier:["First hunt","はじめての狩り"],
     notice:{
       tale:["Something tall walks in the old chapel yard. At midnight, its bell rings.","古い礼拝堂の庭を、背の高い何かが歩いている。真夜中に、その鐘が鳴る。"],
       clues:[
@@ -1399,11 +1415,46 @@ const BOSSES={
     build:buildWarden,
     /* first-time intro: walk in, the bell tolls, the "statue" ahead wakes */
     intro:{from:[0,14],to:[0,6],dur:8.4,glide:1.3,line:["It still rings the bell.","まだ鐘を鳴らしている。"],run:(t,dt)=>wardenIntro(t,dt)}
+  },
+  dimitri:{
+    name:["Intermediary Dimitri","仲介者ディミトリ"],typeName:"Intermediary Dimitri",hp:700,par:210,danger:3,tier:["A real test","本当の腕だめし"],arena:"street",
+    notice:{
+      tale:["A hunter who never came home. He walks the wet streets with a black umbrella, and he waits.","帰ってこなかったハンター。黒いかさを持って、雨の街を歩き、待っている。"],
+      clues:[
+        ["Do not swing when he is not attacking. He will stop you and hit back.","彼が攻撃していない時に振るな。止められて、反撃される。"],
+        ["When he opens his umbrella, shoot it. Then attack!","かさを開いたら、ピストルで撃て。それから攻撃！"],
+        ["Some swings wait. Watch the glow, not his arm.","わざと遅らせる攻撃がある。腕ではなく、光を見ろ。"]],
+      reward:["Reward: 800 silver coins","報酬：銀貨800枚"]},
+    oath:["I will end his long night.","わたしは彼の長い夜を終わらせるとちかう。"],
+    journal:["Dimitri was a hunter once. Tonight he can finally go home. He will walk; he doesn't own a car.","ディミトリはかつてハンターだった。今夜、やっと家に帰れる。歩いて帰る。車を持っていないから。"],
+    phase2:["The rain stops falling.","雨が止まった。"],
+    gone:["The hunter rests.","ハンターは眠った。"],
+    duel:true,roarColor:[0xb08aff,0x3a2a6a],
+    /* raise = when the umbrella starts going up (early raise + hold = a delayed swing); s = swing side */
+    moves:{
+      cut:{dur:1.35,track:0.5,anim:umbAnim,hits:[{t:0.62,limb:"R",s:-1,range:3.1,arc:120,dmg:24,parry:true}],step:[0.4,0.62,4],weight:(d,ph)=>d<4.2?(ph>1?1.5:3):0},
+      cutLate:{dur:1.75,track:0.85,anim:umbAnim,hits:[{t:1.05,raise:0.1,limb:"R",s:-1,range:3.1,arc:120,dmg:24,parry:true}],step:[0.85,1.05,4],weight:(d,ph)=>d<4.2?2:0},
+      double:{dur:1.95,track:1.0,anim:umbAnim,hits:[{t:0.55,limb:"R",s:-1,range:3.1,arc:120,dmg:20,parry:true},{t:1.15,raise:0.72,limb:"R",s:1,range:3.2,arc:120,dmg:22,parry:true}],step:[0.35,0.55,3.5],weight:(d,ph)=>d<4.2?2:0},
+      doubleLate:{dur:2.25,track:1.25,anim:umbAnim,hits:[{t:0.55,limb:"R",s:-1,range:3.1,arc:120,dmg:20,parry:true},{t:1.5,raise:0.72,limb:"R",s:1,range:3.2,arc:120,dmg:22,parry:true}],step:[0.35,0.55,3.5],weight:(d,ph)=>d<4.2?1.6:0},
+      thrust:{dur:1.55,track:0.55,anim:thrustAnim,hits:[{t:0.78,limb:"R",range:3.0,arc:60,dmg:26,parry:true}],step:[0.58,0.8,11],weight:d=>d>3.6&&d<7.5?2.4:0},
+      thrustLate:{dur:1.8,track:0.8,anim:thrustAnim,hits:[{t:1.05,raise:0.2,limb:"R",range:3.0,arc:60,dmg:26,parry:true}],step:[0.85,1.07,11],weight:d=>d>3.6&&d<7.5?1.5:0},
+      palm:{dur:1.4,track:0.5,anim:palmAnim,hits:[{t:0.7,limb:"L",range:2.6,arc:90,dmg:20,parry:true,push:true}],step:[0.5,0.7,3],weight:(d,ph)=>d<3.4?(ph>1?1.6:0.8):0},
+      flurry:{dur:2.3,track:1.2,anim:umbAnim,hits:[{t:0.45,limb:"R",s:-1,range:3.1,arc:120,dmg:18,parry:true},{t:0.85,raise:0.55,limb:"R",s:1,range:3.1,arc:120,dmg:18,parry:true},{t:1.6,raise:1.0,limb:"R",s:-1,range:3.3,arc:130,dmg:24,parry:true}],step:[0.3,0.45,3.5],weight:(d,ph)=>ph>1&&d<4.4?3:0},
+      backstep:{dur:0.75,track:0.75,anim:backAnim,hits:[],back:[0.08,0.4,9],weight:(d,ph)=>ph===1&&d<2.8?1.8:0},
+      guard:{guard:true,hits:[],weight:(d,ph)=>d<7?(ph>1?0.4:1.6):0},
+      shot:{dur:1.25,track:0.7,anim:shotAnim,hits:[{t:0.8,shot:true,dmg:16}],weight:(d,ph)=>d>6.5?(ph>1?1.2:0.7):0},
+      blink:{dur:2.1,track:0,blink:true,anim:umbAnim,hits:[{t:1.15,raise:0.55,limb:"R",s:-1,range:3.1,arc:130,dmg:24,parry:true}],weight:(d,ph)=>ph>1?2.2:0}
+    },
+    build:buildDimitri,
+    /* first-time intro: a tilted camera down the wet street; the lamps go dark one by one toward him */
+    intro:{from:[0,15],to:[0,6],dur:8.6,glide:1.3,line:["He doesn't own a car.","彼は車を持っていない。"],run:(t,dt)=>dimitriIntro(t,dt),
+      start:()=>{const m=G.boss.m;G.boss.a=Math.PI;m.shield.visible=true;m.um.visible=false;P.m.g.visible=true;},
+      end:()=>{const m=G.boss.m;m.shield.visible=false;m.um.visible=true;G.lamps.forEach(L=>{L.glass.material.emissive.setHex(0x8a5a1a);if(L.light)L.light.intensity=L.base;});}}
   }
 };
 
 /* ---------- state ---------- */
-const G={stage:null,loop:null,boss:null,bossKey:"warden",paused:false,over:false,freeze:0,shake:0,time:0,running:false};
+const G={stage:null,loop:null,boss:null,arena:null,arenaKey:null,rain:null,lamps:[],puddles:[],bossKey:Kit.store("hc").get("sel","warden"),paused:false,over:false,freeze:0,shake:0,time:0,running:false};
 const P={hp:100,max:100,rally:0,rallyT:0,sta:100,staT:0,vials:5,state:"move",t:0,x:0,z:6,a:Math.PI,vx:0,vz:0,iframe:0,combo:0,hitDone:false,hurtV:[0,0],stats:null};
 const diff=0;   /* one difficulty (the gentle mode was removed) */
 const DMG=()=>diff?0.5:1, SLOW=()=>diff?1.18:1;
@@ -1441,6 +1492,9 @@ const SFX={
   empty:()=>tone(180,0.12,"square",0.03,150),
   foot:()=>{tone(85,0.08,"sine",0.04,55);noise(0.05,0.015);},
   eye:()=>tone(1150,0.08,"sine",0.012,1000),
+  tip:()=>{tone(330,0.3,"sine",0.02,300);tone(247,0.5,"sine",0.015,null,0.15);},
+  deflect:()=>{tone(1240,0.25,"triangle",0.04,900);noise(0.08,0.06);tone(190,0.2,"square",0.03,120);},
+  blink:()=>{tone(520,0.5,"sine",0.025,180);noise(0.3,0.03);},
   pen:()=>{noise(0.035,0.012);tone(2300+Math.random()*500,0.025,"triangle",0.004);},
   blot:()=>tone(150,0.14,"sine",0.035,95),
   line:()=>{noise(0.12,0.02);tone(660,0.12,"sine",0.012,620);},
@@ -1461,20 +1515,41 @@ const scr=Kit.screens({onShow(id){
   if(id==="board")renderBoard();
 }});
 $("#goHome").onclick=()=>scr.show("board");
+const ORDER=Object.keys(BOSSES);
+const typeName=k=>BOSSES[k].typeName||BOSSES[k].name[0].replace(/^The /,"");
 function renderBoard(){
+  if(!BOSSES[G.bossKey])G.bossKey=ORDER[0];
+  SG.step=0;SG.blots=[{},{}];SG.name=st.get("name","");SG.ime=false;SG.pos=[0,0];
+  renderNotice();renderList();
+}
+function renderNotice(){
   const B=BOSSES[G.bossKey],n=B.notice;
-  $("#notice").innerHTML=`<div class="wanted">WANTED</div>
+  $("#notice").innerHTML=`<div class="wanted">${n.head||"WANTED"}</div>
     <h1>${B.name[0]}</h1><p class="ja" style="text-align:center">${B.name[1]}</p>
     <p class="tale">${n.tale[0]}</p><p class="ja" style="text-align:center;margin-top:-8px;margin-bottom:10px">${n.tale[1]}</p>
     <ul>${n.clues.map(c=>`<li>${c[0]}<span class="ja">${c[1]}</span></li>`).join("")}</ul>
     <div class="reward"><span>${n.reward[0]}<span class="ja">${n.reward[1]}</span></span><span>Bring 5 healing vials.<span class="ja">回復の小びんは5本まで</span></span></div>
     <div class="sign" id="sign"></div>${SEAL}`;
-  SG.step=0;SG.pos=[0,0];SG.blots=[{},{}];SG.name=st.get("name","");SG.ime=false;
-  SG.lines=[B.name[0].replace(/^The /,""),B.oath[0]];SG.pos=SG.lines.map(skipMarks0);
+  SG.lines=[typeName(G.bossKey),B.oath[0]];SG.pos[1]=skipMarks0(SG.lines[1]);
   renderSign();
-  const B0=BOSSES[G.bossKey];$("#replayCut").hidden=!(B0.intro&&st.get("cut_"+G.bossKey,false));
+  $("#replayCut").hidden=!(B.intro&&st.get("cut_"+G.bossKey,false));
   const best=st.get("best_"+G.bossKey,null);
   $("#best").innerHTML=best?bi(["Your best: Rank "+best.rank+" ("+best.score+" points)","ベスト：ランク"+best.rank+"（"+best.score+"点）"]):"";
+}
+function renderList(){
+  $("#clist").innerHTML=ORDER.map((k,i)=>{const B=BOSSES[k],best=st.get("best_"+k,null);
+    return `<button type="button" class="citem${k===G.bossKey?" on":""}" data-k="${k}"><span class="num">${["I","II","III","IV","V","VI"][i]}</span>
+      <span class="nm">${B.name[0]} <span class="ja inl">${B.name[1]}</span></span>
+      <span class="tier"><span class="dots">${"●".repeat(B.danger)}${"○".repeat(3-B.danger)}</span> ${B.tier[0]}<span class="ja inl">${B.tier[1]}</span></span>
+      <span class="rk">${best?best.rank+"<small>best</small>":""}</span></button>`;}).join("");
+  $("#clist").querySelectorAll(".citem").forEach(b=>b.onclick=()=>{b.blur();G.bossKey=b.dataset.k;st.set("sel",G.bossKey);renderBoard();});
+}
+/* typing the name picks the contract: switch to whichever contract the letters so far still match */
+function pickByTyping(ch){
+  const sofar=SG.lines[0].slice(0,SG.pos[0]).toLowerCase()+ch.toLowerCase();
+  if(typeName(G.bossKey).toLowerCase().startsWith(sofar))return true;
+  const k=ORDER.find(k=>typeName(k).toLowerCase().startsWith(sofar));if(!k)return false;
+  G.bossKey=k;st.set("sel",k);const keep=SG.pos[0];renderNotice();renderList();SG.pos[0]=keep;return true;
 }
 
 /* ---------- signing the contract: type the beast's name, the oath, then your name ---------- */
@@ -1495,7 +1570,7 @@ function renderSign(){
     return `<div class="sline${SG.step<i?" wait":""}"><span class="lbl">${lbl}</span><div class="txt">${chars}</div>${act?`<div class="hint">${hint}</div>`:""}</div>`;};
   const nm=SG.name.replace(/[<>&"]/g,"");
   el.innerHTML=`<h4>Contract</h4>
-    ${row(0,"Beast",`Type the beast's name.<span class="ja">化け物の名前を打とう。</span>`)}
+    ${row(0,"Name",`Type a name from the contracts.<span class="ja">契約の名前を打とう。</span>`)}
     ${row(1,"Oath",`Type the oath.<span class="ja">${BOSSES[G.bossKey].oath[1]}</span>`)}
     <div class="sline${SG.step<2?" wait":""}"><span class="lbl">Signed</span><div class="txt sig">${nm}${SG.step===2?'<span class="caret"></span>':""}</div>${SG.step===2?`<div class="hint">${nm?"Press <kbd>Enter</kbd> to sign. (Backspace to change)":"Type your name in English letters."}<span class="ja">${nm?"Enterでサイン":"名前をローマ字で書こう"}</span></div>`:""}</div>
     ${SG.ime?`<p class="imehint">Switch the keyboard to English input (英数).<span class="ja">英数入力に切りかえてね。</span></p>`:""}`;
@@ -1513,8 +1588,10 @@ document.addEventListener("keydown",e=>{
   if(SG.ime){SG.ime=false;}
   if(SG.step<2){
     if(e.key.length!==1)return;e.preventDefault();if(e.repeat)return;
-    const i=SG.step,line=SG.lines[i],want=line[SG.pos[i]];
-    if(e.key.toLowerCase()===want.toLowerCase()){
+    const i=SG.step;
+    if(i===0&&SG.pos[0]===0&&e.key===" ")return;
+    const ok=i===0?pickByTyping(e.key):e.key.toLowerCase()===SG.lines[i][SG.pos[i]].toLowerCase(),line=SG.lines[i];
+    if(ok){
       SG.pos[i]=skipMarks(line,SG.pos[i]+1);sfx("pen");
       if(SG.pos[i]>=line.length){SG.step++;sfx("line");}
     }else if(SG.blots[i][SG.pos[i]]==null){SG.blots[i][SG.pos[i]]=Math.round(Math.random()*360);sfx("blot");}
@@ -1539,7 +1616,7 @@ function shadow(r){const m=new THREE.Mesh(new THREE.CircleGeometry(r,10),Kit3D.b
 
 /* ---------- the arena: a moonlit chapel yard ---------- */
 const R_ARENA=13.6;
-function buildArena(scene){
+function buildYard(scene){
   const cob=Kit3D.tex(16,(g,n,r)=>{g.fillStyle="#1e1e25";g.fillRect(0,0,n,n);
     for(let y=0;y<n;y+=4)for(let x=(y/4)%2?2:0;x<n;x+=4){g.fillStyle=["#2b2a31","#27262d","#302f37"][Math.floor(r()*3)];g.fillRect(x,y,3,3);}},21);
   cob.repeat.set(9,9);
@@ -1564,6 +1641,74 @@ function buildArena(scene){
     const l=new THREE.PointLight(0xffb060,0.7,9);l.position.set(x,3.2,z);scene.add(l);});
   /* the moon, behind the chapel */
   const moon=new THREE.Mesh(new THREE.CircleGeometry(7,20),Kit3D.basic(0xe8e4cf));moon.material.fog=false;moon.position.set(14,34,-90);scene.add(moon);
+}
+
+/* ---------- the second arena: a city street in the rain ---------- */
+function buildStreet(scene){
+  const cob=Kit3D.tex(16,(g,n,r)=>{g.fillStyle="#15171d";g.fillRect(0,0,n,n);
+    for(let y=0;y<n;y+=4)for(let x=(y/4)%2?2:0;x<n;x+=4){g.fillStyle=["#252a33","#21252d","#2b303a"][Math.floor(r()*3)];g.fillRect(x,y,3,3);}},37);
+  cob.repeat.set(14,24);
+  const road=new THREE.Mesh(new THREE.PlaneGeometry(36,90),Kit3D.mat(0xffffff,{map:cob}));road.rotation.x=-Math.PI/2;road.position.z=-14;scene.add(road);
+  [-1,1].forEach(s=>{const w=box(3.2,0.22,90,0x3a3a42,s*15.6,0.11,-14,scene);});   /* pavements */
+  /* puddles: dark glassy patches that catch the lamp light */
+  const pud=Kit3D.mat(0x262d3a,{emissive:0x06080c});
+  [[-5,-6,1.6,0.9],[4,2,1.3,0.8],[7,-9,1.1,0.7],[-8,5,1.2,0.8],[1,-12,1.8,0.9],[-3,9,0.9,0.6],[9,8,1.1,0.7]].forEach(([x,z,a,b])=>{
+    const m=new THREE.Mesh(new THREE.CircleGeometry(1,12),pud);m.rotation.x=-Math.PI/2;m.scale.set(a,b,1);m.position.set(x,0.015,z);scene.add(m);G.puddles.push([x,z,a,b]);});
+  /* tall narrow houses on both sides, a few windows still lit */
+  const wall=[0x3a3640,0x34313a,0x403b44,0x2f2d35],lit=Kit3D.mat(0xd9a85a,{emissive:0x6a4a18}),dark=Kit3D.mat(0x14141a);
+  let rn=7;const rnd=()=>(rn=(rn*9301+49297)%233280)/233280;
+  [-1,1].forEach(s=>{for(let z=-46;z<26;){const w=5+Math.floor(rnd()*3),h=8+Math.floor(rnd()*6),x=s*(17.2+1.5);
+    const hb=grp(x,0,z+w/2,scene);box(3,h,w-0.2,wall[Math.floor(rnd()*4)],0,h/2,0,hb);
+    const roof=cone(w*0.62,2.6,4,0x1f1d24,0,h+1.3,0,hb);roof.rotation.y=Math.PI/4;roof.scale.set(0.7,1,1);
+    box(0.5,1.4,0.5,0x1f1d24,0,h+2,w*0.25,hb);   /* chimney */
+    for(let fy=2.2;fy<h-1;fy+=2.6)for(let fz=-w/2+1.3;fz<w/2-0.8;fz+=1.6){const m=box(0.1,1.2,0.7,rnd()<0.18?lit:dark,-s*1.52,fy,fz,hb);}
+    box(0.12,2.2,1.1,0x17151a,-s*1.52,1.1,0,hb);   /* door */
+    z+=w;}});
+  /* far end: a clock tower in the mist, and a gate behind the hunter */
+  const tw=grp(0,0,-58,scene);box(6,26,6,0x2c2a33,0,13,0,tw);cone(4.6,8,4,0x1d1b22,0,30,0,tw).rotation.y=Math.PI/4;
+  const face=new THREE.Mesh(new THREE.CircleGeometry(1.9,16),Kit3D.basic(0x9a8f70));face.position.set(0,20,3.05);tw.add(face);
+  box(0.12,1.4,0.05,0x2a241a,0,20.5,3.1,tw);box(0.12,1.1,0.05,0x2a241a,0.4,20.1,3.1,tw).rotation.z=-1.2;
+  /* gas lamps along the pavements */
+  const glass=Kit3D.mat(0xffd08a,{emissive:0x8a5a1a});
+  [[-13.4,-14],[13.4,-8],[-13.4,-1],[13.4,5],[-13.4,11]].forEach(([x,z],i)=>{const lg=grp(x,0,z,scene);
+    box(0.16,4.2,0.16,0x16151a,0,2.1,0,lg);box(0.8,0.08,0.08,0x16151a,-Math.sign(x)*0.35,4.1,0,lg);
+    const gl=box(0.42,0.6,0.42,Kit3D.mat(0xffd08a,{emissive:0x8a5a1a}),-Math.sign(x)*0.7,3.7,0,lg);cone(0.36,0.3,4,0x16151a,-Math.sign(x)*0.7,4.15,0,lg).rotation.y=Math.PI/4;
+    let light=null;if(i<4){light=new THREE.PointLight(0xffb060,0.85,10);light.position.set(x-Math.sign(x)*0.7,3.4,z);scene.add(light);}
+    G.lamps.push({glass:gl,light,base:light?light.intensity:0});});
+  /* a broken carriage and crates mark the ends of the fight */
+  const cg=grp(-6,0,-15.5,scene);cg.rotation.y=0.5;box(3.2,1.6,1.8,0x2a2022,0,1.2,0,cg);box(3.4,0.12,2,0x1a1416,0,2.05,0,cg);
+  [[-1.1,0.95],[1.1,0.95],[-1.1,-0.95]].forEach(([x,z])=>{const w=cyl(0.55,0.55,0.12,10,0x3a2a1c,x,0.55,z,cg);w.rotation.x=Math.PI/2;});
+  const w2=cyl(0.55,0.55,0.12,10,0x3a2a1c,1.9,0.2,-1.4,cg);
+  [[7,-14.5,0.3],[8.4,-13.6,-0.2],[7.6,-14,0.1]].forEach(([x,z,r],i)=>{const c=box(1,1,1,0x4a3a2a,x,0.5+(i===2?1:0),z,scene);c.rotation.y=r;});
+  [[-9,15],[9.5,14.5],[-1,16.5]].forEach(([x,z])=>{const c=box(1.1,0.9,1.1,0x3d3027,x,0.45,z,scene);c.rotation.y=x*0.3;});
+  /* the rain: thin falling streaks, kept around the fight */
+  const N=420,pos=new Float32Array(N*6),geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.BufferAttribute(pos,3));
+  const drops=[];for(let i=0;i<N;i++)drops.push({x:(Math.random()-0.5)*34,y:Math.random()*14,z:(Math.random()-0.5)*40-4,v:16+Math.random()*6});
+  const rain=new THREE.LineSegments(geo,new THREE.LineBasicMaterial({color:0x8a98b4,transparent:true,opacity:0.45}));rain.frustumCulled=false;scene.add(rain);
+  G.rain={mesh:rain,pos,drops,t:0};
+}
+function updRain(dt){const R=G.rain;if(!R)return;const p=R.pos,f=G.stage.camera.position;
+  if(R.frozen)return;   /* phase 2: the rain hangs in the air */
+  R.drops.forEach((d,i)=>{d.y-=d.v*dt;d.x-=1.6*dt;
+    if(d.y<0){d.y=10+Math.random()*4;d.x=f.x+(Math.random()-0.5)*34;d.z=f.z-6+(Math.random()-0.5)*36;}
+    const o=i*6;p[o]=d.x;p[o+1]=d.y;p[o+2]=d.z;p[o+3]=d.x+0.08;p[o+4]=d.y+0.55;p[o+5]=d.z;});
+  R.mesh.geometry.attributes.position.needsUpdate=true;
+  /* rings in the puddles */
+  R.t-=dt;if(R.t<=0&&G.puddles.length){R.t=0.12;const q=G.puddles[Math.floor(Math.random()*G.puddles.length)],a=Math.random()*TAU,r=Math.random()*0.8;
+    shock(q[0]+Math.cos(a)*q[2]*r,q[1]+Math.sin(a)*q[3]*r,0.22,0x6a7890);}
+}
+const ARENAS={
+  yard:{build:buildYard,bg:0x0e1120,fog:[16,46],hemi:[0x8a96c8,0x2a2220,0.6],sun:[0xbfc8ff,0.7,[-6,12,-8]],bound:13.6},
+  street:{build:buildStreet,bg:0x10131a,fog:[14,42],hemi:[0x9aa6c8,0x2a2a30,0.85],sun:[0xb8c4e8,0.7,[6,12,-6]],bound:13.6}
+};
+function setArena(key){
+  const s=G.stage,A=ARENAS[key];if(G.arenaKey===key)return;
+  if(G.arena){s.scene.remove(G.arena);G.arena.traverse(o=>{if(o.geometry)o.geometry.dispose();});}
+  G.rain=null;G.lamps=[];G.puddles=[];
+  const root=new THREE.Group();s.scene.add(root);A.build(root);G.arena=root;G.arenaKey=key;
+  s.scene.background.setHex(A.bg);if(s.scene.fog){s.scene.fog.color.setHex(A.bg);s.scene.fog.near=A.fog[0];s.scene.fog.far=A.fog[1];}
+  s.hemi.color.setHex(A.hemi[0]);s.hemi.groundColor.setHex(A.hemi[1]);s.hemi.intensity=A.hemi[2];
+  s.sun.color.setHex(A.sun[0]);s.sun.intensity=A.sun[1];s.sun.position.set(...A.sun[2]);
 }
 
 /* ---------- animation helpers ----------
@@ -1659,17 +1804,70 @@ function buildWarden(){
     return {sh,el,hand,tip};};
   const armR=arm(-1,clawR),armL=arm(1,clawL);
   const sh=shadow(1.4);g.add(sh);
-  return {g,body,legs,chest,head,eyes,antlers,bellG,armR,armL,clawR,clawL,eyeM,bellM,shadowMat:sh.material};
+  return {g,body,legs,chest,head,eyes,antlers,bellG,armR,armL,clawR,clawL,eyeM,bellM,shadowMat:sh.material,
+    hipY:1.7,byS:1,chestOff:0,legBase:[-0.35,0.7]};
+}
+
+/* ---------- Intermediary Dimitri: a tall hunter with a black umbrella ----------
+   Same joints as the Warden (body, chest, two arms, legs), so the same poses and moves drive him.
+   The umbrella hangs from his right hand like a long claw; it opens into a shield when he guards. */
+function buildDimitri(){
+  const C={coat:0x545262,coat2:0x3e3c4e,trim:0x8a6aa0,skin:0xcfc8bb,hat:0x302e3a,brass:0xa88a50,cloth:0x44424e};
+  const eyeM=Kit3D.mat(0xe8e2ff,{emissive:0x403a60});
+  const clawR=Kit3D.mat(0x3a3846),clawL=Kit3D.mat(0x5a5662);   /* umbrella cloth, left glove: these glow before a parryable hit */
+  const bellM=Kit3D.mat(C.coat2);
+  const g=grp();
+  const body=grp(0,1.05,0,g);
+  const legs=[-0.15,0.15].map(x=>{const h=grp(x,1.05,0,g);limb(0.1,0.08,0.52,C.cloth,0,0,0,h);
+    const k=grp(0,-0.52,0,h);limb(0.08,0.06,0.48,C.cloth,0,0,0,k);box(0.16,0.1,0.32,0x111015,0,-0.48,0.06,k);return {h,k};});
+  /* long coat: skirt from the waist plus two tails that swing (the "bell" slot) */
+  cyl(0.27,0.48,0.95,8,M(C.coat,{side:THREE.DoubleSide}),0,-0.42,0,body,true);
+  const bellG=grp(0,0.0,-0.18,body);bellG.rotation.x=-0.45;
+  [-0.14,0.14].forEach(x=>box(0.2,0.9,0.05,C.coat2,x,-0.45,0,bellG));
+  const chest=grp(0,0.15,0,body);chest.rotation.x=0.07;
+  cyl(0.3,0.25,0.72,8,C.coat,0,0.36,0,chest).scale.z=0.72;
+  box(0.05,0.5,0.02,C.trim,0,0.38,0.19,chest);
+  [0.2,0.36,0.52].forEach(y=>box(0.05,0.05,0.03,C.brass,0.07,y,0.2,chest));
+  /* high collar and a short cape */
+  cyl(0.24,0.4,0.3,8,M(C.coat2,{side:THREE.DoubleSide}),0,0.78,0,chest,true).scale.z=0.85;
+  cyl(0.33,0.46,0.42,8,M(C.coat2,{side:THREE.DoubleSide}),0,0.56,-0.02,chest,true).scale.z=0.8;
+  const head=grp(0,0.9,0.02,chest);
+  box(0.2,0.26,0.2,C.skin,0,0.02,0,head);
+  box(0.21,0.1,0.21,0x2a2830,0,-0.08,0.005,head);   /* scarf over the mouth */
+  const eyes=[-0.05,0.05].map(x=>box(0.045,0.025,0.02,eyeM,x,0.06,0.105,head));
+  cyl(0.36,0.36,0.03,10,C.hat,0,0.16,0,head);
+  cyl(0.14,0.15,0.38,9,C.hat,0,0.35,0,head);
+  box(0.29,0.04,0.29,0x3a2a4a,0,0.2,0,head).scale.set(1,1,1);
+  const arm=(s,glove)=>{const sh=grp(0.33*s,0.64,0,chest);sh.rotation.order="YXZ";
+    limb(0.075,0.065,0.42,C.coat,0,0,0,sh);const el=grp(0,-0.42,0,sh);limb(0.065,0.05,0.38,C.coat,0,0,0,el);
+    const hand=grp(0,-0.4,0,el);box(0.09,0.1,0.09,glove,0,0,0,hand);return {sh,el,hand,tip:null};};
+  const armR=arm(-1,M(0x111015)),armL=arm(1,clawL);armL.tip=armL.hand;
+  /* the umbrella: hooked handle in the fist, shaft and furled canopy pointing down along the arm */
+  const um=grp(0,-0.02,0,armR.hand);
+  const hook=limb(0.02,0.02,0.16,C.brass,0,0.16,0,um);hook.rotation.x=Math.PI;
+  limb(0.018,0.018,1.3,0x2a2622,0,0,0,um);
+  limb(0.07,0.02,0.95,clawR,0,-0.18,0,um);
+  limb(0.012,0.004,0.12,C.brass,0,-1.3,0,um);
+  armR.tip=grp(0,-1.4,0,um);
+  /* the open canopy, shown while he guards: a wide shallow cone held out in front */
+  const shield=grp(0,-0.75,0,armR.hand);shield.visible=false;
+  const can=cone(1.0,0.5,8,M(0x3a3846,{side:THREE.DoubleSide}),0,0,0,shield);can.rotation.x=Math.PI;
+  limb(0.018,0.018,0.8,0x2a2622,0,0.4,0,shield);
+  const sh=shadow(0.7);g.add(sh);
+  return {g,body,legs,chest,head,eyes,antlers:[],bellG,armR,armL,clawR,clawL,eyeM,bellM,um,shield,shadowMat:sh.material,
+    hipY:1.05,byS:0.6,chestOff:-0.38,legBase:[0,0]};
 }
 const B_REST=()=>({chest:0.45,twist:0,by:0,head:0,rx:-0.1,rz:-0.15,re:-0.3,lx:-0.1,lz:0.15,le:-0.3});
 let BP=B_REST();
 function poseBoss(T,k){
-  const B=G.boss,m=B.m;lerpPose(BP,T,k);
-  m.chest.rotation.x=BP.chest;m.body.rotation.y=BP.twist;m.body.position.y=1.7+BP.by;m.head.rotation.x=BP.head;
-  m.armR.sh.rotation.x=BP.rx-BP.chest;m.armR.sh.rotation.z=BP.rz;m.armR.el.rotation.x=BP.re;
-  m.armL.sh.rotation.x=BP.lx-BP.chest;m.armL.sh.rotation.z=BP.lz;m.armL.el.rotation.x=BP.le;
-  const c=clamp(-BP.by/0.8,0,1),sw=Math.sin(B.walk)*(B.walking?0.55:0);
-  m.legs.forEach((L,i)=>{L.h.position.y=1.7+Math.min(0,BP.by)*0.75;L.h.rotation.x=-0.35-c*0.7+(i?-sw:sw);L.k.rotation.x=0.7+c*1.0+Math.max(0,i?sw:-sw)*0.5;});
+  const B=G.boss;lerpPose(BP,T,k);applyRig(B.m,BP,B.walk,B.walking);}
+function applyRig(m,Q,walk,walking){
+  const ch=Q.chest+m.chestOff,by=Q.by*m.byS;
+  m.chest.rotation.x=ch;m.body.rotation.y=Q.twist;m.body.position.y=m.hipY+by;m.head.rotation.x=Q.head;
+  m.armR.sh.rotation.x=Q.rx-ch;m.armR.sh.rotation.z=Q.rz;m.armR.el.rotation.x=Q.re;
+  m.armL.sh.rotation.x=Q.lx-ch;m.armL.sh.rotation.z=Q.lz;m.armL.el.rotation.x=Q.le;
+  const c=clamp(-Q.by/0.8,0,1),sw=Math.sin(walk)*(walking?0.55:0);
+  m.legs.forEach((L,i)=>{L.h.position.y=m.hipY+Math.min(0,by)*0.75;L.h.rotation.x=m.legBase[0]-c*0.7+(i?-sw:sw);L.k.rotation.x=m.legBase[1]+c*1.0+Math.max(0,i?sw:-sw)*0.5;});
 }
 
 /* ---------- swing trails, dust rings, mist (small pools; nothing flashes) ---------- */
@@ -1707,7 +1905,7 @@ function shock(x,z,r,col){
     m.material.side=THREE.DoubleSide;m.material.depthWrite=false;m.rotation.x=-Math.PI/2;G.stage.scene.add(m);s={m};SHOCK.push(s);}
   s.live=true;s.t=0;s.r=r;s.m.material.color.setHex(col||0x7a6e62);s.m.position.set(x,0.07,z);s.m.visible=true;s.m.scale.setScalar(0.2);
 }
-function updFx(dt){const q=G.stage.camera.quaternion;
+function updFx(dt){const q=G.stage.camera.quaternion;updRain(dt);
   FX.forEach(p=>{if(!p.live)return;p.life-=dt;if(p.life<=0){p.live=false;p.m.visible=false;return;}
     p.m.position.x+=p.vx*dt;p.m.position.y+=p.vy*dt;p.m.position.z+=p.vz*dt;p.vx*=0.94;p.vz*=0.94;
     const k=p.life/p.max;p.m.material.opacity=0.8*k;p.m.scale.setScalar(p.size*(1.6-k*0.6));p.m.quaternion.copy(q);});
@@ -1736,9 +1934,6 @@ function ensureStage(){
   if(G.stage)return true;
   if(!window.Kit3D){$("#stage").innerHTML='<p style="padding:20px">The 3D part could not load. Check the internet connection and reload the page.</p>';return false;}
   const s=G.stage=Kit3D.stage({mount:"#stage",height:240,bg:0x0e1120,fog:[16,46]});
-  s.hemi.color.setHex(0x8a96c8);s.hemi.groundColor.setHex(0x2a2220);s.hemi.intensity=0.6;
-  s.sun.color.setHex(0xbfc8ff);s.sun.intensity=0.7;s.sun.position.set(-6,12,-8);
-  buildArena(s.scene);
   P.m=buildHunter();s.scene.add(P.m.g);
   G.trail=makeTrail(0xd8dce6);G.btR=makeTrail(0xa89cc0);G.btL=makeTrail(0xa89cc0);
   return true;
@@ -1748,10 +1943,11 @@ function startHunt(){
   scr.show("play");
   if(!ensureStage())return;
   const D=BOSSES[G.bossKey];
+  setArena(D.arena||"yard");
   if(G.boss)G.stage.scene.remove(G.boss.m.g);
   const m=D.build();G.stage.scene.add(m.g);
   G.boss={D,m,hp:D.hp,max:D.hp,x:0,z:-4,a:0,state:"intro",t:0,move:null,mt:0,hitsDone:null,phase:1,cd:1.2,last:[],
-    stagger:0,leapFrom:null,leapTo:null,ring:null,y:0,dead:0,walk:0,walking:0,flinch:0,jolt:9,joltAmt:0,critDone:false};
+    stagger:0,leapFrom:null,leapTo:null,ring:null,y:0,dead:0,walk:0,walking:0,flinch:0,jolt:9,joltAmt:0,critDone:false,open:0,strafe:1,strafeT:0};
   Object.assign(P,{hp:100,rally:0,rallyT:0,sta:100,staT:0,vials:5,state:"move",t:0,x:0,z:6,a:Math.PI,iframe:0,combo:0,walk:0,
     stats:{hits:0,parries:0,perfects:0,crits:0,vialsUsed:0,dmgTaken:0}});
   HP=H_REST();BP=B_REST();P.m.g.rotation.x=0;P.m.g.position.y=0;poseHunter(HP,1);poseBoss(BP,1);
@@ -1760,13 +1956,14 @@ function startHunt(){
   [G.trail,G.btR,G.btL].forEach(t=>t.clear());
   if(G.ringMesh){G.ringMesh.visible=false;}
   if(G.mark)G.mark.visible=false;
+  if(G.ghost){G.stage.scene.remove(G.ghost.m.g);G.ghost=null;}if(G.rain)G.rain.frozen=false;
   G.paused=false;G.over=false;G.freeze=0;G.shake=0;G.kx=G.kz=0;G.time=0;G.running=false;G.cw=0;G.cz=0;
   lastVials=-1;veil(null);prompt(null);
   $("#bossName").innerHTML=D.name[0]+` <span class="ja inl">${D.name[1]}</span>`;
   G.stage.camera.position.set(0,12,16);
   G.cut=null;P.m.g.visible=true;
   if(D.intro&&!st.get("cut_"+G.bossKey,false))startCut(D);
-  else{banner(D.name[0],null,false,2600);setTimeout(()=>{if(G.boss&&G.boss.state==="intro")sfx("bell");},400);}
+  else{banner(D.name[0],null,false,2600);setTimeout(()=>{if(G.boss&&G.boss.state==="intro")sfx(D.duel?"tip":"bell");},400);}
   stopLoop();G.loop=Kit3D.loop(G.stage,tick);
   hud();
 }
@@ -1815,6 +2012,8 @@ function begin(k){
     const md=moveDir();
     if(t&&(t.d<8||k==="gun"||k==="crit"))P.a=t.a;else if(md)P.a=Math.atan2(md[0],md[1]);}
   if(k==="light")sfx("slash");
+  if((k==="light"||k==="heavy")&&counterCheck())startCounter(A.hit[P.combo]??A.hit);
+  if(k==="heal"&&G.boss&&G.boss.D.duel&&G.boss.state==="idle"&&t&&t.d>5&&G.running)bossStart("move","shot");
   if(k==="heavy")setTimeout(()=>sfx("heavy"),330);
   if(k==="dodge"){const md=moveDir();P.back=!md;const a=md?Math.atan2(md[0],md[1]):P.a+Math.PI;P.dA=a;if(md)P.a=a;P.iframe=0.3;sfx("dodge");}
   if(k==="gun")P.gunDur=A.miss;
@@ -1944,6 +2143,10 @@ function player(dt){
         for(let i=0;i<5;i++)fx("mist",B.x+bx*i*0.35,1.6+i*0.3,B.z+bz*i*0.35,6);
         shock(B.x,B.z,3,0x4a3a6a);shock(P.x,P.z,1.4);}
       k=0.85;if(t>=A.dur)P.state="move";break;}
+    case "stun":{const q=Math.min(1,t/P.stunDur);   /* knocked off balance by a counter */
+      T.lean=kf(t,[[0,0],[0.08,-0.6,"in"],[P.stunDur,-0.2]]);T.by=-0.1;T.rx=kf(t,[[0,-1.2],[0.1,-2.6,"in"],[P.stunDur,-1.4]]);T.rz=-0.6;T.lz=0.7;T.lx=-0.9;T.hd=-0.35;T.coat=0.3;T.hl=0.35;T.hr=-0.4;
+      if(t<0.25){P.x-=Math.sin(P.a)*2.2*dt;P.z-=Math.cos(P.a)*2.2*dt;}
+      if(q>=1)P.state="move";break;}
     case "hurt":{const q=t/A.dur;P.x+=P.hurtV[0]*dt*(1-q);P.z+=P.hurtV[1]*dt*(1-q);
       T.lean=kf(t,[[0,0],[0.06,-0.7,"in"],[0.5,0]]);T.by=kf(t,[[0.06,-0.12],[0.5,0]]);T.rz=-0.9*(1-q);T.lz=0.9*(1-q);T.rx=-0.8*(1-q);T.lx=-0.8*(1-q);T.hd=-0.4*(1-q);T.coat=0.3*(1-q);
       if(t>=A.dur)P.state="move";break;}
@@ -1972,6 +2175,7 @@ function shoot(){
   if(!B||B.state==="dead"||B.state==="intro")return;
   const t=toBoss();
   if(t.d>11||Math.abs(wrapA(t.a-P.a))>0.6)return;
+  if(B.state==="guard"){guardBreak(B);return;}
   const h=parryHit();
   if(h){
     /* a perfect parry (the last tenth of a second) keeps it down longer and makes the critical strike stronger */
@@ -1993,7 +2197,9 @@ function parryOpen(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null
 function setGlow(limb){const m=G.boss.m,on=0x8a6a20;
   m.clawR.emissive.setHex(limb==="R"||limb==="both"?on:0);m.clawL.emissive.setHex(limb==="L"||limb==="both"?on:0);}
 function bossStart(state,move){
-  const B=G.boss;B.state=state;B.t=0;B.mt=0;
+  const B=G.boss;
+  if(state==="move"&&B.D.moves[move].guard){B.state="guard";B.t=0;B.gt=2+Math.random()*1.2;B.m.shield.visible=true;B.m.um.visible=false;sfx("dodge");B.last.push(move);if(B.last.length>3)B.last.shift();return;}
+  B.state=state;B.t=0;B.mt=0;B.blinked=false;B.m.g.visible=true;
   if(state==="move"){B.moveKey=move;B.move=B.D.moves[move];B.hitsDone=B.move.hits.map(()=>false);
     if(B.move.leap){B.leapFrom=[B.x,B.z];}
     B.last.push(move);if(B.last.length>3)B.last.shift();}
@@ -2034,6 +2240,7 @@ function bossRest(){const t=G.clock||0;return {chest:0.45+Math.sin(t*1.6)*0.04,t
 function bothArms(T,x,out,e){T.rx=T.lx=x;T.rz=-out;T.lz=out;T.re=T.le=e;}
 function movePose(mv,Tm){
   const B=G.boss,m=B.m,T=bossRest();let last=null,trR=false,trL=false;
+  if(mv.anim){const tr=mv.anim(Tm,T,mv);B.trR=tr&&tr.R;B.trL=tr&&tr.L;return T;}
   [["R",-1],["L",1]].forEach(([limb,s])=>{let best=null;
     mv.hits.forEach(h=>{if(h.limb===limb&&Tm>=h.t-0.75&&Tm<=h.t+0.8&&(!best||h.t>best.t))best=h;});
     if(!best)return;const u=Tm-best.t,c=clawKeys(u,s),tr=u>-0.3&&u<-0.08?Math.sin((G.clock||0)*55)*0.06:0;
@@ -2076,17 +2283,22 @@ function boss(dt){
   let T=bossRest(),k=0.2;B.walking=0;
   switch(B.state){
     case "intro":B.t+=dt;turn(1.5);
+      if(B.D.duel){T.chest=kf(B.t,[[0,0.45],[0.8,0.95],[1.6,0.95],[2.4,0.45]]);T.head=kf(B.t,[[0.8,0.3],[2.4,0]]);T.lx=kf(B.t,[[0,-0.1],[0.8,-2.5],[1.6,-2.5],[2.4,-0.1]]);T.le=kf(B.t,[[0.8,-1.6],[2.4,-0.3]]);T.lz=0.3;
+        if(B.t>2.4){B.state="idle";B.cd=1.0;G.running=true;}break;}
       T.chest=kf(B.t,[[0,0.45],[0.8,-0.3],[1.6,-0.3],[2.4,0.45]]);T.head=kf(B.t,[[0,0],[0.8,-0.6],[1.6,-0.6],[2.4,0]]);
       bothArms(T,kf(B.t,[[0,-0.1],[0.8,-0.9],[1.6,-0.9],[2.4,-0.1]]),kf(B.t,[[0,0.15],[0.8,1.0],[1.6,1.0],[2.4,0.15]]),-0.3);
       if(B.t>2.4){B.state="idle";B.cd=0.6;G.running=true;}break;
     case "idle":{B.t+=dt;B.cd-=dt;turn(B.phase>1?3:2.3);
       if(B.phase===1&&B.hp<=B.max*0.5){B.phase=2;bossStart("roar");break;}
+      if(B.D.duel){T=duelIdle(B,dt,t,T);break;}
       if(t.d>3.2){const sp=(B.phase>1?3:2.4)/sl;B.x+=Math.sin(B.a)*sp*dt;B.z+=Math.cos(B.a)*sp*dt;B.walking=1;
         const s=Math.sin(B.walk);T.twist=s*0.14;T.by=-Math.abs(s)*0.1;T.rx=-0.1+s*0.3;T.lx=-0.1-s*0.3;T.chest=0.55;}
       if(B.cd<=0&&G.running&&P.state!=="dead"){const k2=pickMove();if(k2)bossStart("move",k2);}
       m.bellG.rotation.x=lerp(m.bellG.rotation.x,-0.45+Math.sin(B.walk)*0.15,0.1);
       break;}
     case "move":{const mv=B.move;B.mt+=dt/sl;const Tm=B.mt;
+      if(mv.blink)blinkStep(B,mv,Tm);
+      if(mv.back&&Tm>mv.back[0]&&Tm<mv.back[1]){B.x-=Math.sin(B.a)*mv.back[2]*dt/sl;B.z-=Math.cos(B.a)*mv.back[2]*dt/sl;if(Math.random()<0.5)fx("ash",B.x,0.3,B.z,1);}
       if(Tm<(mv.track||0))turn(B.phase>1?3.4:2.6);
       if(mv.step&&Tm>mv.step[0]&&Tm<mv.step[1]){B.x+=Math.sin(B.a)*mv.step[2]*dt/sl;B.z+=Math.cos(B.a)*mv.step[2]*dt/sl;}
       /* glowing claws while the pistol window is open */
@@ -2103,12 +2315,14 @@ function boss(dt){
         if(Tm<h.t)return;B.hitsDone[i]=true;
         if(h.area){if(Math.hypot(P.x-B.x,P.z-B.z)<h.area)hitPlayer(h.dmg,B.x,B.z);return;}
         if(h.ring){startRing(h.dmg);shock(B.x,B.z,2.4);return;}
+        if(h.shot){bossShot(B,h);return;}
         sfx("slash");
         /* claws strike the ground in front: a little dust ring */
-        const fx_=B.x+Math.sin(B.a)*2.4,fz=B.z+Math.cos(B.a)*2.4;if(h.limb!=="both"){shock(fx_,fz,1.2);fx("dust",fx_,0.2,fz,4);}G.shake=Math.max(G.shake,0.07);
+        const fx_=B.x+Math.sin(B.a)*2.4,fz=B.z+Math.cos(B.a)*2.4;if(h.limb!=="both"&&!B.D.duel){shock(fx_,fz,1.2);fx("dust",fx_,0.2,fz,4);}G.shake=Math.max(G.shake,0.07);
         const d=Math.hypot(P.x-B.x,P.z-B.z),aTo=Math.atan2(P.x-B.x,P.z-B.z);
-        if(d-0.4<=h.range&&Math.abs(wrapA(aTo-B.a))*180/Math.PI<=h.arc/2+10)hitPlayer(h.dmg,B.x,B.z);});
-      if(Tm>=mv.dur){B.state="idle";B.t=0;B.y=0;setGlow(null);BP.twist=wrapA(BP.twist);B.cd=(B.moveKey==="leap"?0.2:0.35+Math.random()*0.7)*(diff?1.5:1)*(B.phase>1?0.7:1);}
+        if(d-0.4<=h.range&&Math.abs(wrapA(aTo-B.a))*180/Math.PI<=h.arc/2+10){if(hitPlayer(h.dmg,B.x,B.z)&&h.push)P.hurtV=[P.hurtV[0]*1.8,P.hurtV[1]*1.8];if(h.push)fx("spark",P.x,1.2,P.z,6);}});
+      if(Tm>=mv.dur){B.state="idle";B.t=0;B.y=0;setGlow(null);BP.twist=wrapA(BP.twist);B.cd=(B.moveKey==="leap"?0.2:0.35+Math.random()*0.7)*(diff?1.5:1)*(B.phase>1?0.7:1);
+        if(B.D.duel){B.m.g.visible=true;const hit=mv.hits.some(h=>h.limb);B.open=hit?(B.phase>1?0.6:0.8):0;B.cd=B.open+(B.phase>1?0.15+Math.random()*0.35:0.5+Math.random()*0.9);}}
       break;}
     case "stagger":{B.stagger-=dt;B.t+=dt;const u=B.t;
       if(B.reel!=null&&B.reel<1.8){B.reel+=dt;const r=B.reel,fl=r<0.7?Math.sin(r*14)*0.5*(1-r/0.7):0;
@@ -2128,11 +2342,12 @@ function boss(dt){
       if(P.state==="crit"&&P.thrust){T.chest=1.35+Math.sin(G.clock*40)*0.03;T.head=0.8;T.by-=0.05;}
       if(B.stagger<=0&&P.state!=="crit"){B.state="getup";B.t=0;}break;}
     case "getup":B.t+=dt;k=0.12;T.chest=0.6;if(B.t>=0.8){B.state="idle";B.cd=0.3;}break;
+    case "counter":case "guard":case "broken":T=duelState(B,dt,t,T);k=B.state==="guard"?0.3:0.6;break;
     case "roar":{B.t+=dt;const u=B.t,tr=u>0.45&&u<1.6?Math.sin(G.clock*50)*0.05:0;
       T.chest=kf(u,[[0,0.45],[0.45,-0.5,"in"],[1.6,-0.45],[2.0,0.45]])+tr;T.by=kf(u,[[0,0],[0.45,0.45],[1.6,0.4],[2.0,0]]);
       bothArms(T,kf(u,[[0,-0.1],[0.45,-1.6],[1.6,-1.5],[2.0,-0.1]])+tr,kf(u,[[0,0.15],[0.45,1.5],[1.6,1.4],[2.0,0.15]]),-0.6);
       T.head=kf(u,[[0,0],[0.45,-0.75],[1.6,-0.7],[2.0,0]]);k=0.6;
-      m.eyeM.emissive.setHex(0x4aa6c0);m.bellM.emissive.setHex(0x1a3a4a);
+      {const rc=B.D.roarColor||[0x4aa6c0,0x1a3a4a];m.eyeM.emissive.setHex(rc[0]);m.bellM.emissive.setHex(rc[1]);if(B.D.duel&&G.rain)G.rain.frozen=true;}
       m.antlers.forEach(a=>a.traverse(c=>{if(c.isMesh)c.material=M(0x7fa7b8);}));
       if(u>0.5&&!B.pushed){B.pushed=true;const d=Math.hypot(P.x-B.x,P.z-B.z)||1;if(d<5&&P.state!=="dead"){P.state="hurt";P.t=0;P.hurtV=[(P.x-B.x)/d*8,(P.z-B.z)/d*8];}
         fx("ash",B.x,2.5,B.z,12);shock(B.x,B.z,4.5,0x4a5a6a);G.shake=Math.max(G.shake,0.25);}
@@ -2147,6 +2362,7 @@ function boss(dt){
   /* reactions on top: a flinch when hit, a jolt from the critical strike */
   if(B.flinch>0){const f=B.flinch/0.2;T.chest-=0.35*f;T.head-=0.4*f;T.by+=0.06*f;}
   if(B.jolt<0.4){const f=(1-B.jolt/0.4)*B.joltAmt;T.chest-=0.8*f;T.head-=0.9*f;T.by+=0.3*f;bothArms(T,T.rx-1.2*f,0.15+0.9*f,T.re);}
+  if(G.ghost)ghostStep(dt);
   B.walk+=dt*(B.walking?6:0);
   if(B.walking&&Math.abs(Math.sin(B.walk))<0.15&&!B._st){B._st=1;sfx("step");}else if(Math.abs(Math.sin(B.walk))>0.5)B._st=0;
   if(B.state!=="dead"){const r=Math.hypot(B.x,B.z);if(r>13){B.x*=13/r;B.z*=13/r;}}
@@ -2156,6 +2372,109 @@ function boss(dt){
   updRing(dt);
   prompt(canCrit()&&P.state==="move"?`<kbd>E</kbd> Critical strike!<span class="ja">Eでとどめの一撃！</span>`:null);
 }
+/* ---------- duel boss (Dimitri): umbrella swings, counters, guard, blink + afterimage ---------- */
+/* a swing with the umbrella; each hit can start rising early (raise) and hold up there: a delayed swing */
+function umbAnim(Tm,T,mv){
+  const hs=mv.hits.filter(h=>h.limb==="R");let h=hs[0];for(const x of hs)if(Tm>=(x.raise??x.t-0.75))h=x;
+  const raise=h.raise??h.t-0.75,u=Tm<h.t-0.3?Math.min(-0.3,-0.75+(Tm-raise)):Tm-h.t,c=clawKeys(u,h.s||-1);
+  const hold=Tm>raise+0.45&&Tm<h.t-0.3?Math.sin((G.clock||0)*3)*0.05:0;
+  T.rx=c.x+hold;T.rz=c.z;T.re=c.e;Object.assign(T,{chest:c.chest,twist:c.twist,by:c.by,head:c.head});
+  T.lx=-0.1;T.lz=0.35;T.le=-0.5;
+  return {R:u>-0.07&&u<0.15};}
+function thrustAnim(Tm,T,mv){const h=mv.hits[0],raise=h.raise??h.t-0.6,u=Tm<h.t-0.12?Math.min(-0.12,-0.6+(Tm-raise)):Tm-h.t;
+  T.rx=kf(u,[[-0.6,-0.3],[-0.3,0.1],[-0.12,0.25],[0,-1.55,"in"],[0.25,-1.5],[0.7,-0.3]]);T.re=kf(u,[[-0.6,-0.3],[-0.12,-1.9],[0,-0.02,"in"],[0.7,-0.3]]);T.rz=-0.05;
+  T.chest=kf(u,[[-0.6,0.45],[-0.12,0.15],[0,0.95,"in"],[0.3,0.95],[0.7,0.45]]);T.twist=kf(u,[[-0.6,0],[-0.12,0.55],[0,-0.35,"in"],[0.7,0]]);
+  T.by=kf(u,[[-0.6,0],[-0.12,-0.2],[0,-0.45,"in"],[0.3,-0.4],[0.7,0]]);T.lx=kf(u,[[-0.12,-0.6],[0,0.6],[0.7,-0.1]]);T.lz=0.3;T.le=-0.4;
+  return {R:u>-0.04&&u<0.12};}
+function palmAnim(Tm,T,mv){const u=Tm-mv.hits[0].t;
+  T.lx=kf(u,[[-0.7,-0.1],[-0.25,0.5],[-0.08,0.55],[0,-1.6,"in"],[0.3,-1.55],[0.7,-0.1]]);T.le=kf(u,[[-0.25,-1.8],[0,0,"in"],[0.7,-0.3]]);T.lz=0.1;
+  T.chest=kf(u,[[-0.7,0.45],[-0.1,0.2],[0,0.85,"in"],[0.7,0.45]]);T.twist=kf(u,[[-0.7,0],[-0.1,-0.5],[0,0.45,"in"],[0.7,0]]);T.by=kf(u,[[-0.1,-0.1],[0,-0.3,"in"],[0.7,0]]);
+  T.rx=-0.25;T.rz=-0.25;
+  if(u>-0.35&&u<0&&Math.random()<0.5){const v=new THREE.Vector3();G.boss.m.armL.hand.getWorldPosition(v);fx("spark",v.x,v.y,v.z,1);}
+  return {L:u>-0.05&&u<0.12};}
+function backAnim(Tm,T){T.chest=kf(Tm,[[0,0.45],[0.1,0.2],[0.45,0.3],[0.75,0.45]]);T.by=kf(Tm,[[0,0],[0.1,-0.2],[0.25,0.15],[0.45,-0.25],[0.75,0]]);
+  T.rx=kf(Tm,[[0,-0.3],[0.2,0.5],[0.75,-0.3]]);T.lx=kf(Tm,[[0,-0.1],[0.2,0.6],[0.75,-0.1]]);T.lz=0.5;T.rz=-0.4;}
+function shotAnim(Tm,T,mv){const h=mv.hits[0];
+  T.lx=kf(Tm,[[0,-0.1],[0.35,-1.55],[h.t,-1.55],[h.t+0.08,-1.95],[mv.dur,-0.1]]);T.le=-0.02;T.lz=kf(Tm,[[0,0.3],[0.35,0.05],[mv.dur,0.3]]);
+  T.twist=kf(Tm,[[0,0],[0.35,0.4],[mv.dur,0]]);T.rx=0.2;T.rz=-0.35;
+  const m=G.boss.m;m.clawL.emissive.setHex(Tm>0.35&&Tm<h.t?0x8a6a20:0);}
+function bossShot(B,h){
+  const v=new THREE.Vector3();B.m.armL.hand.getWorldPosition(v);sfx("gun");fx("smoke",v.x,v.y,v.z,5);B.m.clawL.emissive.setHex(0);
+  const d=Math.hypot(P.x-B.x,P.z-B.z),aTo=Math.atan2(P.x-B.x,P.z-B.z);
+  if(d<15&&Math.abs(wrapA(aTo-B.a))<0.2)hitPlayer(h.dmg,B.x,B.z);}
+/* between moves: phase 1 keeps its distance and circles, phase 2 presses in */
+function duelIdle(B,dt,t,T){
+  const ph2=B.phase>1;B.open=Math.max(0,B.open-dt);
+  T.rx=-0.35;T.rz=-0.12;T.re=-0.25;T.lx=0.25;T.lz=0.25;T.le=-0.9;
+  if(B.open>0){T.chest=0.6;T.by=-0.12;return T;}   /* still recovering from his swing: this is your chance */
+  const near=ph2?2.4:3.6,far=ph2?3.6:5.4;let fw=0,sd=0;
+  if(t.d>far)fw=ph2?3.2:2.3;else if(t.d<near)fw=-1.6;
+  B.strafeT-=dt;if(B.strafeT<=0){B.strafeT=1.2+Math.random()*2;B.strafe=Math.random()<0.5?-1:1;}
+  if(t.d<=far+0.5)sd=B.strafe*(ph2?1.6:1.3);
+  const ca=Math.cos(B.a),sa=Math.sin(B.a);
+  if(fw||sd){B.x+=(sa*fw+ca*sd)*dt;B.z+=(ca*fw-sa*sd)*dt;B.walking=1;}
+  if(B.cd<=0&&G.running&&P.state!=="dead"){const k2=pickMove();if(k2)bossStart("move",k2);}
+  return T;}
+/* swinging at him while he is not attacking (or at his open umbrella) gets you countered */
+function counterCheck(){const B=G.boss;if(!B||!B.D.duel||!G.running||G.over)return false;
+  if(!(B.state==="idle"||B.state==="guard")||B.open>0)return false;
+  const t=toBoss();return t.d<4.2&&Math.abs(wrapA(Math.atan2(-t.dx,-t.dz)-B.a))<1.3;}
+function startCounter(hitT){const B=G.boss;B.m.shield.visible=false;B.m.um.visible=true;
+  B.state="counter";B.t=0;B.ct=Math.max(0.1,hitT-0.03);B.move=null;setGlow(null);}
+function guardBreak(B){B.state="broken";B.t=0;B.m.shield.visible=false;B.m.um.visible=true;
+  sfx("parry");ping("GUARD BROKEN");fx("spark",B.x,1.5,B.z,14);G.freeze=0.14;G.shake=Math.max(G.shake,0.14);P.gunDur=ACT.gun.dur;}
+function duelState(B,dt,t,T){
+  B.t+=dt;const u=B.t,turn=r=>{const want=Math.atan2(-t.dx,-t.dz);B.a+=clamp(wrapA(want-B.a),-r*dt,r*dt);};
+  if(B.state==="guard"){turn(2.2);
+    /* umbrella open and held out in front; he edges closer */
+    T.rx=-1.45;T.re=-0.05;T.rz=-0.05;T.chest=0.6;T.by=-0.12;T.lx=0.3;T.lz=0.3;T.le=-0.9;T.twist=-0.15;
+    if(t.d>2.6){const sp=1.2;B.x+=Math.sin(B.a)*sp*dt;B.z+=Math.cos(B.a)*sp*dt;B.walking=1;}
+    if(u>=B.gt){B.state="idle";B.cd=0.25;B.m.shield.visible=false;B.m.um.visible=true;sfx("dodge");}
+    return T;}
+  if(B.state==="broken"){
+    T.chest=kf(u,[[0,0.45],[0.12,-0.35,"in"],[1.0,0.1],[1.6,0.45]]);T.by=kf(u,[[0.12,0.15],[1.0,-0.3],[1.6,0]]);T.head=kf(u,[[0.12,-0.6],[1.6,0]]);
+    T.rx=kf(u,[[0,-1.4],[0.12,-2.6,"in"],[1.6,-0.3]]);T.rz=-0.8;T.lx=kf(u,[[0.12,-1.4],[1.6,-0.1]]);T.lz=0.8;
+    if(u<0.3){B.x-=Math.sin(B.a)*2*dt;B.z-=Math.cos(B.a)*2*dt;}
+    if(u>=1.6){B.state="idle";B.open=0.5;B.cd=0.9;}return T;}
+  /* counter: flick the swing aside, then a stab while you stagger */
+  const c=B.ct,r=c+0.5;turn(6);
+  T.rx=kf(u,[[0,-0.4],[c-0.05,-1.2],[c,-1.6,"in"],[c+0.15,-1.5],[r-0.12,0.2],[r,-1.6,"in"],[r+0.3,-1.5],[r+0.8,-0.3]]);
+  T.rz=kf(u,[[0,-0.2],[c,0.7,"in"],[c+0.15,0.6],[r-0.12,-0.1],[r+0.8,-0.15]]);
+  T.re=kf(u,[[c,-0.2],[r-0.12,-1.9],[r,-0.02,"in"],[r+0.8,-0.3]]);
+  T.chest=kf(u,[[0,0.45],[c,0.3],[r-0.12,0.2],[r,0.95,"in"],[r+0.8,0.45]]);T.twist=kf(u,[[0,0],[c,-0.5,"in"],[r-0.12,0.5],[r,-0.3,"in"],[r+0.8,0]]);
+  T.by=kf(u,[[r-0.12,-0.1],[r,-0.4,"in"],[r+0.8,0]]);T.lx=0.3;T.lz=0.3;
+  B.trR=(u>c-0.06&&u<c+0.1)||(u>r-0.04&&u<r+0.12);
+  if(u>=c&&!B.deflected){B.deflected=true;
+    if(P.state==="light"||P.state==="heavy"){P.state="stun";P.t=0;P.stunDur=1.05;P.iframe=0;P.combo=0;buf=null;
+      sfx("deflect");ping("COUNTERED");const v=new THREE.Vector3();B.m.armR.hand.getWorldPosition(v);fx("spark",v.x,v.y,v.z,10);G.freeze=0.12;G.shake=Math.max(G.shake,0.12);}}
+  if(u>=r&&!B.riposted){B.riposted=true;sfx("slash");
+    if(t.d<3.8&&Math.abs(wrapA(Math.atan2(P.x-B.x,P.z-B.z)-B.a))<1.0)hitPlayer(45,B.x,B.z);}
+  if(r<u&&u<r+0.25){B.x+=Math.sin(B.a)*2.5*dt;B.z+=Math.cos(B.a)*2.5*dt;}
+  if(u>=r+0.9){B.state="idle";B.deflected=B.riposted=false;B.open=0.5;B.cd=0.9;}
+  return T;}
+/* phase 2: vanish into violet mist, step out behind you; an afterimage swings at you from the front a beat later */
+function blinkStep(B,mv,Tm){
+  if(Tm<0.5){if(Tm>0.15&&B.m.g.visible){B.m.g.visible=false;sfx("blink");fx("mist",B.x,1.2,B.z,14);}return;}
+  if(!B.blinked){B.blinked=true;const ba=P.a+Math.PI;
+    B.x=clamp(P.x+Math.sin(ba)*2.4,-12.5,12.5);B.z=clamp(P.z+Math.cos(ba)*2.4,-12.5,12.5);B.a=Math.atan2(P.x-B.x,P.z-B.z);
+    B.m.g.visible=true;fx("mist",B.x,1.2,B.z,10);sfx("blink");
+    const gx=clamp(P.x+Math.sin(P.a)*2.6,-12.5,12.5),gz=clamp(P.z+Math.cos(P.a)*2.6,-12.5,12.5);
+    spawnGhost(gx,gz,Math.atan2(P.x-gx,P.z-gz),mv,0.1);}
+  if(Tm>=mv.dur-0.05)B.blinked=false;}
+function spawnGhost(x,z,a,mv,lag){
+  if(!G.ghost){const m=buildDimitri(),gm=Kit3D.basic(0xa98ae8,{transparent:true});gm.opacity=0.42;gm.depthWrite=false;
+    m.g.traverse(o=>{if(o.isMesh)o.material=gm;});m.shadowMat=gm;G.stage.scene.add(m.g);G.ghost={m,mat:gm,pose:B_REST()};}
+  const g=G.ghost;Object.assign(g,{x,z,a,mv,t:-lag,done:false,live:true});g.m.g.visible=true;g.m.g.position.set(x,0,z);g.m.g.rotation.y=a;
+  fx("mist",x,1.2,z,8);}
+function ghostStep(dt){const g=G.ghost;if(!g.live)return;g.t+=dt;
+  const T=bossRest();const tr=umbAnim(Math.max(0,g.t),T,g.mv)||{};lerpPose(g.pose,T,0.7);applyRig(g.m,g.pose,0,0);
+  const h=g.mv.hits[0];
+  g.mat.opacity=0.42*clamp(1-(g.t-h.t-0.4)/0.5,0,1);
+  if(!g.done&&g.t>=h.t){g.done=true;sfx("slash");
+    const d=Math.hypot(P.x-g.x,P.z-g.z),aTo=Math.atan2(P.x-g.x,P.z-g.z);
+    if(d-0.4<=h.range&&Math.abs(wrapA(aTo-g.a))*180/Math.PI<=h.arc/2+10)hitPlayer(20,g.x,g.z);}
+  if(g.t>h.t+0.9){g.live=false;g.m.g.visible=false;}}
+
 let markMesh=null;
 function showMark(x,z,on){if(!markMesh){markMesh=shadow(3.1);markMesh.material=Kit3D.basic(0x000000,{transparent:true});markMesh.material.opacity=0.35;markMesh.material.depthWrite=false;G.stage.scene.add(markMesh);G.mark=markMesh;}
   markMesh.visible=on;markMesh.position.set(x,0.03,z);}
@@ -2181,6 +2500,7 @@ function startCut(D){
   const B=G.boss,I=D.intro;
   G.cut={t:0,I,fired:{}};P.m.g.visible=false;P.x=I.from[0];P.z=I.from[1];P.a=Math.PI;
   B.state="cut";B.x=0;B.z=-4;B.a=0;B.m.eyes.forEach(e=>e.visible=false);
+  if(I.start)I.start();
   prompt(`<kbd>Space</kbd> Skip<span class="ja">スペースでスキップ</span>`);
 }
 function once(key,fn){if(!G.cut.fired[key]){G.cut.fired[key]=true;fn();}}
@@ -2188,17 +2508,17 @@ function cutTick(dt){
   const C=G.cut,I=C.I,c=G.stage.camera;C.t+=dt;G.cw=1;
   if(C.skip){endCut(true);return;}
   const v=I.run(Math.min(C.t,I.dur+I.glide),dt);
-  cutPos.set(v.pos[0],v.pos[1],v.pos[2]);cutLook.set(v.look[0],v.look[1],v.look[2]);let fov=v.fov||50;
+  cutPos.set(v.pos[0],v.pos[1],v.pos[2]);cutLook.set(v.look[0],v.look[1],v.look[2]);let fov=v.fov||50,roll=v.roll||0;
   if(C.t>=I.dur){
     once("show",()=>{P.x=I.to[0];P.z=I.to[1];P.m.g.visible=true;P.m.g.position.set(P.x,0,P.z);P.m.g.rotation.y=P.a;HP=H_REST();poseHunter(HP,1);});
     const k=ease(Math.min(1,(C.t-I.dur)/I.glide)),w=gameView();
-    cutPos.lerp(w.pos,k);cutLook.lerp(w.look,k);fov=lerp(fov,50,k);G.cw=1-k;
+    cutPos.lerp(w.pos,k);cutLook.lerp(w.look,k);fov=lerp(fov,50,k);G.cw=1-k;roll*=1-k;
     if(k>=1){endCut(false);return;}
   }
   G.shake=Math.max(0,G.shake-dt*0.9);
   c.position.copy(cutPos);c.position.x+=(Math.random()-0.5)*G.shake;c.position.y+=(Math.random()-0.5)*G.shake;
   if(Math.abs(c.fov-fov)>0.05){c.fov=fov;c.updateProjectionMatrix();}
-  c.lookAt(cutLook);
+  c.lookAt(cutLook);if(roll)c.rotateZ(roll);
   updFx(dt);hud();
 }
 function endCut(skipped){
@@ -2206,6 +2526,7 @@ function endCut(skipped){
   P.x=I.to[0];P.z=I.to[1];P.a=Math.PI;P.m.g.visible=true;HP=H_REST();
   B.m.eyes.forEach(e=>e.visible=true);B.x=0;B.z=-4;B.a=0;B.y=0;
   if(skipped){BP=B_REST();poseBoss(BP,1);banner(D.name[0],I.line,false,2200);}
+  if(I.end)I.end();
   const w=gameView();c.position.copy(w.pos);camFocus.copy(w.focus);c.fov=50;c.updateProjectionMatrix();c.lookAt(w.look);
   G.cw=0;B.state="idle";B.t=0;B.cd=0.9;G.running=true;prompt(null);
 }
@@ -2238,6 +2559,35 @@ function wardenIntro(t,dt){
   m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;
   poseBoss(T,t<0.05?1:0.3);
   return {pos:[P.x,1.62+bob,P.z],look,fov};
+}
+
+function dimitriIntro(t,dt){
+  const B=G.boss,m=B.m;
+  /* 0-4.4 s: the hunter walks up the street; a low camera behind, tilted */
+  const wk=Math.min(1,t/4.4);P.z=lerp(15,6,ease(wk*0.5+wk*0.5*wk));P.x=0;P.a=Math.PI;
+  const HT=H_REST();walkPose(HT,t<4.4?1:0,dt);poseHunter(HT,0.4);P.m.g.position.set(P.x,0,P.z);P.m.g.rotation.y=P.a;
+  if(t<4.4&&Math.floor(P.walk/Math.PI)!==Math.floor((P.walk-dt*11)/Math.PI))sfx("foot");
+  /* the lamps go dark from the hunter's end toward Dimitri */
+  const order=[...G.lamps].sort((a,b)=>b.glass.position.z+b.glass.parent.position.z-(a.glass.position.z+a.glass.parent.position.z));
+  order.forEach((L,i)=>{const k=clamp((t-1.6-i*0.55)/0.4,0,1);if(k>0&&!L.off){L.off=1;tone(70,0.4,"sine",0.04,50);}
+    L.glass.material.emissive.setHex(k>=1?0x000000:0x8a5a1a);if(L.light)L.light.intensity=L.base*(1-k*0.85);});
+  /* Dimitri: back turned under the open umbrella, then turns, snaps it shut and tips his hat */
+  const T=bossRest();T.chest=0.45;
+  if(t<5.6){T.rx=-2.9;T.re=-0.1;T.rz=-0.1;}
+  else{T.rx=kf(t,[[5.6,-2.9],[5.75,-1.4,"in"],[6.2,-0.35]]);T.re=-0.25;T.rz=-0.12;}
+  T.lx=kf(t,[[6.3,0.25],[6.7,-2.6],[7.5,-2.6],[8.0,0.25]]);T.le=kf(t,[[6.3,-0.9],[6.7,-1.7],[8.0,-0.9]]);T.lz=0.3;
+  T.chest=kf(t,[[6.6,0.45],[7.0,0.8],[7.6,0.8],[8.1,0.45]]);T.head=kf(t,[[6.6,0],[7.0,0.25],[8.1,0]]);
+  if(t>=4.6)B.a=lerp(Math.PI,0,ease((t-4.6)/0.9));
+  if(t>=5.0)once("eyes",()=>{m.eyes.forEach(e=>e.visible=true);sfx("eye");});
+  if(t>=5.6)once("shut",()=>{m.shield.visible=false;m.um.visible=true;sfx("deflect");fx("mist",B.x,2.4,B.z,6);});
+  if(t>=6.6)once("tip",()=>sfx("tip"));
+  if(t>=6.9)once("card",()=>banner(B.D.name[0],B.D.intro.line,false,2800));
+  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;
+  poseBoss(T,t<0.05?1:0.35);
+  /* cameras: behind the hunter (tilted one way), then close on Dimitri (tilted the other way) */
+  if(t<4.4)return {pos:[1.2,1.0,P.z+3.2],look:[0,1.6,-4],fov:48,roll:0.16};
+  const k=ease((t-4.4)/3.8);
+  return {pos:[lerp(3.6,2.6,k),lerp(1.2,1.35,k),lerp(-0.4,0.2,k)],look:[0,1.55,-4],fov:lerp(46,40,k),roll:-0.17};
 }
 
 /* ---------- camera: angled overhead, follows you, pulls back to fit the beast;
@@ -2276,7 +2626,7 @@ function bossDies(){
   const B=G.boss;if(B.state==="dead")return;B.hp=0;B.state="dead";B.dead=0;B.move=null;B.ring=null;if(G.ringMesh)G.ringMesh.visible=false;showMark(0,0,false);
   const fade=new Set();B.m.g.traverse(o=>{if(o.material&&o.material!==B.m.shadowMat)fade.add(o.material);});B.fade=[...fade];
   setGlow(null);G.over=true;G.running=false;P.iframe=99;prompt(null);sfx("win");
-  setTimeout(()=>banner("The hunt is over",["The beast is gone.","化け物は消えた。"],false,0),900);
+  setTimeout(()=>banner("The hunt is over",B.D.gone||["The beast is gone.","化け物は消えた。"],false,0),900);if(G.ghost)G.ghost.m.g.visible=false;
 }
 function showResult(){
   const D=BOSSES[G.bossKey],s=P.stats,time=G.time;
