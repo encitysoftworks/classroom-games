@@ -288,12 +288,23 @@ body{background-image:radial-gradient(900px 420px at 50% -10%,#1d1f30 0%,rgba(12
 .walltop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:2px 4px 10px}
 .wtitle{font:400 20px var(--f-display);letter-spacing:.12em;color:#e3cf9f;text-shadow:0 2px 0 #000}
 .cork{display:flex;flex-wrap:wrap;gap:40px 46px;justify-content:center;align-items:flex-start;padding:8px 0 10px;position:relative}
-.poster{position:relative;width:250px;background:var(--paper);color:#2a2116;padding:24px 18px 16px;font-family:var(--f-gothic);
-  box-shadow:0 7px 0 rgba(0,0,0,.45),inset 0 0 44px rgba(90,60,20,.38);transform-origin:50% 9px;
-  animation:sway 7s ease-in-out infinite;animation-delay:var(--d,0s);transform:rotate(var(--r,0deg));transition:box-shadow .25s;cursor:default;z-index:1}
-.poster:before,.scrap:before{content:"";position:absolute;left:50%;top:5px;width:11px;height:11px;margin-left:-5px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#9a9aa2,#3a3a40 60%,#1a1a1e);box-shadow:0 2px 0 rgba(0,0,0,.6)}
-@keyframes sway{0%,100%{transform:rotate(var(--r,0deg))}50%{transform:rotate(calc(var(--r,0deg) + 1.1deg))}}
-.poster:hover,.poster.focus{animation:none;transform:rotate(0deg) scale(1.5);z-index:6;box-shadow:0 18px 30px rgba(0,0,0,.6),inset 0 0 44px rgba(90,60,20,.38);transition:transform .22s ease,box-shadow .22s}
+:root{--parch:radial-gradient(ellipse 60% 45% at 18% 12%,rgba(122,78,28,.30),transparent 70%),radial-gradient(ellipse 40% 30% at 85% 78%,rgba(110,66,20,.28),transparent 70%),
+  radial-gradient(circle at 63% 28%,rgba(100,62,22,.22) 0 2.2%,transparent 3.2%),radial-gradient(circle at 27% 64%,rgba(100,62,22,.18) 0 1.6%,transparent 2.6%),radial-gradient(circle at 74% 47%,rgba(100,62,22,.16) 0 1.2%,transparent 2.2%),
+  linear-gradient(90deg,transparent 49.6%,rgba(80,50,18,.16) 50%,rgba(255,250,230,.12) 50.5%,transparent 51%),linear-gradient(0deg,transparent 33%,rgba(80,50,18,.13) 33.4%,rgba(255,250,230,.1) 33.8%,transparent 34.2%),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .22 0 0 0 0 .08 0 0 0 .42 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),radial-gradient(ellipse at 50% 45%,#ecdfba 0%,#dcc79a 55%,#b9965c 92%,#8f6c3a 100%)}
+/* each poster: zoom wrapper > tilt > sway > torn paper. The sway never stops, even zoomed in */
+.poster{position:relative;width:250px;color:#2a2116;font-family:var(--f-gothic);transform-origin:50% 8px;transform:scale(1);
+  transition:transform .45s cubic-bezier(.3,.7,.3,1),z-index 0s .45s;z-index:1;cursor:default}
+.poster .tilt{transform:rotate(var(--r,0deg));transform-origin:50% 8px;transition:transform .45s cubic-bezier(.3,.7,.3,1)}
+.poster .swing,.scrap{transform-origin:50% 8px;animation:sway 7s ease-in-out infinite;animation-delay:var(--d,0s);filter:drop-shadow(0 7px 0 rgba(0,0,0,.45))}
+.poster .paper{position:relative;padding:26px 18px 18px;background:var(--parch);box-shadow:inset 0 0 34px rgba(80,48,14,.55),inset 0 0 6px rgba(60,35,10,.6)}
+.poster .pin,.scrap:before{content:"";position:absolute;left:50%;top:4px;width:11px;height:11px;margin-left:-5px;border-radius:50%;z-index:2;background:radial-gradient(circle at 35% 35%,#9a9aa2,#3a3a40 60%,#1a1a1e);box-shadow:0 2px 0 rgba(0,0,0,.6)}
+.poster .hole{position:absolute;background:#22160d;box-shadow:0 0 0 2px rgba(92,58,22,.55),0 0 0 4px rgba(120,80,30,.25),inset 0 2px 3px rgba(0,0,0,.8);border-radius:42% 58% 55% 45%/50% 40% 60% 50%}
+.poster .burn{position:absolute;pointer-events:none;border-radius:50%;background:radial-gradient(circle,rgba(70,40,12,.55),rgba(110,70,25,.25) 45%,transparent 70%)}
+@keyframes sway{0%,100%{transform:rotate(-.55deg)}50%{transform:rotate(.65deg)}}
+.poster:hover,.poster.focus{transform:scale(1.5);z-index:30;transition:transform .45s cubic-bezier(.3,.7,.3,1),z-index 0s 0s}
+.poster:hover .tilt,.poster.focus .tilt{transform:rotate(0deg)}
+.poster:hover .swing,.poster.focus .swing{filter:drop-shadow(0 16px 14px rgba(0,0,0,.6))}
 .poster .wanted{font:400 12px var(--f-display);letter-spacing:.3em;text-align:center;color:#6b2a1e}
 .poster h2{font:400 25px/1.1 var(--f-display);text-align:center;color:#20180f;margin:4px 0 2px}
 .poster .ja,body.jp .poster .ja{color:#5d5244}
@@ -309,11 +320,11 @@ body{background-image:radial-gradient(900px 420px at 50% -10%,#1d1f30 0%,rgba(12
 .stamp{position:absolute;right:10px;top:34px;width:46px;height:46px;border:3px solid rgba(143,39,35,.85);border-radius:50%;color:rgba(143,39,35,.9);
   font:400 26px/40px var(--f-display);text-align:center;transform:rotate(-16deg)}
 .stamp small{position:absolute;left:-6px;right:-6px;bottom:-14px;font:700 8px var(--f-body,sans-serif);letter-spacing:.1em}
-.scrap{position:relative;width:150px;padding:20px 12px 14px;background:#d9cfb4;color:#3a3024;font:400 20px/1.15 "Pinyon Script","Snell Roundhand",cursive;text-align:center;
-  box-shadow:0 5px 0 rgba(0,0,0,.4),inset 0 0 30px rgba(90,60,20,.4);transform:rotate(var(--r,0deg));transform-origin:50% 9px;animation:sway 9s ease-in-out infinite;animation-delay:var(--d,0s);
-  clip-path:polygon(0 0,100% 0,100% 82%,92% 88%,84% 80%,73% 94%,62% 84%,50% 97%,38% 85%,26% 95%,14% 84%,6% 92%,0 85%);opacity:.85}
+.scrap{position:relative;width:150px;padding:20px 12px 14px;background:var(--parch);box-shadow:inset 0 0 26px rgba(80,48,14,.55);color:#3a3024;font:400 20px/1.15 "Pinyon Script","Snell Roundhand",cursive;text-align:center;
+  animation-duration:9s;clip-path:polygon(0 0,100% 0,100% 82%,92% 88%,84% 80%,73% 94%,62% 84%,50% 97%,38% 85%,26% 95%,14% 84%,6% 92%,0 85%);opacity:.9}
 .scrap small{display:block;font:italic 11px var(--f-gothic);margin-top:4px}
-@media (prefers-reduced-motion:reduce){.poster,.scrap{animation:none}}
+@media (prefers-reduced-motion:reduce){.poster .swing,.scrap{animation:none}}
+.notice{background:var(--parch)!important}
 /* "name your mark" bar at the bottom */
 .markbar{position:sticky;bottom:0;z-index:20;max-width:1120px;margin:10px auto 0;background:#15131a;border:1px solid #5b412c;border-radius:6px;padding:10px 16px;
   display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:end;box-shadow:0 -6px 18px rgba(0,0,0,.5)}
@@ -1483,6 +1494,7 @@ const BOSSES={
       palm:{dur:1.4,track:0.5,anim:palmAnim,hits:[{t:0.7,limb:"L",range:2.6,arc:90,dmg:20,parry:true,push:true}],step:[0.5,0.7,3],weight:(d,ph)=>d<3.4?(ph>1?1.6:0.8):0},
       backstep:{dur:0.75,track:0.75,anim:backAnim,hits:[],back:[0.08,0.4,9],weight:(d,ph)=>ph===1&&d<2.8?1.8:0},
       guard:{guard:true,hits:[],weight:(d,ph)=>d<7?(ph>1?0.4:1.6):0},
+      bash:{dur:1.0,track:0.3,keepShield:true,anim:bashAnim,hits:[{t:0.45,limb:"R",range:2.7,arc:110,dmg:18,parry:true,push:true}],weight:()=>0},
       shot:{dur:1.25,track:0.7,anim:shotAnim,hits:[{t:0.8,shot:true,dmg:16}],weight:(d,ph)=>d>6.5?(ph>1?1.2:0.7):0},
       blink:{dur:2.1,track:0,blink:true,anim:umbAnim,hits:[{t:1.15,raise:0.55,limb:"R",s:-1,range:3.1,arc:130,dmg:24,parry:true}],weight:(d,ph)=>ph>1?2.2:0}
     },
@@ -1571,12 +1583,28 @@ const SEAL=`<svg class="seal" id="seal" viewBox="0 0 100 100" aria-hidden="true"
   <path fill="#5e1513" d="M26 58c6-2 10-12 24-16 14 4 18 14 24 16-6 4-14 5-24 5s-18-1-24-5z"/><path fill="#5e1513" d="M38 48c2-8 7-12 12-12s10 4 12 12c-4-2-8-3-12-3s-8 1-12 3z"/>
   <path fill="#b8403a" fill-opacity=".45" d="M30 22c8-6 22-8 30-4-10 0-20 3-26 9z"/></svg>`;
 const SCRAPS=[["Lost: one black umbrella. Ask for D.","黒いかさをなくした。Dまで。",3,-1.2],["The bell rings at midnight. Do not listen.","真夜中に鐘が鳴る。聞くな。",-4,-2.6],["Room for rent. No hunters.","部屋かします。ハンターおことわり。",5,-0.4]];
+/* old paper: ragged edges with a torn corner, a few holes and burn marks (seeded, so each poster keeps its look) */
+function seeded(n){let x=n*9301+49297;return ()=>(x=(x*9301+49297)%233280)/233280;}
+function tornEdge(n){const r=seeded(n),P=[],j=a=>(r()*a).toFixed(2);
+  const corner=Math.floor(r()*4),cut=[[0,0],[100,0],[100,100],[0,100]][corner];
+  for(let x=0;x<=100;x+=6)P.push(`${x}% ${j(1.6)}%`);
+  for(let y=6;y<=100;y+=5)P.push(`${100-+j(1.8)}% ${y}%`);
+  for(let x=94;x>=0;x-=6)P.push(`${x}% ${100-+j(2.2)}%`);
+  for(let y=95;y>0;y-=5)P.push(`${j(1.8)}% ${y}%`);
+  /* bite a torn chunk out of one bottom or side spot */
+  const by=40+r()*45,side=r()<0.5;P.splice(side?Math.round(17+(by/5)):P.length-Math.round(by/5),0,...(side?[`${93-+j(3)}% ${by}%`,`${88-+j(3)}% ${by+2.5}%`,`${94-+j(2)}% ${by+5}%`]:[`${6+ +j(3)}% ${by+4}%`,`${11+ +j(3)}% ${by+2}%`,`${5+ +j(2)}% ${by}%`]));
+  return `polygon(${P.join(",")})`;}
+function distress(n){const r=seeded(n*7);let h="";
+  const holes=1+Math.floor(r()*2);for(let i=0;i<holes;i++){const w=6+r()*8;h+=`<span class="hole" style="left:${r()<0.5?3+r()*9:84+r()*9}%;top:${r()<0.5?6+r()*12:70+r()*22}%;width:${w}px;height:${w*(0.7+r()*0.5)}px"></span>`;}
+  h+=`<span class="hole" style="left:calc(50% + 9px);top:14px;width:5px;height:4px"></span>`;
+  for(let i=0;i<2;i++){const w=40+r()*50;h+=`<span class="burn" style="left:${r()<0.5?-w/3:250-w*0.6}px;top:${r()*80}%;width:${w}px;height:${w}px"></span>`;}
+  return h;}
 function renderBoard(){
   Object.assign(SG,{step:0,typed:"",focus:null,blots:[{},{}],pos:[0,0],name:st.get("name",""),ime:false});
   $("#sheetwrap").hidden=true;
   const rot=[-2.2,1.8,-1.2,2.4,-1.8,1.4];
   const posters=ORDER.map((k,i)=>{const B=BOSSES[k],n=B.notice,best=st.get("best_"+k,null);
-    return `<article class="poster" data-k="${k}" style="--r:${rot[i%rot.length]}deg;--d:${-i*2.3}s">
+    return `<article class="poster" data-k="${k}" style="--r:${rot[i%rot.length]}deg"><div class="tilt"><div class="swing" style="--d:${-i*2.3}s"><span class="pin"></span><div class="paper" style="clip-path:${tornEdge(i+3)}">${distress(i+3)}
       <div class="wanted">${n.head||"WANTED"}</div><h2>${B.name[0]}</h2><p class="ja jn">${B.name[1]}</p>
       <p class="tier"><span class="dots">${"●".repeat(B.danger)}${"○".repeat(3-B.danger)}</span> ${B.tier[0]}<span class="ja inl">${B.tier[1]}</span></p>
       <p class="tale">${n.tale[0]}<span class="ja">${n.tale[1]}</span></p>
@@ -1584,7 +1612,7 @@ function renderBoard(){
       <div class="rew"><span>${n.reward[0]}<span class="ja">${n.reward[1]}</span></span><span>5 vials<span class="ja">回復5本</span></span></div>
       ${best?`<div class="stamp">${best.rank}<small>BEST</small></div>`:""}
       ${B.intro&&st.get("cut_"+k,false)?`<button class="again" type="button" data-k="${k}">Watch the intro again<span class="ja inl">オープニング</span></button>`:""}
-    </article>`;});
+    </div></div></div></article>`;});
   const scraps=SCRAPS.map(([en,ja,r,d])=>`<div class="scrap" style="--r:${r}deg;--d:${d}s">${en}<small class="ja">${ja}</small></div>`);
   /* posters first, with the scraps tucked between them */
   const all=[];posters.forEach((p,i)=>{all.push(p);if(scraps[i])all.push(scraps[i]);});
@@ -2090,7 +2118,10 @@ function begin(k){
     if(t&&(t.d<8||k==="gun"||k==="crit"))P.a=t.a;else if(md)P.a=Math.atan2(md[0],md[1]);}
   if(k==="light")sfx("slash");
   if((k==="light"||k==="heavy")&&counterCheck())startCounter(A.hit[P.combo]??A.hit);
-  if(k==="heal"&&G.boss&&G.boss.D.duel&&G.boss.state==="idle"&&t&&t.d>5&&G.running)bossStart("move","shot");
+  /* drinking in front of Dimitri: from his guard he lunges (close) or shoots (far); idle and far, he shoots */
+  if(k==="heal"&&G.boss&&G.boss.D.duel&&t&&G.running){const B=G.boss;
+    if(B.state==="guard")bossStart("move",t.d<5.5?"thrust":"shot");
+    else if(B.state==="idle"&&t.d>5)bossStart("move","shot");}
   if(k==="heavy")setTimeout(()=>sfx("heavy"),330);
   if(k==="dodge"){const md=moveDir();P.back=!md;const a=md?Math.atan2(md[0],md[1]):P.a+Math.PI;P.dA=a;if(md)P.a=a;P.iframe=0.3;sfx("dodge");}
   if(k==="gun")P.gunDur=A.miss;
@@ -2281,7 +2312,8 @@ function bossStart(state,move){
   const B=G.boss;
   if(state==="move"&&B.D.moves[move].guard){B.state="guard";B.t=0;B.gt=2+Math.random()*1.2;B.m.shield.visible=true;B.m.um.visible=false;sfx("dodge");B.last.push(move);if(B.last.length>3)B.last.shift();return;}
   B.state=state;B.t=0;B.mt=0;B.blinked=false;B.m.g.visible=true;
-  if(state==="move"){B.moveKey=move;const tpl=B.D.moves[move];B.move=tpl.gen?tpl.gen(B):tpl;B.hitsDone=B.move.hits.map(()=>false);
+  if(state==="move"){B.moveKey=move;const tpl=B.D.moves[move];B.move=tpl.gen?tpl.gen(B):tpl;
+    if(B.m.shield&&!tpl.keepShield){B.m.shield.visible=false;B.m.um.visible=true;}B.hitsDone=B.move.hits.map(()=>false);
     if(B.move.leap){B.leapFrom=[B.x,B.z];}
     B.last.push(move);if(B.last.length>3)B.last.shift();}
   if(state==="roar"){B.move=null;setGlow(null);sfx("roar");G.shake=Math.max(G.shake,0.18);
@@ -2405,7 +2437,7 @@ function boss(dt){
         const d=Math.hypot(P.x-B.x,P.z-B.z),aTo=Math.atan2(P.x-B.x,P.z-B.z);
         if(d-0.4<=h.range&&Math.abs(wrapA(aTo-B.a))*180/Math.PI<=h.arc/2+10){if(hitPlayer(h.dmg,B.x,B.z)&&h.push)P.hurtV=[P.hurtV[0]*1.8,P.hurtV[1]*1.8];if(h.push)fx("spark",P.x,1.2,P.z,6);}});
       if(Tm>=mv.dur){B.state="idle";B.t=0;B.y=0;setGlow(null);BP.twist=wrapA(BP.twist);B.cd=(B.moveKey==="leap"?0.2:0.35+Math.random()*0.7)*(diff?1.5:1)*(B.phase>1?0.7:1);
-        if(B.D.duel){B.m.g.visible=true;const hit=mv.hits.some(h=>h.limb);B.open=hit?(B.phase>1?0.6:0.8):0;B.cd=B.open+(B.phase>1?0.15+Math.random()*0.35:0.5+Math.random()*0.9);}}
+        if(B.D.duel){B.m.g.visible=true;B.m.shield.visible=false;B.m.um.visible=true;const hit=mv.hits.some(h=>h.limb);B.open=hit?(B.phase>1?0.6:0.8):0;B.cd=B.open+(B.phase>1?0.15+Math.random()*0.35:0.5+Math.random()*0.9);}}
       break;}
     case "stagger":{B.stagger-=dt;B.t+=dt;const u=B.t;
       if(B.reel!=null&&B.reel<1.8){B.reel+=dt;const r=B.reel,fl=r<0.7?Math.sin(r*14)*0.5*(1-r/0.7):0;
@@ -2490,6 +2522,11 @@ function palmAnim(Tm,T,mv){const u=Tm-mv.hits[0].t;
   T.rx=-0.25;T.rz=-0.25;
   if(u>-0.35&&u<0&&Math.random()<0.5){const v=new THREE.Vector3();G.boss.m.armL.hand.getWorldPosition(v);fx("spark",v.x,v.y,v.z,1);}
   return {L:u>-0.05&&u<0.12};}
+function bashAnim(Tm,T,mv){const u=Tm-mv.hits[0].t;
+  T.rx=kf(u,[[-0.45,-1.45],[-0.15,-1.15],[0,-1.6,"in"],[0.25,-1.55],[0.55,-0.4]]);T.re=kf(u,[[-0.45,-0.05],[-0.15,-0.9],[0,0,"in"],[0.55,-0.25]]);T.rz=-0.05;
+  T.chest=kf(u,[[-0.45,0.6],[-0.15,0.3],[0,1.0,"in"],[0.55,0.45]]);T.by=kf(u,[[-0.15,-0.05],[0,-0.3,"in"],[0.55,0]]);T.lx=0.3;T.lz=0.3;T.le=-0.9;
+  if(u>0.3&&G.boss.m.shield.visible){G.boss.m.shield.visible=false;G.boss.m.um.visible=true;sfx("dodge");}
+  return {R:u>-0.05&&u<0.12};}
 function backAnim(Tm,T){T.chest=kf(Tm,[[0,0.45],[0.1,0.2],[0.45,0.3],[0.75,0.45]]);T.by=kf(Tm,[[0,0],[0.1,-0.2],[0.25,0.15],[0.45,-0.25],[0.75,0]]);
   T.rx=kf(Tm,[[0,-0.3],[0.2,0.5],[0.75,-0.3]]);T.lx=kf(Tm,[[0,-0.1],[0.2,0.6],[0.75,-0.1]]);T.lz=0.5;T.rz=-0.4;}
 function shotAnim(Tm,T,mv){const h=mv.hits[0];
@@ -2527,6 +2564,10 @@ function duelState(B,dt,t,T){
     /* umbrella open and held out in front; he edges closer */
     T.rx=-1.45;T.re=-0.05;T.rz=-0.05;T.chest=0.6;T.by=-0.12;T.lx=0.3;T.lz=0.3;T.le=-0.9;T.twist=-0.15;
     if(t.d>2.6){const sp=1.2;B.x+=Math.sin(B.a)*sp*dt;B.z+=Math.cos(B.a)*sp*dt;B.walking=1;}
+    /* no hiding from it: back away and he drops the guard to shoot or walk you down; get close and he bashes */
+    if(u>0.5&&t.d>6.5){bossStart("move","shot");return T;}
+    if(u>0.5&&t.d>5.2){B.state="idle";B.cd=0;B.m.shield.visible=false;B.m.um.visible=true;return T;}
+    if(u>0.7&&t.d<2.9){bossStart("move","bash");return T;}
     if(u>=B.gt){B.state="idle";B.cd=0.25;B.m.shield.visible=false;B.m.um.visible=true;sfx("dodge");}
     return T;}
   if(B.state==="broken"){
