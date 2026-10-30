@@ -1503,7 +1503,7 @@ const BOSSES={
     intro:{from:[0,14],to:[0,6],dur:8.4,glide:1.3,line:["It still rings the bell.","まだ鐘を鳴らしている。"],run:(t,dt)=>wardenIntro(t,dt)}
   },
   dimitri:{
-    name:["Intermediary Dimitri","仲介者ディミトリ"],typeName:"Intermediary Dimitri",hp:700,par:210,danger:3,tier:["A real test","本当の腕だめし"],arena:"street",
+    name:["Intermediary Dimitri","仲介者ディミトリ"],typeName:"Intermediary Dimitri",hp:700,par:210,danger:4,tier:["A real test","本当の腕だめし"],arena:"street",
     notice:{
       tale:["A hunter who never came home. He walks the wet streets with a black umbrella, and he waits.","帰ってこなかったハンター。黒いかさを持って、雨の街を歩き、待っている。"],
       clues:[
@@ -1642,7 +1642,7 @@ function renderBoard(){
   const posters=ORDER.map((k,i)=>{const B=BOSSES[k],n=B.notice,best=st.get("best_"+k,null);
     return `<article class="poster" data-k="${k}" style="--r:${rot[i%rot.length]}deg"><div class="tilt"><div class="swing" style="--d:${-i*2.3}s"><span class="pin"></span><div class="paper" style="clip-path:${tornEdge(i+3)}">${distress(i+3)}
       <div class="wanted">${n.head||"WANTED"}</div><h2>${B.name[0]}</h2><p class="ja jn">${B.name[1]}</p>
-      <p class="tier"><span class="dots">${"●".repeat(B.danger)}${"○".repeat(3-B.danger)}</span> ${B.tier[0]}<span class="ja inl">${B.tier[1]}</span></p>
+      <p class="tier"><span class="dots">${"●".repeat(B.danger)}${"○".repeat(5-B.danger)}</span> ${B.tier[0]}<span class="ja inl">${B.tier[1]}</span></p>
       <p class="tale">${n.tale[0]}<span class="ja">${n.tale[1]}</span></p>
       <ul>${n.clues.map(c=>`<li>${c[0]}<span class="ja">${c[1]}</span></li>`).join("")}</ul>
       <div class="rew"><span>${n.reward[0]}<span class="ja">${n.reward[1]}</span></span><span>5 vials<span class="ja">回復5本</span></span></div>
