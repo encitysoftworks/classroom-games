@@ -325,6 +325,26 @@ body{background-image:radial-gradient(900px 420px at 50% -10%,#1d1f30 0%,rgba(12
 .scrap small{display:block;font:italic 11px var(--f-gothic);margin-top:4px}
 @media (prefers-reduced-motion:reduce){.poster .swing,.scrap{animation:none}}
 .notice{background:var(--parch)!important}
+/* the field behind the title and the board: a low-res 3D scene that fills the window */
+.field{position:fixed;inset:0;z-index:0;background:#0f1222}
+#fieldStage.k3d-stage{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;max-width:none;border-radius:0;background:#0f1222}
+body.infield{background:none}
+body.infield .app{position:relative;z-index:1}
+body.infield .topbar{border-bottom-color:transparent;text-shadow:0 2px 3px #000}
+body.infield .wall{max-width:min(940px,76vw);margin-top:58px;min-height:max(380px,calc(100vh - 300px))}
+body.infield .markbar{max-width:min(940px,76vw)}
+#board{transition:opacity .9s ease}
+body.walking #board,body.walking .topbar{opacity:0;pointer-events:none}
+body.walking .topbar{transition:opacity .9s ease}
+/* title card */
+#title{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:0 16px}
+#title h1{font:400 clamp(44px,8vw,96px)/1 var(--f-display);color:#e9d6a6;letter-spacing:.08em;margin:0;text-shadow:0 4px 0 #000,0 0 30px rgba(0,0,0,.8)}
+#title .jt{font:500 clamp(16px,2.4vw,24px) var(--f-body);color:#cdbb92;letter-spacing:.3em;margin:10px 0 0;text-shadow:0 2px 0 #000}
+#title .press{margin-top:9vh;font:italic 22px var(--f-gothic);color:#e3cf9f;text-shadow:0 2px 0 #000;animation:breathe 3.2s ease-in-out infinite}
+#title .press .ja{display:block;font-style:normal;font-size:14px}
+#title.out{opacity:0;transition:opacity .8s ease}
+@keyframes breathe{0%,100%{opacity:.45}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){#title .press{animation:none}}
 /* "name your mark" bar at the bottom */
 .markbar{position:sticky;bottom:0;z-index:40;max-width:1120px;margin:10px auto 0;background:#15131a;border:1px solid #5b412c;border-radius:6px;padding:10px 16px;
   display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:end;box-shadow:0 -6px 18px rgba(0,0,0,.5)}
@@ -456,6 +476,7 @@ body.jp .helpline .ja{display:block}
 .journal{font:italic 18px var(--f-gothic);color:var(--muted);max-width:520px;border-top:1px solid var(--edge);padding-top:10px}
 </style>
 
+<div class="field" id="field" hidden><div id="fieldStage"></div></div>
 <div class="app">
   <header class="topbar">
     <button class="brand" id="goHome" type="button">Hunter's Contract <span>ハンターの契約</span></button>
@@ -466,6 +487,10 @@ body.jp .helpline .ja{display:block}
   </header>
 
   <main>
+  <section class="screen" id="title" hidden>
+    <h1>Hunter's Contract</h1><p class="jt">ハンターの契約</p>
+    <p class="press">Press any key<span class="ja">キーをおしてね</span></p>
+  </section>
   <section class="screen" id="board">
     <div class="wall" id="wall">
       <div class="walltop"><span class="wtitle">Hunters' Notice Board<span class="ja inl">ハンターの掲示板</span></span>
@@ -1454,7 +1479,7 @@ const BOSSES={
     notice:{
       tale:["Something tall walks in the old chapel yard. At midnight, its bell rings.","古い礼拝堂の庭を、背の高い何かが歩いている。真夜中に、その鐘が鳴る。"],
       clues:[
-        ["When its claws glow, wait. Shoot just before they hit.","ツメが光ったら、待て。当たる直前にピストルで撃て。"],
+        ["When its claws glow, wait. When they glow bright, shoot!","ツメが光ったら、待て。強く光ったら、撃て！"],
         ["It is slow after it jumps. Attack then!","ジャンプのあとは動きがおそい。そこで攻撃！"],
         ["When it is angry, the bell rings. Dodge through the sound.","怒ると鐘が鳴る。音の輪を回避でくぐりぬけろ。"]],
       reward:["Reward: 300 silver coins","報酬：銀貨300枚"]},
@@ -1472,7 +1497,7 @@ const BOSSES={
     },
     gone:["The bell is silent.","鐘は静かになった。"],
     build:buildWarden,
-    finale:{dur:8.4,run:(t,dt)=>wardenFinale(t,dt),
+    finale:{dur:12.2,run:(t,dt)=>wardenFinale(t,dt),
       start:B=>{B.x=0;B.z=-4;B.a=0;P.x=0.3;P.z=-1.6;P.a=Math.PI;P.m.g.visible=true;}},
     /* first-time intro: walk in, the bell tolls, the "statue" ahead wakes */
     intro:{from:[0,14],to:[0,6],dur:8.4,glide:1.3,line:["It still rings the bell.","まだ鐘を鳴らしている。"],run:(t,dt)=>wardenIntro(t,dt)}
@@ -1484,7 +1509,7 @@ const BOSSES={
       clues:[
         ["Do not swing when he is not attacking. He will stop you and hit back.","彼が攻撃していない時に振るな。止められて、反撃される。"],
         ["When he opens his umbrella, shoot it. Then attack!","かさを開いたら、ピストルで撃て。それから攻撃！"],
-        ["Only one swing in each attack glows. Shoot that one. Dodge the rest.","光る攻撃は一回だけ。それを撃て。ほかはよけろ。"]],
+        ["Only one swing in each attack glows. Shoot when it glows bright. Dodge the rest.","光る攻撃は一回だけ。強く光ったら撃て。ほかはよけろ。"]],
       reward:["Reward: 800 silver coins","報酬：銀貨800枚"]},
     oath:["I will end his long night.","わたしは彼の長い夜を終わらせるとちかう。"],
     journal:["Dimitri was a hunter once. Tonight he can finally go home. He will walk; he doesn't own a car.","ディミトリはかつてハンターだった。今夜、やっと家に帰れる。歩いて帰る。車を持っていないから。"],
@@ -1504,11 +1529,11 @@ const BOSSES={
       blink:{dur:2.1,track:0,blink:true,anim:umbAnim,hits:[{t:1.15,raise:0.55,limb:"R",s:-1,range:3.1,arc:130,dmg:24,parry:true}],weight:(d,ph)=>ph>1?2.2:0}
     },
     build:buildDimitri,
-    finale:{dur:9.4,run:(t,dt)=>dimitriFinale(t,dt),
+    finale:{dur:12,run:(t,dt)=>dimitriFinale(t,dt),
       start:B=>{B.x=0;B.z=-4;B.a=0;P.x=0;P.z=1.4;P.a=Math.PI;P.m.g.visible=true;
         /* the umbrella he drops when he is shot (its own copy, so it stays when he fades) */
         if(G.umb)G.stage.scene.remove(G.umb);const u=G.umb=B.m.um.clone(true);u.traverse(o=>{if(o.material){o.material=o.material.clone();o.material.opacity=1;o.material.transparent=false;o.material.emissive&&o.material.emissive.setHex(0);}});
-        u.position.set(0.5,0.06,-3.3);u.rotation.set(0,0.4,Math.PI/2);u.visible=false;G.stage.scene.add(u);}},
+        u.position.set(-0.6,0.06,-0.3);u.rotation.set(0,0.4,Math.PI/2);u.visible=false;G.stage.scene.add(u);}},
     /* first-time intro: a tilted camera down the wet street; the lamps go dark one by one toward him */
     intro:{from:[0,15],to:[0,6],dur:8.6,glide:1.3,line:["He doesn't own a car.","彼は車を持っていない。"],run:(t,dt)=>dimitriIntro(t,dt),
       start:()=>{const m=G.boss.m;G.boss.a=Math.PI;m.shield.visible=true;m.um.visible=false;P.m.g.visible=true;},
@@ -1574,9 +1599,10 @@ const SFX={
 const sfx=n=>SFX[n]&&SFX[n]();
 
 /* ---------- contract board ---------- */
-const scr=Kit.screens({onShow(id){
+const scr=Kit.screens({onShow(id,prev){
   if(id!=="play"){stopLoop();held.clear();}
   if(id==="board")renderBoard();
+  fieldShow(id,prev);
 }});
 $("#goHome").onclick=()=>scr.show("board");
 const ORDER=Object.keys(BOSSES);
@@ -1680,6 +1706,7 @@ function typeMark(ch){
 }
 document.addEventListener("keydown",e=>{
   if(scr.current!=="board"||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(FD.mode==="walk")return;   /* still walking up to the board: see the field code */
   if(!$("#ctlwrap").hidden){if(e.key==="Escape"||e.key==="Enter"){e.preventDefault();showControls(false);}return;}
   if(SG.step>2)return;
   const t=e.target;if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"))return;
@@ -1844,7 +1871,10 @@ function kf(T,K){if(T<=K[0][0])return K[0][1];
 /* a tapered limb that hangs down from its joint */
 function limb(rt,rb,h,c,x,y,z,parent,seg){const geo=new THREE.CylinderGeometry(rt,rb,h,seg||6);geo.translate(0,-h/2,0);
   const m=Kit3D.mesh(geo,typeof c==="number"?M(c):c);m.position.set(x||0,y||0,z||0);if(parent)parent.add(m);return m;}
-function lerpPose(cur,want,k){for(const key in want)cur[key]=lerp(cur[key]??want[key],want[key],k);return cur;}
+/* k is "per 60th of a second", so poses ease the same on a slow Chromebook as on a fast PC */
+function lerpPose(cur,want,k){const f=(G.fdt||1/60)*60,kk=k>=1?1:1-Math.pow(1-k,f);for(const key in want)cur[key]=lerp(cur[key]??want[key],want[key],kk);return cur;}
+/* follow-through: a joint that trails a little behind the one it hangs from (rate is per 60th of a second) */
+function trail_(L,key,v,rate){const f=(G.fdt||1/60)*60;if(L[key]==null)L[key]=v;L[key]+=(v-L[key])*(1-Math.pow(1-rate,f));return L[key]-v;}
 
 /* ---------- the hunter ---------- */
 function buildHunter(){
@@ -1881,14 +1911,18 @@ function buildHunter(){
 }
 const H_REST=()=>({wr:0.5,lean:0.05,twist:0,by:0,rx:-0.1,ry:0,rz:0,re:-0.35,lx:0.1,ly:0,lz:0,le:-0.25,hl:0,hr:0,kl:0,kr:0,coat:0,hd:0});
 let HP=H_REST();
+const HL={};   /* the hunter's trailing joints */
 function poseHunter(T,k){
   const m=P.m;lerpPose(HP,T,k);
-  m.body.rotation.x=HP.lean;m.body.rotation.y=HP.twist;m.body.position.y=0.8+HP.by;m.head.rotation.x=HP.hd;
-  m.R.sh.rotation.set(HP.rx-HP.lean,HP.ry,HP.rz);m.R.el.rotation.x=HP.re;m.R.hand.rotation.x=HP.wr;m.L.sh.rotation.set(HP.lx-HP.lean,HP.ly,HP.lz);m.L.el.rotation.x=HP.le;
+  /* forearms and the blade trail the shoulders; the head stays steadier than the body; the coat lags the turn */
+  const dR=trail_(HL,"rx",HP.rx,0.3),dL=trail_(HL,"lx",HP.lx,0.3),dLean=trail_(HL,"lean",HP.lean,0.2),dTw=trail_(HL,"tw",HP.twist,0.15);
+  m.body.rotation.x=HP.lean;m.body.rotation.y=HP.twist;m.body.position.y=0.8+HP.by;m.head.rotation.x=HP.hd+clamp(dLean*0.5,-0.25,0.25);m.head.rotation.y=clamp(dTw*0.6,-0.3,0.3);
+  m.R.sh.rotation.set(HP.rx-HP.lean,HP.ry,HP.rz);m.R.el.rotation.x=HP.re+clamp(dR*0.35,-0.5,0.5);m.R.hand.rotation.x=HP.wr+clamp(dR*0.25,-0.4,0.4);
+  m.L.sh.rotation.set(HP.lx-HP.lean,HP.ly,HP.lz);m.L.el.rotation.x=HP.le+clamp(dL*0.35,-0.5,0.5);
   const c=Math.max(0,-HP.by);   /* crouch: bend the knees */
   m.legL.h.position.y=m.legR.h.position.y=0.8-c;
   m.legL.h.rotation.x=HP.hl-c*1.6;m.legR.h.rotation.x=HP.hr-c*1.6;m.legL.k.rotation.x=HP.kl+c*3;m.legR.k.rotation.x=HP.kr+c*3;
-  m.coat.rotation.x=HP.coat;
+  m.coat.rotation.x=HP.coat+clamp(-Math.abs(dTw)*0.6,-0.3,0);m.coat.rotation.y=clamp(dTw*0.5,-0.25,0.25);
 }
 
 /* ---------- the Bell Warden ---------- */
@@ -1931,39 +1965,49 @@ function buildWarden(){
     hipY:1.7,byS:1,chestOff:0,legBase:[-0.35,0.7]};
 }
 
-/* ---------- Intermediary Dimitri: a tall hunter with a black umbrella ----------
+/* ---------- Intermediary Dimitri: a very tall, thin hunter with a black umbrella ----------
    Same joints as the Warden (body, chest, two arms, legs), so the same poses and moves drive him.
-   The umbrella hangs from his right hand like a long claw; it opens into a shield when he guards. */
+   Hunched forward, face lost in the shadow of his hat (only the eyes show), long torn coat and cape
+   in strips that drift on their own. The umbrella hangs from his right hand like a long claw;
+   it opens into a shield when he guards. */
 function buildDimitri(){
-  const C={coat:0x545262,coat2:0x3e3c4e,trim:0x8a6aa0,skin:0xcfc8bb,hat:0x302e3a,brass:0xa88a50,cloth:0x44424e};
-  const eyeM=Kit3D.mat(0xe8e2ff,{emissive:0x403a60});
+  const C={coat:0x4a4858,coat2:0x34323f,trim:0x7a5a90,shade:0x0e0d12,hat:0x24222c,brass:0x9a7e48,cloth:0x3a3844};
+  const eyeM=Kit3D.mat(0xd8ccff,{emissive:0x8a78d8});
   const clawR=Kit3D.mat(0x3a3846),clawL=Kit3D.mat(0x5a5662);   /* umbrella cloth, left glove: these glow before a parryable hit */
   const bellM=Kit3D.mat(C.coat2);
-  const g=grp();
-  const body=grp(0,1.05,0,g);
-  const legs=[-0.15,0.15].map(x=>{const h=grp(x,1.05,0,g);limb(0.1,0.08,0.52,C.cloth,0,0,0,h);
-    const k=grp(0,-0.52,0,h);limb(0.08,0.06,0.48,C.cloth,0,0,0,k);box(0.16,0.1,0.32,0x111015,0,-0.48,0.06,k);return {h,k};});
-  /* long coat: skirt from the waist plus two tails that swing (the "bell" slot) */
-  cyl(0.27,0.48,0.95,8,M(C.coat,{side:THREE.DoubleSide}),0,-0.42,0,body,true);
-  const bellG=grp(0,0.0,-0.18,body);bellG.rotation.x=-0.45;
-  [-0.14,0.14].forEach(x=>box(0.2,0.9,0.05,C.coat2,x,-0.45,0,bellG));
-  const chest=grp(0,0.15,0,body);chest.rotation.x=0.07;
-  cyl(0.3,0.25,0.72,8,C.coat,0,0.36,0,chest).scale.z=0.72;
-  box(0.05,0.5,0.02,C.trim,0,0.38,0.19,chest);
-  [0.2,0.36,0.52].forEach(y=>box(0.05,0.05,0.03,C.brass,0.07,y,0.2,chest));
-  /* high collar and a short cape */
-  cyl(0.24,0.4,0.3,8,M(C.coat2,{side:THREE.DoubleSide}),0,0.78,0,chest,true).scale.z=0.85;
-  cyl(0.33,0.46,0.42,8,M(C.coat2,{side:THREE.DoubleSide}),0,0.56,-0.02,chest,true).scale.z=0.8;
-  const head=grp(0,0.9,0.02,chest);
-  box(0.2,0.26,0.2,C.skin,0,0.02,0,head);
-  box(0.21,0.1,0.21,0x2a2830,0,-0.08,0.005,head);   /* scarf over the mouth */
-  const eyes=[-0.05,0.05].map(x=>box(0.045,0.025,0.02,eyeM,x,0.06,0.105,head));
-  cyl(0.36,0.36,0.03,10,C.hat,0,0.16,0,head);
-  cyl(0.14,0.15,0.38,9,C.hat,0,0.35,0,head);
-  box(0.29,0.04,0.29,0x3a2a4a,0,0.2,0,head).scale.set(1,1,1);
-  const arm=(s,glove)=>{const sh=grp(0.33*s,0.64,0,chest);sh.rotation.order="YXZ";
-    limb(0.075,0.065,0.42,C.coat,0,0,0,sh);const el=grp(0,-0.42,0,sh);limb(0.065,0.05,0.38,C.coat,0,0,0,el);
-    const hand=grp(0,-0.4,0,el);box(0.09,0.1,0.09,glove,0,0,0,hand);return {sh,el,hand,tip:null};};
+  const g=grp(),strips=[];
+  /* a torn strip of cloth that hangs from its top edge; drift() moves it */
+  const strip=(w,len,col,x,y,z,ry,out,parent)=>{const p=grp(x,y,z,parent);p.rotation.y=ry;const m=box(w,len,0.025,col,0,-len/2,0,p);
+    strips.push({p,out,ph:Math.random()*6.3,len});return p;};
+  const body=grp(0,1.3,0,g);
+  const legs=[-0.13,0.13].map(x=>{const h=grp(x,1.3,0,g);limb(0.085,0.065,0.66,C.cloth,0,0,0,h);
+    const k=grp(0,-0.66,0,h);limb(0.065,0.05,0.6,C.cloth,0,0,0,k);box(0.14,0.09,0.34,0x0c0b10,0,-0.6,0.07,k);return {h,k};});
+  /* long coat: a short skirt, then torn strips all round it down past the knees */
+  cyl(0.22,0.36,0.5,8,M(C.coat,{side:THREE.DoubleSide}),0,-0.22,0,body,true);
+  for(let i=0;i<11;i++){const a=i/11*Math.PI*2,len=0.55+((i*37)%5)*0.11;
+    strip(0.2,len,i%2?C.coat:C.coat2,Math.sin(a)*0.34,-0.44,Math.cos(a)*0.34,a+Math.PI,0.18,body);}
+  const bellG=grp(0,0.0,-0.2,body);bellG.rotation.x=-0.45;   /* two long tails behind */
+  [-0.12,0.12].forEach(x=>box(0.17,1.05,0.04,C.coat2,x,-0.52,0,bellG));
+  const chest=grp(0,0.12,0,body);
+  cyl(0.26,0.2,0.86,8,C.coat,0,0.43,0,chest).scale.z=0.7;
+  box(0.04,0.6,0.02,C.trim,0,0.45,0.16,chest);
+  [0.25,0.42,0.59].forEach(y=>box(0.04,0.04,0.03,C.brass,0.06,y,0.17,chest));
+  /* high collar, and a ragged cape in strips across the back */
+  cyl(0.2,0.36,0.34,8,M(C.coat2,{side:THREE.DoubleSide}),0,0.92,0,chest,true).scale.z=0.85;
+  for(let i=0;i<7;i++){const x=(i-3)*0.1,len=0.9+((i*29)%4)*0.13;strip(0.14,len,i%2?C.coat2:0x2a2834,x,0.86,-0.2-Math.abs(x)*0.1,0,0.22,chest);}
+  /* a long neck leaning forward, the head tipped back up to look ahead: a hunch */
+  const neck=grp(0,0.98,0.05,chest);neck.rotation.x=-0.35;
+  const head=grp(0,0.06,0.04,neck);
+  box(0.19,0.27,0.19,C.shade,0,0.02,0,head);   /* the face is only shadow */
+  const eyes=[-0.05,0.05].map(x=>box(0.04,0.022,0.02,eyeM,x,0.05,0.1,head));
+  cyl(0.44,0.44,0.03,10,C.hat,0,0.15,0.02,head);   /* wide brim, low over the face */
+  cyl(0.13,0.15,0.46,9,C.hat,0,0.39,0,head);
+  box(0.27,0.04,0.27,0x2e2238,0,0.19,0,head);
+  const arm=(s,glove)=>{const sh=grp(0.29*s,0.8,0,chest);sh.rotation.order="YXZ";
+    limb(0.07,0.06,0.52,C.coat,0,0,0,sh);const el=grp(0,-0.52,0,sh);limb(0.06,0.045,0.5,C.coat,0,0,0,el);
+    const hand=grp(0,-0.5,0,el);box(0.08,0.11,0.08,glove,0,0,0,hand);
+    for(let f=-1;f<=1;f++)box(0.018,0.12,0.02,glove,f*0.025,-0.1,0.02,hand);   /* long thin fingers */
+    return {sh,el,hand,tip:null};};
   const armR=arm(-1,M(0x111015)),armL=arm(1,clawL);armL.tip=armL.hand;
   /* the umbrella: hooked handle in the fist, shaft and furled canopy pointing down along the arm */
   const um=grp(0,-0.02,0,armR.hand);
@@ -1977,19 +2021,24 @@ function buildDimitri(){
   const can=cone(1.0,0.5,8,M(0x3a3846,{side:THREE.DoubleSide}),0,0,0,shield);can.rotation.x=Math.PI;
   limb(0.018,0.018,0.8,0x2a2622,0,0.4,0,shield);
   const sh=shadow(0.7);g.add(sh);
-  return {g,body,legs,chest,head,eyes,antlers:[],bellG,armR,armL,clawR,clawL,eyeM,bellM,um,shield,shadowMat:sh.material,
-    hipY:1.05,byS:0.6,chestOff:-0.38,legBase:[0,0]};
+  return {g,body,legs,chest,head,eyes,antlers:[],bellG,armR,armL,clawR,clawL,eyeM,bellM,um,shield,strips,shadowMat:sh.material,
+    hipY:1.3,byS:0.7,chestOff:-0.18,legBase:[0,0]};
 }
 const B_REST=()=>({chest:0.45,twist:0,by:0,head:0,rx:-0.1,rz:-0.15,re:-0.3,lx:-0.1,lz:0.15,le:-0.3});
 let BP=B_REST();
 function poseBoss(T,k){
   const B=G.boss;lerpPose(BP,T,k);applyRig(B.m,BP,B.walk,B.walking);}
 function applyRig(m,Q,walk,walking){
-  const ch=Q.chest+m.chestOff,by=Q.by*m.byS;
-  m.chest.rotation.x=ch;m.body.rotation.y=Q.twist;m.body.position.y=m.hipY+by;m.head.rotation.x=Q.head;
-  m.armR.sh.rotation.x=Q.rx-ch;m.armR.sh.rotation.z=Q.rz;m.armR.el.rotation.x=Q.re;
-  m.armL.sh.rotation.x=Q.lx-ch;m.armL.sh.rotation.z=Q.lz;m.armL.el.rotation.x=Q.le;
+  const ch=Q.chest+m.chestOff,by=Q.by*m.byS,L=m.lag||(m.lag={});
+  /* follow-through: forearms trail the shoulders, the head lags the chest, the body sways after a twist */
+  const dR=trail_(L,"rx",Q.rx,0.28),dL=trail_(L,"lx",Q.lx,0.28),dC=trail_(L,"ch",Q.chest,0.2),dT=trail_(L,"tw",Q.twist,0.18);
+  m.chest.rotation.x=ch;m.chest.rotation.z=clamp(dT*0.15,-0.08,0.08);m.body.rotation.y=Q.twist;m.body.position.y=m.hipY+by;m.head.rotation.x=Q.head+clamp(dC*0.45,-0.3,0.3);
+  m.armR.sh.rotation.x=Q.rx-ch;m.armR.sh.rotation.z=Q.rz;m.armR.el.rotation.x=Q.re+clamp(dR*0.35,-0.5,0.5);
+  m.armL.sh.rotation.x=Q.lx-ch;m.armL.sh.rotation.z=Q.lz;m.armL.el.rotation.x=Q.le+clamp(dL*0.35,-0.5,0.5);
   const c=clamp(-Q.by/0.8,0,1),sw=Math.sin(walk)*(walking?0.55:0);
+  /* loose cloth drifts in the wind and swings out with movement */
+  if(m.strips){const t=G.clock||0,sw=walking?0.25:0;m.strips.forEach(S=>{S.p.rotation.x=S.out*0.6+Math.sin(t*1.4+S.ph)*0.09+Math.sin(t*3.1+S.ph*2)*0.04+sw*Math.abs(Math.sin(walk));
+    S.p.rotation.z=Math.sin(t*1.1+S.ph*1.7)*0.07;});}
   m.legs.forEach((L,i)=>{L.h.position.y=m.hipY+Math.min(0,by)*0.75;L.h.rotation.x=m.legBase[0]-c*0.7+(i?-sw:sw);L.k.rotation.x=m.legBase[1]+c*1.0+Math.max(0,i?sw:-sw)*0.5;});
 }
 
@@ -2110,6 +2159,7 @@ function tick(dt){
   /* slow motion on the stab, and slower still on the rip */
   const ct=P.state==="crit"?P.t:-1,sdt=ct>0.88&&ct<1.3?dt*0.3:ct>0.28&&ct<0.4?dt*0.5:dt;
   if(G.running&&!G.over&&!G.final)G.time+=sdt;
+  G.fdt=sdt;
   player(sdt);boss(sdt);updFx(sdt);camera(dt);hud();
 }
 
@@ -2195,7 +2245,7 @@ function player(dt){
   if(G.running)tryAction();
   const A=ACT[P.state];P.t+=dt;const t=P.t;
   const ox=P.x,oz=P.z;
-  let sp=0,dirA=P.a,k=0.75,trail=false;
+  let sp=0,dirA=P.a,k=0.6,trail=false;
   switch(P.state){
     case "move":{const md=G.running?moveDir():null;
       if(md){const want=Math.atan2(md[0],md[1]);P.a+=wrapA(want-P.a)*Math.min(1,dt*14);sp=5.2;dirA=want;}
@@ -2326,7 +2376,11 @@ function parryHit(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null;
   const W=B.D.window||WINDOW;return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-W&&B.mt<=h.t+0.06)||null;}
 function parryOpen(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null;
   return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-WARN&&B.mt<=h.t+0.06)||null;}
-function setGlow(limb){const m=G.boss.m,on=0x8a6a20;
+/* two stages: a dim warning glow, then a bright one while pressing L now would parry
+   (the shot leaves the barrel ACT.gun.hit after the press, so the bright stage starts that much early) */
+function parryNow(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return false;
+  const W=B.D.window||WINDOW,lead=ACT.gun.hit;return B.move.hits.some((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-W-lead&&B.mt<=h.t+0.06-lead);}
+function setGlow(limb,bright){const m=G.boss.m,on=bright?0xe8b048:0x4a3612;
   m.clawR.emissive.setHex(limb==="R"||limb==="both"?on:0);m.clawL.emissive.setHex(limb==="L"||limb==="both"?on:0);}
 function bossStart(state,move){
   const B=G.boss;
@@ -2435,8 +2489,8 @@ function boss(dt){
       if(Tm<(mv.track||0))turn(B.phase>1?3.4:2.6);
       if(mv.step&&Tm>mv.step[0]&&Tm<mv.step[1]){B.x+=Math.sin(B.a)*mv.step[2]*dt/sl;B.z+=Math.cos(B.a)*mv.step[2]*dt/sl;}
       /* glowing claws while the pistol window is open */
-      const po=parryOpen();setGlow(po?po.limb:null);
-      T=movePose(mv,Tm);k=0.7;
+      const po=parryOpen();setGlow(po?po.limb:null,po&&parryNow());
+      T=movePose(mv,Tm);k=0.55;
       if(mv.leap){const L=mv.leap;
         if(Tm<L.from){B.leapTo=null;}
         else if(Tm<L.to){if(!B.leapTo){const lx=clamp(P.x,-12,12),lz=clamp(P.z,-12,12);B.leapTo=[lx,lz];B.leapFrom=[B.x,B.z];showMark(lx,lz,true);}
@@ -2671,7 +2725,7 @@ function startCut(D){
 }
 function once(key,fn){if(!G.cut.fired[key]){G.cut.fired[key]=true;fn();}}
 function cutTick(dt){
-  const C=G.cut,I=C.I,c=G.stage.camera;C.t+=dt;G.cw=1;
+  const C=G.cut,I=C.I,c=G.stage.camera;C.t+=dt;G.cw=1;G.fdt=dt;
   if(I.final){if(C.skip&&C.t>0.4)C.out=C.out??0;C.skip=false;
     if(C.out!=null)C.out+=dt*2;
     if(C.t>=I.dur||C.out>=1.2){finishEnd();return;}}
@@ -2755,9 +2809,9 @@ function dimitriIntro(t,dt){
   m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;
   poseBoss(T,t<0.05?1:0.35);
   /* cameras: behind the hunter (tilted one way), then close on Dimitri (tilted the other way) */
-  if(t<4.4)return {pos:[1.2,1.0,P.z+3.2],look:[0,1.6,-4],fov:48,roll:0.16};
+  if(t<4.4)return {pos:[1.2,1.0,P.z+3.2],look:[0,1.9,-4],fov:48,roll:0.16};
   const k=ease((t-4.4)/3.8);
-  return {pos:[lerp(3.6,2.6,k),lerp(1.2,1.35,k),lerp(-0.4,0.2,k)],look:[0,1.55,-4],fov:lerp(46,40,k),roll:-0.17};
+  return {pos:[lerp(3.8,2.8,k),lerp(1.3,1.55,k),lerp(-0.4,0.2,k)],look:[0,1.95,-4],fov:lerp(48,42,k),roll:-0.17};
 }
 
 /* ---------- camera: angled overhead, follows you, pulls back to fit the beast;
@@ -2822,68 +2876,100 @@ function walkAway(t,from,dt){   /* turn around, then walk off slowly; returns tr
   if(w&&Math.floor(P.walk/Math.PI)!==Math.floor((P.walk-dt*8.25)/Math.PI))sfx("foot");
   huntAt(HT,0.3);return true;}
 
-/* Bell Warden, "Silence": the cleaver goes into the bell; it sinks back into the statue it pretended to be */
+/* Bell Warden, "Silence": the cleaver goes into the bell; it grabs the blade and pushes back;
+   the hunter drives it home with both hands; it sinks back into the statue it pretended to be */
 function wardenFinale(t,dt){
-  const B=G.boss,m=B.m;
-  if(!walkAway(t,3.8,dt)){const HT=H_REST();
-    HT.rx=kf(t,[[0,-0.1],[0.7,0.9],[0.9,-1.45,"in"],[3.1,-1.35],[3.3,-0.6,"in"],[3.8,-0.1]]);
-    HT.wr=kf(t,[[0,0.5],[0.7,0.2],[0.9,1.5,"in"],[3.1,1.5],[3.8,0.5]]);
-    HT.re=kf(t,[[0,-0.35],[0.7,-1.3],[0.9,-0.05,"in"],[3.1,-0.2],[3.8,-0.35]]);
-    HT.twist=kf(t,[[0,0],[0.7,-0.5],[0.9,0.55,"in"],[3.1,0.45],[3.5,0]]);
-    HT.lean=kf(t,[[0,0],[0.7,-0.25],[0.9,0.5,"in"],[3.1,0.45],[3.5,0.05]]);
-    HT.by=kf(t,[[0,0],[0.7,-0.1],[0.9,-0.32],[3.1,-0.3],[3.5,0]]);HT.hl=kf(t,[[0.7,0],[0.9,-0.55],[3.1,-0.5],[3.5,0]]);
-    HT.lx=kf(t,[[0,0.1],[0.9,-0.6],[3.1,-0.6],[3.5,0.1]]);HT.hd=kf(t,[[0.9,0.25],[3.1,0.3],[3.5,0]]);
+  const B=G.boss,m=B.m,shk=t>1.3&&t<3.3?Math.sin(G.clock*38)*0.035:0;
+  /* pushed back a little while it fights, then steps in for the second drive */
+  if(t>1.4&&t<3.0)P.z+=0.22*dt;if(t>3.25&&t<3.6)P.z-=1.0*dt;
+  if(!walkAway(t,6.9,dt)){const HT=H_REST();
+    HT.rx=kf(t,[[0,-0.1],[0.7,0.9],[0.9,-1.45,"in"],[1.3,-1.4],[3.0,-1.15],[3.25,-1.0],[3.6,-1.6,"in"],[6.2,-1.5],[6.45,-0.6,"in"],[6.9,-0.1]])+shk;
+    HT.wr=kf(t,[[0,0.5],[0.7,0.2],[0.9,1.5,"in"],[6.2,1.5],[6.9,0.5]]);
+    HT.re=kf(t,[[0,-0.35],[0.7,-1.3],[0.9,-0.05,"in"],[3.0,-0.5],[3.25,-0.7],[3.6,0,"in"],[6.2,-0.2],[6.9,-0.35]]);
+    HT.twist=kf(t,[[0,0],[0.7,-0.5],[0.9,0.55,"in"],[1.3,0.45],[3.0,0.2],[3.6,0.1],[6.2,0.1],[6.6,0]]);
+    HT.lean=kf(t,[[0,0],[0.7,-0.25],[0.9,0.5,"in"],[1.3,0.3],[3.0,-0.15],[3.25,-0.2],[3.6,0.7,"in"],[6.2,0.6],[6.6,0.05]])+shk;
+    HT.by=kf(t,[[0,0],[0.7,-0.1],[0.9,-0.32],[3.0,-0.2],[3.6,-0.38],[6.2,-0.34],[6.6,0]]);HT.hl=kf(t,[[0.7,0],[0.9,-0.55],[3.0,-0.3],[3.6,-0.75],[6.2,-0.7],[6.6,0]]);
+    HT.hr=kf(t,[[1.3,0],[2.0,0.35],[3.0,0.4],[3.6,0.3],[6.6,0]]);
+    /* the left hand joins the right on the handle for the second drive */
+    HT.lx=kf(t,[[0,0.1],[0.9,-0.6],[3.0,-0.6],[3.3,-1.45],[6.2,-1.45],[6.6,0.1]]);HT.lz=kf(t,[[3.0,0],[3.3,-0.35],[6.2,-0.35],[6.6,0]]);HT.le=kf(t,[[3.0,-0.25],[3.3,-0.1],[6.2,-0.1],[6.6,-0.25]]);
+    HT.hd=kf(t,[[0.9,0.25],[1.3,0.1],[3.0,-0.1],[3.6,0.3],[6.2,0.3],[6.6,0]]);HT.coat=kf(t,[[3.3,0],[3.6,-0.4],[4.2,0]]);
     huntAt(HT,t<0.05?1:0.45);}
-  if(t>=0.9)once("stab",()=>{const v=new THREE.Vector3();m.bellG.getWorldPosition(v);
-    tone(150,0.7,"sine",0.08,90);noise(0.2,0.08);fx("spark",v.x,v.y,v.z,8);fx("ash",v.x,v.y,v.z,8);G.shake=0.14;});
-  if(t>=3.1)once("pull",()=>{sfx("slash");const v=new THREE.Vector3();m.bellG.getWorldPosition(v);fx("ash",v.x,v.y,v.z,6);});
-  /* the bell stops; the body sinks back down into the old statue crouch */
-  const T=bossRest(),j=t>0.9&&t<1.3?Math.sin((t-0.9)/0.4*Math.PI):0;
-  T.chest=kf(t,[[0,0.35],[0.9,0.35],[1.6,0.5],[2.6,1.35]])-0.35*j;T.by=kf(t,[[0,-0.95],[2.4,-0.95]])+0.15*j;
-  T.head=kf(t,[[0,-0.25],[0.9,-0.3],[1.6,0],[2.6,0.9]])-0.6*j;bothArms(T,kf(t,[[0,-0.15],[2.4,-0.05]])-0.5*j,kf(t,[[0,0.25],[2.4,0.25]])+0.4*j,-0.1);
-  m.bellG.rotation.x=t<0.9?-0.45+Math.sin(t*2.2)*0.12:lerp(m.bellG.rotation.x,-0.45,0.1);
-  /* the eyes go out, last to first, then it turns to stone */
-  m.eyes.forEach((e,i)=>{const off=t>2.0+(6-i)*0.14;if(off&&e.visible)tone(900-i*60,0.1,"sine",0.01,700);e.visible=!off;});
-  const q=ease(clamp((t-2.2)/1.4,0,1));if(q>0)B.fade.forEach((x,i)=>{x.color.copy(B.col0[i]).lerp(STONE,q);if(B.em0[i])x.emissive.copy(B.em0[i]).multiplyScalar(1-q);});
-  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;poseBoss(T,t<0.05?1:0.25);
-  if(t>=5.0)once("gone",()=>{sfx("win");banner("The hunt is over",B.D.gone,false,0);});
-  if(t>=6.0)once("toll",()=>{tone(196,3.2,"sine",0.025);tone(392,2.6,"sine",0.01);});
-  const fade=clamp((t-6.8)/1.2,0,1);
-  /* side close-up for the stab; then behind the statue, the hunter walking out through the gate */
-  if(t<3.8){const k=ease(t/3.8);return {pos:[lerp(3.4,2.7,k),lerp(1.4,1.6,k),lerp(-1.4,-1.9,k)],look:[0,1.3,-2.6],fov:42,roll:0.05,fade};}
-  const k=ease(clamp((t-3.8)/4.6,0,1));
+  const bellAt=()=>{const v=new THREE.Vector3();m.bellG.children[1].getWorldPosition(v);return v;};
+  if(t>=0.9)once("stab",()=>{const v=bellAt();tone(150,0.7,"sine",0.08,90);noise(0.2,0.08);fx("spark",v.x,v.y,v.z,8);fx("ash",v.x,v.y,v.z,8);G.shake=0.14;});
+  if(t>=1.3)once("grab",()=>{sfx("roar");G.shake=0.12;tone(98,1.8,"sine",0.05,80);});
+  if(t>=2.2)once("ring",()=>{tone(196,0.9,"sine",0.04,186);});   /* a choked half-ring from the bell */
+  if(t>=3.6)once("drive",()=>{const v=bellAt();sfx("crit");fx("ash",v.x,v.y,v.z,14);fx("spark",v.x,v.y,v.z,10);shock(B.x,B.z,2.6,0x4a5a6a);G.shake=0.3;});
+  if(t>=6.2)once("pull",()=>{sfx("slash");const v=bellAt();fx("ash",v.x,v.y,v.z,6);});
+  /* kneeling up, then lunging at the hunter, grabbing at the blade, then thrown down by the drive and sinking into the crouch */
+  const T=bossRest(),j=t>0.9&&t<1.3?Math.sin((t-0.9)/0.4*Math.PI):0,j2=t>3.6&&t<4.0?Math.sin((t-3.6)/0.4*Math.PI):0;
+  T.chest=kf(t,[[0,0.35],[0.9,0.35],[1.3,0.2],[1.6,0.05,"in"],[3.0,0.1],[3.6,0.15],[4.2,0.5],[5.2,1.35]])-0.35*j-0.4*j2+shk;
+  T.by=kf(t,[[0,-0.95],[1.3,-0.95],[1.6,-0.7],[3.0,-0.72],[3.6,-0.8],[5.2,-0.95]])+0.15*j+0.15*j2;
+  T.head=kf(t,[[0,-0.25],[0.9,-0.3],[1.6,-0.5],[3.0,-0.45],[3.6,-0.4],[4.2,0],[5.2,0.9]])-0.6*j-0.7*j2;
+  bothArms(T,kf(t,[[0,-0.15],[1.3,-0.3],[1.6,-0.8,"in"],[3.0,-0.75],[3.6,-0.8],[4.0,-0.3],[5.2,-0.05]])+shk,
+    kf(t,[[0,0.25],[1.3,0.6],[1.6,0.2],[3.0,0.25],[3.6,0.3],[4.0,0.8],[5.2,0.25]]),kf(t,[[1.3,-0.1],[1.6,-0.55],[3.0,-0.65],[3.6,-0.55],[4.2,-0.2],[5.2,-0.1]]));
+  m.bellG.rotation.x=t<0.9?-0.45+Math.sin(t*2.2)*0.12:lerp(m.bellG.rotation.x,-0.45+(t>2.2&&t<3.0?Math.sin(t*9)*0.08:0),0.1);
+  /* its eyes burn brighter while it fights, then go out, last to first; then it turns to stone */
+  if(t<3.6)m.eyeM.emissive.setHex(t>1.3?0x4aa6c0:0x2a6a7a);
+  m.eyes.forEach((e,i)=>{const off=t>5.0+(6-i)*0.14;if(off&&e.visible)tone(900-i*60,0.1,"sine",0.01,700);e.visible=!off;});
+  const q=ease(clamp((t-5.2)/1.4,0,1));if(q>0)B.fade.forEach((x,i)=>{x.color.copy(B.col0[i]).lerp(STONE,q);if(B.em0[i])x.emissive.copy(B.em0[i]).multiplyScalar(1-q);});
+  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;poseBoss(T,t<0.05?1:0.3);
+  if(t>=8.6)once("gone",()=>{sfx("win");banner("The hunt is over",B.D.gone,false,0);});
+  if(t>=9.6)once("toll",()=>{tone(196,3.2,"sine",0.025);tone(392,2.6,"sine",0.01);});
+  const fade=clamp((t-10.6)/1.2,0,1);
+  /* side close-up for the stab and the struggle; low on the far side for the drive; then behind the statue */
+  if(t<3.25){const k=ease(t/3.25);return {pos:[lerp(3.8,3.2,k),lerp(1.4,1.6,k),lerp(-1.4,-1.9,k)],look:[0,lerp(1.4,1.6,k),-2.8],fov:lerp(46,42,k),roll:0.05,fade};}
+  if(t<6.9){const k=ease((t-3.25)/3.65);return {pos:[lerp(-2.4,-2.9,k),lerp(0.9,1.2,k),lerp(-1.9,-1.4,k)],look:[0,lerp(1.5,1.1,k),-2.9],fov:40,roll:-0.07,fade};}
+  const k=ease(clamp((t-6.9)/5.3,0,1));
   return {pos:[lerp(-1.6,-1.2,k),lerp(2.0,2.6,k),lerp(-7.2,-6.6,k)],look:[0,1.1,lerp(-1,P.z,0.7)],fov:44,fade};
 }
 
-/* Dimitri, "Quick draw": he stands; both draw; the hunter is faster */
+/* Dimitri, "Quick draw": both draw; he knocks the first shot aside with the umbrella and lunges;
+   the hunter fires again, point blank. He tips his hat and is gone. */
 function dimitriFinale(t,dt){
   const B=G.boss,m=B.m;
-  if(!walkAway(t,5.4,dt)){const HT=H_REST(),aim=kf(t,[[1.5,0.1],[1.65,-1.6,"in"],[1.85,-1.6],[1.9,-2.2,"in"],[2.1,-1.6],[4.4,-1.6],[5.0,0.1]]);
-    HT.lx=aim;HT.le=-0.05;HT.twist=kf(t,[[1.5,0],[1.65,-0.45],[4.4,-0.4],[5.0,0]]);HT.rx=kf(t,[[1.5,-0.1],[1.65,0.3],[4.4,0.3],[5.0,-0.1]]);HT.coat=kf(t,[[1.5,0],[1.65,-0.3],[2.2,0]]);
-    HT.hd=kf(t,[[4.4,0],[5.0,0.25],[5.4,0.15]]);huntAt(HT,t<0.05?1:0.6);}
-  if(t>=1.9)once("shot",()=>{const v=new THREE.Vector3();P.m.muzzle.getWorldPosition(v);sfx("gun");fx("smoke",v.x,v.y,v.z,6);
-    fx("spark",B.x,1.6,B.z,6);fx("mist",B.x,1.6,B.z,4);m.um.visible=false;G.umb.visible=true;});
-  if(t>=2.25)once("clatter",()=>{tone(700,0.15,"triangle",0.02,500);noise(0.12,0.05);});
-  /* he rises, waits, draws a hair late; the shot rocks him; he tips his hat, kneels and is gone */
-  const T=bossRest(),j=t>1.9&&t<2.5?Math.sin((t-1.9)/0.6*Math.PI):0;
-  T.chest=kf(t,[[0,1.3],[0.8,0.45],[3.6,0.5],[4.6,1.25]])-0.45*j;T.by=kf(t,[[0,-0.95],[0.8,0],[3.6,0],[4.6,-0.95]])+0.1*j;
-  T.head=kf(t,[[0,0.6],[0.8,0],[2.6,0.1],[3.0,0.3],[3.4,0.1],[4.6,0.6]])-0.6*j;
-  T.lx=kf(t,[[0.8,-0.1],[1.6,-0.1],[1.8,-1.4,"in"],[1.95,-1.5],[2.3,-0.3],[2.6,-0.3],[2.9,-2.6],[3.3,-2.6],[3.6,-0.2]]);
-  T.le=kf(t,[[1.8,-0.05],[2.3,-0.3],[2.9,-1.7],[3.3,-1.7],[3.6,-0.3]]);T.lz=0.3;T.twist=kf(t,[[1.6,0],[1.8,0.35],[2.3,0]]);
-  T.rx=kf(t,[[1.9,-0.1],[2.2,0.15],[4.6,-0.1]]);T.rz=-0.2;
-  if(t>=2.9)once("tip",()=>sfx("tip"));
-  const q=clamp((t-3.7)/1.1,0,1);if(q>0){B.fade.forEach(x=>{x.transparent=true;x.opacity=1-q;});
-    if(Math.random()<0.25&&q<1)fx("mist",B.x+(Math.random()-0.5)*0.8,0.6+Math.random()*1.6,B.z+(Math.random()-0.5)*0.8,1);}
+  if(!walkAway(t,6.6,dt)){const HT=H_REST(),aim=kf(t,[[1.5,0.1],[1.65,-1.6,"in"],[1.85,-1.6],[1.9,-2.2,"in"],[2.1,-1.6],[2.4,-1.3],[2.55,-1.55,"in"],[2.62,-2.1,"in"],[2.85,-1.55],[5.4,-1.55],[6.0,0.1]]);
+    HT.lx=aim;HT.le=kf(t,[[2.1,-0.05],[2.4,-0.5],[2.55,-0.6],[2.62,-0.1],[5.4,-0.05]]);
+    HT.twist=kf(t,[[1.5,0],[1.65,-0.45],[2.3,-0.4],[2.55,-0.9,"in"],[2.9,-0.75],[5.4,-0.4],[6.0,0]]);
+    HT.lean=kf(t,[[2.3,0.05],[2.55,-0.3,"in"],[2.9,-0.2],[3.6,0.05]]);HT.by=kf(t,[[2.3,0],[2.55,-0.18],[3.2,-0.1],[3.8,0]]);
+    HT.rx=kf(t,[[1.5,-0.1],[1.65,0.3],[5.4,0.3],[6.0,-0.1]]);HT.coat=kf(t,[[1.5,0],[1.65,-0.3],[2.2,0],[2.55,-0.45],[3.0,0]]);
+    HT.hl=kf(t,[[2.3,0],[2.55,0.4],[3.2,0.3],[3.8,0]]);HT.hr=kf(t,[[2.3,0],[2.55,-0.5],[3.2,-0.4],[3.8,0]]);
+    HT.hd=kf(t,[[5.4,0],[6.0,0.25],[6.4,0.15]]);
+    /* side-step out of the lunge */
+    if(t>2.4&&t<2.6)P.x+=2.2*dt;
+    huntAt(HT,t<0.05?1:0.6);}
+  const v=new THREE.Vector3();
+  if(t>=1.9)once("shot1",()=>{P.m.muzzle.getWorldPosition(v);sfx("gun");fx("smoke",v.x,v.y,v.z,6);});
+  if(t>=1.95)once("deflect",()=>{m.armR.tip.getWorldPosition(v);sfx("deflect");fx("spark",v.x,v.y,v.z,10);});
+  if(t>=2.62)once("shot2",()=>{P.m.muzzle.getWorldPosition(v);sfx("gun");noise(0.3,0.12);fx("smoke",v.x,v.y,v.z,8);
+    fx("spark",B.x,1.8,B.z,6);fx("mist",B.x,1.8,B.z,4);G.shake=0.18;m.um.visible=false;G.umb.visible=true;});
+  if(t>=2.95)once("clatter",()=>{tone(700,0.15,"triangle",0.02,500);noise(0.12,0.05);});
+  /* he rises, draws, flicks the umbrella across the bullet, and lunges; the second shot stops him dead */
+  if(t>2.05&&t<2.6)B.z+=5.6*dt;
+  const T=bossRest(),j=t>2.62&&t<3.2?Math.sin((t-2.62)/0.58*Math.PI):0;
+  const th={...T};thrustAnim(clamp(t-1.95,0,1.0),th,{hits:[{t:0.62}]});   /* the lunge reuses his thrust */
+  const lunging=t>1.95&&t<2.75;
+  T.chest=(lunging?th.chest:kf(t,[[0,1.3],[0.8,0.45],[1.95,0.45],[2.75,0.95],[3.3,0.6],[4.4,0.6],[5.6,1.25]]))-0.45*j;
+  T.by=(lunging?th.by:kf(t,[[0,-0.95],[0.8,0],[2.75,-0.4],[3.3,0],[4.4,0],[5.6,-0.95]]))+0.1*j;
+  T.head=kf(t,[[0,0.6],[0.8,0],[2.6,0.1],[3.5,0.1],[3.8,0.3],[4.2,0.1],[5.6,0.6]])-0.6*j;
+  T.rx=kf(t,[[1.7,-0.3],[1.85,-1.6,"in"],[1.95,-1.9],[2.05,-0.6]]);T.re=-0.25;T.rz=kf(t,[[1.7,-0.2],[1.95,0.4],[2.05,-0.1]]);
+  if(lunging&&t>2.05){T.rx=th.rx;T.re=th.re;T.twist=th.twist;}
+  if(t>2.75)T.rx=kf(t,[[2.75,-1.2],[3.2,-0.1]]);
+  T.lx=kf(t,[[0.8,-0.1],[1.6,-0.1],[1.8,-1.4,"in"],[1.95,-1.5],[2.3,-0.3],[3.4,-0.3],[3.7,-2.6],[4.1,-2.6],[4.4,-0.2]]);
+  T.le=kf(t,[[1.8,-0.05],[2.3,-0.3],[3.7,-1.7],[4.1,-1.7],[4.4,-0.3]]);T.lz=0.3;
+  if(t>=3.7)once("tip",()=>sfx("tip"));
+  const q=clamp((t-4.5)/1.1,0,1);if(q>0){B.fade.forEach(x=>{x.transparent=true;x.opacity=1-q;});
+    if(Math.random()<0.12&&q<1)fx("mist",B.x+(Math.random()-0.5)*0.8,0.6+Math.random()*1.8,B.z+0.5+Math.random()*0.5,1);}
   if(q>=1)m.g.visible=false;
-  if(t>=4.2&&G.rain)G.rain.frozen=false;
-  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;poseBoss(T,t<0.05?1:0.45);
-  if(t>=6.2)once("gone",()=>{sfx("win");banner("The hunt is over",B.D.gone,false,0);});
-  const fade=clamp((t-7.8)/1.2,0,1);
-  /* a wide, tilted standoff; after the shot, straight behind him, so he hides the hunter until he is gone */
-  if(t<1.95)return {pos:[lerp(6.4,5.8,t/1.95),1.3,-1.4],look:[0,1.45,-1.4],fov:46,roll:0.12,fade};
-  const k=ease(clamp((t-4.8)/4.6,0,1));
-  return {pos:[0,lerp(1.6,2.0,k),lerp(-7.4,-6.6,k)],look:[0,lerp(1.55,1.2,k),lerp(-2,P.z,k)],fov:lerp(38,42,k),fade};
+  if(t>=5.0&&G.rain)G.rain.frozen=false;
+  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;poseBoss(T,t<0.05?1:0.5);
+  if(t>=8.0)once("gone",()=>{sfx("win");banner("The hunt is over",B.D.gone,false,0);});
+  const fade=clamp((t-10.4)/1.2,0,1);
+  /* a wide, tilted standoff; after the second shot, straight behind him, so he hides the hunter until he is gone */
+  if(t<2.62)return {pos:[lerp(6.6,5.6,t/2.62),1.4,-1.0],look:[0,1.7,-1.0],fov:48,roll:0.12,fade};
+  const k=ease(clamp((t-5.6)/6,0,1));
+  return {pos:[0.15,lerp(1.95,2.2,k),lerp(B.z-3.4,B.z-2.8,k)],look:[0,lerp(1.9,1.2,k),lerp(B.z+2,P.z,k)],fov:lerp(38,44,k),fade};
 }
+
 function showResult(){
   const D=BOSSES[G.bossKey],s=P.stats,time=G.time;
   const score=Math.max(100,Math.round(1000-s.hits*60-Math.max(0,time-D.par)*3+s.parries*20+s.perfects*20));
@@ -2909,7 +2995,172 @@ function showResult(){
   scr.show("result");
 }
 
-window.HC={G,P,BOSSES,parryHit,shoot,bossStart,bossDown,THREE};   /* for testing in the console */
-scr.show("board");
+/* ---------- the field: title screen, the walk up to the notice board, and the board's surroundings ----------
+   One small 3D scene behind the title and the board. The title looks at the board from far down the path;
+   any key walks up to it in first person (the long walk once per session, a short one after each hunt),
+   then the camera stops exactly where the HTML board lines up with the 3D one, so the field frames it.
+   Small random things happen around it: crows, a far figure, fog, clouds over the moon, rain. Nothing flashes. */
+const FD={st:null,loop:null,mode:"off",t:0,walk:null,skip:false,ev:[],next:6,rainK:0,rainWant:0,fogK:0,fogWant:0,cloudX:-60};
+const BW=4.2;   /* board width in the scene; its height follows the HTML board */
+function fieldReady(){
+  if(FD.st)return true;if(!window.Kit3D)return false;
+  const st=FD.st=Kit3D.stage({mount:"#fieldStage",height:240,bg:0x0f1222,fog:[16,70],fov:50});
+  st.hemi.intensity=0.5;st.hemi.color.setHex(0x9aa6d8);st.hemi.groundColor.setHex(0x2a2620);st.sun.intensity=0.4;st.sun.color.setHex(0xaab4e0);st.sun.position.set(-6,10,-8);
+  st.camera.far=420;st.camera.updateProjectionMatrix();   /* the sky and hills sit far away */
+  buildField(st.scene);layoutBoard();
+  window.addEventListener("resize",()=>{if(FD.mode==="menu")layoutBoard();});
+  window.addEventListener("scroll",()=>{if(FD.mode==="menu")layoutBoard();},{passive:true});
+  return true;}
+function buildField(scene){
+  const F=FD.f={};
+  /* rolling ground, flat along the path */
+  const gt=Kit3D.tex(16,(g,n,r)=>{g.fillStyle="#1d241e";g.fillRect(0,0,n,n);for(let i=0;i<40;i++){g.fillStyle=["#26302a","#18201a","#2b3326","#202a22"][Math.floor(r()*4)];g.fillRect(Math.floor(r()*n),Math.floor(r()*n),1,2);}},41);
+  gt.repeat.set(40,40);
+  const gg=new THREE.PlaneGeometry(220,220,44,44),gp=gg.attributes.position;
+  for(let i=0;i<gp.count;i++){const x=gp.getX(i),y=gp.getY(i),far=clamp((Math.abs(x)-4)/30,0,1)+clamp((-y-20)/60,0,1);
+    gp.setZ(i,(Math.sin(x*0.13)*Math.cos(y*0.09)*2.2+Math.sin(x*0.05+y*0.04)*3)*far*1.4);}
+  gg.computeVertexNormals();
+  const ground=new THREE.Mesh(gg,Kit3D.mat(0xffffff,{map:gt}));ground.rotation.x=-Math.PI/2;scene.add(ground);
+  /* the mud path up to the board */
+  const pth=new THREE.Mesh(new THREE.PlaneGeometry(1.8,44),Kit3D.mat(0x2b241d));pth.rotation.x=-Math.PI/2;pth.position.set(0,0.02,22);scene.add(pth);
+  /* the notice board: two posts, a plank face, a frame, a little roof, a lantern on a hook */
+  const b=F.board=grp(0,0,0,scene);
+  F.posts=[-1,1].map(s=>box(0.2,1,0.2,0x2a1d14,s*(BW/2+0.05),0.5,0,b));
+  F.face=box(BW,1,0.12,0x3e2c1e,0,0,0,b);
+  F.frame=[box(BW+0.34,0.16,0.2,0x24170e,0,0,0.02,b),box(BW+0.34,0.16,0.2,0x24170e,0,0,0.02,b),box(0.16,1,0.2,0x24170e,0,0,0.02,b),box(0.16,1,0.2,0x24170e,0,0,0.02,b)];
+  F.roof=grp(0,0,0,b);[-1,1].forEach(s=>{const r=box(BW/2+0.45,0.08,0.8,0x1e1813,s*(BW/4+0.2),0.22,0.1,F.roof);r.rotation.z=-s*0.32;});
+  /* papers on the face, seen while walking up (the HTML posters cover them at the end) */
+  F.papers=grp(0,0,0.07,b);[[-1.3,0.25,0.85,1.1,-0.06],[0,0.18,0.95,1.25,0.04],[1.3,0.3,0.8,1.0,0.08],[-0.6,-0.6,0.5,0.45,0.1],[0.9,-0.55,0.55,0.4,-0.1]].forEach(([x,y,w,h,r])=>{
+    const m=box(w,h,0.01,0xcdb88a,x,y,0,F.papers);m.rotation.z=r;});
+  const lan=F.lantern=grp(BW/2+0.05,0,0.35,b);box(0.04,0.3,0.04,0x15110d,0,0.15,-0.1,lan);
+  F.lanGlass=box(0.2,0.28,0.2,Kit3D.mat(0xffc670,{emissive:0x8a5a1a}),0,-0.1,0,lan);box(0.24,0.05,0.24,0x15110d,0,0.06,0,lan);
+  F.lamp=new THREE.PointLight(0xffb060,1.1,9);F.lamp.position.set(0,-0.1,0.2);lan.add(F.lamp);
+  /* broken fence along the path, dead trees, far hills, a spire, the moon and stars */
+  for(let z=3;z<34;z+=2.6){[-1,1].forEach(s=>{if(Math.sin(z*7+s)>0.75)return;const p=box(0.12,0.9+Math.sin(z*3)*0.2,0.12,0x2a221a,s*2.2,0.45,z,scene);p.rotation.z=Math.sin(z*5+s)*0.12;
+    if(Math.sin(z*11+s)>-0.2)box(0.06,0.08,2.4,0x2a221a,s*2.2,0.65,z+1.3,scene).rotation.x=Math.sin(z)*0.1;});}
+  const tree=(x,z,h,r)=>{const t=grp(x,0,z,scene);t.rotation.y=r;limb(0.12,0.2,h,0x17141a,0,0,0,t).rotation.x=Math.PI;
+    [[0.7,0.5,-0.8],[0.55,-0.6,0.9],[0.8,0.3,0.6]].forEach(([y,a,c],i)=>{const br=grp(0,h*y,0,t);br.rotation.set(0,i*2.1,a);limb(0.03,0.08,h*0.45,0x17141a,0,0,0,br).rotation.x=Math.PI+c*0.3;});};
+  [[-7,-4,4.6,0.3],[9,-9,5.4,1],[-14,-18,6,2],[16,-22,5,0.5],[-5,14,3.8,1.4],[7.5,9,4.2,2.4],[-20,-35,7,0],[22,-40,6,1]].forEach(a=>tree(...a));
+  [[-60,-90,30,16],[10,-110,40,22],[70,-95,32,14],[-110,-60,40,18]].forEach(([x,z,r,h])=>{const c=cone(r,h,6,0x151826,x,h/2-2,z,scene);});
+  const sp=grp(26,0,-78,scene);box(4,14,4,0x14161f,0,7,0,sp);cone(3,12,4,0x10121a,0,20,0,sp).rotation.y=Math.PI/4;
+  const moon=F.moon=new THREE.Mesh(new THREE.CircleGeometry(7,20),Kit3D.basic(0xe8e4cf));moon.material.fog=false;moon.position.set(-80,24,-120);scene.add(moon);
+  /* a faint glow along the horizon, so the hills and trees stand out against the sky */
+  const hc=document.createElement("canvas");hc.width=2;hc.height=64;const hx=hc.getContext("2d"),hg=hx.createLinearGradient(0,0,0,64);
+  hg.addColorStop(0,"#0f1222");hg.addColorStop(0.62,"#1e2440");hg.addColorStop(0.8,"#2c2f48");hg.addColorStop(1,"#1a1d2c");hx.fillStyle=hg;hx.fillRect(0,0,2,64);
+  const sky=new THREE.Mesh(new THREE.PlaneGeometry(900,190,32,8),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(hc),fog:false,depthWrite:false}));sky.position.set(0,55,-190);scene.add(sky);
+  const sg=new THREE.BufferGeometry(),sv=[];for(let i=0;i<260;i++){const a=Math.random()*TAU,e=0.15+Math.random()*1.2;sv.push(Math.cos(a)*150*Math.cos(e),15+Math.sin(e)*120,Math.sin(a)*150*Math.cos(e)-20);}
+  sg.setAttribute("position",new THREE.Float32BufferAttribute(sv,3));const stars=new THREE.Points(sg,new THREE.PointsMaterial({color:0xbfc4d8,size:1,sizeAttenuation:false,fog:false}));scene.add(stars);
+  /* clouds that drift across the moon */
+  F.clouds=[0,1,2].map(i=>{const c=new THREE.Mesh(new THREE.PlaneGeometry(26,7),Kit3D.basic(0x1a1d2c,{transparent:true}));c.material.opacity=0.92;c.material.fog=false;
+    c.position.set(-200,24+i*3,-118+i);scene.add(c);return c;});
+  /* low fog banks that roll across the field */
+  F.fogs=[0,1,2,3].map(i=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(30,3),Kit3D.basic(0x5a6378,{transparent:true}));m.material.opacity=0;m.material.depthWrite=false;m.material.side=THREE.DoubleSide;
+    m.position.set(-40,0.9,-6+i*7);scene.add(m);return m;});
+  /* rain */
+  const N=380,pos=new Float32Array(N*6),geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.BufferAttribute(pos,3));
+  F.drops=[];for(let i=0;i<N;i++)F.drops.push({x:(Math.random()-0.5)*30,y:Math.random()*14,z:Math.random()*40-10,v:15+Math.random()*6});
+  F.rain=new THREE.LineSegments(geo,new THREE.LineBasicMaterial({color:0x8a98b4,transparent:true,opacity:0}));F.rain.frustumCulled=false;F.rain.visible=false;scene.add(F.rain);F.rainPos=pos;
+  /* a crow, and a far-off figure */
+  const cr=F.crow=grp(0,0,0,scene);cr.visible=false;
+  box(0.16,0.14,0.32,0x0d0c10,0,0.12,0,cr);box(0.11,0.11,0.12,0x0d0c10,0,0.2,0.18,cr);cone(0.03,0.1,4,0x2a2622,0,0.2,0.27,cr).rotation.x=Math.PI/2;
+  box(0.1,0.03,0.2,0x0d0c10,0,0.1,-0.22,cr);
+  F.wings=[-1,1].map(s=>{const w=grp(s*0.08,0.16,0,cr);box(0.32,0.02,0.2,0x0d0c10,s*0.16,0,0,w);return w;});
+  F.legs=[box(0.015,0.08,0.015,0x2a2622,-0.04,0.03,0,cr),box(0.015,0.08,0.015,0x2a2622,0.04,0.03,0,cr)];
+  const fg=F.fig=grp(-40,0,-34,scene);fg.visible=false;
+  limb(0.16,0.3,1.3,0x0b0b10,0,1.5,0,fg);limb(0.12,0.1,0.25,0x0b0b10,0,1.75,0,fg);cyl(0.38,0.38,0.03,8,0x0b0b10,0,1.78,0,fg);cyl(0.13,0.14,0.3,8,0x0b0b10,0,1.95,0,fg);
+  limb(0.05,0.04,1.25,0x0b0b10,0.3,1.4,0,fg).rotation.z=0.15;
+}
+/* the board's height follows the HTML board, so its frame sits just around it */
+function layoutBoard(){
+  const F=FD.f;if(!F)return;const wall=$("#wall");let BH=2.6,cam=null;
+  if(wall&&!$("#board").hidden){const r=wall.getBoundingClientRect(),W=innerWidth,H=innerHeight;
+    if(r.width>50){const wpp=BW/r.width;BH=r.height*wpp;
+      const c=FD.st.camera,d=wpp*H/(2*Math.tan(c.fov*Math.PI/360));
+      const cy=0.7+BH/2;cam={pos:[-(r.left+r.width/2-W/2)*wpp,cy+(r.top+r.height/2-H/2)*wpp,d],look:null};cam.look=[cam.pos[0],cam.pos[1],0];}}
+  const bot=0.7,top=bot+BH;
+  F.face.scale.y=BH;F.face.position.y=bot+BH/2;F.papers.position.y=bot+BH/2;F.papers.scale.setScalar(Math.min(1.4,BH/2.6));
+  F.frame[0].position.y=top+0.08;F.frame[1].position.y=bot-0.08;[2,3].forEach((i,j)=>{const f=F.frame[i];f.scale.y=BH+0.32;f.position.set((j?1:-1)*(BW/2+0.09),bot+BH/2,0.02);});
+  F.posts.forEach(p=>{p.scale.y=top+0.5;p.position.y=(top+0.5)/2;});F.roof.position.y=top+0.25;F.lantern.position.y=top-0.25;
+  FD.menuCam=cam||{pos:[0,bot+BH/2,6.2],look:[0,bot+BH/2,0]};
+  if(FD.mode==="menu")setFieldCam(FD.menuCam.pos,FD.menuCam.look);
+}
+function setFieldCam(pos,look){const c=FD.st.camera;c.position.set(pos[0],pos[1],pos[2]);c.lookAt(look[0],look[1],look[2]);}
+/* which screen shows the field, and what it does on arrival */
+function fieldShow(id,prev){
+  const on=id==="title"||id==="board";
+  $("#field").hidden=!on;document.body.classList.toggle("infield",on);
+  if(!on){if(FD.loop){FD.loop.stop();FD.loop=null;}FD.mode="off";document.body.classList.remove("walking");return;}
+  if(!fieldReady()){document.body.classList.remove("walking");return;}
+  if(!FD.loop)FD.loop=Kit3D.loop(FD.st,fieldTick);
+  if(id==="title"){FD.mode="title";FD.t=0;$("#title").classList.remove("out");document.body.classList.add("walking");return;}
+  /* the board: walk up to it */
+  const first=!sessionStorage.getItem("hc_walked");let from=null;
+  if(prev==="title")from=first?[0.25,1.65,30]:null;
+  else if(prev==="play"||prev==="result")from=[-0.2,1.65,12];
+  requestAnimationFrame(()=>{layoutBoard();
+    if(!from){FD.mode="menu";setFieldCam(FD.menuCam.pos,FD.menuCam.look);document.body.classList.remove("walking");return;}
+    try{sessionStorage.setItem("hc_walked","1");}catch(e){}
+    FD.mode="walk";FD.skip=false;FD.walk={from,t:0,dur:from[2]>20?6.5:2.8,step:0};document.body.classList.add("walking");});
+}
+function fieldTick(dt){
+  const F=FD.f,c=FD.st.camera,clock=(FD.clock=(FD.clock||0)+dt);FD.t+=dt;
+  if(FD.mode==="title"){const s=Math.sin(clock*0.15);setFieldCam([4.5+s*1.2,2.3+Math.sin(clock*0.11)*0.2,34],[0,1.7,0]);}
+  else if(FD.mode==="walk"){const W=FD.walk;W.t+=dt;if(FD.skip)W.t=W.dur;const M=FD.menuCam;
+    const k=Math.min(1,W.t/W.dur),e=ease(k),walkK=Math.min(1,W.t/(W.dur-0.9));
+    const z=lerp(W.from[2],M.pos[2],1-Math.pow(1-walkK,1.6)),ph=W.t*7.2,bob=(1-e)*Math.abs(Math.sin(ph))*0.06;
+    if(Math.floor(ph/Math.PI)!==W.step&&walkK<1){W.step=Math.floor(ph/Math.PI);sfx("foot");}
+    const x=lerp(W.from[0],M.pos[0],e),y=lerp(W.from[1],M.pos[1],e)+bob;
+    setFieldCam([x+Math.sin(ph*0.5)*0.03*(1-e),y,z],[lerp(0,M.look[0],e),lerp(1.6,M.look[1],e),0]);
+    if(k>=1){FD.mode="menu";layoutBoard();document.body.classList.remove("walking");}}
+  /* the lantern breathes, and now and then dips low and recovers (slowly; never a flash) */
+  FD.dip=Math.max(0,(FD.dip||0)-dt*0.8);if(Math.random()<dt*0.05)FD.dip=1;
+  const fl=0.85+Math.sin(clock*2.3)*0.07+Math.sin(clock*5.1)*0.04-Math.sin(Math.min(1,FD.dip)*Math.PI)*0.4;
+  F.lamp.intensity=1.1*fl;F.lanGlass.material.emissive.setRGB(0.54*fl,0.35*fl,0.1*fl);
+  F.lantern.rotation.z=Math.sin(clock*1.3)*0.06;
+  /* random happenings */
+  FD.next-=dt;if(FD.next<=0){FD.next=9+Math.random()*12;const pick=["crow","figure","fog","cloud","rain"].filter(k=>!FD.ev.some(e=>e.k===k));
+    if(pick.length)startFieldEvent(pick[Math.floor(Math.random()*pick.length)]);}
+  FD.ev=FD.ev.filter(e=>fieldEvent(e,dt));
+  FD.rainK+=(FD.rainWant-FD.rainK)*Math.min(1,dt*0.35);F.rain.visible=FD.rainK>0.02;F.rain.material.opacity=0.45*FD.rainK;
+  if(F.rain.visible){const p=FD.rainPos||F.rainPos,cp=c.position;F.drops.forEach((d,i)=>{d.y-=d.v*dt;d.x-=1.4*dt;
+    if(d.y<0){d.y=10+Math.random()*4;d.x=cp.x+(Math.random()-0.5)*30;d.z=cp.z-14+Math.random()*24;}
+    const o=i*6;p[o]=d.x;p[o+1]=d.y;p[o+2]=d.z;p[o+3]=d.x+0.08;p[o+4]=d.y+0.55;p[o+5]=d.z;});F.rain.geometry.attributes.position.needsUpdate=true;}
+  /* clouds over the moon dim the moonlight */
+  let cover=0;F.clouds.forEach((cl,i)=>{const dx=Math.abs(cl.position.x-F.moon.position.x);cover=Math.max(cover,clamp(1-(dx-8)/10,0,1));});
+  FD.st.sun.intensity=0.4*(1-cover*0.6);FD.st.hemi.intensity=0.5*(1-cover*0.3);
+  FD.fogK+=(FD.fogWant-FD.fogK)*Math.min(1,dt*0.3);FD.st.scene.fog.near=16-FD.fogK*10;FD.st.scene.fog.far=70-FD.fogK*38;
+}
+function startFieldEvent(k){
+  const F=FD.f,e={k,t:0};
+  if(k==="crow"){e.side=Math.random()<0.5?-1:1;e.dur=11+Math.random()*6;F.crow.visible=true;}
+  if(k==="figure"){e.dir=Math.random()<0.5?-1:1;e.dur=30;e.z=-26-Math.random()*14;F.fig.visible=true;}
+  if(k==="fog"){e.dur=24;FD.fogWant=1;F.fogs.forEach((m,i)=>{m.position.x=-34-i*9;});}
+  if(k==="cloud"){e.dur=26;F.clouds.forEach((c,i)=>c.position.x=-130-i*16);}
+  if(k==="rain"){e.dur=20+Math.random()*15;FD.rainWant=1;}
+  FD.ev.push(e);}
+function fieldEvent(e,dt){
+  const F=FD.f;e.t+=dt;const t=e.t,done=t>=e.dur;
+  if(e.k==="crow"){const cr=F.crow,perch=[e.side*1.2,F.roof.position.y+0.32,0.05],from=[e.side*14,7,-12],to=[-e.side*16,9,-6];
+    const flap=s=>F.wings.forEach((w,i)=>w.rotation.z=(i?-1:1)*Math.sin(t*s)*0.9);
+    if(t<2.4){const q=ease(t/2.4);cr.position.set(lerp(from[0],perch[0],q),lerp(from[1],perch[1],q)+Math.sin(q*Math.PI)*1.5,lerp(from[2],perch[2],q));cr.rotation.y=Math.atan2(perch[0]-from[0],perch[2]-from[2]);flap(18);}
+    else if(t<e.dur-2){cr.position.set(...perch);flap(0);F.wings.forEach(w=>w.rotation.z=0);cr.rotation.y=Math.sin(t*0.7)*1.2+(Math.floor(t/2.3)%2?0.6:-0.6);
+      if(Math.floor(t/3.1)!==e.c&&Math.random()<0.5){e.c=Math.floor(t/3.1);tone(560,0.12,"sawtooth",0.008,420);tone(520,0.14,"sawtooth",0.008,400,0.18);}}
+    else{const q=ease((t-(e.dur-2))/2);cr.position.set(lerp(perch[0],to[0],q),lerp(perch[1],to[1],q),lerp(perch[2],to[2],q));cr.rotation.y=Math.atan2(to[0]-perch[0],to[2]-perch[2]);flap(18);}
+    if(done)cr.visible=false;}
+  if(e.k==="figure"){const fg=F.fig,x=e.dir*(-36+t*2.4);fg.position.set(x,Math.sin(t*3.4)*0.03,e.z);fg.rotation.y=e.dir*Math.PI/2;fg.rotation.z=Math.sin(t*3.4)*0.03;if(done)fg.visible=false;}
+  if(e.k==="fog"){F.fogs.forEach((m,i)=>{m.position.x+=dt*(1.6+i*0.3);m.material.opacity=0.16*Math.sin(Math.min(1,t/e.dur)*Math.PI);});if(t>e.dur*0.6)FD.fogWant=0;}
+  if(e.k==="cloud"){F.clouds.forEach((c,i)=>c.position.x+=dt*(4.2+i*0.6));}
+  if(e.k==="rain"&&t>e.dur*0.75)FD.rainWant=0;
+  return !done;}
+$("#title").addEventListener("click",()=>{if(scr.current==="title")leaveTitle();});
+function leaveTitle(){$("#title").classList.add("out");try{Kit.sound.ac();}catch(e){}scr.show("board");}
+document.addEventListener("keydown",e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;
+  if(scr.current==="title"){if(["Shift","Control","Alt","Meta","Tab","CapsLock"].includes(e.key))return;e.preventDefault();leaveTitle();return;}
+  if(scr.current==="board"&&FD.mode==="walk"){e.preventDefault();FD.skip=true;}
+});
+
+window.HC={G,P,BOSSES,FD,startFieldEvent,parryHit,shoot,bossStart,bossDown,THREE};   /* for testing in the console */
+scr.show("title");
 })();
 </script>
