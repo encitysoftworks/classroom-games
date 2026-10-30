@@ -3030,8 +3030,8 @@ function buildField(scene){
   F.frame=[box(BW+0.34,0.16,0.2,0x24170e,0,0,0.02,b),box(BW+0.34,0.16,0.2,0x24170e,0,0,0.02,b),box(0.16,1,0.2,0x24170e,0,0,0.02,b),box(0.16,1,0.2,0x24170e,0,0,0.02,b)];
   F.roof=grp(0,0,0,b);[-1,1].forEach(s=>{const r=box(BW/2+0.45,0.08,0.8,0x1e1813,s*(BW/4+0.2),0.22,0.1,F.roof);r.rotation.z=-s*0.32;});
   /* papers on the face, seen while walking up (the HTML posters cover them at the end) */
-  F.papers=grp(0,0,0.07,b);[[-1.3,0.25,0.85,1.1,-0.06],[0,0.18,0.95,1.25,0.04],[1.3,0.3,0.8,1.0,0.08],[-0.6,-0.6,0.5,0.45,0.1],[0.9,-0.55,0.55,0.4,-0.1]].forEach(([x,y,w,h,r])=>{
-    const m=box(w,h,0.01,0xcdb88a,x,y,0,F.papers);m.rotation.z=r;});
+  F.papers=grp(0,0,0.1,b);   /* well clear of the planks: the low-res vertex snap would push them in */[[-1.3,0.25,0.85,1.1,-0.06],[0,0.18,0.95,1.25,0.04],[1.3,0.3,0.8,1.0,0.08],[-0.75,-0.72,0.5,0.42,0.1],[0.95,-0.68,0.55,0.38,-0.1]].forEach(([x,y,w,h,r],i)=>{
+    const m=box(w,h,0.01,0xcdb88a,x,y,i*0.02,F.papers);m.rotation.z=r;});   /* each sheet a little in front of the last, so overlaps never flicker */
   const lan=F.lantern=grp(BW/2+0.05,0,0.35,b);box(0.04,0.3,0.04,0x15110d,0,0.15,-0.1,lan);
   F.lanGlass=box(0.2,0.28,0.2,Kit3D.mat(0xffc670,{emissive:0x8a5a1a}),0,-0.1,0,lan);box(0.24,0.05,0.24,0x15110d,0,0.06,0,lan);
   F.lamp=new THREE.PointLight(0xffb060,1.1,9);F.lamp.position.set(0,-0.1,0.2);lan.add(F.lamp);
@@ -3078,7 +3078,7 @@ function layoutBoard(){
       const c=FD.st.camera,d=wpp*H/(2*Math.tan(c.fov*Math.PI/360));
       const cy=0.7+BH/2;cam={pos:[-(r.left+r.width/2-W/2)*wpp,cy+(r.top+r.height/2-H/2)*wpp,d],look:null};cam.look=[cam.pos[0],cam.pos[1],0];}}
   const bot=0.7,top=bot+BH;
-  F.face.scale.y=BH;F.face.position.y=bot+BH/2;F.papers.position.y=bot+BH/2;F.papers.scale.setScalar(Math.min(1.4,BH/2.6));
+  F.face.scale.y=BH;F.face.position.y=bot+BH/2;F.papers.position.y=bot+BH/2;F.papers.scale.set(1,Math.min(1.3,BH/2.6),1);   /* only taller, never wider than the board */
   F.frame[0].position.y=top+0.08;F.frame[1].position.y=bot-0.08;[2,3].forEach((i,j)=>{const f=F.frame[i];f.scale.y=BH+0.32;f.position.set((j?1:-1)*(BW/2+0.09),bot+BH/2,0.02);});
   F.posts.forEach(p=>{p.scale.y=top+0.5;p.position.y=(top+0.5)/2;});F.roof.position.y=top+0.25;F.lantern.position.y=top-0.25;
   FD.menuCam=cam||{pos:[0,bot+BH/2,6.2],look:[0,bot+BH/2,0]};
