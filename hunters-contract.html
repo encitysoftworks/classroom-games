@@ -1507,26 +1507,29 @@ const BOSSES={
   pilgrim:{
     name:["The Drowned Pilgrim","おぼれた巡礼者"],hp:620,par:170,danger:2,tier:["Something in the water","水の中の何か"],arena:"harbor",
     notice:{
-      tale:["A pilgrim walked into the sea long ago. Now, on foggy nights, something tall walks out of the harbor. It still wears the hat.","昔、ひとりの巡礼者が海へ歩いて入った。今、霧の夜に、背の高い何かが港から歩いて出てくる。まだその帽子をかぶっている。"],
+      tale:["A pilgrim walked into the sea long ago. Now, on foggy nights, something tall and thin walks out of the harbor. It still wears the hood.","昔、ひとりの巡礼者が海へ歩いて入った。今、霧の夜に、背が高くて細い何かが港から歩いて出てくる。まだそのフードをかぶっている。"],
       clues:[
-        ["When the water pulls back and its lantern eye opens wide, shoot!","水が引いて、ランタンの目が大きく開いたら、撃て！"],
-        ["When it lifts wreckage, shoot it out of its hand. It falls on its head!","がれきを持ち上げたら、撃ち落とせ。頭に落ちる！"],
-        ["Ripples in the water: something is coming up. Move!","水に波紋：何かが出てくる。動け！"]],
+        ["When a tentacle glows gold, shoot!","触手が金色に光ったら、撃て！"],
+        ["After a long lash, the tentacle is slow to come back. Get close and attack!","長くのびた触手は、もどるのがおそい。近づいて攻撃！"],
+        ["Ripples, red eyes or a deep sound: you cannot shoot that one. Dodge!","波紋、赤い目、低い音：それは撃てない。回避しろ！"]],
       reward:["Reward: 500 silver coins","報酬：銀貨500枚"]},
     journal:["The Drowned Pilgrim walked into the sea and kept walking. Now it can rest at the bottom. Nobody ever found its other shoe.","おぼれた巡礼者は海へ歩いて入り、そのまま歩きつづけた。今は海の底で休める。もう片方のくつは、だれも見つけなかった。"],
     phase2:["The tide turns.","潮が変わった。"],
     oath:["I will send it back to the deep.","わたしはそれを深い海へ帰すとちかう。"],
     gone:["The tide goes out.","潮が引いていく。"],
     tell:true,roarColor:[0x6ad0c0,0x1a4a44],ringSfx:"wave",
+    glide:true,rest:pilgrimRest,
+    /* phase 1: long lashes (gold = shoot), a spin if you hug it, and if you hurt it a lot it sinks and comes up behind you.
+       phase 2: tentacles under the ripples, a grab (red eyes, a deep sound: dodge it), and chains of 2-3 lashes with one gold */
     moves:{
-      slam:{dur:2.1,track:0.85,anim:slamAnim,hits:[{t:1.15,limb:"both",range:3.7,arc:110,dmg:22,parry:true,land:slamLand}],step:[0.95,1.15,3],weight:d=>d<4.8?3:0},
-      swipe:{dur:1.7,track:0.7,hits:[{t:0.9,limb:"R",range:3.9,arc:150,dmg:18}],step:[0.75,0.95,3],weight:d=>d<4.4?2:0},
-      grasp:{dur:1.7,track:0.7,hits:[{t:0.95,limb:"L",range:3.6,arc:120,dmg:20,parry:true}],step:[0.8,1.0,3.4],weight:d=>d<4.6?1.6:0},
-      tentacles:{gen:B=>({dur:B.phase>1?3.3:2.5,track:0.3,anim:reachAnim,run:tentRun,hits:[],
-        waves:B.phase>1?[{at:0.4,burst:1.45,n:4},{at:1.6,burst:2.6,n:2}]:[{at:0.45,burst:1.55,n:3}]}),weight:(d,ph)=>d>2.6?(ph>1?2.2:1.6):0.4},
-      debris:{gen:B=>{const th=B.phase>1?2.3:2.7;return {dur:th+0.9,track:th,anim:debrisAnim,run:debrisRun,hits:[],throwAt:th};},weight:d=>d>4.5?1.8:0.5},
-      surge:{gen:()=>({dur:2.8,track:0.2,anim:surgeAnim,run:surgeRun,hits:[]}),weight:d=>d>7?2.4:0},
-      wave:{dur:2.4,track:0.4,anim:waveAnim,hits:[{t:1.2,ring:true,dmg:18}],weight:(d,ph)=>ph>1?1.5:0}
+      lash:{dur:2.0,track:0.7,anim:lashAnim,hits:[{t:1.0,limb:"R",range:5.6,arc:30,dmg:20,parry:true}],weight:d=>d>2.8?3:0.8},
+      lashL:{dur:2.0,track:0.7,anim:lashAnim,hits:[{t:1.0,limb:"L",range:5.6,arc:30,dmg:20,parry:true}],weight:d=>d>2.8?2.4:0.6},
+      swipe:{dur:2.0,track:0.75,spin:{from:0.85,to:1.2},hits:[{t:1.05,limb:"both",range:3.3,arc:360,dmg:16}],weight:d=>d<3.2?2.4:0},
+      sink:{gen:()=>({dur:2.8,track:0.2,anim:surgeAnim,run:surgeRun,hits:[]}),weight:d=>G.boss.pres>=55?9:(d>10?1:0)},
+      tentacles:{gen:B=>({dur:3.3,track:0.3,anim:reachAnim,run:tentRun,hits:[],
+        waves:[{at:0.4,burst:1.45,n:4},{at:1.6,burst:2.6,n:2}]}),weight:(d,ph)=>ph>1?(d>2.6?2:0.6):0},
+      grab:{dur:2.7,track:1.1,anim:grabAnim,run:grabRun,hits:[],grabAt:1.3,weight:(d,ph)=>ph>1&&d<5.8?1.8:0},
+      chain:{gen:chainGen,weight:(d,ph)=>ph>1&&d<6?2.2:0}
     },
     build:buildPilgrim,down:pilgrimDown,
     finale:{dur:12,run:(t,dt)=>pilgrimFinale(t,dt),
@@ -1902,7 +1905,10 @@ $("#sheetwrap").onclick=e=>{if(e.target===$("#sheetwrap")&&SG.step<3)renderBoard
 const matCache={};
 const M=(c,o)=>{if(o)return Kit3D.mat(c,o);return matCache[c]||(matCache[c]=Kit3D.mat(c));};
 function box(w,h,d,c,x,y,z,parent){const m=Kit3D.mesh(new THREE.BoxGeometry(w,h,d),typeof c==="number"?M(c):c);m.position.set(x||0,y||0,z||0);if(parent)parent.add(m);return m;}
-function cyl(rt,rb,h,seg,c,x,y,z,parent,open){const m=Kit3D.mesh(new THREE.CylinderGeometry(rt,rb,h,seg,1,!!open),typeof c==="number"?M(c):c);m.position.set(x||0,y||0,z||0);if(parent)parent.add(m);return m;}
+/* SMOOTH: the bosses are built with rounder, smooth-shaded shapes (more sides, soft normals) instead of flat facets */
+let SMOOTH=0;
+const segs=(seg,r)=>SMOOTH?Math.max(seg,r>0.14?12:r>0.05?8:6):seg;
+function cyl(rt,rb,h,seg,c,x,y,z,parent,open){const m=Kit3D.mesh(new THREE.CylinderGeometry(rt,rb,h,segs(seg,Math.max(rt,rb)),1,!!open),typeof c==="number"?M(c):c,SMOOTH?false:undefined);m.position.set(x||0,y||0,z||0);if(parent)parent.add(m);return m;}
 function cone(r,h,seg,c,x,y,z,parent){return cyl(0,r,h,seg,c,x,y,z,parent);}
 function grp(x,y,z,parent){const g=new THREE.Group();g.position.set(x||0,y||0,z||0);if(parent)parent.add(g);return g;}
 function shadow(r){const m=new THREE.Mesh(new THREE.CircleGeometry(r,10),Kit3D.basic(0x000000,{transparent:true}));m.material.opacity=0.45;m.material.depthWrite=false;m.rotation.x=-Math.PI/2;m.position.y=0.02;return m;}
@@ -2058,94 +2064,104 @@ function updWater(dt){
   if(B&&B.D.tell){
     W.bt=(W.bt||0)-dt;if(W.bt<=0&&B.walking&&B.y>-0.2){W.bt=0.3;ripple(B.x,B.z,1.4,1);}
     if(B.m.shadowMat)B.m.shadowMat.opacity=B.y<-0.3?0:0.45;
-    pilgrimTell(B,dt);}
+    pilgrimUpdate(B,dt);}
   TENT.forEach(T=>tentStep(T,dt));
-  debrisStep(dt);
 }
 
 /* ---------- the Drowned Pilgrim ----------
-   A huge hunched pilgrim in sodden robes and a wide hat, seaweed and barnacles all over it. Under the hat there is
-   no face: a lantern hangs there with one great eye inside. Same joints as the Warden, so the same poses drive it.
-   Its parry tell is its own: the tide pulls back from around it and the lantern eye snaps open. */
-function buildPilgrim(){
-  const C={robe:0x3a4442,robe2:0x2b3432,wet:0x1d2524,skin:0x7d8c84,weed:0x2c4529,weed2:0x3a5a32,shell:0xcfc2a2,hat:0x262c2b,barn:0xb3ae9c,iron:0x2a2c2e,rust:0x5a3626};
-  const eyeM=Kit3D.mat(0xd8e0c8,{emissive:0x2a6a60});   /* the iris: teal at rest, gold when it is about to slam */
-  const clawR=Kit3D.mat(0x4a3d4e),clawL=Kit3D.mat(0x8a9890);
-  const bellM=Kit3D.mat(0x6a5a3a,{emissive:0x1a1408});   /* the lantern's brass */
-  const g=grp(),strips=[];
-  const body=grp(0,1.5,0,g);
-  const legs=[-0.32,0.32].map(x=>{const h=grp(x,1.5,0,g);limb(0.16,0.12,0.8,C.wet,0,0,0,h);
-    const k=grp(0,-0.78,0,h);limb(0.12,0.09,0.72,C.wet,0,0,0,k);box(0.26,0.12,0.42,0x141a19,0,-0.72,0.1,k);return {h,k};});
-  /* the robe: a heavy skirt to the water, its hem torn into strips that drift like weed (and a few that are tentacles) */
-  cyl(0.62,1.05,1.45,9,M(C.robe,{side:THREE.DoubleSide}),0,-0.62,0,body,true);
-  for(let i=0;i<14;i++){const a=i/14*TAU,tent=i%4===1,len=(tent?0.75:0.45)+((i*37)%4)*0.08;
-    const p=grp(Math.sin(a)*1.0,-1.32,Math.cos(a)*1.0,body);p.rotation.order="YXZ";p.rotation.y=a+Math.PI;
-    if(tent)limb(0.07,0.015,len,clawR,0,0,0,p,5);else tbox(0.24,0.03,0.2,0.03,len,i%3?C.robe2:C.weed,0,-len/2,0,p);
-    strips.push({p,out:0.15,ph:i*1.9,len});}
-  /* the anchor it drags on a chain: it swings like the Warden's bell (bellG) */
-  const bellG=grp(0.35,-0.3,-0.75,body);bellG.rotation.x=-0.45;
-  for(let i=0;i<5;i++)box(0.06,0.14,0.1,C.iron,0,-0.08-i*0.13,0,bellG).rotation.y=i%2?Math.PI/2:0;
-  const anc=grp(0,-0.75,0,bellG);box(0.08,0.7,0.08,C.rust,0,-0.35,0,anc);box(0.6,0.08,0.08,C.rust,0,-0.7,0,anc);
-  [-1,1].forEach(s=>{const f=box(0.08,0.26,0.08,C.rust,0.32*s,-0.6,0,anc);f.rotation.z=-0.5*s;});box(0.3,0.06,0.06,C.rust,0,-0.06,0,anc);
-  const chest=grp(0,0.2,0,body);
-  /* a hunched back with a hump, a sodden mantle, barnacles, weed hanging off the shoulders */
-  const tor=cyl(0.62,0.5,1.3,8,C.robe,0,0.65,0,chest);tor.scale.z=0.78;
-  cyl(0.5,0.62,0.6,7,C.robe2,0,1.1,-0.25,chest).scale.z=0.8;   /* hump */
-  cyl(0.48,0.95,0.7,9,M(C.robe2,{side:THREE.DoubleSide}),0,1.05,0,chest,true).scale.z=0.85;   /* mantle */
-  [[0.5,1.3,-0.2],[0.42,1.38,0.1],[-0.55,1.22,-0.3],[0.2,1.45,-0.4],[-0.3,1.4,-0.45],[0.6,1.05,-0.45]].forEach(([x,y,z],i)=>{
-    const b=cyl(0.06,0.09,0.08,5,C.barn,x,y,z,chest);b.rotation.set(z*1.5,0,-x*1.2);});
-  for(let i=0;i<9;i++){const a=(i/8-0.5)*3.6,len=0.4+((i*31)%4)*0.15;const p=grp(Math.sin(a)*0.8,1.18,Math.cos(a)*0.62,chest);p.rotation.order="YXZ";p.rotation.y=a+Math.PI;
-    tbox(0.07,0.02,0.12,0.02,len,i%2?C.weed:C.weed2,0,-len/2,0,p);strips.push({p,out:0.12,ph:i*2.7,len});}
-  const pad=grp(0,0,0,chest);
-  /* the head: a hood under a wide pilgrim's hat with a scallop shell, the lantern where a face should be */
-  const head=grp(0,1.42,0.32,chest);
-  tbox(0.42,0.46,0.3,0.36,0.5,C.wet,0,0.05,-0.05,head);   /* hood */
-  const hat=grp(0,0.36,-0.02,head);hat.rotation.x=-0.12;
-  const brim=cyl(0.85,0.85,0.04,12,C.hat,0,0,0,hat);brim.scale.z=0.92;
-  [-1,1].forEach(s=>{const d=cyl(0.5,0.5,0.035,8,C.hat,0.55*s,-0.08,0,hat);d.scale.set(0.6,1,1.5);d.rotation.z=0.35*s;});   /* the brim sags at the sides */
-  cyl(0.32,0.38,0.32,9,C.hat,0,0.17,0,hat);
-  const shell=grp(0,0.18,0.37,hat);for(let i=-2;i<=2;i++){const r=box(0.05,0.2,0.02,C.shell,i*0.035,0,0,shell);r.rotation.z=i*0.25;}box(0.08,0.05,0.025,C.shell,0,-0.1,0,shell);
-  for(let i=0;i<10;i++){const a=i/10*TAU+0.2,len=0.3+((i*17)%4)*0.14;const p=grp(Math.sin(a)*0.8,-0.02,Math.cos(a)*0.74,hat);p.rotation.order="YXZ";p.rotation.y=a+Math.PI;
-    tbox(0.06,0.015,0.09,0.015,len,i%3?C.weed:C.weed2,0,-len/2,0,p);strips.push({p,out:0.05,ph:i*1.3,len});}   /* weed off the brim */
-  /* the lantern: a cage on a hook, a great eye inside with heavy lids */
-  const lan=grp(0,-0.1,0.3,head);
-  box(0.36,0.05,0.36,bellM,0,0.24,0,lan);box(0.4,0.05,0.4,bellM,0,-0.24,0,lan);cone(0.22,0.14,4,bellM,0,0.33,0,lan).rotation.y=Math.PI/4;
-  [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([x,z])=>box(0.035,0.5,0.035,bellM,x*0.17,0,z*0.17,lan));
-  const glass=box(0.32,0.44,0.32,Kit3D.mat(0x9ab89a,{transparent:true,emissive:0x0a1a14}),0,0,0,lan);glass.material.opacity=0.25;glass.material.depthWrite=false;
-  box(0.2,0.2,0.2,0xcfd2bc,0,0,0,lan);   /* the eyeball */
-  const eye=box(0.12,0.12,0.04,eyeM,0,0,0.105,lan);box(0.05,0.07,0.02,0x0a0a0a,0,0,0.13,lan);   /* iris and slit pupil */
-  const lidU=grp(0,0.11,0.11,lan),lidL=grp(0,-0.11,0.11,lan);box(0.24,0.12,0.04,C.skin,0,-0.06,0,lidU);box(0.24,0.12,0.04,C.skin,0,0.06,0,lidL);
-  /* arms: very long; the right ends in a knot of tentacles, the left in long pale fingers */
-  const arm=(s,cm,tent)=>{const sh=grp(0.72*s,1.1,0,chest);sh.rotation.order="YXZ";
-    limb(0.19,0.13,1.0,C.robe,0,0,0,sh);cyl(0.22,0.26,0.3,7,C.robe2,0,-0.05,0,sh);
-    const el=grp(0,-0.98,0,sh);limb(0.13,0.09,1.0,tent?C.robe2:C.skin,0,0,0,el);
-    const hand=grp(0,-1.0,0,el);cyl(0.11,0.14,0.18,6,tent?cm:C.skin,0,0,0,hand);let tip=null;
-    for(let i=-1;i<=1;i++){const f=grp(i*0.08,-0.06,0.03,hand);f.rotation.z=i*0.22;limb(tent?0.05:0.035,0.03,tent?0.55:0.4,cm,0,0,0,f);
-      const f2=grp(0,tent?-0.55:-0.4,0,f);f2.rotation.x=-0.6;limb(0.03,0.006,tent?0.5:0.4,cm,0,0,0,f2);if(i===0)tip=grp(0,tent?-0.5:-0.4,0,f2);}
-    return {sh,el,hand,tip};};
-  const armR=arm(-1,clawR,true),armL=arm(1,clawL,false);
-  const sh=shadow(1.5);g.add(sh);
-  return {g,body,legs,chest,head,eyes:[eye],antlers:[],bellG,armR,armL,clawR,clawL,eyeM,bellM,strips,shadowMat:sh.material,
-    lan,lidU,lidL,glass,eyeOpen:0.35,hipY:1.5,byS:1,chestOff:0.05,legBase:[-0.2,0.45]};
+   At rest it is almost a line: a very tall, very thin hooded figure in a sodden robe, nothing in the hood but darkness,
+   two faint eyes, and the tips of a few tentacles curling out. Its arms are tentacles, hidden inside the robe; when it
+   attacks the robe splits open at the front and they whip out. In phase 2 a crown of tentacles unfolds from its back. */
+function buildPilgrim(){SMOOTH=1;
+  const C={robe:0x27302f,robe2:0x1e2625,robe3:0x34403d,weed:0x2c4529,dark:0x050707,flesh:0x4a3d4e,suck:0xb8a8a0};
+  const eyeM=Kit3D.mat(0x9fd8c8,{emissive:0x2a6a60});
+  const clawR=Kit3D.mat(C.flesh),clawL=Kit3D.mat(C.flesh);   /* the two tentacle arms: they glow gold before a parryable lash */
+  const bellM=Kit3D.mat(0x0c1010,{side:THREE.DoubleSide});   /* the inside of the robe (tinted when it roars) */
+  const tentM=Kit3D.mat(0x52445a,{emissive:0x140a16}),suck=M(C.suck);
+  const g=grp(),strips=[],tsegs=[];
+  const rag=(parent,x,y,z,a,w,len,col,out)=>{const p=grp(x,y,z,parent);p.rotation.order="YXZ";p.rotation.y=a;tbox(w*0.35,0.02,w,0.035,len,col,0,-len/2,0,p);strips.push({p,out,ph:strips.length*1.9,len});return p;};
+  /* a tentacle: a chain of tapering segments that curl (rx per segment) and sway (see pilgrimUpdate) */
+  const tent=(parent,n,len,r0,r1,mat,curl,sk)=>{let p=parent;const out=[];
+    for(let i=0;i<n;i++){const k=i/n,ra=lerp(r0,r1,k),rb=lerp(r0,r1,(i+1)/n),s=grp(0,i?-len:0,0,p);s.rotation.x=i?curl:0;
+      limb(ra,rb,len*1.04,mat,0,0,0,s,7);if(sk&&i%2===0)box(ra*0.7,ra*0.7,ra*0.5,suck,0,-len*0.5,ra*0.85,s);
+      out.push(s);tsegs.push({s,base:s.rotation.x,ph:tsegs.length*0.9,amp:0.05+k*0.12});p=s;}
+    return {segs:out,end:grp(0,-len,0,p)};};
+  const body=grp(0,1.6,0,g);
+  const legs=[-0.1,0.1].map(x=>{const h=grp(x,1.6,0,g),k=grp(0,-0.8,0,h);return {h,k};});   /* it glides: no legs show */
+  /* the lower robe: a long narrow column, a little flare where it meets the water, torn tatters and two tentacle tips */
+  lathe([[0.48,-1.62],[0.42,-1.45],[0.34,-0.95],[0.29,-0.35],[0.27,0.15]],14,C.robe,0,0,0,body);
+  for(let i=0;i<9;i++){const a=(i/9-0.5)*5.4+Math.PI,y=-0.6-((i*7)%3)*0.25;const f=tbox(0.03,0.03,0.04,0.03,0.9,C.robe3,Math.sin(a)*0.33-Math.sin(a)*(y+0.6)*0.08,y,Math.cos(a)*0.33-Math.cos(a)*(y+0.6)*0.08,body);f.rotation.y=a;}   /* fold ridges */
+  for(let i=0;i<12;i++){const a=i/12*TAU+0.2,len=0.25+((i*37)%4)*0.08;rag(body,Math.sin(a)*0.46,-1.5,Math.cos(a)*0.46,a+Math.PI,0.2,len,i%3?C.robe2:C.weed,0.25);}
+  [[0.6,0.2],[2.6,-0.3],[4.3,0.4]].forEach(([a,c])=>{const p=grp(Math.sin(a)*0.44,-1.45,Math.cos(a)*0.44,body);p.rotation.set(-0.6+c,a,0,"YXZ");tent(p,3,0.14,0.04,0.012,tentM,-0.45,false);});
+  /* a train of wet cloth dragging behind (bellG: it sways as it glides) */
+  const bellG=grp(0,-1.2,-0.32,body);bellG.rotation.x=-0.45;
+  tbox(0.3,0.02,0.36,0.03,0.6,C.robe2,0,-0.25,0,bellG);tbox(0.1,0.02,0.3,0.03,0.4,C.robe2,0,-0.7,0,bellG);
+  const chest=grp(0,0.12,0,body);
+  /* inside the robe: darkness and a coiled knot of tentacles (shows when the robe opens) */
+  const inner=grp(0,0,0,chest);cyl(0.2,0.24,1.4,10,bellM,0,0.7,-0.02,inner);
+  [[0.3,0.06,0.1],[0.55,-0.06,-0.1],[0.85,0.05,0.2],[1.1,-0.04,-0.15]].forEach(([y,x,r])=>{const t=Kit3D.mesh(new THREE.TorusGeometry(0.12,0.04,5,10,Math.PI*1.6),tentM,false);t.position.set(x,y,0.12);t.rotation.set(0.3,r,y*3);inner.add(t);});
+  /* the upper robe: two halves hinged at the back, so the front can split open */
+  const half=s=>{const h=grp(0,0,-0.24,chest);
+    lathe([[0.27,0.0],[0.26,0.6],[0.24,1.1],[0.19,1.42],[0.12,1.58]],8,M(C.robe,{side:THREE.DoubleSide}),0,0,0.24,h,s>0?0.03:Math.PI,Math.PI-0.03);
+    const e=tbox(0.03,0.03,0.025,0.025,1.5,C.robe3,0.035*s,0.75,0.5,h);e.rotation.x=0.05;   /* a heavy hem down the front edge */
+    for(let i=0;i<3;i++){const a=(0.35+i*0.5)*s,len=0.3+i*0.12;rag(h,Math.sin(a)*0.27,0.02,Math.cos(a)*0.27+0.24,a+Math.PI,0.16,len,C.robe2,0.15);}
+    return h;};
+  const robeL=half(1),robeR=half(-1);
+  /* the arms: long tentacles hanging inside the robe; the whole tentacle glows gold before a parryable lash */
+  const arm=(s,cm)=>{const sh=grp(0.11*s,1.25,0,chest);sh.rotation.order="YXZ";
+    const up=tent(sh,5,0.28,0.085,0.065,cm,0.0,true);
+    const el=grp(0,0,0,up.end);
+    const lo=tent(el,6,0.26,0.065,0.012,cm,-0.04,true);
+    const hand=grp(0,0,0,lo.end),tip=grp(0,-0.1,0,hand);
+    return {sh,el,hand,tip,lo:lo.segs};};
+  const armR=arm(-1,clawR),armL=arm(1,clawL);
+  /* the head: a deep hood, darkness inside, two faint eyes, the tips of tentacles curling out at the bottom */
+  const head=grp(0,1.6,0.06,chest);
+  lathe([[0.17,-0.14],[0.22,0.05],[0.22,0.26],[0.16,0.42],[0.05,0.52]],12,M(C.robe,{side:THREE.DoubleSide}),0,0,0,head,0.55,TAU-1.1);
+  const pk=cone(0.1,0.32,8,C.robe,0,0.5,0.06,head);pk.rotation.x=0.9;   /* the point of the hood flops forward */
+  const dark=cyl(0.16,0.16,0.02,14,Kit3D.basic(C.dark),0,0.12,0.04,head);dark.rotation.x=Math.PI/2;dark.scale.z=1.35;
+  const lan=grp(0,0.12,0.06,head);
+  const glass=grp(0,0,0,lan);const eyes=[-0.045,0.045].map(x=>box(0.028,0.016,0.01,eyeM,x,0.04,0.02,glass));
+  [[-0.06,-0.08,0.4],[0.02,-0.11,-0.2],[0.08,-0.07,-0.6]].forEach(([x,y,r])=>{const p=grp(x,y,0.12,lan);p.rotation.set(-0.4,0,r);tent(p,3,0.07,0.022,0.006,tentM,-0.55,false);});
+  /* phase 2: a crown of tentacles unfolds from its back (starts folded away) */
+  const p2=grp(0,1.3,-0.18,chest);p2.scale.setScalar(0.01);p2.visible=false;
+  for(let i=0;i<6;i++){const a=(i/5-0.5)*2.6,p=grp(0,0,0,p2);p.rotation.set(-2.5+Math.abs(a)*0.25,0,a,"YXZ");tent(p,5,0.3,0.07,0.012,tentM,-0.18,i%2===0);}
+  /* weed hanging off the shoulders */
+  for(let i=0;i<6;i++){const a=(i/5-0.5)*3.2+Math.PI,len=0.3+((i*31)%3)*0.12;rag(chest,Math.sin(a)*0.22,1.38,Math.cos(a)*0.2,a+Math.PI,0.07,len,C.weed,0.08);}
+  const sh=shadow(0.9);g.add(sh);
+  SMOOTH=0;
+  return {g,body,legs,chest,head,eyes,antlers:[],bellG,armR,armL,clawR,clawL,eyeM,bellM,strips,shadowMat:sh.material,
+    lan,glass,dark,robeL,robeR,inner,p2,tsegs,open:0,hipY:1.6,byS:1,chestOff:-0.42,legBase:[0,0]};
 }
-/* the parry tell: the tide draws back from it (from a little before the warning) and the eye snaps open;
-   gold and wide open = shoot now. At rest the eye is half shut and teal. */
-function pilgrimTell(B,dt){
-  const m=B.m,T=G.tide;let want=0,open=B.state==="final"?0.15:0.35,col=0x2a6a60;
+/* at rest it stands straight and still, tentacles hanging inside the robe, swaying a little */
+function pilgrimRest(t,ph){return {rx:0,lx:0,rz:-0.03,lz:0.03,re:0,le:0,twist:Math.sin(t*0.5)*0.05,chest:0.45+Math.sin(t*0.8)*0.02,by:Math.sin(t*0.8)*0.03,
+  head:Math.sin(t*0.45)*0.06+(ph?Math.max(0,Math.sin(t*5.3)*Math.sin(t*1.9)-0.8)*1.2:0)};}
+/* every frame: the tide, the eyes, the robe opening, the crown, the tentacles swaying and stretching */
+function pilgrimUpdate(B,dt){
+  const m=B.m,T=G.tide,t=G.clock||0;
+  /* pressure: how much it has been hurt lately; when it is high it sinks away and comes up behind you */
+  if(B.lastHp==null)B.lastHp=B.hp;if(B.hp<B.lastHp)B.pres=(B.pres||0)+(B.lastHp-B.hp);B.lastHp=B.hp;B.pres=Math.max(0,(B.pres||0)-dt*7);
+  /* the tide draws back from it before a lash you can shoot */
+  let want=0;
   if(B.state==="move"&&B.move){const nx=B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-0.95&&B.mt<=h.t+0.06);
     if(nx)want=3.6*ease(clamp((B.mt-(nx.t-0.95))/0.5,0,1));}
-  if(B.tellLimb){open=1;col=B.tellBright?0xe8b048:0x4a3612;}
-  if(m.eyeHold>0){m.eyeHold-=dt;open=1;}
-  if(B.state==="roar"){open=1;col=0x6ad0c0;}
-  if(m.eyeShut)open=0;
-  m.eyeOpen+=(open-m.eyeOpen)*Math.min(1,dt*(open>m.eyeOpen?22:6));   /* snaps open, closes slowly */
-  m.lidU.scale.y=Math.max(0.02,1-m.eyeOpen);m.lidL.scale.y=Math.max(0.02,(1-m.eyeOpen)*0.8);
-  if(!m.eyeShut)m.eyeM.emissive.setHex(col);
-  /* the tide: grows while it gathers, rushes back in after */
   T.r+=(want-T.r)*Math.min(1,dt*(want>T.r?5:9));
   const on=T.r>0.08&&B.y>-0.3;T.disc.visible=T.foam.visible=on;
-  if(on){T.disc.position.set(B.x,0.1,B.z);T.foam.position.set(B.x,0.12,B.z);T.disc.scale.setScalar(T.r);T.foam.scale.setScalar(T.r+0.1);
-    T.foam.material.opacity=B.tellBright?0.85:0.5;}
+  if(on){T.disc.position.set(B.x,0.1,B.z);T.foam.position.set(B.x,0.12,B.z);T.disc.scale.setScalar(T.r);T.foam.scale.setScalar(T.r+0.1);T.foam.material.opacity=B.tellBright?0.85:0.5;}
+  /* the eyes: faint teal; gold with the parry tell; red, and the darkness in the hood spreads, before a grab */
+  const grab=B.state==="move"&&B.moveKey==="grab"&&B.move&&B.mt<B.move.grabAt+0.15;
+  let col=0x2a6a60;if(m.eyeHold>0){m.eyeHold-=dt;col=0x6ad0c0;}if(B.state==="roar")col=0x6ad0c0;
+  if(B.tellLimb)col=B.tellBright?0xe8b048:0x7a5a20;if(grab)col=0xc03028;if(m.eyeShut)col=0;
+  m.eyeM.emissive.setHex(col);
+  const dk=grab?1.8:1;m.dark.scale.x+=(dk-m.dark.scale.x)*Math.min(1,dt*6);m.dark.scale.z=m.dark.scale.x*1.35;
+  /* the robe splits open when the tentacles come out (always a little in phase 2) */
+  let open=clamp((Math.max(-BP.rx,-BP.lx)-0.15)/1.1,0,1);if(B.phase>1)open=Math.max(open,0.3);if(grab)open=1;
+  m.open+=(open-m.open)*Math.min(1,dt*10);m.robeL.rotation.y=m.open*0.6;m.robeR.rotation.y=-m.open*0.6;
+  /* phase 2: the crown of tentacles unfolds */
+  const p2=B.phase>1?1:0;m.p2k=(m.p2k||0)+(p2-(m.p2k||0))*Math.min(1,dt*2.5);m.p2.visible=m.p2k>0.02;m.p2.scale.setScalar(Math.max(0.01,m.p2k));
+  m.tsegs.forEach(S=>{S.s.rotation.x=S.base+Math.sin(t*2.1+S.ph)*S.amp;S.s.rotation.z=Math.cos(t*1.6+S.ph*1.3)*S.amp*0.8;});
+  /* the arms stretch out fast for a lash and drag back slowly (that is your opening) */
+  ["R","L"].forEach(k=>{const a=m["arm"+k],w=m["st"+k]||1;a.sh.scale.y+=(w-a.sh.scale.y)*Math.min(1,dt*(w>a.sh.scale.y?30:3));m["st"+k]=1;});
 }
 /* ---------- tentacles that burst up out of the water ---------- */
 const TENT=[];
@@ -2164,38 +2180,41 @@ function tentStep(T,dt){if(!T.live)return;T.t+=dt;const k=T.t/T.life;
   T.g.scale.set(1,Math.max(0.01,up*T.h),1);
   T.segs.forEach((s,i)=>{if(!i)return;s.rotation.x=Math.sin(T.t*3+T.ph+i*0.7)*0.18;s.rotation.z=Math.cos(T.t*2.3+T.ph+i*0.6)*0.14+(T.lash?T.lash*0.12*i:0);});}
 function tentsClear(){TENT.forEach(T=>{T.live=false;T.g.visible=false;});RIP.forEach(s=>{s.live=false;s.m.visible=false;});}
-/* ---------- the wreckage it lifts and throws ---------- */
-function debrisMesh(){if(G.debM)return G.debM;const g=grp(0,0,0,G.stage.scene),wood=Kit3D.mat(0x4a3a2a,{emissive:0});
-  for(let i=0;i<4;i++){const b=box(1.6-i*0.15,0.12,0.3,wood,0,i*0.02,(i-1.5)*0.32,g);b.rotation.y=(i-1.5)*0.08;}
-  box(0.14,0.3,1.4,wood,0.5,0.15,0,g);box(0.14,0.3,1.2,wood,-0.55,0.15,0.05,g);   /* a broken bit of a boat */
-  g.visible=false;G.debM={g,mat:wood};return G.debM;}
-function debrisStep(dt){const B=G.boss,D=B&&B.deb;if(!D||!G.debM)return;const g=G.debM.g;D.t+=dt;
-  if(D.state==="held"){const v=new THREE.Vector3();B.m.armR.hand.getWorldPosition(v);g.position.set(v.x,v.y+0.55,v.z);
-    g.rotation.set(Math.sin(D.t*2.1)*0.15,B.a+Math.sin(D.t*1.3)*0.2,Math.sin(D.t*1.7)*0.12);
-    const left=D.throwAt-(B.mt||0);G.debM.mat.emissive.setHex(left<0.7?0xe8b048:0x4a3612);   /* gold: shoot it! */
-    if(Math.random()<dt*6)fx("splash",v.x+(Math.random()-0.5),v.y+0.3,v.z+(Math.random()-0.5),1);}
-  else if(D.state==="thrown"||D.state==="falling"){const k=clamp(D.t/D.dur,0,1);
-    g.position.set(lerp(D.from[0],D.to[0],k),lerp(D.from[1],D.to[1],k)+Math.sin(k*Math.PI)*D.arc,lerp(D.from[2],D.to[2],k));g.rotation.x+=dt*(D.state==="thrown"?7:4);
-    G.debM.mat.emissive.setHex(0);
-    if(k>=1){g.visible=false;showMark(0,0,false);fx("splash",D.to[0],0.3,D.to[2],12);ripple(D.to[0],D.to[2],3,1.2,0xb8c8cc);shock(D.to[0],D.to[2],2.2,0x6a8088);sfx("thud");noise(0.5,0.08);
-      if(D.state==="thrown"){if(Math.hypot(P.x-D.to[0],P.z-D.to[2])<1.8)hitPlayer(22,D.to[0],D.to[2]);}
-      else{/* it came down on the Pilgrim's own head */
-        B.hp-=30;fx("spark",B.x,3,B.z,10);if(B.hp<=0){bossDown();}
-        else{B.state="stagger";B.t=0;B.stagger=2.6*SLOW();B.move=null;B.critDone=false;B.reel=null;B.perfect=false;B.flinch=0;setGlow(null);G.btR.clear();G.btL.clear();
-          G.freeze=0.16;G.shake=Math.max(G.shake,0.2);}}
-      B.deb=null;}}}
-function debrisShot(){const B=G.boss,D=B.deb,g=G.debM.g;
-  D.state="falling";D.t=0;D.dur=0.4;D.from=[g.position.x,g.position.y,g.position.z];D.to=[B.x,2.8,B.z];D.arc=0.6;
-  P.stats.parries++;P.gunDur=ACT.gun.dur;sfx("deflect");ping("DIRECT HIT");fx("spark",g.position.x,g.position.y,g.position.z,10);G.freeze=0.1;}
 /* ---------- the Pilgrim's moves ---------- */
-function slamAnim(Tm,T,mv){const h=mv.hits[0].t,u=Tm-h,tr=u>-0.5&&u<-0.06?Math.sin((G.clock||0)*50)*0.07:0;
-  bothArms(T,kf(u,[[-h,-0.1],[-0.55,-3.0],[-0.08,-3.15],[0.02,-0.3,"in"],[0.5,-0.25],[0.85,-0.1]])+tr,kf(u,[[-h,0.15],[-0.55,0.4],[0.02,0.2],[0.85,0.15]]),
-    kf(u,[[-0.55,-0.9],[-0.08,-1.0],[0.02,-0.05,"in"],[0.85,-0.3]]));
-  T.chest=kf(u,[[-h,0.45],[-0.55,-0.3],[-0.08,-0.38],[0.02,1.2,"in"],[0.5,1.15],[0.85,0.45]])+tr;
-  T.by=kf(u,[[-h,0],[-0.55,0.3],[-0.08,0.36],[0.02,-0.45,"in"],[0.5,-0.4],[0.85,0]]);
-  T.head=kf(u,[[-h,0],[-0.7,0.25],[-0.55,-0.55],[0.02,0.3,"in"],[0.85,0]]);T.twist=0;
-  if(u>=0&&!mv._sp){mv._sp=1;}return {R:u>-0.1&&u<0.1,L:u>-0.1&&u<0.1};}
-function slamLand(B){const x=B.x+Math.sin(B.a)*2.2,z=B.z+Math.cos(B.a)*2.2;fx("splash",x,0.3,z,14);ripple(x,z,4,1.2,0xb8c8cc);shock(x,z,2.6,0x6a8088);noise(0.6,0.07);G.shake=Math.max(G.shake,0.2);}
+/* a lash: the tentacle rears up over its head, then whips out long and low; it lies there a moment and drags back slowly.
+   Handles every lash in a move (the phase 2 chains alternate arms). */
+function lashAnim(Tm,T,mv){const m=G.boss.m,tr={};let last=null;
+  [["R",-1],["L",1]].forEach(([limb,s])=>{let best=null;
+    mv.hits.forEach(h=>{if(h.limb===limb&&Tm>=h.t-0.8&&Tm<=h.t+1.0&&(!best||h.t>best.t))best=h;});
+    if(!best)return;const u=Tm-best.t,sh=u>-0.3&&u<-0.06?Math.sin((G.clock||0)*50)*0.06:0;
+    const x=kf(u,[[-0.8,0],[-0.3,-2.9],[-0.08,-3.1],[0.03,-1.0,"in"],[0.6,-0.95],[1.0,0]])+sh,
+      z=kf(u,[[-0.8,0.03],[-0.3,0.4],[0.03,0.1,"in"],[1.0,0.03]])*s,e=kf(u,[[-0.8,0],[-0.3,-0.5],[0.03,0.05,"in"],[1.0,0]]);
+    if(limb==="R"){T.rx=x;T.rz=z;T.re=e;}else{T.lx=x;T.lz=z;T.le=e;}
+    m["st"+limb]=kf(u,[[-0.3,1],[-0.06,1.1],[0.03,1.9,"in"],[0.55,1.85],[1.0,1]]);
+    tr[limb]=u>-0.08&&u<0.12;
+    if(!last||best.t>last.t){last=best;
+      T.chest=kf(u,[[-0.8,0.45],[-0.3,0.2],[0.03,0.8,"in"],[0.6,0.75],[1.0,0.45]]);T.twist=kf(u,[[-0.8,0],[-0.3,0.35*s],[0.03,-0.25*s,"in"],[1.0,0]]);
+      T.head=kf(u,[[-0.8,0],[-0.3,-0.25],[0.03,0.2,"in"],[1.0,0]]);T.by=kf(u,[[-0.3,0.1],[0.03,-0.15,"in"],[1.0,0]]);}});
+  return tr;}
+/* phase 2: two or three lashes from alternating arms, only one of them gold */
+function chainGen(B){const n=Math.random()<0.5?2:3,p=Math.floor(Math.random()*n),hits=[];let t=0.95;
+  for(let i=0;i<n;i++){hits.push({t,limb:i%2?"L":"R",range:5.6,arc:30,dmg:16,parry:i===p});t+=0.62;}
+  return {dur:t-0.62+1.15,track:t-1.0,anim:lashAnim,hits};}
+/* the grab: a deep sound, red eyes, the hood's darkness spreads; then both tentacles shoot out together.
+   It cannot be shot; dodge it. If it catches you, it pulls you in for a big hit. */
+function grabAnim(Tm,T,mv){const g=mv.grabAt,u=Tm-g,m=G.boss.m;
+  T.chest=kf(u,[[-g,0.45],[-0.5,0.15],[0.02,0.85,"in"],[0.6,0.8],[1.4,0.45]]);
+  bothArms(T,kf(u,[[-g,0],[-0.5,-2.3],[0.02,-1.35,"in"],[0.6,-1.3],[1.4,0]]),kf(u,[[-g,0.03],[-0.5,0.9],[0.02,0.12,"in"],[1.4,0.03]]),kf(u,[[-0.5,-0.6],[0.02,0],[1.4,0]]));
+  T.head=kf(u,[[-g,0],[-0.5,-0.35],[0.02,0.2],[1.4,0]]);
+  m.stR=m.stL=kf(u,[[-0.5,1],[0.02,1.9,"in"],[0.5,1.8],[1.2,1]]);
+  return {R:u>-0.06&&u<0.12,L:u>-0.06&&u<0.12};}
+function grabRun(B,mv,Tm,dt){
+  if(!mv.cue){mv.cue=1;tone(55,1.3,"sawtooth",0.05,38);tone(82,1.1,"sine",0.04,58);}
+  if(Tm>=mv.grabAt&&!mv.done){mv.done=1;sfx("slash");const d=Math.hypot(P.x-B.x,P.z-B.z),aTo=Math.atan2(P.x-B.x,P.z-B.z);
+    if(d<=5.6&&Math.abs(wrapA(aTo-B.a))<0.45&&hitPlayer(8,B.x,B.z)){mv.caught=Tm;sfx("roar");}}
+  if(mv.caught&&!mv.bit&&P.state!=="dead"&&!G.over){const k=Tm-mv.caught;P.state="hurt";P.t=0;P.hurtV=[0,0];
+    const tx=B.x+Math.sin(B.a)*1.4,tz=B.z+Math.cos(B.a)*1.4;P.x=lerp(P.x,tx,Math.min(1,dt*7));P.z=lerp(P.z,tz,Math.min(1,dt*7));
+    G.btR.clear();if(k>=0.6){mv.bit=1;P.iframe=0;hitPlayer(22,B.x,B.z);G.shake=Math.max(G.shake,0.3);}}}
 function reachAnim(Tm,T,mv){   /* both arms plunge into the water; it stares at the hunter */
   const e=mv.dur,s=Math.sin((G.clock||0)*9)*0.05;
   T.chest=kf(Tm,[[0,0.45],[0.35,1.25,"in"],[e-0.5,1.2],[e,0.45]]);T.by=kf(Tm,[[0,0],[0.35,-0.5],[e-0.5,-0.45],[e,0]]);
@@ -2208,36 +2227,19 @@ function tentRun(B,mv,Tm,dt){
     if(w.spots&&!w.done){w.rt=(w.rt||0)-dt;if(w.rt<=0){w.rt=0.13;w.spots.forEach(([x,z])=>ripple(x,z,0.6+Math.random()*0.8,0.6));}
       if(Tm>=w.burst){w.done=true;noise(0.4,0.08);tone(90,0.4,"sawtooth",0.04,50);let hit=false;
         w.spots.forEach(([x,z])=>{tentUp(x,z,0.95,{h:1.1+Math.random()*0.4});if(!hit&&Math.hypot(P.x-x,P.z-z)<1.05)hit=hitPlayer(18,x,z);});G.shake=Math.max(G.shake,0.12);}}});}
-function debrisAnim(Tm,T,mv){const th=mv.throwAt;
-  T.rx=kf(Tm,[[0,-0.1],[0.45,0.6],[0.75,0.5],[1.05,-2.9,"in"],[th-0.25,-3.0],[th,-3.3],[th+0.15,-0.4,"in"],[mv.dur,-0.1]])+(Tm>1.05&&Tm<th?Math.sin(Tm*3)*0.08:0);
-  T.re=kf(Tm,[[0.45,-0.2],[1.05,-0.6],[th,-0.9],[th+0.15,-0.05,"in"],[mv.dur,-0.3]]);T.rz=kf(Tm,[[0,-0.15],[1.05,-0.35],[th+0.15,-0.1]]);
-  T.chest=kf(Tm,[[0,0.45],[0.45,1.2],[0.75,1.2],[1.05,0.15],[th,-0.15],[th+0.15,1.0,"in"],[mv.dur,0.45]]);
-  T.by=kf(Tm,[[0,0],[0.45,-0.45],[0.75,-0.4],[1.05,0.1],[th,0.2],[th+0.15,-0.3,"in"],[mv.dur,0]]);
-  T.head=kf(Tm,[[0.45,-0.6],[1.05,-0.3],[th+0.15,0.2],[mv.dur,0]]);
-  T.lx=kf(Tm,[[0,-0.1],[1.05,0.3],[th+0.15,-0.6],[mv.dur,-0.1]]);T.lz=0.4;
-  return {R:Tm>th&&Tm<th+0.2};}
-function debrisRun(B,mv,Tm,dt){
-  if(Tm>=0.75&&!mv.lifted){mv.lifted=true;debrisMesh().g.visible=true;B.deb={state:"held",t:0,throwAt:mv.throwAt};noise(0.5,0.06);
-    const v=new THREE.Vector3();B.m.armR.hand.getWorldPosition(v);ripple(v.x,v.z,2.4,1.1,0xb8c8cc);fx("splash",v.x,0.4,v.z,10);}
-  if(Tm>=mv.throwAt&&B.deb&&B.deb.state==="held"){const g=G.debM.g,D=B.deb;D.state="thrown";D.t=0;D.dur=0.75;
-    D.from=[g.position.x,g.position.y,g.position.z];const cv=P.m.cloth||{vx:0,vz:0};D.to=[clamp(P.x+cv.vx*0.25,-12.5,12.5),0.2,clamp(P.z+cv.vz*0.25,-12.5,12.5)];D.arc=2.5;showMark(D.to[0],D.to[2],true,1.8);sfx("heavy");}}
 function surgeAnim(Tm,T){
   T.chest=kf(Tm,[[0,0.45],[0.5,1.3],[1.55,1.3],[1.75,-0.5,"in"],[2.2,-0.3],[2.7,0.45]]);T.by=kf(Tm,[[0,0],[0.5,-0.4],[1.55,-0.3],[1.75,0.4,"in"],[2.2,0.2],[2.7,0]]);
   bothArms(T,kf(Tm,[[0,-0.1],[0.5,0.6],[1.55,0.5],[1.75,-2.6,"in"],[2.2,-2.2],[2.7,-0.1]]),kf(Tm,[[0,0.15],[1.55,0.3],[1.75,1.2],[2.2,1.1],[2.7,0.15]]),-0.4);
   T.head=kf(Tm,[[1.55,0.4],[1.75,-0.6],[2.7,0]]);return {R:Tm>1.7&&Tm<1.85,L:Tm>1.7&&Tm<1.85};}
 function surgeRun(B,mv,Tm,dt){
   if(Tm<0.7){B.y=-3.6*ease(clamp((Tm-0.2)/0.5,0,1));if(Tm>0.2&&!mv.sank){mv.sank=1;fx("splash",B.x,0.3,B.z,10);noise(0.6,0.07);ripple(B.x,B.z,3,1.2,0xb8c8cc);}return;}
-  if(!mv.to){mv.to=[clamp(P.x,-12,12),clamp(P.z,-12,12)];mv.from=[B.x,B.z];}
+  if(!mv.to){B.pres=0;mv.to=[clamp(P.x-Math.sin(P.a)*1.6,-12,12),clamp(P.z-Math.cos(P.a)*1.6,-12,12)];mv.from=[B.x,B.z];}   /* it comes up behind you */
   if(Tm<1.55){const q=ease((Tm-0.7)/0.85);B.x=lerp(mv.from[0],mv.to[0],q);B.z=lerp(mv.from[1],mv.to[1],q);
     mv.rt=(mv.rt||0)-dt;if(mv.rt<=0){mv.rt=0.1;ripple(B.x,B.z,1.2,0.7);}if(Tm>1.1){ripple(mv.to[0],mv.to[1],2.2,0.4);}return;}
   B.y=-3.6*(1-ease(clamp((Tm-1.55)/0.2,0,1)));
   if(Tm>=1.7&&!mv.up){mv.up=1;fx("splash",B.x,0.5,B.z,16);ripple(B.x,B.z,4.5,1.3,0xb8c8cc);shock(B.x,B.z,3.2,0x6a8088);sfx("roar");noise(0.7,0.09);G.shake=Math.max(G.shake,0.3);
-    if(Math.hypot(P.x-B.x,P.z-B.z)<2.5)hitPlayer(24,B.x,B.z);}}
-function waveAnim(Tm,T,mv){const h=mv.hits[0].t;
-  T.by=kf(Tm,[[0,0],[h-0.15,0.5],[h,-0.4,"in"],[h+0.45,-0.35],[mv.dur,0]]);T.chest=kf(Tm,[[0,0.45],[h-0.15,-0.45],[h,1.2,"in"],[h+0.45,1.1],[mv.dur,0.45]]);
-  bothArms(T,kf(Tm,[[0,-0.1],[h-0.15,-3.1],[h,0.3,"in"],[h+0.45,0.25],[mv.dur,-0.1]]),kf(Tm,[[0,0.15],[h-0.15,0.5],[h,0.6],[mv.dur,0.15]]),kf(Tm,[[h-0.15,-0.9],[h,-0.1],[mv.dur,-0.3]]));
-  T.head=kf(Tm,[[h-0.15,-0.6],[h,0.4],[mv.dur,0]]);return {R:Tm>h-0.1&&Tm<h+0.08,L:Tm>h-0.1&&Tm<h+0.08};}
-function pilgrimDown(B){if(B.deb){B.deb=null;if(G.debM)G.debM.g.visible=false;showMark(0,0,false);}B.y=0;B.tellLimb=null;}
+    if(Math.hypot(P.x-B.x,P.z-B.z)<2.0)hitPlayer(24,B.x,B.z);}}
+function pilgrimDown(B){B.y=0;B.tellLimb=null;B.pres=0;}
 /* Intro, from the Pilgrim's side: it watches the hunter wade in from just under the surface, creeps closer, then comes up */
 function pilgrimIntro(t,dt){
   const B=G.boss,m=B.m;
@@ -2335,8 +2337,8 @@ function kf(T,K){if(T<=K[0][0])return K[0][1];
     return a[1]+(b[1]-a[1])*(b[2]==="in"?k*k*k:b[2]==="lin"?k:ease(k));}}
   return K[K.length-1][1];}
 /* a tapered limb that hangs down from its joint */
-function limb(rt,rb,h,c,x,y,z,parent,seg){const geo=new THREE.CylinderGeometry(rt,rb,h,seg||6);geo.translate(0,-h/2,0);
-  const m=Kit3D.mesh(geo,typeof c==="number"?M(c):c);m.position.set(x||0,y||0,z||0);if(parent)parent.add(m);return m;}
+function limb(rt,rb,h,c,x,y,z,parent,seg){const geo=new THREE.CylinderGeometry(rt,rb,h,segs(seg||6,Math.max(rt,rb)));geo.translate(0,-h/2,0);
+  const m=Kit3D.mesh(geo,typeof c==="number"?M(c):c,SMOOTH?false:undefined);m.position.set(x||0,y||0,z||0);if(parent)parent.add(m);return m;}
 /* k is "per 60th of a second", so poses ease the same on a slow Chromebook as on a fast PC */
 function lerpPose(cur,want,k){const f=(G.fdt||1/60)*60,kk=k>=1?1:1-Math.pow(1-k,f);for(const key in want)cur[key]=lerp(cur[key]??want[key],want[key],kk);return cur;}
 /* follow-through: a joint that trails a little behind the one it hangs from (rate is per 60th of a second) */
@@ -2344,9 +2346,13 @@ function trail_(L,key,v,rate){const f=(G.fdt||1/60)*60;if(L[key]==null)L[key]=v;
 
 /* ---------- the hunter ---------- */
 /* a tapered box: the bottom is wB x dB, the top is wT x dT, and the top can be shifted (sx, sz) to lean or skew it */
-function tbox(wB,dB,wT,dT,h,c,x,y,z,parent,sx,sz){const ge=new THREE.BoxGeometry(1,h,1),p=ge.attributes.position;
+function tbox(wB,dB,wT,dT,h,c,x,y,z,parent,sx,sz){
+  /* smooth mode: the same taper, but an oval tube instead of a box */
+  const ge=SMOOTH?new THREE.CylinderGeometry(0.54,0.54,h,Math.min(wB,dB,wT,dT)<0.06?6:Math.max(wB,dB,wT,dT)>0.3?12:8):new THREE.BoxGeometry(1,h,1),p=ge.attributes.position;
   for(let i=0;i<p.count;i++){const top=p.getY(i)>0;p.setX(i,p.getX(i)*(top?wT:wB)+(top?sx||0:0));p.setZ(i,p.getZ(i)*(top?dT:dB)+(top?sz||0:0));}
-  ge.computeVertexNormals();const m=Kit3D.mesh(ge,typeof c==="number"?M(c):c);m.position.set(x||0,y||0,z||0);if(parent)parent.add(m);return m;}
+  ge.computeVertexNormals();const m=Kit3D.mesh(ge,typeof c==="number"?M(c):c,SMOOTH?false:undefined);m.position.set(x||0,y||0,z||0);if(parent)parent.add(m);return m;}
+function lathe(pts,seg,c,x,y,z,parent,phi0,phiL){const ge=new THREE.LatheGeometry(pts.map(([r,h])=>new THREE.Vector2(r,h)),seg,phi0||0,phiL||TAU);
+  const m=Kit3D.mesh(ge,typeof c==="number"?M(c,{side:THREE.DoubleSide}):c,false);m.position.set(x||0,y||0,z||0);if(parent)parent.add(m);return m;}
 function buildHunter(){
   /* a lean, worn hunter: broad uneven shoulders over a tight waist, a coat that flares into split tails,
      a leather pauldron and half-cape on the left, a bandaged right forearm, a pointed felt hat with a ratty feather,
@@ -2516,42 +2522,83 @@ function hunterCloth(m){
 }
 
 /* ---------- the Bell Warden ---------- */
-function buildWarden(){
-  const C={hide:0x5a4f48,robe:0x3a3346,bone:0xcfc5ab,horn:0x6b5f50,bronze:0x8a6a35};
+function buildWarden(){SMOOTH=1;
+  const C={bronze:0x7a5a2e,bronze2:0x5e4424,verd:0x4f7a68,robe:0x3a3346,robe2:0x2b2635,trim:0x6a2a40,bone:0xd6ccb2,bone2:0xa89f88,hide:0x4a413b,horn:0x6b5f50,rope:0x7a6a48,dark:0x0e0c0e};
   const eyeM=Kit3D.mat(0x9fe8ff,{emissive:0x2a6a7a});
   const clawR=Kit3D.mat(0xb8ad96),clawL=Kit3D.mat(0xb8ad96);
-  const bellM=Kit3D.mat(C.bronze,{emissive:0x000000});
-  const g=grp();
+  const bellM=Kit3D.mat(0x9a7a3e,{emissive:0x000000,side:THREE.DoubleSide});
+  const bronze=Kit3D.mat(C.bronze,{side:THREE.DoubleSide});
+  const g=grp(),strips=[];
+  const rag=(parent,x,y,z,a,w,len,col,out)=>{const p=grp(x,y,z,parent);p.rotation.order="YXZ";p.rotation.y=a;tbox(w*(0.3+(strips.length%3)*0.15),0.025,w*1.1,0.04,len,col,0,-len/2,0,p);strips.push({p,out,ph:strips.length*1.7,len});return p;};
   const body=grp(0,1.7,0,g);   /* pivots at the hips */
-  const legs=[-0.45,0.45].map(x=>{const h=grp(x,1.7,0,g);limb(0.2,0.14,0.95,C.hide,0,0,0,h);
-    const k=grp(0,-0.92,0,h);limb(0.15,0.1,0.85,C.hide,0,0,0,k);box(0.32,0.14,0.55,0x2a2522,0,-0.84,0.12,k);return {h,k};});
-  cyl(0.55,0.98,1.5,8,M(C.robe,{side:THREE.DoubleSide}),0,-0.35,0,body,true);
-  const chest=grp(0,0.3,0,body);chest.rotation.x=0.45;
-  cyl(0.52,0.4,1.2,8,C.hide,0,0.6,0,chest).scale.z=0.72;
-  for(let i=0;i<3;i++)cyl(0.53,0.53,0.07,8,0x6e6158,0,0.35+i*0.25,0,chest).scale.z=0.74;
-  cyl(0.5,0.68,0.42,8,C.robe,0,1.15,0,chest).scale.z=0.8;
-  const head=grp(0,1.35,0.35,chest);
-  const skull=cyl(0.22,0.15,0.8,7,C.bone,0,0,0.2,head);skull.rotation.x=Math.PI/2;
-  const jaw=cyl(0.16,0.1,0.55,6,0xb3a990,0,-0.22,0.28,head);jaw.rotation.x=Math.PI/2;
-  const eyes=[[0,0.0],[-0.11,0.08],[0.11,0.08],[-0.16,-0.02],[0.16,-0.02],[-0.05,0.16],[0.05,0.16]].map(([x,y])=>box(0.06,0.06,0.04,eyeM,x,y,0.6,head));
-  const antlers=[];[-1,1].forEach(s=>{const a=grp(0.16*s,0.18,0.05,head);a.rotation.z=-0.55*s;a.rotation.x=-0.3;
-    limb(0.03,0.05,0.9,C.horn,0,0,0,a).rotation.x=Math.PI;
-    const b=limb(0.02,0.035,0.5,C.horn,0.05*s,0.55,0,a);b.rotation.z=Math.PI+0.7*s;
-    const c=limb(0.02,0.03,0.4,C.horn,0,0.8,0.02,a);c.rotation.z=Math.PI-0.6*s;antlers.push(a);});
-  const bellG=grp(0,0.15,0.55,chest);bellG.rotation.x=-0.45;
-  box(0.04,0.4,0.04,0x2b2b30,0,-0.1,0,bellG);
-  cyl(0.16,0.42,0.55,8,bellM,0,-0.55,0,bellG,true).material.side=THREE.DoubleSide;
-  cyl(0.07,0.07,0.12,6,bellM,0,-0.24,0,bellG);
-  const arm=(s,cm)=>{const sh=grp(0.7*s,1.05,0,chest);sh.rotation.order="YXZ";
-    limb(0.17,0.12,1.05,C.hide,0,0,0,sh);const el=grp(0,-1.0,0,sh);limb(0.13,0.08,1.05,C.hide,0,0,0,el);
-    const hand=grp(0,-1.05,0,el);cyl(0.13,0.15,0.2,6,C.hide,0,0,0,hand);
+  /* legs: long and thin, bent back like a goat's, ending in split hooves; only the shins show under the rim */
+  const legs=[-0.26,0.26].map(x=>{const h=grp(x,1.7,0,g);limb(0.1,0.07,0.95,C.hide,0,0,0,h);
+    const k=grp(0,-0.92,0,h);limb(0.06,0.045,0.86,C.hide,0,0,0,k);cyl(0.07,0.07,0.08,8,C.bone2,0,-0.6,0,k);
+    [-1,1].forEach(s=>tbox(0.07,0.18,0.05,0.12,0.12,0x1a1614,s*0.04,-0.86,0.05,k));return {h,k};});
+  /* the bell skirt: a waist, a long flaring shoulder, a heavy lip; raised bands, green streaks running down, a crack */
+  lathe([[1.0,-1.38],[1.04,-1.3],[0.96,-1.22],[0.84,-0.95],[0.72,-0.55],[0.62,-0.15],[0.56,0.12],[0.48,0.28]],18,bronze,0,0,0,body);
+  [[-1.18,0.93],[-0.9,0.83],[-0.15,0.62]].forEach(([y,r])=>{const t=Kit3D.mesh(new THREE.TorusGeometry(r,0.025,4,20),M(C.bronze2),false);t.rotation.x=Math.PI/2;t.position.y=y;body.add(t);});
+  for(let i=0;i<7;i++){const a=i/7*TAU+0.3,len=0.3+((i*29)%4)*0.12,yy=-0.2-((i*13)%3)*0.15,r=0.62+(-yy)*0.27;
+    const d=tbox(0.05,0.02,0.08,0.02,len,C.verd,Math.sin(a)*r,yy-len/2,Math.cos(a)*r,body);d.rotation.y=a;d.rotation.x=0.27;}
+  { const cr=grp(0.35,-1.0,0.8,body);cr.rotation.y=0.4;[[0,0,0.4],[0.03,-0.12,-0.3],[0.0,-0.24,0.5]].forEach(([x,y,r])=>{const k=box(0.02,0.14,0.02,C.dark,x,y,0,cr);k.rotation.z=r;}); }
+  /* the robe: a waist sash and a few torn panels hanging over the bell */
+  cyl(0.5,0.52,0.12,14,M(C.trim,{side:THREE.DoubleSide}),0,0.3,0,body,true);
+  [[0.0,0.48,0.75],[0.7,0.46,0.6],[-0.7,0.46,0.55],[2.6,0.45,0.9],[3.6,0.45,0.7]].forEach(([a,r,len])=>rag(body,Math.sin(a)*r,0.28,Math.cos(a)*r,a+Math.PI,0.24,len,C.robe2,0.32));
+  const chest=grp(0,0.35,0,body);
+  /* a starved torso: a spine of knobs, an open ribcage, a dark hollow behind the ribs */
+  for(let i=0;i<6;i++)cyl(0.07,0.08,0.13,8,C.bone2,0,0.08+i*0.17,-0.28,chest);
+  for(let i=0;i<5;i++)cone(0.05,0.14,6,C.bone,0,0.1+i*0.21,-0.36,chest).rotation.x=-0.6;
+  lathe([[0.3,0.0],[0.42,0.4],[0.46,0.8],[0.4,1.1]],12,C.dark,0,0,-0.02,chest,Math.PI*0.5,Math.PI);
+  [[0.38,0.34],[0.55,0.42],[0.72,0.46],[0.89,0.46],[1.04,0.42]].forEach(([y,r])=>{const t=Kit3D.mesh(new THREE.TorusGeometry(r,0.035,5,12,Math.PI*1.45),M(C.bone),false);
+    t.rotation.set(-Math.PI/2,0,-Math.PI/4+0.07);t.scale.set(1,0.8,1);t.position.set(0,y,-0.04);chest.add(t);});
+  cyl(0.06,0.1,0.5,8,C.bone2,0,0.95,0.3,chest).rotation.x=0.5;   /* breastbone stub */
+  /* the heart: a small bell on a chain inside the ribs (children[1] is the bell; the finisher aims at it) */
+  const bellG=grp(0,1.02,0.04,chest);bellG.rotation.x=-0.45;
+  box(0.03,0.22,0.03,0x2b2b30,0,-0.1,0,bellG);
+  lathe([[0.24,-0.42],[0.25,-0.38],[0.21,-0.33],[0.16,-0.22],[0.12,-0.08],[0.09,-0.02],[0,0]],12,bellM,0,-0.18,0,bellG);
+  cyl(0.04,0.04,0.06,8,bellM,0,-0.17,0,bellG);
+  box(0.06,0.06,0.02,C.verd,0.12,-0.48,0.15,bellG).rotation.y=0.6;
+  /* the mantle: a priest's shoulder cape, torn, with a hanging stole */
+  lathe([[0.78,0.98],[0.68,1.1],[0.48,1.22],[0.26,1.28]],14,C.robe,0,0,-0.08,chest);
+  for(let i=0;i<11;i++){const a=(i/10-0.5)*3.6+Math.PI,len=0.3+((i*29)%3)*0.14;rag(chest,Math.sin(a)*0.76,1.0,Math.cos(a)*0.76-0.08,a+Math.PI,0.26,len,i%2?C.robe:C.robe2,0.25);}
+  [-0.22,0.22].forEach((x,i)=>{const p=grp(x,1.12,0.38,chest);p.rotation.order="YXZ";tbox(0.12,0.03,0.14,0.04,0.95,C.trim,0,-0.47,0,p);box(0.1,0.1,0.02,0xc8b06a,0,-0.7,0.025,p);strips.push({p,out:0.35,ph:i*2.3,len:0.95});});
+  /* a long neck curving forward */
+  [[0,1.24,0.1],[0,1.32,0.2],[0,1.37,0.31]].forEach(([x,y,z])=>cyl(0.07,0.09,0.12,8,C.bone2,x,y,z,chest).rotation.x=0.9);
+  /* the head: a deer skull with a long muzzle, seven eyes across the brow, a loose jaw, the hood behind */
+  const head=grp(0,1.42,0.42,chest);
+  const cran=cyl(0.17,0.2,0.3,12,C.bone,0,0.04,0,head);cran.scale.z=1.15;
+  cyl(0,0.17,0.12,12,C.bone,0,0.25,0,head).scale.z=1.15;
+  const muz=tbox(0.24,0.2,0.1,0.08,0.55,C.bone,0,-0.06,0.33,head);muz.rotation.x=Math.PI/2+0.25;
+  [-1,1].forEach(s=>cyl(0.015,0.015,0.12,5,C.dark,0.03*s,-0.16,0.58,head).rotation.x=1.3);
+  const jaw=grp(0,-0.12,0.08,head);jaw.rotation.x=0.22;const jw=tbox(0.18,0.14,0.07,0.05,0.45,0xb3a990,0,-0.04,0.24,jaw);jw.rotation.x=Math.PI/2+0.2;
+  for(let i=0;i<3;i++)[-1,1].forEach(s=>cone(0.018,0.05,4,C.bone,s*0.06,0.02,0.12+i*0.09,jaw));
+  const eyes=[[0,0.12],[-0.08,0.09],[0.08,0.09],[-0.15,0.04],[0.15,0.04],[-0.05,0.0],[0.05,0.0]].map(([x,y])=>{const e=box(0.045,0.045,0.03,eyeM,x,y,0.2-Math.abs(x)*0.4,head);e.rotation.y=x*2;return e;});
+  lathe([[0.36,-0.3],[0.32,0.0],[0.26,0.2],[0.12,0.32]],12,C.robe2,0,0,-0.12,head,Math.PI*0.6,Math.PI*0.8);   /* hood behind the skull */
+  /* the antlers: a wide crown of tines, old bell ropes strung between them with little bells */
+  const antlers=[];[-1,1].forEach(s=>{const a=grp(0.12*s,0.22,-0.02,head);a.rotation.z=-0.7*s;a.rotation.x=-0.25;
+    limb(0.028,0.05,0.5,C.horn,0,0,0,a).rotation.x=Math.PI;
+    const b2=grp(0,0.5,0,a);b2.rotation.z=0.45*s;limb(0.02,0.03,0.55,C.horn,0,0,0,b2).rotation.x=Math.PI;
+    const b3=grp(0,0.55,0,b2);b3.rotation.z=0.4*s;limb(0.012,0.02,0.4,C.horn,0,0,0,b3).rotation.x=Math.PI;
+    [[a,0.3,0.9],[a,0.42,-0.5],[b2,0.25,-0.7],[b2,0.45,0.6],[b3,0.2,-0.6]].forEach(([p,y,r])=>{const t=limb(0.01,0.02,0.28,C.horn,0,y,0,p);t.rotation.z=Math.PI+r*s;t.rotation.x=0.2;});
+    [[b2,0.3,0.32],[b3,0.25,0.22]].forEach(([p,y,len],i)=>{const r=grp(0,y,0,p);r.rotation.order="YXZ";box(0.015,len,0.015,C.rope,0,-len/2,0,r);
+      lathe([[0.04,-0.06],[0.03,-0.02],[0,0.02]],8,bellM,0,-len-0.02,0,r);strips.push({p:r,out:0.0,ph:i*1.7+s,len});});
+    antlers.push(a);});
+  /* arms: long and thin, a bell rope wound round each forearm with its end trailing, long hooked fingers */
+  const arm=(s,cm)=>{const sh=grp(0.6*s,0.98,-0.05,chest);sh.rotation.order="YXZ";
+    cyl(0.16,0.13,0.22,10,C.robe2,0,-0.02,0,sh);limb(0.11,0.08,1.05,C.hide,0,0,0,sh);
+    const el=grp(0,-1.02,0,sh);cyl(0.08,0.08,0.1,8,C.bone2,0,0,0,el);limb(0.075,0.055,1.0,C.hide,0,0,0,el);
+    for(let i=0;i<5;i++){const t=Kit3D.mesh(new THREE.TorusGeometry(0.085-i*0.005,0.018,4,10),M(C.rope),false);t.rotation.set(Math.PI/2+0.25,0,0);t.position.y=-0.35-i*0.09;el.add(t);}
+    { const p=grp(0.06*s,-0.72,0,el);p.rotation.order="YXZ";box(0.02,0.5,0.02,C.rope,0,-0.25,0,p);strips.push({p,out:0.05,ph:s*2,len:0.5}); }
+    const hand=grp(0,-1.0,0,el);tbox(0.14,0.08,0.16,0.1,0.14,C.hide,0,0,0,hand);
     let tip=null;
-    for(let i=-1;i<=1;i++){const f=grp(i*0.09,-0.08,0.04,hand);f.rotation.z=i*0.18;limb(0.045,0.03,0.42,cm,0,0,0,f);
-      const f2=grp(0,-0.42,0,f);f2.rotation.x=-0.55;limb(0.03,0.004,0.45,cm,0,0,0,f2);if(i===0)tip=grp(0,-0.45,0,f2);}
+    for(let i=-1;i<=1;i++){const f=grp(i*0.055,-0.06,0.02,hand);f.rotation.z=i*0.15;limb(0.028,0.02,0.36,cm,0,0,0,f);cyl(0.03,0.03,0.04,6,C.bone2,0,-0.36,0,f);
+      const f2=grp(0,-0.36,0,f);f2.rotation.x=-0.5;limb(0.02,0.012,0.3,cm,0,0,0,f2);const f3=grp(0,-0.3,0,f2);f3.rotation.x=-0.6;limb(0.012,0.002,0.18,cm,0,0,0,f3);if(i===0)tip=grp(0,-0.18,0,f3);}
+    const th=grp(-0.08*s,-0.03,0.05,hand);th.rotation.set(-0.6,0,0.5*s);limb(0.02,0.004,0.26,cm,0,0,0,th);
     return {sh,el,hand,tip};};
   const armR=arm(-1,clawR),armL=arm(1,clawL);
   const sh=shadow(1.4);g.add(sh);
-  return {g,body,legs,chest,head,eyes,antlers,bellG,armR,armL,clawR,clawL,eyeM,bellM,shadowMat:sh.material,
+  SMOOTH=0;
+  return {g,body,legs,chest,head,eyes,antlers,bellG,armR,armL,clawR,clawL,eyeM,bellM,strips,shadowMat:sh.material,
     hipY:1.7,byS:1,chestOff:0,legBase:[-0.35,0.7]};
 }
 
@@ -2560,57 +2607,76 @@ function buildWarden(){
    Hunched forward, face lost in the shadow of his hat (only the eyes show), long torn coat and cape
    in strips that drift on their own. The umbrella hangs from his right hand like a long claw;
    it opens into a shield when he guards. */
-function buildDimitri(){
-  const C={coat:0x4a4858,coat2:0x34323f,trim:0x7a5a90,shade:0x0e0d12,hat:0x24222c,brass:0x9a7e48,cloth:0x3a3844};
+function buildDimitri(){SMOOTH=1;
+  const C={coat:0x4a4858,coat2:0x34323f,coat3:0x2a2834,trim:0x7a5a90,shade:0x0e0d12,hat:0x24222c,brass:0x9a7e48,cloth:0x2e2c36,boot:0x15131a,mask:0xe6e0d4,lace:0xb8b2c0};
   const eyeM=Kit3D.mat(0xd8ccff,{emissive:0x8a78d8});
   const clawR=Kit3D.mat(0x3a3846),clawL=Kit3D.mat(0x5a5662);   /* umbrella cloth, left glove: these glow before a parryable hit */
-  const bellM=Kit3D.mat(C.coat2);
+  const bellM=Kit3D.mat(C.coat2,{side:THREE.DoubleSide});
   const g=grp(),strips=[];
-  /* a torn strip of cloth that hangs from its top edge; drift() moves it */
-  const strip=(w,len,col,x,y,z,ry,out,parent)=>{const p=grp(x,y,z,parent);p.rotation.y=ry;const m=box(w,len,0.025,col,0,-len/2,0,p);
+  let i_=0;const strip=(w,len,col,x,y,z,ry,out,parent)=>{const p=grp(x,y,z,parent);p.rotation.order="YXZ";p.rotation.y=ry;tbox(w*(0.35+(i_++%3)*0.2),0.02,w*1.05,0.035,len,col,0,-len/2,0,p);
     strips.push({p,out,ph:Math.random()*6.3,len});return p;};
   const body=grp(0,1.3,0,g);
-  const legs=[-0.13,0.13].map(x=>{const h=grp(x,1.3,0,g);limb(0.085,0.065,0.66,C.cloth,0,0,0,h);
-    const k=grp(0,-0.66,0,h);limb(0.065,0.05,0.6,C.cloth,0,0,0,k);box(0.14,0.09,0.34,0x0c0b10,0,-0.6,0.07,k);return {h,k};});
-  /* long coat: a short skirt, then torn strips all round it down past the knees */
-  cyl(0.22,0.36,0.5,8,M(C.coat,{side:THREE.DoubleSide}),0,-0.22,0,body,true);
-  for(let i=0;i<11;i++){const a=i/11*Math.PI*2,len=0.55+((i*37)%5)*0.11;
-    strip(0.2,len,i%2?C.coat:C.coat2,Math.sin(a)*0.34,-0.44,Math.cos(a)*0.34,a+Math.PI,0.18,body);}
-  const bellG=grp(0,0.0,-0.2,body);bellG.rotation.x=-0.45;   /* two long tails behind */
-  [-0.12,0.12].forEach(x=>box(0.17,1.05,0.04,C.coat2,x,-0.52,0,bellG));
+  /* legs: needle thin, pointed shoes */
+  const legs=[-0.1,0.1].map(x=>{const h=grp(x,1.3,0,g);limb(0.055,0.04,0.66,C.cloth,0,0,0,h);
+    const k=grp(0,-0.66,0,h);limb(0.04,0.032,0.6,C.boot,0,0,0,k);
+    const sh=tbox(0.06,0.05,0.07,0.07,0.3,C.boot,0,-0.62,0.08,k);sh.rotation.x=Math.PI/2;return {h,k};});
+  /* a short fitted coat skirt, and the tails: two long ribbons that sweep out behind (bellG swings them) */
+  lathe([[0.2,-0.4],[0.19,-0.2],[0.16,0.0]],12,C.coat,0,0,0,body,0.5,TAU-1.0);
+  const bellG=grp(0,-0.1,-0.15,body);bellG.rotation.x=-0.45;
+  [-1,1].forEach(s=>{const t=grp(0.07*s,0,0,bellG);t.rotation.z=0.08*s;tbox(0.03,0.02,0.13,0.035,1.25,C.coat2,0,-0.62,0,t);
+    const e=grp(0,-1.22,0,t);e.rotation.x=0.4;tbox(0.005,0.01,0.03,0.02,0.2,C.trim,0,-0.1,0,e);});
+  cyl(0.17,0.17,0.05,12,0x1a1820,0,0.0,0,body);box(0.05,0.05,0.02,C.brass,0,0,0.17,body);
   const chest=grp(0,0.12,0,body);
-  cyl(0.26,0.2,0.86,8,C.coat,0,0.43,0,chest).scale.z=0.7;
-  box(0.04,0.6,0.02,C.trim,0,0.45,0.16,chest);
-  [0.25,0.42,0.59].forEach(y=>box(0.04,0.04,0.03,C.brass,0.06,y,0.17,chest));
-  /* high collar, and a ragged cape in strips across the back */
-  cyl(0.2,0.36,0.34,8,M(C.coat2,{side:THREE.DoubleSide}),0,0.92,0,chest,true).scale.z=0.85;
-  for(let i=0;i<7;i++){const x=(i-3)*0.1,len=0.9+((i*29)%4)*0.13;strip(0.14,len,i%2?C.coat2:0x2a2834,x,0.86,-0.2-Math.abs(x)*0.1,0,0.22,chest);}
-  /* a long neck leaning forward, the head tipped back up to look ahead: a hunch */
-  const neck=grp(0,0.98,0.05,chest);neck.rotation.x=-0.35;
-  const head=grp(0,0.06,0.04,neck);
-  box(0.19,0.27,0.19,C.shade,0,0.02,0,head);   /* the face is only shadow */
-  const eyes=[-0.05,0.05].map(x=>box(0.04,0.022,0.02,eyeM,x,0.05,0.1,head));
-  cyl(0.44,0.44,0.03,10,C.hat,0,0.15,0.02,head);   /* wide brim, low over the face */
-  cyl(0.13,0.15,0.46,9,C.hat,0,0.39,0,head);
-  box(0.27,0.04,0.27,0x2e2238,0,0.19,0,head);
-  const arm=(s,glove)=>{const sh=grp(0.29*s,0.8,0,chest);sh.rotation.order="YXZ";
-    limb(0.07,0.06,0.52,C.coat,0,0,0,sh);const el=grp(0,-0.52,0,sh);limb(0.06,0.045,0.5,C.coat,0,0,0,el);
-    const hand=grp(0,-0.5,0,el);box(0.08,0.11,0.08,glove,0,0,0,hand);
-    for(let f=-1;f<=1;f++)box(0.018,0.12,0.02,glove,f*0.025,-0.1,0.02,hand);   /* long thin fingers */
+  /* torso: a narrow waistcoat, a lace cravat */
+  tbox(0.26,0.18,0.42,0.24,0.85,C.coat,0,0.43,0,chest);
+  tbox(0.12,0.04,0.16,0.05,0.42,C.trim,0,0.55,0.11,chest);
+  [0.4,0.5,0.6].forEach(y=>box(0.03,0.03,0.02,C.brass,0,y,0.14,chest));
+  cone(0.07,0.16,6,C.lace,0,0.74,0.13,chest).rotation.x=Math.PI;
+  /* the capelet: wide and stiff at the shoulders, open at the front, ragged at the edge */
+  lathe([[0.6,0.42],[0.62,0.5],[0.5,0.72],[0.3,0.88],[0.17,0.95]],16,C.coat2,0,0,0,chest,0.35,TAU-0.7);
+  for(let i=0;i<10;i++){const a=0.45+i/9*(TAU-0.9),len=0.12+((i*31)%3)*0.06;strip(0.2,len,C.coat3,Math.sin(a)*0.6,0.44,Math.cos(a)*0.6,a+Math.PI,0.4,chest);}
+  /* the long cape behind: it narrows as it falls, torn at the hem */
+  lathe([[0.3,-0.75],[0.42,-0.2],[0.52,0.3],[0.5,0.6]],14,C.coat3,0,0,-0.02,chest,Math.PI*0.6,Math.PI*0.8);
+  for(let i=0;i<7;i++){const a=Math.PI*0.62+i/6*Math.PI*0.76,len=0.35+((i*29)%4)*0.12;strip(0.16,len,i%2?C.coat3:C.coat2,Math.sin(a)*0.3,-0.73,Math.cos(a)*0.3-0.02,a+Math.PI,0.15,chest);}
+  /* a tall collar that flares up behind the head */
+  lathe([[0.15,0.86],[0.2,1.05],[0.3,1.22]],12,C.coat2,0,0,0,chest,Math.PI*0.45,Math.PI*1.1);
+  /* a long neck leaning forward, the head tipped back up: a hunch */
+  const neck=grp(0,0.98,0.05,chest);neck.rotation.x=-0.35;cyl(0.05,0.06,0.12,8,C.shade,0,0,0,neck);
+  const head=grp(0,0.08,0.04,neck);
+  const hd=cyl(0.1,0.085,0.27,12,C.shade,0,0.02,0,head);hd.scale.z=1.15;
+  /* the porcelain half-mask over the upper face, eye slits glowing */
+  const mk=lathe([[0.1,-0.03],[0.115,0.06],[0.1,0.14],[0.05,0.18]],12,C.mask,0,0,0.012,head,-Math.PI*0.45,Math.PI*0.9);mk.scale.z=1.2;
+  box(0.02,0.08,0.02,C.mask,0,0.0,0.13,head);   /* the nose ridge */
+  const eyes=[-0.045,0.045].map(x=>box(0.04,0.018,0.02,eyeM,x,0.07,0.13,head));
+  /* the hat: a sweeping brim, a tall crown that bends over at the top, band and buckle */
+  const bgeo=new THREE.CylinderGeometry(0.36,0.36,0.02,24);{const p=bgeo.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),z=p.getZ(i);p.setY(i,p.getY(i)+x*x*0.9-z*z*0.35+(z<0?z*0.12:0));}bgeo.computeVertexNormals();}
+  const brim=Kit3D.mesh(bgeo,M(C.hat,{side:THREE.DoubleSide}),false);brim.position.set(0,0.15,0.0);head.add(brim);
+  cyl(0.13,0.145,0.32,12,C.hat,0,0.32,0,head);cyl(0.15,0.15,0.05,12,0x3a2a48,0,0.19,0,head);box(0.05,0.05,0.02,C.brass,0.06,0.19,0.14,head);
+  const top=grp(0,0.48,0,head);top.rotation.z=0.4;top.rotation.x=-0.15;cyl(0.11,0.13,0.24,12,C.hat,0,0.11,0,top);
+  /* arms: long and thin, a lace cuff, gloves with long jointed fingers */
+  const arm=(s,glove)=>{const sh=grp(0.27*s,0.8,0,chest);sh.rotation.order="YXZ";
+    limb(0.065,0.055,0.52,C.coat,0,0,0,sh);
+    const el=grp(0,-0.52,0,sh);limb(0.055,0.045,0.5,C.coat,0,0,0,el);cyl(0.075,0.06,0.08,8,C.lace,0,-0.45,0,el);
+    const hand=grp(0,-0.5,0,el);tbox(0.07,0.04,0.08,0.05,0.1,glove,0,0,0,hand);
+    for(let f=-1;f<=1;f++){const fg=grp(f*0.025,-0.05,0.01,hand);limb(0.012,0.01,0.09,glove,0,0,0,fg);const f2=grp(0,-0.09,0,fg);f2.rotation.x=-0.3;limb(0.01,0.006,0.08,glove,0,0,0,f2);}
     return {sh,el,hand,tip:null};};
   const armR=arm(-1,M(0x111015)),armL=arm(1,clawL);armL.tip=armL.hand;
-  /* the umbrella: hooked handle in the fist, shaft and furled canopy pointing down along the arm */
+  /* the umbrella: a curved handle in the fist, the shaft, a furled canopy with folds and a strap, a spike at the end */
   const um=grp(0,-0.02,0,armR.hand);
-  const hook=limb(0.02,0.02,0.16,C.brass,0,0.16,0,um);hook.rotation.x=Math.PI;
+  const hk=grp(0,0.04,0,um);for(let i=0;i<4;i++){const a=i/3*Math.PI;box(0.035,0.06,0.035,C.brass,Math.sin(a)*0.05,0.03+Math.sin(a/2)*0.0+(1-Math.cos(a))*0.0+i*0.025*(i<2?1:-1)+0.04,-(1-Math.cos(a))*0.05,hk).rotation.x=a;}
   limb(0.018,0.018,1.3,0x2a2622,0,0,0,um);
-  limb(0.07,0.02,0.95,clawR,0,-0.18,0,um);
-  limb(0.012,0.004,0.12,C.brass,0,-1.3,0,um);
+  const can=limb(0.075,0.02,0.95,clawR,0,-0.18,0,um,8);
+  [0,1,2,3].forEach(i=>{const a=i/4*TAU;box(0.012,0.8,0.012,0x2a2834,Math.sin(a)*0.045,-0.6,Math.cos(a)*0.045,um);});
+  box(0.17,0.03,0.03,0x2a2834,0,-0.45,0,um);box(0.03,0.03,0.03,C.brass,0,-0.45,0.02,um);
+  limb(0.012,0.004,0.14,C.brass,0,-1.3,0,um);
   armR.tip=grp(0,-1.4,0,um);
-  /* the open canopy, shown while he guards: a wide shallow cone held out in front */
+  /* the open canopy, shown while he guards: a wide shallow cone with ribs and tips */
   const shield=grp(0,-0.75,0,armR.hand);shield.visible=false;
-  const can=cone(1.0,0.5,8,M(0x3a3846,{side:THREE.DoubleSide}),0,0,0,shield);can.rotation.x=Math.PI;
+  const cn=cone(1.0,0.5,8,M(0x3a3846,{side:THREE.DoubleSide}),0,0,0,shield);cn.rotation.x=Math.PI;
+  for(let i=0;i<8;i++){const a=(i+0.5)/8*TAU,r=grp(0,0.25,0,shield);r.rotation.y=a;const rb=box(0.02,0.02,1.08,0x1a1820,0,-0.25,0.5,r);rb.rotation.x=-0.46;box(0.04,0.04,0.04,C.brass,0,-0.49,0.98,r);}
   limb(0.018,0.018,0.8,0x2a2622,0,0.4,0,shield);
   const sh=shadow(0.7);g.add(sh);
+
   return {g,body,legs,chest,head,eyes,antlers:[],bellG,armR,armL,clawR,clawL,eyeM,bellM,um,shield,strips,shadowMat:sh.material,
     hipY:1.3,byS:0.7,chestOff:-0.18,legBase:[0,0]};
 }
@@ -2667,7 +2733,21 @@ function shock(x,z,r,col){
     m.material.side=THREE.DoubleSide;m.material.depthWrite=false;m.rotation.x=-Math.PI/2;G.stage.scene.add(m);s={m};SHOCK.push(s);}
   s.live=true;s.t=0;s.r=r;s.m.material.color.setHex(col||0x7a6e62);s.m.position.set(x,0.07,z);s.m.visible=true;s.m.scale.setScalar(0.2);
 }
-function updFx(dt){const q=G.stage.camera.quaternion;updRain(dt);updWater(dt);
+const GLINT=[];let glintTex=null;
+function glint(limb){const m=G.boss.m,tips=[];if(limb==="R"||limb==="both")tips.push(m.armR.tip||m.armR.hand);if(limb==="L"||limb==="both")tips.push(m.armL.tip||m.armL.hand);
+  if(!glintTex){const c=document.createElement("canvas");c.width=c.height=64;const x=c.getContext("2d"),gr=x.createRadialGradient(32,32,0,32,32,30);
+    gr.addColorStop(0,"rgba(255,240,190,1)");gr.addColorStop(0.3,"rgba(240,180,70,0.7)");gr.addColorStop(1,"rgba(240,180,70,0)");x.fillStyle=gr;x.fillRect(0,0,64,64);
+    x.fillStyle="rgba(255,236,170,1)";x.beginPath();[[32,0],[36,28],[64,32],[36,36],[32,64],[28,36],[0,32],[28,28]].forEach(([a,b],i)=>i?x.lineTo(a,b):x.moveTo(a,b));x.closePath();x.fill();
+    glintTex=new THREE.CanvasTexture(c);}
+  tips.forEach(o=>{let s=GLINT.find(s=>!s.live);
+    if(!s){if(GLINT.length>=4)return;const mm=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:glintTex,transparent:true,depthWrite:false,depthTest:false,blending:THREE.AdditiveBlending}));
+      mm.renderOrder=6;mm.frustumCulled=false;G.stage.scene.add(mm);s={m:mm};GLINT.push(s);}
+    s.live=true;s.t=0;s.o=o;s.m.visible=true;});
+  tone(1568,0.3,"triangle",0.03,1568);tone(2349,0.25,"sine",0.014,2349);}
+const glV=new THREE.Vector3();
+function updGlint(dt){const q=G.stage.camera.quaternion;GLINT.forEach(s=>{if(!s.live)return;s.t+=dt;const k=s.t/0.5;if(k>=1){s.live=false;s.m.visible=false;return;}
+  s.o.getWorldPosition(glV);s.m.position.copy(glV);s.m.quaternion.copy(q);s.m.rotateZ(k*1.4);s.m.scale.setScalar(1.6*(k<0.2?k/0.2:1-(k-0.2)/0.8)+0.01);});}
+function updFx(dt){const q=G.stage.camera.quaternion;updRain(dt);updWater(dt);updGlint(dt);
   FX.forEach(p=>{if(!p.live)return;p.life-=dt;if(p.life<=0){p.live=false;p.m.visible=false;return;}
     p.m.position.x+=p.vx*dt;p.m.position.y+=p.vy*dt;p.m.position.z+=p.vz*dt;p.vx*=0.94;p.vz*=0.94;
     const k=p.life/p.max;p.m.material.opacity=0.8*k;p.m.scale.setScalar(p.size*(1.6-k*0.6));p.m.quaternion.copy(q);});
@@ -2700,6 +2780,22 @@ function ensureStage(){
   G.trail=makeTrail(0xd8dce6);G.btR=makeTrail(0xa89cc0);G.btL=makeTrail(0xa89cc0);
   return true;
 }
+/* fewer draw calls for the Chromebooks: inside each joint, the parts that never move on their own and share a material
+   become one mesh (the ones the game reaches for by name are left alone) */
+function bake(m){
+  const keep=new Set([m.bellG.children[1]]),mark=o=>{if(o&&o.isObject3D)keep.add(o);};
+  Object.values(m).forEach(v=>{if(Array.isArray(v))v.forEach(x=>mark(x&&x.p?x.p:x));else if(v&&v.isObject3D)mark(v);else if(v&&typeof v==="object")Object.values(v).forEach(mark);});
+  const groups=[];m.g.traverse(o=>{if(!o.isMesh)groups.push(o);});
+  groups.forEach(gp=>{const by=new Map();
+    gp.children.forEach(c=>{if(!c.isMesh||c.children.length||keep.has(c)||c.material===m.shadowMat||c.material.transparent)return;
+      if(!by.has(c.material))by.set(c.material,[]);by.get(c.material).push(c);});
+    by.forEach((list,mat)=>{if(list.length<2)return;let n=0;
+      const parts=list.map(c=>{c.updateMatrix();const ge=c.geometry.index?c.geometry.toNonIndexed():c.geometry.clone();ge.applyMatrix4(c.matrix);n+=ge.attributes.position.count;return ge;});
+      const pos=new Float32Array(n*3),nor=new Float32Array(n*3);let o=0;
+      parts.forEach(ge=>{pos.set(ge.attributes.position.array,o*3);nor.set(ge.attributes.normal.array,o*3);o+=ge.attributes.position.count;ge.dispose();});
+      const geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.BufferAttribute(pos,3));geo.setAttribute("normal",new THREE.BufferAttribute(nor,3));
+      list.forEach(c=>gp.remove(c));gp.add(new THREE.Mesh(geo,mat));});});
+  return m;}
 function startHunt(){
   try{document.activeElement&&document.activeElement.blur();}catch(e){}
   scr.show("play");
@@ -2707,7 +2803,7 @@ function startHunt(){
   const D=BOSSES[G.bossKey];
   setArena(D.arena||"yard");
   if(G.boss)G.stage.scene.remove(G.boss.m.g);
-  const m=D.build();G.stage.scene.add(m.g);
+  const m=bake(D.build());G.stage.scene.add(m.g);
   G.boss={D,m,hp:D.hp,max:D.hp,x:0,z:-4,a:0,state:"intro",t:0,move:null,mt:0,hitsDone:null,phase:1,cd:1.2,last:[],
     stagger:0,leapFrom:null,leapTo:null,ring:null,y:0,dead:0,walk:0,walking:0,flinch:0,jolt:9,joltAmt:0,critDone:false,open:0,strafe:1,strafeT:0};
   Object.assign(P,{hp:100,rally:0,rallyT:0,sta:100,staT:0,vials:5,state:"move",t:0,x:0,z:6,a:Math.PI,iframe:0,combo:0,walk:0,
@@ -2719,7 +2815,7 @@ function startHunt(){
   if(G.ringMesh){G.ringMesh.visible=false;}
   if(G.mark)G.mark.visible=false;
   if(G.ghost){G.stage.scene.remove(G.ghost.m.g);G.ghost=null;}if(G.umb){G.stage.scene.remove(G.umb);G.umb=null;}if(G.rain)G.rain.frozen=false;
-  tentsClear();if(G.debM)G.debM.g.visible=false;if(G.vm){G.stage.scene.remove(G.vm.g);G.vm=null;}G.lash=null;if(G.tide){G.tide.r=0;G.tide.disc.visible=G.tide.foam.visible=false;}
+  tentsClear();if(G.vm){G.stage.scene.remove(G.vm.g);G.vm=null;}G.lash=null;if(G.tide){G.tide.r=0;G.tide.disc.visible=G.tide.foam.visible=false;}
   G.paused=false;G.over=false;G.final=false;MUS.duck=1;$("#fade").style.opacity=0;$("#banner").classList.remove("on");G.freeze=0;G.shake=0;G.kx=G.kz=0;G.time=0;G.running=false;G.cw=0;G.cz=0;
   lastVials=-1;veil(null);prompt(null);
   $("#bossName").innerHTML=D.name[0]+` <span class="ja inl">${D.name[1]}</span>`;
@@ -3018,7 +3114,6 @@ function shoot(){
   if(!B||B.state==="dead"||B.state==="intro"||B.state==="final")return;
   const t=toBoss();
   if(t.d>11||Math.abs(wrapA(t.a-P.a))>0.6)return;
-  if(B.deb&&B.deb.state==="held"){debrisShot();return;}   /* shoot the wreckage out of the Pilgrim's grip */
   if(B.state==="guard"){guardBreak(B);return;}
   const h=parryHit();
   if(h){
@@ -3046,8 +3141,10 @@ function parryOpen(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null
    (the shot leaves the barrel ACT.gun.hit after the press, so the bright stage starts that much early) */
 function parryNow(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return false;
   const W=B.D.window||WINDOW,lead=ACT.gun.hit;return B.move.hits.some((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-W-lead&&B.mt<=h.t+0.06-lead);}
-function setGlow(limb,bright){if(G.boss.D.tell){G.boss.tellLimb=limb;G.boss.tellBright=bright;return;}   /* the Pilgrim shows it with its eye and the tide */
-  const m=G.boss.m,on=bright?0xe8b048:0x4a3612;
+/* the shared parry tell, the same on every boss: the limb glows dim gold (get ready), then bright gold (shoot now),
+   and as it turns bright a gold glint pops at its tip with a chime. Each boss adds its own flavor (the Pilgrim's eyes and the tide). */
+function setGlow(limb,bright){const B=G.boss,m=B.m,on=bright?0xe8b048:0x4a3612;
+  if(limb&&bright&&!B.tellBright)glint(limb);B.tellLimb=limb;B.tellBright=!!(limb&&bright);
   m.clawR.emissive.setHex(limb==="R"||limb==="both"?on:0);m.clawL.emissive.setHex(limb==="L"||limb==="both"?on:0);}
 function bossStart(state,move){
   const B=G.boss;
@@ -3093,7 +3190,7 @@ function clawKeys(u,s){return {
 function bossRest(){const t=G.clock||0,B=G.boss,ph=B&&B.phase>1,br=Math.pow(Math.abs(Math.sin(t*(ph?2.1:1.4))),3);
   const tw=ph?Math.max(0,Math.sin(t*7.3)*Math.sin(t*2.9)-0.75)*4:0;
   return {chest:0.45+br*0.09-tw*0.12,twist:tw*0.12*Math.sign(Math.sin(t*1.7)),by:br*0.06,head:-br*0.06+tw*0.4*Math.sin(t*23),
-  rx:-0.1+Math.sin(t*1.6+1)*0.06-br*0.08,rz:-0.15-br*0.04,re:-0.3,lx:-0.1+Math.sin(t*1.6+2)*0.06-br*0.08,lz:0.15+br*0.04,le:-0.3};}
+  rx:-0.1+Math.sin(t*1.6+1)*0.06-br*0.08,rz:-0.15-br*0.04,re:-0.3,lx:-0.1+Math.sin(t*1.6+2)*0.06-br*0.08,lz:0.15+br*0.04,le:-0.3,...(B&&B.D.rest?B.D.rest(t,ph):{})};}
 function bothArms(T,x,out,e){T.rx=T.lx=x;T.rz=-out;T.lz=out;T.re=T.le=e;}
 function movePose(mv,Tm){
   const B=G.boss,m=B.m,T=bossRest();let last=null,trR=false,trL=false;
@@ -3148,8 +3245,8 @@ function boss(dt){
     case "idle":{B.t+=dt;B.cd-=dt;turn(B.phase>1?3:2.3);
       if(B.phase===1&&B.hp<=B.max*0.5){B.phase=2;bossStart("roar");break;}
       if(B.D.duel){T=duelIdle(B,dt,t,T);break;}
-      if(t.d>3.2){const sp=(B.phase>1?3:2.4)/sl;B.x+=Math.sin(B.a)*sp*dt;B.z+=Math.cos(B.a)*sp*dt;B.walking=1;
-        const s=Math.sin(B.walk);T.twist=s*0.18;T.by=-Math.abs(s)*0.14;T.rx=-0.1+s*0.35;T.lx=-0.1-s*0.35;T.chest=0.55+Math.abs(s)*0.15;T.head=-Math.abs(s)*0.12;}
+      if(t.d>(B.D.glide?4.2:3.2)){const sp=(B.phase>1?3:2.4)/sl;B.x+=Math.sin(B.a)*sp*dt;B.z+=Math.cos(B.a)*sp*dt;B.walking=1;
+        if(!B.D.glide){const s=Math.sin(B.walk);T.twist=s*0.18;T.by=-Math.abs(s)*0.14;T.rx=-0.1+s*0.35;T.lx=-0.1-s*0.35;T.chest=0.55+Math.abs(s)*0.15;T.head=-Math.abs(s)*0.12;}}
       if(B.cd<=0&&G.running&&P.state!=="dead"){const k2=pickMove();if(k2)bossStart("move",k2);}
       m.bellG.rotation.x=lerp(m.bellG.rotation.x,-0.45+Math.sin(B.walk)*0.15,0.1);
       break;}
@@ -3835,7 +3932,7 @@ document.addEventListener("keydown",e=>{
   if(scr.current==="board"&&FD.mode==="walk"){e.preventDefault();FD.skip=true;}
 });
 
-window.HC={MUS,music,TRACKS,G,P,BOSSES,FD,startFieldEvent,parryHit,shoot,bossStart,bossDown,THREE};   /* for testing in the console */
+window.HC={buildWarden,buildPilgrim,buildDimitri,applyRig,B_REST,bake,MUS,music,TRACKS,G,P,BOSSES,FD,startFieldEvent,parryHit,shoot,bossStart,bossDown,THREE};   /* for testing in the console */
 scr.show("title");
 })();
 </script>
