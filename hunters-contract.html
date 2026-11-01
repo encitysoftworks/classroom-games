@@ -1500,7 +1500,7 @@ const BOSSES={
     gone:["The bell is silent.","鐘は静かになった。"],
     build:buildWarden,
     finale:{dur:12.2,run:(t,dt)=>wardenFinale(t,dt),
-      start:B=>{B.x=0;B.z=-4;B.a=0;P.x=0.3;P.z=-1.6;P.a=Math.PI;P.m.g.visible=true;}},
+      start:B=>{B.x=0;B.z=-4;B.a=0;P.x=P.fx=-0.2;P.z=P.fz=-2.0;P.a=Math.PI;P.m.g.visible=true;}},
     /* first-time intro: walk in, the bell tolls, the "statue" ahead wakes */
     intro:{from:[0,14],to:[0,6],dur:8.4,glide:1.3,line:["It still rings the bell.","まだ鐘を鳴らしている。"],run:(t,dt)=>wardenIntro(t,dt)}
   },
@@ -3647,12 +3647,29 @@ function walkAway(t,from,dt){   /* turn around, then walk off slowly; returns tr
   if(w&&Math.floor(P.walk/Math.PI)!==Math.floor((P.walk-dt*8.25)/Math.PI))sfx("foot");
   huntAt(HT,0.3);return true;}
 
+/* finisher helper: after the keyed pose, turn both shoulders so the blade points at the target and step the hunter
+   so the tip sits pen past it. Worked out fresh each frame from where the target really is, so the blade lines up
+   with whatever the model looks like; w blends it in and out. The hunter stands back at its start spot (P.fx, P.fz). */
+const _ab=new THREE.Vector3(),_at=new THREE.Vector3(),_ad=new THREE.Vector3();
+function aimBlade(to,pen,w){
+  const m=P.m;P.x=P.fx;P.z=P.fz;if(w<=0)return;
+  const pitch=()=>{m.g.position.set(P.x,0,P.z);m.g.updateMatrixWorld(true);m.base.getWorldPosition(_ab);m.tip.getWorldPosition(_at);
+    const d=_ad.subVectors(_at,_ab);return Math.atan2(d.y,Math.hypot(d.x,d.z))-Math.atan2(to.y-_ab.y,Math.hypot(to.x-_ab.x,to.z-_ab.z));};
+  const rx0=m.R.sh.rotation.x,lx0=m.L.sh.rotation.x;let a=0;
+  for(let i=0;i<3;i++){
+    /* pitch: a few Newton steps on the shoulder angle */
+    for(let j=0;j<2;j++){m.R.sh.rotation.x=rx0+a;const e=pitch();m.R.sh.rotation.x=rx0+a+0.01;const g=(pitch()-e)/0.01;if(Math.abs(g)>1e-3)a-=clamp(e/g,-0.6,0.6);}
+    m.R.sh.rotation.x=rx0+a;pitch();
+    /* then slide the hunter so the tip lands pen past the target along the blade */
+    const d=_ad.subVectors(_at,_ab).normalize();P.x+=to.x+d.x*pen-_at.x;P.z+=to.z+d.z*pen-_at.z;}
+  P.x=lerp(P.fx,P.x,w);P.z=lerp(P.fz,P.z,w);
+  m.R.sh.rotation.x=rx0+a*w;m.L.sh.rotation.x=lx0+a*w;m.g.position.set(P.x,0,P.z);}
+
 /* Bell Warden, "Silence": the sword goes into the bell; it grabs the blade and pushes back;
    the hunter drives it home with both hands; it sinks back into the statue it pretended to be */
 function wardenFinale(t,dt){
   const B=G.boss,m=B.m,shk=t>1.3&&t<3.3?Math.sin(G.clock*38)*0.035:0;
-  /* pushed back a little while it fights, then steps in for the second drive */
-  if(t>1.4&&t<3.0)P.z+=0.22*dt;if(t>3.25&&t<3.6)P.z-=1.0*dt;
+  const bellAt=()=>{const v=new THREE.Vector3();m.bellG.children[1].getWorldPosition(v);return v;};
   if(!walkAway(t,6.9,dt)){const HT=H_REST();
     HT.rx=kf(t,[[0,-0.1],[0.7,0.9],[0.9,-1.45,"in"],[1.3,-1.4],[3.0,-1.15],[3.25,-1.0],[3.6,-1.6,"in"],[6.2,-1.5],[6.45,-0.6,"in"],[6.9,-0.1]])+shk;
     HT.wr=kf(t,[[0,0.5],[0.7,0.2],[0.9,1.5,"in"],[6.2,1.5],[6.9,0.5]]);
@@ -3665,7 +3682,6 @@ function wardenFinale(t,dt){
     HT.lx=kf(t,[[0,0.1],[0.9,-0.6],[3.0,-0.6],[3.3,-1.45],[6.2,-1.45],[6.6,0.1]]);HT.lz=kf(t,[[3.0,0],[3.3,-0.35],[6.2,-0.35],[6.6,0]]);HT.le=kf(t,[[3.0,-0.25],[3.3,-0.1],[6.2,-0.1],[6.6,-0.25]]);
     HT.hd=kf(t,[[0.9,0.25],[1.3,0.1],[3.0,-0.1],[3.6,0.3],[6.2,0.3],[6.6,0]]);HT.coat=kf(t,[[3.3,0],[3.6,-0.4],[4.2,0]]);
     huntAt(HT,t<0.05?1:0.45);}
-  const bellAt=()=>{const v=new THREE.Vector3();m.bellG.children[1].getWorldPosition(v);return v;};
   if(t>=0.9)once("stab",()=>{const v=bellAt();tone(150,0.7,"sine",0.08,90);noise(0.2,0.08);fx("spark",v.x,v.y,v.z,8);fx("ash",v.x,v.y,v.z,8);G.shake=0.14;});
   if(t>=1.3)once("grab",()=>{sfx("roar");G.shake=0.12;tone(98,1.8,"sine",0.05,80);});
   if(t>=2.2)once("ring",()=>{tone(196,0.9,"sine",0.04,186);});   /* a choked half-ring from the bell */
@@ -3676,20 +3692,24 @@ function wardenFinale(t,dt){
   T.chest=kf(t,[[0,0.35],[0.9,0.35],[1.3,0.2],[1.6,0.05,"in"],[3.0,0.1],[3.6,0.15],[4.2,0.5],[5.2,1.35]])-0.35*j-0.4*j2+shk;
   T.by=kf(t,[[0,-0.95],[1.3,-0.95],[1.6,-0.7],[3.0,-0.72],[3.6,-0.8],[5.2,-0.95]])+0.15*j+0.15*j2;
   T.head=kf(t,[[0,-0.25],[0.9,-0.3],[1.6,-0.5],[3.0,-0.45],[3.6,-0.4],[4.2,0],[5.2,0.9]])-0.6*j-0.7*j2;
-  bothArms(T,kf(t,[[0,-0.15],[1.3,-0.3],[1.6,-0.8,"in"],[3.0,-0.75],[3.6,-0.8],[4.0,-0.3],[5.2,-0.05]])+shk,
-    kf(t,[[0,0.25],[1.3,0.6],[1.6,0.2],[3.0,0.25],[3.6,0.3],[4.0,0.8],[5.2,0.25]]),kf(t,[[1.3,-0.1],[1.6,-0.55],[3.0,-0.65],[3.6,-0.55],[4.2,-0.2],[5.2,-0.1]]));
+  /* the hands close on the hunter's sword hand, just in front of the guard */
+  bothArms(T,kf(t,[[0,-0.15],[1.3,-0.3],[1.6,0.2,"in"],[3.0,0.15],[3.6,0.45],[4.0,0.2],[5.2,-0.05]])+shk,
+    kf(t,[[0,0.25],[1.3,0.6],[1.6,-0.8],[3.0,-0.75],[3.6,0.45],[4.0,0.35],[5.2,0.25]]),kf(t,[[1.3,-0.1],[1.6,-1.8],[3.0,-1.7],[3.6,-0.7],[4.2,-0.3],[5.2,-0.1]]));
   m.bellG.rotation.x=t<0.9?-0.45+Math.sin(t*2.2)*0.12:lerp(m.bellG.rotation.x,-0.45+(t>2.2&&t<3.0?Math.sin(t*9)*0.08:0),0.1);
   /* its eyes burn brighter while it fights, then go out, last to first; then it turns to stone */
   if(t<3.6)m.eyeM.emissive.setHex(t>1.3?0x4aa6c0:0x2a6a7a);
   m.eyes.forEach((e,i)=>{const off=t>5.0+(6-i)*0.14;if(off&&e.visible)tone(900-i*60,0.1,"sine",0.01,700);e.visible=!off;});
   const q=ease(clamp((t-5.2)/1.4,0,1));if(q>0)B.fade.forEach((x,i)=>{x.color.copy(B.col0[i]).lerp(STONE,q);if(B.em0[i])x.emissive.copy(B.em0[i]).multiplyScalar(1-q);});
   m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;poseBoss(T,t<0.05?1:0.3);
+  /* the blade goes into the heart-bell and stays there: pushed back a little while it fights, driven home, pulled out */
+  if(t<6.9){m.g.updateMatrixWorld(true);
+    aimBlade(bellAt(),kf(t,[[0.9,0.12],[1.3,0.16],[3.0,0.0],[3.25,-0.04],[3.6,0.34,"in"],[6.2,0.3],[6.45,-0.35]]),kf(t,[[0.7,0],[0.9,1,"in"],[6.45,1],[6.9,0]]));}
   if(t>=8.6)once("gone",()=>{sfx("win");banner("The hunt is over",B.D.gone,false,0);});
   if(t>=9.6)once("toll",()=>{tone(196,3.2,"sine",0.025);tone(392,2.6,"sine",0.01);});
   const fade=clamp((t-10.6)/1.2,0,1);
   /* side close-up for the stab and the struggle; low on the far side for the drive; then behind the statue */
-  if(t<3.25){const k=ease(t/3.25);return {pos:[lerp(3.8,3.2,k),lerp(1.4,1.6,k),lerp(-1.4,-1.9,k)],look:[0,lerp(1.4,1.6,k),-2.8],fov:lerp(46,42,k),roll:0.05,fade};}
-  if(t<6.9){const k=ease((t-3.25)/3.65);return {pos:[lerp(-2.4,-2.9,k),lerp(0.9,1.2,k),lerp(-1.9,-1.4,k)],look:[0,lerp(1.5,1.1,k),-2.9],fov:40,roll:-0.07,fade};}
+  if(t<3.25){const k=ease(t/3.25);return {pos:[lerp(3.8,3.3,k),lerp(1.5,1.8,k),lerp(-1.6,-2.2,k)],look:[0,lerp(1.6,1.85,k),-3.1],fov:lerp(46,42,k),roll:0.05,fade};}
+  if(t<6.9){const k=ease((t-3.25)/3.65);return {pos:[lerp(-3.3,-3.0,k),lerp(1.3,1.5,k),lerp(-2.2,-1.5,k)],look:[0,lerp(1.85,1.3,k),-3.1],fov:44,roll:-0.07,fade};}
   const k=ease(clamp((t-6.9)/5.3,0,1));
   return {pos:[lerp(-1.6,-1.2,k),lerp(2.0,2.6,k),lerp(-7.2,-6.6,k)],look:[0,1.1,lerp(-1,P.z,0.7)],fov:44,fade};
 }
