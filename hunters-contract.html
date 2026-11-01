@@ -1533,7 +1533,8 @@ const BOSSES={
     },
     build:buildPilgrim,down:pilgrimDown,
     finale:{dur:12,run:(t,dt)=>pilgrimFinale(t,dt),
-      start:B=>{B.x=0;B.z=-4;B.a=0;B.y=0;P.x=0;P.z=1.2;P.a=Math.PI;P.m.g.visible=false;tentsClear();}},
+      start:B=>{B.x=0;B.z=-4;B.a=0;B.y=0;P.x=0;P.z=1.2;P.a=Math.PI;P.m.g.visible=false;tentsClear();
+        B.m.eyes[1].material=B.m.eyeM=B.m.eyes[0].material;}},   /* the eyes got their own material copy: point eyeM at it so they can still glow gold */
     /* first-time intro, from its side: it watches the hunter wade in from under the water, then comes up */
     intro:{from:[0,15],to:[0,6],dur:8.4,glide:1.3,line:["It is still walking home.","まだ家へ歩いている。"],run:(t,dt)=>pilgrimIntro(t,dt),
       start:()=>{P.m.g.visible=true;G.boss.m.g.visible=false;},end:()=>{G.boss.m.g.visible=true;G.boss.y=0;}}
@@ -2284,18 +2285,23 @@ function viewModel(pos,look,t){
 }
 function pilgrimFinale(t,dt){
   const B=G.boss,m=B.m;P.m.g.visible=false;
-  const walk=t<2.4,wz=lerp(1.2,-0.9,ease(clamp(t/2.4,0,1)))+(t>2.7&&t<3.1?(t-2.7)*0.8:0)-(t>3.1?-0.32:0),bob=walk?Math.abs(Math.sin(t*6.5))*0.05:0;
+  const walk=t<2.4,wz=lerp(1.2,-1.4,ease(clamp(t/2.4,0,1)))+(t>2.7&&t<3.1?(t-2.7)*0.8:0)-(t>3.1?-0.32:0),bob=walk?Math.abs(Math.sin(t*6.5))*0.05:0;
   P.z=wz;if(walk&&Math.floor(t*6.5/Math.PI)!==Math.floor((t-dt)*6.5/Math.PI)){sfx("foot");ripple(P.x,P.z,0.8,0.8);}
-  /* the Pilgrim: kneeling in the water, then it rears up against the hunter, then sinks back */
-  const T=bossRest(),rear=ease(clamp((t-2.4)/0.5,0,1))*(1-ease(clamp((t-5.5)/0.8,0,1))),j=t>5.3&&t<5.7?Math.sin((t-5.3)/0.4*Math.PI):0;
-  T.chest=lerp(1.3,-0.2,rear)-0.5*j;T.by=lerp(-0.95,-0.4,rear);T.head=lerp(0.6,-0.45,rear)-0.6*j;
-  bothArms(T,lerp(-0.15,-1.7,rear)+Math.sin(t*12)*0.05*rear,lerp(0.25,1.2,rear),-0.4);
+  /* the Pilgrim: sunk to the waist and bowed; then it rises and leans over the hunter, the robe splitting open and both
+     tentacle arms reaching out of it; its left arm lashes and the sword knocks it away; then the hood lunges in and the shot goes into it */
+  const T=bossRest(),rear=ease(clamp((t-2.4)/0.5,0,1))*(1-ease(clamp((t-5.5)/0.8,0,1))),j=t>4.9&&t<5.5?Math.sin((t-4.9)/0.6*Math.PI):0,sw=Math.sin(t*3.1)*0.06*rear;
+  T.chest=lerp(1.3,0.95,rear)+0.3*j;T.by=lerp(-0.95,-0.2,rear)-0.1*j;T.head=lerp(0.6,0.25,rear)+0.15*j;T.twist=Math.sin(t*0.9)*0.06*rear;
+  T.rx=lerp(-0.15,-1.3,rear)+sw;T.rz=-lerp(0.03,0.38,rear);T.re=lerp(0,-0.7,rear);
+  /* the left arm: up over the hood, whips down at the hunter (3.85), is cut aside (3.95) and recoils out wide */
+  const lw=kf(t,[[3.2,0],[3.55,1],[3.85,1]]),hitL=kf(t,[[3.55,0],[3.85,1,"in"],[3.95,1],[4.6,0]]);
+  T.lx=lerp(-0.15,-1.3,rear)-sw+lw*(-1.5+hitL*1.9)-(t>3.95?kf(t,[[3.95,0],[4.15,0.5],[4.9,0]]):0);
+  T.lz=lerp(0.03,0.38,rear)+(t>3.95?kf(t,[[3.95,0],[4.15,1.0,"in"],[4.9,0.2]]):0);T.le=lerp(0,-0.7,rear)+lw*0.5;
+  m.stL=t>3.55&&t<4.5?kf(t,[[3.55,1],[3.85,1.6,"in"],[3.95,1.6],[4.5,1]]):1;
   if(t>=2.4)once("wake",()=>{m.eyeHold=3;sfx("eye");sfx("roar");G.shake=0.12;});
   m.eyeShut=t>=5.32;B.tellLimb=t>4.4&&t<5.32?"R":null;B.tellBright=t>4.8;   /* gold and wide open: the hunter's cue too */
   if(t>=2.7)once("tents",()=>{[[-1.7,-2.7],[1.8,-2.5],[-2.5,-3.4],[2.4,-3.2]].forEach(([x,z],i)=>tentUp(x,z,3.1-i*0.1,{h:1.5}));noise(0.6,0.1);G.shake=0.18;});
-  if(t>=3.5)once("lash",()=>{const L=tentUp(0.9,P.z-1.1,1.3,{h:1.3});if(L)G.lash=L;sfx("slash");});
-  if(G.lash&&G.lash.live)G.lash.lash=-kf(t,[[3.5,0],[3.8,0.9],[4.0,1.1]]);
-  if(t>=3.95)once("cut",()=>{sfx("slash");sfx("hit");if(G.lash){fx("splash",G.lash.x,1.4,G.lash.z,5);fx("mist",G.lash.x,1.0,G.lash.z,3);G.lash.t=Math.max(G.lash.t,G.lash.life-0.3);}G.shake=0.2;});
+  if(t>=3.55)once("lash",()=>sfx("slash"));
+  if(t>=3.95)once("cut",()=>{const v=new THREE.Vector3();m.armL.tip.getWorldPosition(v);sfx("slash");sfx("hit");fx("splash",v.x,v.y,v.z,5);fx("mist",v.x,v.y,v.z,3);G.shake=0.2;});
   if(t>=5.3)once("shot",()=>{const v=new THREE.Vector3();m.lan.getWorldPosition(v);sfx("gun");noise(0.3,0.12);fx("spark",v.x,v.y,v.z,14);fx("smoke",v.x,v.y,v.z,3);
     m.eyeM.emissive.setHex(0);m.glass.visible=false;G.shake=0.25;tone(1800,0.4,"triangle",0.02,900);});
   if(t>=5.6)once("sink",()=>{TENT.forEach(T=>{if(T.live)T.t=Math.max(T.t,T.life-0.6);});noise(1.2,0.06);});
@@ -2306,8 +2312,10 @@ function pilgrimFinale(t,dt){
   if(t>=8.6)once("gone",()=>{sfx("win");banner("The hunt is over",B.D.gone,false,0);});
   const fade=clamp((t-10.6)/1.2,0,1);
   /* the eyes: on its bowed head, up at the lantern as it rears, then down at the water where it went */
-  const hy=lerp(1.7,3.0,rear),down=ease(clamp((t-6.4)/2,0,1)),up2=ease(clamp((t-9.2)/1.4,0,1));
-  const look=[0,lerp(lerp(hy,0.1,down),1.6,up2),lerp(-4,lerp(-3.2,-6,up2),down)],pos=[P.x+(t>3.8&&t<4.1?0.05:0),1.62+bob-(t>2.7&&t<3.1?0.05:0),P.z];
+  /* the eyes: on the hood itself (wherever the model puts it) until it sinks, then down at the water, then up */
+  m.g.updateMatrixWorld(true);const hv=m.lan.getWorldPosition(new THREE.Vector3());if(!m.lk||t<0.05)m.lk=hv.clone();m.lk.lerp(hv,t<6.8?Math.min(1,dt*8):0);
+  const down=ease(clamp((t-6.4)/2,0,1)),up2=ease(clamp((t-9.2)/1.4,0,1));
+  const look=[lerp(m.lk.x,0,down),lerp(lerp(m.lk.y,0.1,down),1.6,up2),lerp(lerp(m.lk.z,-3.2,down),-6,up2)],pos=[P.x+(t>3.8&&t<4.1?0.05:0),1.62+bob-(t>2.7&&t<3.1?0.05:0),P.z];
   const aim=ease(clamp((t-4.5)/0.6,0,1))*(1-ease(clamp((t-7.2)/0.8,0,1))),swing=t<3.8?0:t<4.05?ease((t-3.8)/0.25):1-ease(clamp((t-4.05)/0.6,0,1));
   viewModel(pos,look,{aim,swing,kick:t>5.3&&t<5.6?Math.sin((t-5.3)/0.3*Math.PI):0});
   if(t>=5.3)once("smoke",()=>{const v=new THREE.Vector3();G.vm.g.localToWorld(v.set(0.12,-0.12,1.4));fx("smoke",v.x,v.y,v.z,2);});
