@@ -494,6 +494,30 @@ body.jp .helpline .ja{display:block}
 .pnone b{font:400 22px var(--f-display);color:#20180f}.pnone i{margin-top:6px}.pnone .ja{color:#5d5244;font-size:12px}
 .pfade{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0;transition:opacity .7s ease;background:radial-gradient(ellipse at 50% 60%,#2a3040,#0b0d14 75%)}
 .pfade.on{opacity:1}
+
+/* titles, the kit row and its panel */
+.htitle{font:400 16px var(--f-display);letter-spacing:.22em;text-transform:uppercase;color:#8f2320;margin-top:2px}
+.htitle:before,.htitle:after{content:"~";margin:0 .5em;color:#a08a60;letter-spacing:0}
+.htitle.onresult{color:#e3cf9f;text-align:center;font-size:18px}
+.kit{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;margin:0 8px;flex-wrap:wrap;flex:1}
+.kit .klbl{font:400 14px var(--f-display);letter-spacing:.12em;color:#e3cf9f;text-shadow:0 2px 0 #000;margin-right:6px}
+.kit .kitem{width:40px;height:40px;padding:5px;border-radius:4px;border:1px solid #5b412c;background:rgba(20,14,10,.75);cursor:pointer;box-shadow:0 3px 0 #000}
+.kit .kitem svg{width:100%;height:100%;display:block}
+.kit .kitem.troph{border-color:#8a7a5c}
+.kit .kitem.s{border-color:#c8a040;box-shadow:0 3px 0 #000,0 0 10px rgba(200,160,64,.35)}
+.kit .kitem:hover,.kit .kitem:focus-visible{outline:2px solid #e3cf9f;outline-offset:1px}
+.kpanel{position:absolute;top:52px;width:280px;z-index:35;padding:14px 16px 12px;background:var(--parch,#d8c79d);color:#2a2116;font-family:var(--f-gothic);box-shadow:0 8px 0 rgba(0,0,0,.5);text-align:left}
+.kpanel b{font:400 20px var(--f-display);color:#20180f}.kpanel .ja{color:#5d5244}
+.kpanel .st{font-style:italic;margin:6px 0 4px;font-size:14px;line-height:1.35}
+.kpanel .pl{margin:0;font-size:14px;line-height:1.35;border-top:1px dashed #8a7a5c;padding-top:5px}
+.kpanel .sr{margin:5px 0 0;font-size:13px;color:#7a5a12}
+
+.resetbox{margin-top:14px;border-top:1px dashed #5b412c;padding-top:10px;font-size:14px}
+.resetbox .rlink{background:none;border:0;color:#8a7a5c;font:inherit;font-size:13px;text-decoration:underline;cursor:pointer;padding:0}
+.resetbox p{margin:0 0 8px}.resetbox label{display:inline-flex;align-items:center;gap:8px;margin-right:10px}
+.resetbox input{width:90px;font:600 16px monospace;letter-spacing:.15em;text-transform:uppercase;padding:4px 6px;background:#15131a;color:#e3cf9f;border:1px solid #8f2320;border-radius:3px}
+.resetbox input.bad{animation:rsbad .35s ease}
+@keyframes rsbad{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 </style>
 
 <div class="field" id="field" hidden><div id="fieldStage"></div></div>
@@ -515,6 +539,7 @@ body.jp .helpline .ja{display:block}
   <section class="screen" id="board">
     <div class="wall" id="wall">
       <div class="walltop"><span class="wtitle">Hunters' Notice Board<span class="ja inl">ハンターの掲示板</span></span>
+        <div class="kit" id="kit"></div>
         <button class="btn" id="ctlBtn" type="button">Controls<span class="ja">そうさ</span></button></div>
       <nav class="pmap" id="pmap" aria-label="Boards"></nav>
       <div class="cork" id="cork"></div>
@@ -1578,7 +1603,7 @@ const BOSSES={
     journal:["Dimitri was a hunter once. Tonight he can finally go home. He will walk; he doesn't own a car.","ディミトリはかつてハンターだった。今夜、やっと家に帰れる。歩いて帰る。車を持っていないから。"],
     phase2:["The rain stops falling.","雨が止まった。"],
     gone:["The hunter rests.","ハンターは眠った。"],
-    duel:true,roarColor:[0xb08aff,0x3a2a6a],window:0.12,perfect:0.06,poise:2,tick:0.3,
+    duel:true,roarColor:[0xb08aff,0x3a2a6a],poise:2,
     /* raise = when the umbrella starts going up (early raise + hold = a delayed swing); s = swing side */
     moves:{
       string:{gen:makeString,weight:(d,ph)=>d<4.4?4:0},
@@ -1846,7 +1871,7 @@ function renderBoard(){
   /* zoom only as far as fits above the name bar */
   $("#cork").querySelectorAll(".poster").forEach(p=>{p.addEventListener("pointerenter",()=>fitZoom(p));p.addEventListener("pointerleave",()=>{p.style.removeProperty("--z");});});
   $("#cork").querySelectorAll(".again").forEach(b=>b.onclick=()=>{G.bossKey=b.dataset.k;st.set("cut_"+G.bossKey,false);startHunt();});
-  renderBar();PL.renderTop();
+  renderBar();PL.renderTop();PX.renderKit();
 }
 function fitZoom(p){
   if(p.classList.contains("focus")||p.matches(":hover")&&p.style.getPropertyValue("--z"))return;
@@ -1876,7 +1901,7 @@ function renderSign(){
     return `<div class="sline${SG.step<i?" wait":""}"><span class="lbl">${lbl}</span><div class="txt">${chars}</div>${act?`<div class="hint">${hint}</div>`:""}</div>`;};
   const nm=SG.name.replace(/[<>&"]/g,"");
   el.innerHTML=`${row(1,"Oath",`Type the oath.<span class="ja">${BOSSES[G.bossKey].oath[1]}</span>`)}
-    <div class="sline${SG.step<2?" wait":""}"><span class="lbl">Signed</span><div class="txt sig">${nm}${SG.step===2?'<span class="caret"></span>':""}</div>${SG.step===2?`<div class="hint">${nm?"Press <kbd>Enter</kbd> to sign. (Backspace to change)":"Type your name in English letters."}<span class="ja">${nm?"Enterでサイン":"名前をローマ字で書こう"}</span></div>`:""}</div>
+    <div class="sline${SG.step<2?" wait":""}"><span class="lbl">Signed</span><div class="txt sig">${nm}${SG.step===2?'<span class="caret"></span>':""}</div>${PX.titleHTML("onsheet")}${SG.step===2?`<div class="hint">${nm?"Press <kbd>Enter</kbd> to sign. (Backspace to change)":"Type your name in English letters."}<span class="ja">${nm?"Enterでサイン":"名前をローマ字で書こう"}</span></div>`:""}</div>
     ${SG.ime?`<p class="imehint">Switch the keyboard to English input (英数).<span class="ja">英数入力に切りかえてね。</span></p>`:""}`;
 }
 function sealContract(){
@@ -1942,6 +1967,20 @@ function showControls(on){
     </div>
     <div class="tipbox"><b>Getting hurt.</b> When you get hit, part of your health turns orange. Hit back quickly to win it back.<span class="ja">ダメージを受けるとオレンジ色になる。すぐに攻撃すると体力がもどる。</span></div></div>`;
   w.hidden=false;$("#ctlClose").onclick=()=>showControls(false);w.onclick=e=>{if(e.target===w)showControls(false);};
+  /* reset progress: hidden behind a small link and a typed word, so nobody does it by accident */
+  const ctl=w.querySelector(".ctl"),rs=document.createElement("div");rs.className="resetbox";
+  rs.innerHTML=`<button type="button" class="rlink" id="rsOpen">Reset progress<span class="ja inl">記録を消す</span></button>`;ctl.appendChild(rs);
+  $("#rsOpen").onclick=()=>{
+    rs.innerHTML=`<p><b>This erases every rank, title and trophy on this computer.</b> Intros will play again.<span class="ja">このパソコンのランク・称号・トロフィーをすべて消します。</span></p>
+      <label>Type <b>RESET</b> and press Enter<span class="ja inl">RESETと打ってEnter</span> <input id="rsIn" maxlength="5" autocomplete="off" spellcheck="false"></label>
+      <button type="button" class="btn" id="rsNo">Cancel<span class="ja">やめる</span></button>`;
+    const inp=$("#rsIn");inp.focus();
+    inp.addEventListener("keydown",e=>{e.stopPropagation();
+      if(e.key==="Escape"){e.preventDefault();showControls(true);return;}
+      if(e.key==="Enter"){e.preventDefault();if(inp.value.trim().toUpperCase()==="RESET"){
+        try{Object.keys(localStorage).filter(k=>k.startsWith("hc_")).forEach(k=>localStorage.removeItem(k));sessionStorage.removeItem("hc_walked");}catch(err){}
+        location.reload();}else{inp.value="";inp.classList.remove("bad");void inp.offsetWidth;inp.classList.add("bad");}}});
+    $("#rsNo").onclick=()=>showControls(true);};
 }
 document.body.appendChild($("#ctlwrap"));
 $("#ctlBtn").onclick=()=>{$("#ctlBtn").blur();showControls(true);};
@@ -2234,18 +2273,18 @@ function lashAnim(Tm,T,mv){const m=G.boss.m,tr={};let last=null;
     mv.hits.forEach(h=>{if(h.limb===limb&&Tm>=h.t-0.8-(h.hold||0)&&Tm<=h.t+1.0&&(!best||h.t>best.t))best=h;});
     if(!best)return;const ho=best.hold||0;let u=Tm-best.t;
     /* the hold: the wind-up pose freezes at the top, the tentacle quivering */
-    const held=ho&&u>-0.3-ho&&u<-0.3;if(ho&&u<=-0.3)u=Math.min(-0.3,u+ho);
-    /* up by -0.42, a short quiver at the top, then the swing starts at -0.26 and speeds up into the strike,
+    const held=ho&&u>-0.36-ho&&u<-0.36;if(ho&&u<=-0.36)u=Math.min(-0.36,u+ho);
+    /* up by -0.42, a short quiver at the top, then the swing starts at -0.3 and speeds up into the strike,
        so the whole parry window (the last 0.2 s) falls while the tentacle is visibly swinging down */
-    const sh=held?Math.sin((G.clock||0)*21)*0.04:u>-0.42&&u<-0.26?Math.sin((G.clock||0)*50)*0.06:0;
-    const x=kf(u,[[-0.8,0],[-0.42,-2.9],[-0.26,-3.1],[-0.1,-2.15,"lin"],[0.03,-1.0,"lin"],[0.6,-0.95],[1.0,0]])+sh,
-      z=kf(u,[[-0.8,0.03],[-0.42,0.4],[-0.26,0.38],[0.03,0.1,"lin"],[1.0,0.03]])*s,e=kf(u,[[-0.8,0],[-0.42,-0.5],[-0.26,-0.5],[0.03,0.05,"lin"],[1.0,0]]);
+    const sh=held?Math.sin((G.clock||0)*21)*0.04:u>-0.42&&u<-0.3?Math.sin((G.clock||0)*50)*0.06:0;
+    const x=kf(u,[[-0.8,0],[-0.42,-2.9],[-0.3,-3.1],[-0.1,-2.15,"lin"],[0.03,-1.0,"lin"],[0.6,-0.95],[1.0,0]])+sh,
+      z=kf(u,[[-0.8,0.03],[-0.42,0.4],[-0.3,0.38],[0.03,0.1,"lin"],[1.0,0.03]])*s,e=kf(u,[[-0.8,0],[-0.42,-0.5],[-0.3,-0.5],[0.03,0.05,"lin"],[1.0,0]]);
     if(limb==="R"){T.rx=x;T.rz=z;T.re=e;}else{T.lx=x;T.lz=z;T.le=e;}
-    m["st"+limb]=kf(u,[[-0.42,1],[-0.26,1.05],[-0.1,1.45,"lin"],[0.03,1.9,"lin"],[0.55,1.85],[1.0,1]]);
-    tr[limb]=u>-0.26&&u<0.12;
+    m["st"+limb]=kf(u,[[-0.42,1],[-0.3,1.05],[-0.1,1.45,"lin"],[0.03,1.9,"lin"],[0.55,1.85],[1.0,1]]);
+    tr[limb]=u>-0.3&&u<0.12;
     if(!last||best.t>last.t){last=best;
-      T.chest=kf(u,[[-0.8,0.45],[-0.42,0.2],[-0.26,0.2],[0.03,0.8,"lin"],[0.6,0.75],[1.0,0.45]]);T.twist=kf(u,[[-0.8,0],[-0.42,0.35*s],[-0.26,0.35*s],[0.03,-0.25*s,"lin"],[1.0,0]]);
-      T.head=kf(u,[[-0.8,0],[-0.42,-0.25],[-0.26,-0.25],[0.03,0.2,"lin"],[1.0,0]]);T.by=kf(u,[[-0.42,0.1],[-0.26,0.1],[0.03,-0.15,"lin"],[1.0,0]]);}});
+      T.chest=kf(u,[[-0.8,0.45],[-0.42,0.2],[-0.3,0.2],[0.03,0.8,"lin"],[0.6,0.75],[1.0,0.45]]);T.twist=kf(u,[[-0.8,0],[-0.42,0.35*s],[-0.3,0.35*s],[0.03,-0.25*s,"lin"],[1.0,0]]);
+      T.head=kf(u,[[-0.8,0],[-0.42,-0.25],[-0.3,-0.25],[0.03,0.2,"lin"],[1.0,0]]);T.by=kf(u,[[-0.42,0.1],[-0.3,0.1],[0.03,-0.15,"lin"],[1.0,0]]);}});
   return tr;}
 /* a single lash; sometimes it holds the tentacle up at the top before the whip, so you can't play a rhythm.
    The gold comes on at the same point of the wind-up (warn covers the hold), so it still says when it is coming */
@@ -2927,7 +2966,7 @@ function tick(dt){
 const ACT={
   light:{dur:[0.44,0.44,0.58],hit:[0.17,0.17,0.25],cost:12,range:2.7,arc:150,dmg:[9,10,15],chain:0.24},
   heavy:{dur:0.92,hit:0.55,cost:24,range:3.4,arc:170,dmg:26},
-  gun:{dur:0.42,miss:0.8,hit:0.08,cost:6},   /* a shot that does not parry leaves you open longer */
+  gun:{dur:0.42,miss:0.8,hit:0,cost:6},   /* the shot is judged on the press itself (parry rule 2) */   /* a shot that does not parry leaves you open longer */
   dodge:{dur:0.38,cost:18},
   heal:{dur:0.95,hit:0.5},
   crit:{dur:2.0,thrust:0.32,hit:1.0,dmg:85},
@@ -3207,7 +3246,7 @@ function walkPose(T,moving,dt){
 /* a heavy blow that hits the ground: dust ring under the blade tip */
 function slam(sh){const v=new THREE.Vector3();P.m.tip.getWorldPosition(v);shock(v.x,v.z,1.5);fx("dust",v.x,0.2,v.z,6);G.shake=Math.max(G.shake,sh);}
 function shoot(){
-  const B=G.boss,v=new THREE.Vector3();P.m.muzzle.getWorldPosition(v);sfx("gun");fx("smoke",v.x,v.y,v.z,5);
+  const B=G.boss;sfx("gun");setTimeout(()=>{if(!P.m)return;const v=new THREE.Vector3();P.m.muzzle.getWorldPosition(v);fx("smoke",v.x,v.y,v.z,5);},70);
   if(!B||B.state==="dead"||B.state==="intro"||B.state==="final")return;
   const t=toBoss();
   if(t.d>11||Math.abs(wrapA(t.a-P.a))>0.6)return;
@@ -3215,7 +3254,7 @@ function shoot(){
   const h=parryHit();
   if(h){
     /* a perfect parry (the last tenth of a second) keeps it down longer and makes the critical strike stronger */
-    const perfect=B.mt>=h.t-(B.D.perfect||PERFECT);
+    const perfect=B.mt>=h.t-PERFECT;
     /* poise pips: a normal parry knocks a pip off and rocks it back; the last pip (or a perfect parry) opens it up.
        Getting hit puts the pips back. The Warden has one, so every parry opens it */
     const pips=B.D.poise||1;
@@ -3232,24 +3271,27 @@ function shoot(){
 
 /* ---------- the boss ---------- */
 /* The claws glow from WARN seconds before the hit, but a shot only parries in the last WINDOW seconds. */
-const WARN=0.5,WINDOW=0.2,PERFECT=0.1;
+/* Parry rules (project memory "parry-principles"): the window is judged at the press and runs from WINDOW before the hit
+   to LATE after it (pressing as it connects works; a parryable hit only does damage at h.t+LATE). Perfect = the last PERFECT.
+   COMMIT: the glint + chime fire this long before every parryable hit, after any hold, on every boss, as the swing starts. */
+const WARN=0.5,WINDOW=0.25,LATE=0.05,PERFECT=0.1,COMMIT=0.3;
 function parryHit(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null;
-  const W=B.D.window||WINDOW;return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-W&&B.mt<=h.t+0.06)||null;}
+  return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-WINDOW&&B.mt<=h.t+LATE)||null;}
 function parryOpen(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null;
-  return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=glowFrom(B.move,h)&&B.mt<=h.t+0.06)||null;}
+  return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=glowFrom(B.move,h)&&B.mt<=h.t+LATE)||null;}
 /* the glow never starts before the hit in front of it has landed: in a string of swings it lights the right one */
 function glowFrom(mv,h){let s=h.t-(h.warn||WARN);mv.hits.forEach(o=>{if(o!==h&&o.t!=null&&o.t<h.t&&o.t+0.02>s)s=o.t+0.02;});return s;}
 /* two stages: a dim warning glow, then a bright one while pressing L now would parry
    (the shot leaves the barrel ACT.gun.hit after the press, so the bright stage starts that much early) */
 function parryNow(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return false;
-  const W=B.D.window||WINDOW,lead=ACT.gun.hit;return B.move.hits.some((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-W-lead&&B.mt<=h.t+0.06-lead);}
+  return B.move.hits.some((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-WINDOW&&B.mt<=h.t+LATE);}
 /* the shared parry tell, the same on every boss: the limb glows dim gold (get ready), then bright gold (shoot now),
    and as it turns bright a gold glint pops at its tip with a chime. Each boss adds its own flavor (the Pilgrim's eyes and the tide). */
 function setGlow(limb,bright){const B=G.boss,m=B.m;
   /* danger 2 and up: one steady gold, no "shoot now" stage; the glint pops when it comes on. You time the shot from the motion */
-  if(B.D.danger>=2){const was=B.tellLimb;bright=false;if(limb&&!was)glint(limb);}
+  if(B.D.danger>=2)bright=false;   /* the glint + chime no longer come from here: they fire at COMMIT (see the move loop) */
   const on=bright?0xe8b048:B.D.danger>=2?0xa07420:0x4a3612;
-  if(limb&&bright&&!B.tellBright)glint(limb);B.tellLimb=limb;B.tellBright=!!(limb&&bright);
+  B.tellLimb=limb;B.tellBright=!!(limb&&bright);
   m.clawR.emissive.setHex(limb==="R"||limb==="both"?on:0);m.clawL.emissive.setHex(limb==="L"||limb==="both"?on:0);}
 function bossStart(state,move){
   const B=G.boss;
@@ -3284,13 +3326,13 @@ function hitPlayer(dmg,fromX,fromZ){
 }
 /* claw keyframes, u = time from the moment the claw lands, s = which side (-1 right arm, 1 left arm) */
 function clawKeys(u,s){return {
-  x:kf(u,[[-0.75,-0.1],[-0.3,-2.85],[-0.1,-3.05],[0.02,-0.35,"in"],[0.14,-0.15],[0.75,-0.1]]),
-  z:kf(u,[[-0.75,0.15*s],[-0.3,0.85*s],[-0.1,0.9*s],[0.02,-0.35*s,"in"],[0.75,0.15*s]]),
-  e:kf(u,[[-0.75,-0.3],[-0.3,-1.5],[-0.1,-1.6],[0.02,-0.05,"in"],[0.75,-0.3]]),
-  chest:kf(u,[[-0.75,0.45],[-0.3,-0.1],[-0.1,-0.18],[0.02,1.15,"in"],[0.2,1.15],[0.8,0.45]]),
-  twist:kf(u,[[-0.75,0],[-0.3,0.55*s],[-0.1,0.6*s],[0.02,-0.5*s,"in"],[0.2,-0.55*s],[0.8,0]]),
-  by:kf(u,[[-0.75,0],[-0.3,0.3],[-0.1,0.38],[0.02,-0.38,"in"],[0.25,-0.36],[0.8,0]]),
-  head:kf(u,[[-0.75,0],[-0.62,0.3],[-0.48,-0.45],[-0.1,-0.35],[0.02,0.35,"in"],[0.8,0]])};}
+  x:kf(u,[[-0.75,-0.1],[-0.42,-2.85],[-0.3,-3.05],[-0.12,-2.25,"lin"],[0.02,-0.35,"lin"],[0.14,-0.15],[0.75,-0.1]]),
+  z:kf(u,[[-0.75,0.15*s],[-0.42,0.85*s],[-0.3,0.9*s],[0.02,-0.35*s,"lin"],[0.75,0.15*s]]),
+  e:kf(u,[[-0.75,-0.3],[-0.42,-1.5],[-0.3,-1.6],[0.02,-0.05,"lin"],[0.75,-0.3]]),
+  chest:kf(u,[[-0.75,0.45],[-0.42,-0.1],[-0.3,-0.18],[0.02,1.15,"lin"],[0.2,1.15],[0.8,0.45]]),
+  twist:kf(u,[[-0.75,0],[-0.42,0.55*s],[-0.3,0.6*s],[0.02,-0.5*s,"lin"],[0.2,-0.55*s],[0.8,0]]),
+  by:kf(u,[[-0.75,0],[-0.42,0.3],[-0.3,0.38],[0.02,-0.38,"lin"],[0.25,-0.36],[0.8,0]]),
+  head:kf(u,[[-0.75,0],[-0.62,0.3],[-0.48,-0.45],[-0.3,-0.35],[0.02,0.35,"lin"],[0.8,0]])};}
 /* idle: a heavy, heaving breath (a sharp heave, a slow sag); in phase 2 it breathes faster and twitches */
 function bossRest(){const t=G.clock||0,B=G.boss,ph=B&&B.phase>1,br=Math.pow(Math.abs(Math.sin(t*(ph?2.1:1.4))),3);
   const tw=ph?Math.max(0,Math.sin(t*7.3)*Math.sin(t*2.9)-0.75)*4:0;
@@ -3302,9 +3344,9 @@ function movePose(mv,Tm){
   if(mv.anim){const tr=mv.anim(Tm,T,mv);B.trR=tr&&tr.R;B.trL=tr&&tr.L;return T;}
   [["R",-1],["L",1]].forEach(([limb,s])=>{let best=null;
     mv.hits.forEach(h=>{if(h.limb===limb&&Tm>=h.t-0.75-(h.hold||0)&&Tm<=h.t+0.8&&(!best||h.t>best.t))best=h;});
-    if(!best)return;const ho=best.hold||0;let u=Tm-best.t;const held=ho&&u>-0.3-ho&&u<-0.3;if(ho&&u<=-0.3)u=Math.min(-0.3,u+ho);
-    const c=clawKeys(u,s),tr=held?Math.sin((G.clock||0)*18)*0.05:u>-0.32&&u<-0.06?Math.sin((G.clock||0)*55)*0.08:0;
-    if(limb==="R"){T.rx=c.x+tr;T.rz=c.z;T.re=c.e;trR=u>-0.07&&u<0.15;}else{T.lx=c.x+tr;T.lz=c.z;T.le=c.e;trL=u>-0.07&&u<0.15;}
+    if(!best)return;const ho=best.hold||0;let u=Tm-best.t;const held=ho&&u>-0.36-ho&&u<-0.36;if(ho&&u<=-0.36)u=Math.min(-0.36,u+ho);
+    const c=clawKeys(u,s),tr=held?Math.sin((G.clock||0)*18)*0.05:u>-0.42&&u<-0.3?Math.sin((G.clock||0)*55)*0.08:0;
+    if(limb==="R"){T.rx=c.x+tr;T.rz=c.z;T.re=c.e;trR=u>-0.3&&u<0.15;}else{T.lx=c.x+tr;T.lz=c.z;T.le=c.e;trL=u>-0.3&&u<0.15;}
     if(!last||best.t>last.t){last=best;Object.assign(T,{chest:c.chest,twist:c.twist,by:c.by,head:c.head});}});
   if(mv.spin){
     T.by=kf(Tm,[[0,0],[0.75,-0.4],[0.9,0.05],[1.25,0.05],[1.9,0]]);
@@ -3365,7 +3407,8 @@ function boss(dt){
       /* glowing claws while the pistol window is open */
       const po=parryOpen();setGlow(po?po.limb:null,po&&parryNow());
       /* a pistol-hammer click a fixed time before a parryable hit lands: the "now" cue you can hear (Dimitri) */
-      if(B.D.tick)mv.hits.forEach((h,i)=>{if(h.parry&&!B.hitsDone[i]&&!B.tk[i]&&Tm>=h.t-B.D.tick){B.tk[i]=true;hammer();}});
+      /* the commit cue: glint + chime a fixed COMMIT before every parryable hit, as its swing starts (after any hold) */
+      mv.hits.forEach((h,i)=>{if(h.parry&&!B.hitsDone[i]&&!B.tk[i]&&Tm>=h.t-COMMIT){B.tk[i]=true;glint(h.limb);}});
       T=movePose(mv,Tm);k=0.55;
       if(mv.leap){const L=mv.leap;
         if(Tm<L.from){B.leapTo=null;}
@@ -3377,7 +3420,7 @@ function boss(dt){
       mv.hits.forEach((h,i)=>{if(B.hitsDone[i])return;
         if(h.feint){if(Tm>=h.t)B.hitsDone[i]=true;return;}
         if(h.contact){if(Tm>h.from&&Tm<h.to&&Math.hypot(P.x-B.x,P.z-B.z)<1.9){B.hitsDone[i]=true;hitPlayer(h.dmg,B.x,B.z);}else if(Tm>=h.to)B.hitsDone[i]=true;return;}
-        if(Tm<h.t)return;B.hitsDone[i]=true;
+        if(Tm<h.t+(h.parry?LATE:0))return;B.hitsDone[i]=true;
         if(h.area){if(Math.hypot(P.x-B.x,P.z-B.z)<h.area)hitPlayer(h.dmg,B.x,B.z);return;}
         if(h.ring){startRing(h.dmg);shock(B.x,B.z,2.4);return;}
         if(h.shot){bossShot(B,h);return;}
@@ -3453,13 +3496,13 @@ function boss(dt){
 /* a swing with the umbrella; each hit can start rising early (raise) and hold up there: a delayed swing */
 function umbAnim(Tm,T,mv){
   const hs=mv.hits.filter(h=>h.limb==="R"),h=hs.find(x=>Tm<x.t+0.12)||hs[hs.length-1],raise=h.raise;
-  let u=raise!=null&&Tm<h.t-0.3?Math.min(-0.3,-0.75+(Tm-raise)):Tm-h.t;
+  let u=raise!=null&&Tm<h.t-0.3?Math.min(-0.36,-0.75+(Tm-raise)):Tm-h.t;
   if(h.feint&&u>-0.3)u=Math.max(-0.68,-0.3-(u+0.3)*1.3);   /* a feint: up, then it pulls back without swinging */
   const c=clawKeys(u,h.s||-1);
   const hold=Tm>raise+0.45&&Tm<h.t-0.3?Math.sin((G.clock||0)*3)*0.05:0;
   T.rx=c.x+hold;T.rz=c.z;T.re=c.e;Object.assign(T,{chest:c.chest,twist:c.twist,by:c.by,head:c.head});
   T.lx=-0.1;T.lz=0.35;T.le=-0.5;
-  return {R:u>-0.07&&u<0.15};}
+  return {R:u>-0.3&&u<0.15};}
 /* his normal attack: a string of 2-4 swings; only one of them glows (parryable).
    Some swings are delayed (raised early and held); some strings have a feint. */
 function makeString(B){
@@ -3476,22 +3519,22 @@ function makeString(B){
   /* the string can stop early: the last swings never come */
   if(hits.length>1&&Math.random()<(ph2?0.35:0.25)){hits.length=1+Math.floor(Math.random()*(hits.length-1));while(hits.length>1&&hits[hits.length-1].feint)hits.pop();prev=hits[hits.length-1];}
   return {dur:prev.t+0.7,track:prev.t-0.2,anim:umbAnim,hits,weight:()=>0};}
-function thrustAnim(Tm,T,mv){const h=mv.hits[0],raise=h.raise??h.t-0.6,u=Tm<h.t-0.12?Math.min(-0.12,-0.6+(Tm-raise)):Tm-h.t;
-  T.rx=kf(u,[[-0.6,-0.3],[-0.3,0.1],[-0.12,0.25],[0,-1.55,"in"],[0.25,-1.5],[0.7,-0.3]]);T.re=kf(u,[[-0.6,-0.3],[-0.12,-1.9],[0,-0.02,"in"],[0.7,-0.3]]);T.rz=-0.05;
-  T.chest=kf(u,[[-0.6,0.45],[-0.12,0.15],[0,0.95,"in"],[0.3,0.95],[0.7,0.45]]);T.twist=kf(u,[[-0.6,0],[-0.12,0.55],[0,-0.35,"in"],[0.7,0]]);
-  T.by=kf(u,[[-0.6,0],[-0.12,-0.2],[0,-0.45,"in"],[0.3,-0.4],[0.7,0]]);T.lx=kf(u,[[-0.12,-0.6],[0,0.6],[0.7,-0.1]]);T.lz=0.3;T.le=-0.4;
-  return {R:u>-0.04&&u<0.12};}
-function palmAnim(Tm,T,mv){const ho=mv.hits[0].hold||0;let u=Tm-mv.hits[0].t;if(ho&&u<=-0.25)u=Math.min(-0.25,u+ho);   /* a held palm waits drawn back */
-  T.lx=kf(u,[[-0.7,-0.1],[-0.25,0.5],[-0.08,0.55],[0,-1.6,"in"],[0.3,-1.55],[0.7,-0.1]]);T.le=kf(u,[[-0.25,-1.8],[0,0,"in"],[0.7,-0.3]]);T.lz=0.1;
-  T.chest=kf(u,[[-0.7,0.45],[-0.1,0.2],[0,0.85,"in"],[0.7,0.45]]);T.twist=kf(u,[[-0.7,0],[-0.1,-0.5],[0,0.45,"in"],[0.7,0]]);T.by=kf(u,[[-0.1,-0.1],[0,-0.3,"in"],[0.7,0]]);
+function thrustAnim(Tm,T,mv){const h=mv.hits[0],raise=h.raise??h.t-0.6,u=Tm<h.t-0.3?Math.min(-0.3,-0.6+(Tm-raise)):Tm-h.t;
+  T.rx=kf(u,[[-0.6,-0.3],[-0.42,0.1],[-0.3,0.25],[-0.12,-0.45,"lin"],[0,-1.55,"lin"],[0.25,-1.5],[0.7,-0.3]]);T.re=kf(u,[[-0.6,-0.3],[-0.3,-1.9],[0,-0.02,"lin"],[0.7,-0.3]]);T.rz=-0.05;
+  T.chest=kf(u,[[-0.6,0.45],[-0.3,0.15],[0,0.95,"lin"],[0.3,0.95],[0.7,0.45]]);T.twist=kf(u,[[-0.6,0],[-0.3,0.55],[0,-0.35,"lin"],[0.7,0]]);
+  T.by=kf(u,[[-0.6,0],[-0.3,-0.2],[0,-0.45,"lin"],[0.3,-0.4],[0.7,0]]);T.lx=kf(u,[[-0.3,-0.6],[0,0.6],[0.7,-0.1]]);T.lz=0.3;T.le=-0.4;
+  return {R:u>-0.3&&u<0.12};}
+function palmAnim(Tm,T,mv){const ho=mv.hits[0].hold||0;let u=Tm-mv.hits[0].t;if(ho&&u<=-0.36)u=Math.min(-0.36,u+ho);   /* a held palm waits drawn back */
+  T.lx=kf(u,[[-0.7,-0.1],[-0.42,0.5],[-0.3,0.55],[-0.12,-0.2,"lin"],[0,-1.6,"lin"],[0.3,-1.55],[0.7,-0.1]]);T.le=kf(u,[[-0.3,-1.8],[0,0,"lin"],[0.7,-0.3]]);T.lz=0.1;
+  T.chest=kf(u,[[-0.7,0.45],[-0.3,0.2],[0,0.85,"lin"],[0.7,0.45]]);T.twist=kf(u,[[-0.7,0],[-0.3,-0.5],[0,0.45,"lin"],[0.7,0]]);T.by=kf(u,[[-0.3,-0.1],[0,-0.3,"lin"],[0.7,0]]);
   T.rx=-0.25;T.rz=-0.25;
   if(u>-0.35&&u<0&&Math.random()<0.5){const v=new THREE.Vector3();G.boss.m.armL.hand.getWorldPosition(v);fx("spark",v.x,v.y,v.z,1);}
-  return {L:u>-0.05&&u<0.12};}
+  return {L:u>-0.3&&u<0.12};}
 function bashAnim(Tm,T,mv){const u=Tm-mv.hits[0].t;
-  T.rx=kf(u,[[-0.45,-1.45],[-0.15,-1.15],[0,-1.6,"in"],[0.25,-1.55],[0.55,-0.4]]);T.re=kf(u,[[-0.45,-0.05],[-0.15,-0.9],[0,0,"in"],[0.55,-0.25]]);T.rz=-0.05;
-  T.chest=kf(u,[[-0.45,0.6],[-0.15,0.3],[0,1.0,"in"],[0.55,0.45]]);T.by=kf(u,[[-0.15,-0.05],[0,-0.3,"in"],[0.55,0]]);T.lx=0.3;T.lz=0.3;T.le=-0.9;
+  T.rx=kf(u,[[-0.45,-1.45],[-0.3,-1.1],[-0.12,-1.3,"lin"],[0,-1.6,"lin"],[0.25,-1.55],[0.55,-0.4]]);T.re=kf(u,[[-0.45,-0.05],[-0.3,-0.9],[0,0,"lin"],[0.55,-0.25]]);T.rz=-0.05;
+  T.chest=kf(u,[[-0.45,0.6],[-0.3,0.3],[0,1.0,"lin"],[0.55,0.45]]);T.by=kf(u,[[-0.3,-0.05],[0,-0.3,"lin"],[0.55,0]]);T.lx=0.3;T.lz=0.3;T.le=-0.9;
   if(u>0.3&&G.boss.m.shield.visible){G.boss.m.shield.visible=false;G.boss.m.um.visible=true;sfx("dodge");}
-  return {R:u>-0.05&&u<0.12};}
+  return {R:u>-0.3&&u<0.12};}
 /* the sweep: arm drawn far out to his right and low, held (quivering) on a delay, then swung across */
 function sweepAnim(Tm,T,mv){const h=mv.hits[0],ho=h.hold||0;let u=Tm-h.t;const held=ho&&u>-0.25-ho&&u<-0.25;if(ho&&u<=-0.25)u=Math.min(-0.25,u+ho);
   const q=held?Math.sin((G.clock||0)*20)*0.04:0;
@@ -3950,9 +3993,10 @@ function showResult(){
   const name=st.get("name","")||"Hunter";
   const old=st.get("best_"+G.bossKey,null);
   if(!diff&&(!old||score>old.score))st.set("best_"+G.bossKey,{rank,score});
+  if(!diff){const nt=PX.earn(G.bossKey,rank);if(nt)notes.unshift(nt);}
   $("#result").innerHTML=`<div class="result">
     <h2>Contract complete</h2><p class="ja">契約完了</p>
-    <div class="rank">${rank}<small><span class="sig">${name.replace(/[<>&"]/g,"")}</span>, ${title[0].toLowerCase()}</small></div><p class="ja">${title[1]}</p>
+    <div class="rank">${rank}<small><span class="sig">${name.replace(/[<>&"]/g,"")}</span>, ${title[0].toLowerCase()}</small></div><p class="ja">${title[1]}</p>${PX.titleHTML("onresult")}
     <div class="stats"><span>Time</span><b>${Kit.fmtTime(time)}</b><span>Hits taken</span><b>${s.hits}</b><span>Parries</span><b>${s.parries}</b><span>Critical strikes</span><b>${s.crits}</b><span>Vials used</span><b>${s.vialsUsed} / 5</b><span>Score</span><b>${score}</b></div>
     ${notes.length?`<ul class="notes">${notes.map(n=>`<li>${n[0]}<span class="ja">${n[1]}</span></li>`).join("")}</ul>`:""}
     <p class="journal">Journal: ${D.journal[0]}<span class="ja">${D.journal[1]}</span></p>
@@ -4296,10 +4340,123 @@ function travel(n){
   const f=$("#pfade");f.classList.add("on");sfx("foot");
   setTimeout(()=>{FD.place=n;apply();renderBoard();music("board");
     requestAnimationFrame(()=>{layoutBoard();const M=FD.menuCam;
-      FD.mode="walk";FD.skip=false;FD.walk={from:n===5?[0,-1.2,13]:[-0.2,1.65,12],t:0,dur:2.8,step:0};document.body.classList.add("walking");
+      PX.trophies();FD.mode="walk";FD.skip=false;FD.walk={from:n===5?[0,-1.2,13]:[-0.2,1.65,12],t:0,dur:2.8,step:0};document.body.classList.add("walking");
       f.classList.remove("on");setTimeout(()=>{busy=false;},700);});},750);
 }
 return {init,apply,tick,music,vis,renderTop,emptyNote,travel};
+})();
+
+/* ---------- titles, the hunter's kit, and boss trophies ----------
+   Everything comes from the saved best rank per boss (best_<boss>): any win earns that boss's trophy,
+   an S rank earns its title and the trophy's S-rank treatment. The newest S-rank title (htCur) shows under your signature. */
+const PX=(()=>{
+/* Boss trophies, hung beside the notice board. Each builder returns {g, tick(dt,t)}; S rank adds a treatment. */
+function trophyHorn(S){
+  const g=new THREE.Group(),bone=S?0xcabf9e:0xb8ad94,gold=0xc89a3a;
+  /* a curved antler beam made of short tapered segments, with three long tines */
+  const seg=(r0,r1,len,c,parent)=>{const gg=grp(0,0,0,parent);cyl(r1,r0,len,6,c,0,len/2,0,gg);return gg;};
+  let p=grp(0,0,0,g);const beam=[];
+  [[0.1,0.085,0.34,0.18],[0.085,0.072,0.32,0.22],[0.072,0.058,0.3,0.26],[0.058,0.04,0.28,0.3],[0.04,0.018,0.26,0.28]].forEach(([a,b,l,bend],i)=>{
+    const s=seg(a,b,l,i===4&&S?gold:bone,p);s.rotation.z=-bend;beam.push(s);p=grp(0,l,0,s);});
+  [[1,0.95,0.42],[2,1.0,0.36],[3,1.05,0.28]].forEach(([i,ang,l])=>{const t=grp(0,0.12,0,beam[i]);t.rotation.z=ang;
+    const a=seg(0.05,0.022,l*0.65,bone,t);const tip=grp(0,l*0.65,0,a);const c=seg(0.022,0.006,l*0.4,S?gold:bone,tip);c.rotation.z=-0.45;});
+  /* the burr at the base, where it broke off */
+  cyl(0.14,0.13,0.07,7,0x8a7f68,0,0,0,g);
+  /* a frayed bell rope tied round the beam, and a small bronze bell, hanging in front */
+  const rope=grp(0.16,0.62,0.1,g);box(0.03,0.42,0.03,0x6a5638,0,-0.21,0,rope);box(0.09,0.05,0.09,0x6a5638,0,0,0,rope);
+  const bell=grp(0,-0.42,0,rope);cone(0.1,0.14,7,S?Kit3D.mat(0xc8a040,{emissive:0x3a2606}):0x7a6a3a,0,-0.06,0,bell);cyl(0.1,0.1,0.02,7,S?0xd8b050:0x6a5a30,0,-0.13,0,bell);box(0.03,0.03,0.03,0x3a3020,0,-0.16,0,bell);
+  g.rotation.z=0.35;
+  return {g,tick(dt,t){rope.rotation.z=Math.sin(t*0.9)*0.12;bell.rotation.z=Math.sin(t*0.9+0.6)*0.18;}};
+}
+function trophyCloak(S){
+  const g=new THREE.Group(),c1=0x1a2628,c2=0x223234,hem=S?Kit3D.mat(0x2a5a5a,{emissive:0x0c2a2a}):M(0x2a3a3a);
+  /* the hood, hung on a nail: an empty, sagging shell */
+  const hood=grp(0,0,0,g);const h=new THREE.Mesh(new THREE.SphereGeometry(0.22,7,5,0,Math.PI*2,0,Math.PI*0.62),Kit3D.mat(c1,{side:THREE.DoubleSide}));h.scale.set(1,1.15,0.9);h.rotation.x=Math.PI*0.95;h.position.y=-0.08;hood.add(h);
+  box(0.26,0.2,0.05,0x07090a,0,-0.18,0.12,hood);   /* the dark inside of the hood */
+  /* the robe: a long, narrow sodden shell, hollow inside, wider at the hem */
+  const robe=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.4,1.25,9,3,true),Kit3D.mat(c1,{side:THREE.DoubleSide}));robe.scale.z=0.45;robe.position.y=-0.85;g.add(robe);
+  const pp=robe.geometry.attributes.position;for(let i=0;i<pp.count;i++){const y=pp.getY(i);if(y<-0.6)pp.setY(i,y-Math.abs(Math.sin(i*1.7))*0.22);if(y>-0.6&&y<0.6)pp.setX(i,pp.getX(i)*(1+Math.sin(i*2.1)*0.06));}
+  robe.geometry.computeVertexNormals();
+  /* the split at the front where the tentacles came out, and two empty sleeves */
+  box(0.05,0.9,0.02,0x07090a,0,-0.95,0.19,g);
+  const panels=[-1,1].map(sd=>{const sl=grp(sd*0.22,-0.32,0.02,g);box(0.11,0.7,0.06,c2,0,-0.35,0,sl);box(0.12,0.06,0.07,hem,0,-0.7,0,sl);sl.rotation.z=sd*0.18;return sl;});
+  /* ragged hem strips */
+  for(let i=0;i<8;i++){const a=i/8*Math.PI*2,x=Math.sin(a)*0.38,z=Math.cos(a)*0.17;const st=grp(x,-1.45,z,g);box(0.08,0.2+Math.abs(Math.sin(i*3.1))*0.15,0.02,hem,0,-0.1,0,st);st.rotation.y=a;panels.push(st);}
+  /* a tentacle tip still curled in one sleeve: limp, no gore */
+  const tip=grp(0.3,-0.68,0.05,g);cyl(0.025,0.04,0.25,5,0x2a3a38,0,-0.12,0,tip).rotation.z=0.5;cyl(0.012,0.025,0.15,5,0x2a3a38,0.08,-0.28,0,tip).rotation.z=1.1;
+  /* S rank: slow drips from the hem */
+  const drops=[];if(S)for(let i=0;i<5;i++){const d=box(0.02,0.04,0.02,Kit3D.basic(0x6a9aa0),-0.27+i*0.13,-1.4,0.05,g);d.userData.v=0.4+i*0.13;d.userData.y0=-1.6-Math.abs(Math.sin(i*3.1))*0.1;drops.push(d);}
+  return {g,tick(dt,t){panels.forEach((p,i)=>p.rotation.x=Math.sin(t*0.6+i*0.7)*0.04);
+    drops.forEach((d,i)=>{d.position.y-=dt*d.userData.v*1.6;if(d.position.y<-2.2)d.position.y=d.userData.y0;});}};
+}
+function trophyHat(S){
+  const g=new THREE.Group(),felt=0x141218,band=S?Kit3D.mat(0x5a2a7a,{emissive:0x1a0828}):M(0x3a2a40);
+  const mk=(parent,mat)=>{const h=grp(0,0,0,parent);
+    cyl(0.34,0.34,0.025,10,mat||felt,0,0,0,h);   /* brim */
+    const lo=grp(0,0.01,0,h);cyl(0.15,0.16,0.3,8,mat||felt,0,0.15,0,lo);cyl(0.163,0.165,0.06,8,mat||band,0,0.05,0,lo);
+    const hi=grp(0,0.3,0,lo);hi.rotation.z=-0.32;hi.rotation.x=0.1;cyl(0.14,0.15,0.26,8,mat||felt,0,0.13,0,hi);cyl(0.14,0.14,0.02,8,mat||felt,0,0.26,0,hi);   /* the crooked top */
+    return h;};
+  const hat=mk(g);hat.rotation.z=0.25;hat.rotation.x=0.35;
+  /* two thin ribbons from the band, from his split coat tails */
+  const rib=[-1,1].map(s=>{const r=grp(s*0.12,0.06,-0.12,hat);box(0.035,0.45,0.01,band,0,-0.22,0,r);r.rotation.z=s*0.2;return r;});
+  /* S rank: a faint violet afterimage that drifts off it and fades, over and over, slowly */
+  let ghost=null;if(S){const gm=Kit3D.basic(0x8a5ac8,{transparent:true});gm.opacity=0.25;gm.depthWrite=false;ghost=mk(g,gm);ghost.rotation.copy(hat.rotation);}
+  return {g,tick(dt,t){rib.forEach((r,i)=>r.rotation.z=(i?1:-1)*0.2+Math.sin(t*0.8+i)*0.08);
+    if(ghost){const k=(t*0.12)%1;ghost.position.set(k*0.35,k*0.12,-k*0.1);ghost.traverse(o=>{if(o.material&&o.material.transparent)o.material.opacity=0.28*Math.sin(k*Math.PI);});}}};
+}
+
+const TITLES={warden:["Bellbreaker","鐘を砕く者"],pilgrim:["Tidewalker","潮を歩く者"],dimitri:["Raincutter","雨を断つ者"]};
+/* x and z beside the board's left edge; dy is from the middle of the board (its height follows the paper board) */
+const TROPHY={warden:{make:trophyHorn,at:[-2.42,0.05,0.25],scale:0.62},pilgrim:{make:trophyCloak,at:[-2.55,0.6,0.15],scale:0.55},dimitri:{make:trophyHat,at:[-2.45,-0.3,0.25],scale:0.7}};
+const ICON={
+  vial:`<svg viewBox="0 0 32 32"><path d="M13 4h6v3l-1 1v4c4 1 7 4 7 9a9 9 0 0 1-18 0c0-5 3-8 7-9V8l-1-1z" fill="#2a1d14" stroke="#c9b48a" stroke-width="1.5"/><path d="M9.5 20h13a6.5 6.5 0 0 1-13 0z" fill="#8f2320"/></svg>`,
+  blade:`<svg viewBox="0 0 32 32"><path d="M6 27l3-3 15-17 3-1-1 3-17 15-3 3z" fill="#9aa0aa" stroke="#20180f" stroke-width="1"/><path d="M12 19l1 3M15 16l1 3M18 13l1 3M21 10l1 3" stroke="#20180f" stroke-width="1.5"/><path d="M5 22l5 5" stroke="#6b4a2a" stroke-width="3"/></svg>`,
+  pistol:`<svg viewBox="0 0 32 32"><path d="M4 12h20l4-2v5l-4-1H14l-2 2-3 9H5l2-8z" fill="#3a2a1e" stroke="#c9b48a" stroke-width="1.2"/><rect x="14" y="10" width="11" height="3" fill="#b8903a"/></svg>`,
+  warden:`<svg viewBox="0 0 32 32"><path d="M10 28c-1-7 2-12 6-17l6-7M16 11l-5-3M19 7l2 4M13 17l-5-1" stroke="#d8cfb4" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M20 18l3 0 1 5h-5z" fill="#b8903a"/></svg>`,
+  pilgrim:`<svg viewBox="0 0 32 32"><path d="M16 3c-4 0-6 3-6 6l-3 19h18L22 9c0-3-2-6-6-6z" fill="#223234" stroke="#6a9aa0" stroke-width="1.2"/><path d="M12 9c1-2 7-2 8 0v3h-8z" fill="#07090a"/><path d="M16 13v15" stroke="#07090a" stroke-width="1.5"/></svg>`,
+  dimitri:`<svg viewBox="0 0 32 32"><path d="M5 24c3-2 19-2 22 0" stroke="#141218" stroke-width="3" fill="none"/><path d="M11 23l1-12 3-5 6 2-2 5-1 10z" fill="#141218" stroke="#8a7aa8" stroke-width="1"/><path d="M11 20h9" stroke="#5a2a7a" stroke-width="2.5"/></svg>`};
+const ITEMS={
+  vial:{name:["Healing vial","回復の小びん"],story:["Red medicine in old glass. It tastes like iron and rain.","古いガラスの赤い薬。鉄と雨の味がする。"],plain:["Press Q to heal. You have five in each hunt.","Qで回復。1回の狩りで5本。"]},
+  blade:{name:["Saw blade","ノコギリの剣"],story:["A long sword with teeth. Old hunters made it for monsters.","歯のついた長い剣。昔のハンターが怪物のために作った。"],plain:["J: attack. K: heavy attack. E: critical strike.","Jで攻撃、Kで強攻撃、Eでとどめ。"]},
+  pistol:{name:["Flintlock pistol","古い銃"],story:["An old gun. It cannot kill a monster, but it can stop one.","古い銃。怪物はたおせないが、止めることはできる。"],plain:["Press L when you see gold. That is a parry.","金色に光ったらLでパリィ。"]},
+  warden:{name:["Warden's horn","番人の角"],story:["A horn from the Bell Warden. The little bell still rings in the wind.","鐘の番人の角。小さな鐘が今も風で鳴る。"],plain:["You beat the Bell Warden.","鐘の番人をたおした。"],s:["S rank: the tips turned to gold.","Sランク：先が金色になった。"]},
+  pilgrim:{name:["Pilgrim's cloak","巡礼者のマント"],story:["The Drowned Pilgrim's cloak. It is always wet.","おぼれた巡礼者のマント。いつもぬれている。"],plain:["You beat the Drowned Pilgrim.","おぼれた巡礼者をたおした。"],s:["S rank: the hem glows like the sea.","Sランク：すそが海のように光る。"]},
+  dimitri:{name:["Dimitri's hat","ディミトリの帽子"],story:["Dimitri's crooked hat. It smells like rain.","ディミトリの曲がった帽子。雨のにおいがする。"],plain:["You beat Intermediary Dimitri.","ディミトリをたおした。"],s:["S rank: a violet shadow drifts from it.","Sランク：むらさきの影がただよう。"]}};
+const best=k=>st.get("best_"+k,null);
+const won=()=>ORDER.filter(k=>best(k));
+/* the title you wear: the newest S rank, or none yet */
+function title(){const k=st.get("htCur","");return (k&&TITLES[k]&&best(k)&&best(k).rank==="S")?TITLES[k]:null;}
+function titleHTML(cls){const t=title();return t?`<div class="htitle${cls?" "+cls:""}">${t[0]}<span class="ja inl">${t[1]}</span></div>`:"";}
+/* called after a hunt is scored: returns a note if this win earned a new title */
+function earn(k,rank){if(rank!=="S"||!TITLES[k])return null;const had=st.get("ht_"+k,false);st.set("ht_"+k,true);st.set("htCur",k);
+  return had?null:["New title: "+TITLES[k][0]+"!","新しい称号："+TITLES[k][1]];}
+/* ---- the kit row on the board, with a panel that opens on hover or keyboard focus ---- */
+function renderKit(){
+  const el=$("#kit");if(!el)return;
+  const ids=["vial","blade","pistol",...won()];
+  el.innerHTML=`<span class="klbl">Your kit<span class="ja">持ち物</span></span>`+ids.map(id=>{const b=ITEMS[id]&&best(id),S=b&&b.rank==="S";
+    return `<button type="button" class="kitem${S?" s":""}${ITEMS[id].s?" troph":""}" data-id="${id}" aria-label="${ITEMS[id].name[0]}">${ICON[id]}</button>`;}).join("")+`<div class="kpanel" id="kpanel" hidden></div>`;
+  const P=$("#kpanel");
+  const show=b=>{const id=b.dataset.id,I=ITEMS[id],bb=best(id),S=bb&&bb.rank==="S";
+    P.innerHTML=`<b>${I.name[0]}</b><span class="ja">${I.name[1]}</span><p class="st">${I.story[0]}<span class="ja">${I.story[1]}</span></p><p class="pl">${I.plain[0]}<span class="ja">${I.plain[1]}</span></p>${S&&I.s?`<p class="sr">${I.s[0]}<span class="ja">${I.s[1]}</span></p>`:""}`;
+    P.hidden=false;const r=b.getBoundingClientRect(),k=el.getBoundingClientRect();P.style.left=Math.max(0,Math.min(r.left-k.left-110,k.width-280))+"px";};
+  el.querySelectorAll(".kitem").forEach(b=>{b.addEventListener("pointerenter",()=>show(b));b.addEventListener("focus",()=>show(b));
+    b.addEventListener("pointerleave",()=>{if(document.activeElement!==b)P.hidden=true;});b.addEventListener("blur",()=>{P.hidden=true;});});
+}
+/* ---- the trophies in the 3D scene, beside the board of the boss's own place ---- */
+const live=[];let shownFor="";
+function trophies(){
+  if(!FD.st||!FD.f)return;const n=FD.place||1,key=n+":"+ORDER.map(k=>{const b=best(k);return b?k+b.rank:"";}).join(",");
+  if(key===shownFor)return;shownFor=key;
+  live.forEach(t=>t.g.parent&&t.g.parent.remove(t.g));live.length=0;
+  ORDER.filter(k=>(BOSSES[k].danger||1)===n&&best(k)&&TROPHY[k]).forEach(k=>{const T=TROPHY[k],t=T.make(best(k).rank==="S");
+    t.g.position.set(...T.at);t.g.scale.setScalar(T.scale);t.dy=T.at[1];
+    /* a nail to hang it from */
+    box(0.05,0.05,0.14,0x2a2620,0,0.04,-0.06,t.g);
+    FD.st.scene.add(t.g);live.push(t);});
+}
+function tick(dt,t){const cy=FD.f?FD.f.face.position.y:2;live.forEach(x=>{x.g.position.y=cy+x.dy;x.tick(dt,t);});}
+return {title,titleHTML,earn,renderKit,trophies,tick};
 })();
 function fieldReady(){
   if(FD.st)return true;if(!window.Kit3D)return false;
@@ -4391,7 +4548,7 @@ function fieldShow(id,prev){
   $("#field").hidden=!on;document.body.classList.toggle("infield",on);
   if(!on){if(FD.loop){FD.loop.stop();FD.loop=null;}FD.mode="off";document.body.classList.remove("walking");return;}
   if(!fieldReady()){document.body.classList.remove("walking");return;}
-  PL.apply();
+  PL.apply();PX.trophies();
   if(!FD.loop)FD.loop=Kit3D.loop(FD.st,fieldTick);
   if(id==="title"){FD.mode="title";FD.t=0;$("#title").classList.remove("out");document.body.classList.add("walking");return;}
   /* the board: walk up to it */
@@ -4419,6 +4576,7 @@ function fieldTick(dt){
   F.lamp.intensity=1.1*fl;F.lanGlass.material.emissive.setRGB(0.54*fl,0.35*fl,0.1*fl);
   F.lantern.rotation.z=Math.sin(clock*1.3)*0.06;
   if(F.lantern2){F.lantern2.rotation.z=Math.sin(clock*1.1+1)*0.06;F.lamp2.intensity=F.lamp.intensity;}
+  PX.tick(dt,clock);
   if(FD.place>1){PL.tick(dt,clock);return;}
   /* random happenings */
   FD.next-=dt;if(FD.next<=0){FD.next=9+Math.random()*12;const pick=["crow","figure","fog","cloud","rain"].filter(k=>!FD.ev.some(e=>e.k===k));
