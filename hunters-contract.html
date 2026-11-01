@@ -1621,6 +1621,10 @@ const SFX={
   hit:()=>{tone(95,0.16,"square",0.05,45);noise(0.12,0.08);},
   gun:()=>{noise(0.28,0.16);tone(150,0.22,"square",0.05,50);},
   parry:()=>{tone(880,0.5,"triangle",0.05,700);tone(1320,0.6,"sine",0.03,1100,0.04);},
+  /* perfect parry: a deep boom with a low metal ring, its own sound */
+  perfect:()=>{tone(62,1.3,"sine",0.13,44);tone(93,1.0,"triangle",0.06,70);noise(0.3,0.11);tone(392,1.4,"sine",0.03,370,0.05);tone(587,1.0,"sine",0.015,560,0.08);},
+  charge:()=>{tone(90,0.85,"sawtooth",0.018,190);noise(0.6,0.015);},
+  charged:()=>{tone(660,0.35,"triangle",0.03,640);tone(165,0.4,"sine",0.05,150);},
   hurt:()=>{tone(150,0.22,"sawtooth",0.05,80);noise(0.1,0.05);},
   dodge:()=>noise(0.12,0.03),
   heal:()=>{tone(523,0.25,"sine",0.04,660);tone(784,0.4,"sine",0.03,880,0.15);},
@@ -2512,7 +2516,7 @@ function buildHunter(){
   const muzzle=grp(0,0.075,0.42,pg);
   const vial=box(0.05,0.12,0.05,Kit3D.mat(0xa63a32,{emissive:0x300808}),0,-0.03,0.06,L.hand);vial.visible=false;
   g.add(shadow(0.42));
-  return {g,body,coat,head,legL,legR,R,L,vial,vials,tip:tipM,base,muzzle,scarf,feather,strips};
+  return {g,body,coat,head,legL,legR,R,L,vial,vials,tip:tipM,base,muzzle,scarf,feather,strips,pistol:pg};
 }
 const H_REST=()=>({wr:0.4,lean:0.12,twist:-0.14,by:-0.04,rx:-0.12,ry:0,rz:-0.14,re:-0.5,lx:0.05,ly:0,lz:0.12,le:-0.4,hl:-0.22,hr:0.16,kl:0.2,kr:0.08,coat:0,hd:-0.08});
 let HP=H_REST();
@@ -2846,7 +2850,7 @@ function startHunt(){
   if(G.mark)G.mark.visible=false;
   if(G.ghost){G.stage.scene.remove(G.ghost.m.g);G.ghost=null;}if(G.umb){G.stage.scene.remove(G.umb);G.umb=null;}if(G.rain)G.rain.frozen=false;
   tentsClear();if(G.vm){G.stage.scene.remove(G.vm.g);G.vm=null;}G.lash=null;if(G.tide){G.tide.r=0;G.tide.disc.visible=G.tide.foam.visible=false;}
-  G.paused=false;G.over=false;G.final=false;MUS.duck=1;$("#fade").style.opacity=0;$("#banner").classList.remove("on");G.freeze=0;G.shake=0;G.kx=G.kz=0;G.time=0;G.running=false;G.cw=0;G.cz=0;
+  G.paused=false;G.over=false;G.final=false;P.twirl=0;if(P.m&&P.m.pistol)P.m.pistol.rotation.x=Math.PI/2;MUS.duck=1;$("#fade").style.opacity=0;$("#banner").classList.remove("on");G.freeze=0;G.shake=0;G.kx=G.kz=0;G.time=0;G.running=false;G.cw=0;G.cz=0;
   lastVials=-1;veil(null);prompt(null);
   $("#bossName").innerHTML=D.name[0]+` <span class="ja inl">${D.name[1]}</span>`;
   G.stage.camera.position.set(0,12,16);
@@ -2970,7 +2974,8 @@ function toBoss(){const B=G.boss;const dx=B.x-P.x,dz=B.z-P.z;return {dx,dz,d:Mat
 function canCrit(){const B=G.boss;if(!B||B.state!=="stagger"||B.critDone)return false;const t=toBoss();
   const fromBoss=Math.atan2(-t.dx,-t.dz);return t.d<3.4&&Math.abs(wrapA(fromBoss-B.a))<1.4;}
 function begin(k){
-  const A=ACT[k];P.state=k;P.t=0;P.hitDone=false;P.thrust=false;
+  const A=ACT[k];P.state=k;P.t=0;P.hitDone=false;P.thrust=false;P.chg=0;P.chgOn=false;P.chgRel=false;P.whoosh=false;
+  if(k==="crit"&&P.twirl>0){P.twirl=0;P.m.pistol.rotation.x=Math.PI/2;}
   if(A&&A.cost){P.sta=Math.max(0,P.sta-A.cost);P.staT=0.55;}
   const t=G.boss&&G.boss.state!=="dead"?toBoss():null;
   if(k==="light"||k==="heavy"||k==="gun"||k==="crit"){
@@ -2982,7 +2987,6 @@ function begin(k){
   if(k==="heal"&&G.boss&&G.boss.D.duel&&t&&G.running){const B=G.boss;
     if(B.state==="guard")bossStart("move",t.d<5.5?"thrust":"shot");
     else if(B.state==="idle"&&t.d>5)bossStart("move","shot");}
-  if(k==="heavy")setTimeout(()=>sfx("heavy"),330);
   if(k==="dodge"){const md=moveDir();P.back=!md;const a=md?Math.atan2(md[0],md[1]):P.a+Math.PI;P.dA=a;if(md)P.a=a;P.iframe=0.3;sfx("dodge");}
   if(k==="gun")P.gunDur=A.miss;
   if(k==="heal"){P.m.vial.visible=true;}
@@ -2996,6 +3000,7 @@ function tryAction(){
   if(!buf)return;
   const k=buf.k,s=P.state,busy=s!=="move";
   if(k==="light"&&s==="light"&&P.t>=ACT.light.chain&&P.combo<2&&P.sta>0){P.combo++;buf=null;begin("light");return;}
+  if((k==="crit"||k==="light")&&s==="gun"&&P.t>0.2&&canCrit()){buf=null;begin("crit");return;}
   if(busy)return;
   /* the boss is down: E (or J) starts its finisher */
   if(G.boss&&G.boss.state==="final"&&(k==="crit"||k==="light")){buf=null;startFinisher();return;}
@@ -3013,6 +3018,7 @@ function swingHits(A,dmg,kind){
   if(Math.abs(wrapA(t.a-P.a))*180/Math.PI>A.arc/2+15)return false;
   damageBoss(dmg,P.x+t.dx*0.6,1.6,P.z+t.dz*0.6,kind);return true;
 }
+const CHG=0.8;   /* seconds of hold for a full charged heavy (x1.7 damage) */
 const HITSTOP={light:0.08,heavy:0.15,crit:0.24,gun:0.02},SHAKE={light:0.1,heavy:0.24,crit:0.32,gun:0};
 function damageBoss(dmg,x,y,z,kind){
   const B=G.boss;if(B.state==="final")return;B.hp-=dmg;
@@ -3038,6 +3044,9 @@ function player(dt){
     T.rz=-0.9;T.lz=0.9;T.rx=-0.6;T.lx=-0.6;T.hd=-0.4;poseHunter(T,0.25);G.trail.update(false);return;}
   if(G.over&&P.state==="move"){walkPose(T,0,dt);poseHunter(T,0.2);G.trail.update(false);return;}
   if(G.running)tryAction();
+  if(P.twirl>0){P.twirl-=dt;const u=0.8-P.twirl;
+    if(u>0.18){const q=Math.min(1,(u-0.18)/0.5);P.m.pistol.rotation.x=Math.PI/2+(1-Math.pow(1-q,2.2))*Math.PI*4;}
+    if(P.twirl<=0){P.m.pistol.rotation.x=Math.PI/2;hammer();}}
   const A=ACT[P.state];P.t+=dt;const t=P.t;
   const ox=P.x,oz=P.z;
   let sp=0,dirA=P.a,k=0.6,trail=false;
@@ -3065,6 +3074,17 @@ function player(dt){
       if(!P.hitDone&&t>=A.hit[c]){P.hitDone=true;if(!swingHits(A,A.dmg[c],"light")&&c===2)slam(0.08);}
       if(t>=A.dur[c]){P.state="move";P.combo=0;}break;}
     case "heavy":{
+      /* charging: the blade stays up while K is held, the hunter sinks lower and shakes a little */
+      if(!P.chgRel&&t>=0.44){
+        if(held.has("heavy")&&P.chg<CHG&&!G.over){if(!P.chgOn){P.chgOn=true;sfx("charge");}
+          const was=P.chg;P.chg=Math.min(CHG,P.chg+dt);P.t=0.44;
+          if(was<CHG&&P.chg>=CHG){sfx("charged");const v=new THREE.Vector3();P.m.tip.getWorldPosition(v);fx("spark",v.x,v.y,v.z,5);}
+          else if(Math.random()<dt*14){const v=new THREE.Vector3();P.m.tip.getWorldPosition(v);fx("ash",v.x,v.y,v.z,1);}
+        }else P.chgRel=true;}
+      if(!P.whoosh&&P.t>=0.33&&(P.chgRel||!held.has("heavy"))){P.whoosh=true;sfx("heavy");}
+      {const q=P.chg/CHG,tq=P.chgOn&&!P.chgRel?Math.sin(G.clock*50)*0.02*q:0;
+       if(P.chgOn&&!P.chgRel){T.rx=-3.35-0.15*q+tq;T.re=-1.4;T.wr=0.3;T.lean=-0.42-0.1*q;T.by=-0.14-0.12*q;T.lx=-0.9;T.lz=0.5;T.hl=-0.55-0.1*q;T.hr=0.45+0.1*q;T.coat=0.15;
+         sp=0;break;}}
       T.rx=kf(t,[[0,-0.3],[0.42,-3.3],[0.5,-3.35],[0.56,-0.55,"in"],[0.74,-0.5],[0.92,-0.2]]);T.wr=kf(t,[[0.42,0.3],[0.56,1.1,"in"],[0.92,0.5]]);
       T.re=kf(t,[[0,-0.4],[0.42,-1.4],[0.56,0,"in"],[0.92,-0.3]]);
       T.lean=kf(t,[[0,0],[0.42,-0.42],[0.56,0.72,"in"],[0.74,0.7],[0.92,0.1]]);
@@ -3072,10 +3092,12 @@ function player(dt){
       T.lx=kf(t,[[0,0.1],[0.42,-0.9],[0.56,0.5],[0.92,0.1]]);T.lz=0.5;T.hl=-0.55;T.hr=0.45;T.coat=kf(t,[[0.42,0.15],[0.56,-0.4],[0.92,0]]);
       if(t>0.46&&t<0.58)sp=7.2;
       trail=t>0.47&&t<0.64;
-      if(!P.hitDone&&t>=A.hit){P.hitDone=true;swingHits(A,A.dmg,"heavy");slam(0.1);}
+      if(!P.hitDone&&t>=A.hit){P.hitDone=true;const q=P.chg/CHG,full=q>=1;
+        if(swingHits(A,Math.round(A.dmg*(1+0.7*q)),"heavy")&&q>0.3){G.freeze=full?0.22:0.17;G.shake=Math.max(G.shake,full?0.34:0.28);}slam(full?0.16:0.1);}
       if(t>=A.dur)P.state="move";break;}
     case "gun":{
-      T.lx=kf(t,[[0,-0.3],[0.06,-1.6,"in"],[0.11,-2.25],[0.22,-1.65],[P.gunDur,-0.2]]);T.le=-0.05;
+      T.lx=P.twirl>0?kf(t,[[0,-0.3],[0.06,-1.6,"in"],[0.11,-2.25],[0.22,-1.65],[0.4,-1.1],[0.8,-0.5]]):kf(t,[[0,-0.3],[0.06,-1.6,"in"],[0.11,-2.25],[0.22,-1.65],[P.gunDur,-0.2]]);
+      T.le=P.twirl>0?kf(t,[[0.22,-0.05],[0.4,-0.9],[0.8,-0.6]]):-0.05;
       T.twist=kf(t,[[0,0],[0.06,-0.45],[0.3,-0.4],[0.42,0]]);T.lean=kf(t,[[0.08,0.05],[0.12,-0.18],[0.42,0]]);
       T.rx=0.35;T.hr=0.3;T.hl=-0.2;
       if(!P.hitDone&&t>=A.hit){P.hitDone=true;shoot();}
@@ -3157,7 +3179,8 @@ function shoot(){
     B.poise=0;
     B.state="stagger";B.t=0;B.stagger=(perfect?3.4:2.4)*SLOW();B.move=null;B.critDone=false;B.reel=null;B.perfect=perfect;setGlow(null);G.btR.clear();G.btL.clear();
     P.stats.parries++;if(perfect)P.stats.perfects++;P.gunDur=ACT.gun.dur;
-    sfx("parry");if(perfect)tone(1760,0.7,"sine",0.03,1320,0.08);ping(perfect?"PERFECT PARRY":"PARRY");
+    sfx(perfect?"perfect":"parry");ping(perfect?"PERFECT PARRY":"PARRY");
+    if(perfect){B.kbA=Math.atan2(B.x-P.x,B.z-P.z);P.gunDur=0.8;P.twirl=0.8;G.kx+=Math.sin(B.kbA)*0.5;G.kz+=Math.cos(B.kbA)*0.5;}
     fx("spark",B.x,2.2,B.z,perfect?20:12);G.freeze=perfect?0.26:0.18;G.shake=Math.max(G.shake,perfect?0.22:0.16);
   }else{B.hp-=3;fx("spark",B.x,1.8,B.z,3);if(B.hp<=0)bossDown();}
 }
@@ -3336,6 +3359,9 @@ function boss(dt){
       T.by=kf(u,[[0,0],[0.12,0.3],[0.35,0.25],[0.8,-0.95]]);
       bothArms(T,kf(u,[[0,-0.1],[0.12,-2.2,"in"],[0.35,-2.0],[0.8,-0.15]]),kf(u,[[0,0.15],[0.12,1.1],[0.8,0.25]]),kf(u,[[0.12,-0.6],[0.8,-0.1]]));
       T.head=kf(u,[[0.12,-0.6],[0.8,0.6]]);k=0.6;
+      /* a perfect parry throws it back across the ground first */
+      if(B.perfect&&u<0.5&&P.state!=="crit"){const v=9*(1-u/0.5);B.x+=Math.sin(B.kbA)*v*dt;B.z+=Math.cos(B.kbA)*v*dt;
+        const r=Math.hypot(B.x,B.z);if(r>12.5){B.x*=12.5/r;B.z*=12.5/r;}T.chest-=0.5*(1-u/0.5);if(Math.random()<0.5)fx("dust",B.x,0.2,B.z,1);}
       if(P.state==="crit"&&P.thrust){T.chest=1.35+Math.sin(G.clock*40)*0.03;T.head=0.8;T.by-=0.05;}
       if(B.stagger<=0&&P.state!=="crit"){B.state="getup";B.t=0;}break;}
     /* out of health: down on its knees, waiting for the finisher */
