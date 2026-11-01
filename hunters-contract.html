@@ -1552,7 +1552,7 @@ const BOSSES={
     journal:["Dimitri was a hunter once. Tonight he can finally go home. He will walk; he doesn't own a car.","ディミトリはかつてハンターだった。今夜、やっと家に帰れる。歩いて帰る。車を持っていないから。"],
     phase2:["The rain stops falling.","雨が止まった。"],
     gone:["The hunter rests.","ハンターは眠った。"],
-    duel:true,roarColor:[0xb08aff,0x3a2a6a],window:0.12,perfect:0.06,poise:true,
+    duel:true,roarColor:[0xb08aff,0x3a2a6a],window:0.12,perfect:0.06,poise:true,tick:0.3,
     /* raise = when the umbrella starts going up (early raise + hold = a delayed swing); s = swing side */
     moves:{
       string:{gen:makeString,weight:(d,ph)=>d<4.4?4:0},
@@ -2742,6 +2742,7 @@ function shock(x,z,r,col){
   s.live=true;s.t=0;s.r=r;s.m.material.color.setHex(col||0x7a6e62);s.m.position.set(x,0.07,z);s.m.visible=true;s.m.scale.setScalar(0.2);
 }
 const GLINT=[];let glintTex=null;
+function hammer(){noise(0.03,0.06);tone(1500,0.04,"square",0.015,1100);tone(900,0.05,"triangle",0.02,700,0.05);}
 function glint(limb){const m=G.boss.m,tips=[];if(limb==="R"||limb==="both")tips.push(m.armR.tip||m.armR.hand);if(limb==="L"||limb==="both")tips.push(m.armL.tip||m.armL.hand);
   if(!glintTex){const c=document.createElement("canvas");c.width=c.height=64;const x=c.getContext("2d"),gr=x.createRadialGradient(32,32,0,32,32,30);
     gr.addColorStop(0,"rgba(255,240,190,1)");gr.addColorStop(0.3,"rgba(240,180,70,0.7)");gr.addColorStop(1,"rgba(240,180,70,0)");x.fillStyle=gr;x.fillRect(0,0,64,64);
@@ -3007,7 +3008,7 @@ function damageBoss(dmg,x,y,z,kind){
 }
 function player(dt){
   const m=P.m;
-  if(buf){buf.t+=dt;if(buf.t>0.3)buf=null;}
+  if(buf){buf.t+=dt;if(buf.t>(buf.k==="gun"?0.1:0.3))buf=null;}   /* a pistol press keeps only briefly, so a parry never fires late */
   P.iframe=Math.max(0,P.iframe-dt);
   if(P.staT>0)P.staT-=dt;else if(P.state!=="dodge")P.sta=Math.min(100,P.sta+48*dt);
   if(P.rallyT>0)P.rallyT-=dt;else P.rally=Math.max(0,P.rally-14*dt);
@@ -3144,7 +3145,9 @@ const WARN=0.5,WINDOW=0.2,PERFECT=0.1;
 function parryHit(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null;
   const W=B.D.window||WINDOW;return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-W&&B.mt<=h.t+0.06)||null;}
 function parryOpen(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return null;
-  return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=h.t-WARN&&B.mt<=h.t+0.06)||null;}
+  return B.move.hits.find((h,i)=>h.parry&&!B.hitsDone[i]&&B.mt>=glowFrom(B.move,h)&&B.mt<=h.t+0.06)||null;}
+/* the glow never starts before the hit in front of it has landed: in a string of swings it lights the right one */
+function glowFrom(mv,h){let s=h.t-WARN;mv.hits.forEach(o=>{if(o!==h&&o.t!=null&&o.t<h.t&&o.t+0.02>s)s=o.t+0.02;});return s;}
 /* two stages: a dim warning glow, then a bright one while pressing L now would parry
    (the shot leaves the barrel ACT.gun.hit after the press, so the bright stage starts that much early) */
 function parryNow(){const B=G.boss;if(!B||B.state!=="move"||!B.move)return false;
@@ -3159,7 +3162,7 @@ function bossStart(state,move){
   if(state==="move"&&B.D.moves[move].guard){B.state="guard";B.t=0;B.gt=2+Math.random()*1.2;B.m.shield.visible=true;B.m.um.visible=false;sfx("dodge");B.last.push(move);if(B.last.length>3)B.last.shift();return;}
   B.state=state;B.t=0;B.mt=0;B.blinked=false;B.m.g.visible=true;
   if(state==="move"){B.moveKey=move;const tpl=B.D.moves[move];B.move=tpl.gen?tpl.gen(B):tpl;
-    if(B.m.shield&&!tpl.keepShield){B.m.shield.visible=false;B.m.um.visible=true;}B.hitsDone=B.move.hits.map(()=>false);
+    if(B.m.shield&&!tpl.keepShield){B.m.shield.visible=false;B.m.um.visible=true;}B.hitsDone=B.move.hits.map(()=>false);B.tk=[];
     if(B.move.leap){B.leapFrom=[B.x,B.z];}
     B.last.push(move);if(B.last.length>3)B.last.shift();}
   if(state==="roar"){B.move=null;setGlow(null);sfx("roar");music(G.bossKey+"2");G.shake=Math.max(G.shake,0.18);
@@ -3266,6 +3269,8 @@ function boss(dt){
       if(mv.step&&Tm>mv.step[0]&&Tm<mv.step[1]){B.x+=Math.sin(B.a)*mv.step[2]*dt/sl;B.z+=Math.cos(B.a)*mv.step[2]*dt/sl;}
       /* glowing claws while the pistol window is open */
       const po=parryOpen();setGlow(po?po.limb:null,po&&parryNow());
+      /* a pistol-hammer click a fixed time before a parryable hit lands: the "now" cue you can hear (Dimitri) */
+      if(B.D.tick)mv.hits.forEach((h,i)=>{if(h.parry&&!B.hitsDone[i]&&!B.tk[i]&&Tm>=h.t-B.D.tick){B.tk[i]=true;hammer();}});
       T=movePose(mv,Tm);k=0.55;
       if(mv.leap){const L=mv.leap;
         if(Tm<L.from){B.leapTo=null;}
@@ -3673,6 +3678,28 @@ function aimBlade(to,pen,w){
   P.x=lerp(P.fx,P.x,w);P.z=lerp(P.fz,P.z,w);
   m.R.sh.rotation.x=rx0+a*w;m.L.sh.rotation.x=lx0+a*w;m.g.position.set(P.x,0,P.z);}
 
+/* finisher helper: bend up to three joints (each [object,"x"|"y"|"z"]) so err() goes to zero; err is
+   worked out fresh from the posed model, so the hands land where the parts really are. Damped least squares, a few
+   steps a frame, starting from the keyed pose every frame; w blends the fix in and out. */
+const _jm=new THREE.Matrix3(),_jv=new THREE.Vector3(),_r=new THREE.Vector3();
+function reachRig(root,rots,err,w,steps){
+  if(w<=0)return;const n=rots.length,base=rots.map(([o,k])=>o.rotation[k]),d=[0,0,0];
+  const set=()=>{rots.forEach(([o,k],i)=>o.rotation[k]=base[i]+d[i]);root.updateMatrixWorld(true);};
+  for(let s=0;s<(steps||3);s++){set();const r0=err().slice(),J=[];
+    for(let i=0;i<n;i++){d[i]+=0.01;set();J.push(err().map((v,q)=>(v-r0[q])*100));d[i]-=0.01;}
+    /* step = -(J^T J + l I)^-1 J^T r */
+    const e=_jm.elements;for(let a=0;a<3;a++){for(let b=0;b<3;b++){let v=a===b?0.05:0;if(a<n&&b<n)J[a].forEach((x,q)=>v+=x*J[b][q]);e[b*3+a]=v;}
+      _jv.setComponent(a,a<n?J[a].reduce((v,x,q)=>v+x*r0[q],0):0);}
+    _jm.invert();_jv.applyMatrix3(_jm);for(let i=0;i<n;i++)d[i]-=clamp(_jv.getComponent(i),-0.5,0.5);}
+  rots.forEach(([o,k],i)=>o.rotation[k]=base[i]+d[i]*w);root.updateMatrixWorld(true);}
+
+/* finisher helper: turn the hunter and lift the pistol arm so the barrel points at the target; w blends it in */
+const _ga=new THREE.Vector3(),_gb=new THREE.Vector3(),_gd=new THREE.Vector3();
+function gunLine(o,d){const m=P.m;m.muzzle.parent.localToWorld(_ga.set(0,0.075,0));m.muzzle.getWorldPosition(o);d.subVectors(o,_ga).normalize();return o;}
+function aimGun(to,w){
+  const m=P.m;if(w<=0)return;const a0=m.g.rotation.y;
+  reachRig(m.g,[[m.g,"y"],[m.L.sh,"x"]],()=>{gunLine(_gb,_gd);const t=_ga.subVectors(to,_gb),s=t.dot(_gd);return _r.copy(_gd).multiplyScalar(s).sub(t).toArray();},w,4);}
+
 /* Bell Warden, "Silence": the sword goes into the bell; it grabs the blade and pushes back;
    the hunter drives it home with both hands; it sinks back into the statue it pretended to be */
 function wardenFinale(t,dt){
@@ -3725,8 +3752,12 @@ function wardenFinale(t,dt){
 /* Dimitri, "Quick draw": both draw; he knocks the first shot aside with the umbrella and lunges;
    the hunter fires again, point blank. He tips his hat and is gone. */
 function dimitriFinale(t,dt){
-  const B=G.boss,m=B.m;
-  if(!walkAway(t,6.6,dt)){const HT=H_REST(),aim=kf(t,[[1.5,0.1],[1.65,-1.6,"in"],[1.85,-1.6],[1.9,-2.2,"in"],[2.1,-1.6],[2.4,-1.3],[2.55,-1.55,"in"],[2.62,-2.1,"in"],[2.85,-1.55],[5.4,-1.55],[6.0,0.1]]);
+  const B=G.boss,m=B.m,V=THREE.Vector3;
+  /* where the shots go: the middle of his chest, worked out from the posed model each frame */
+  const chestAt=v=>m.chest.localToWorld(v.set(0,0.5,0.12));
+  const walking=walkAway(t,6.6,dt);let recoil=0;
+  if(!walking){const HT=H_REST(),aim=kf(t,[[1.5,0.1],[1.65,-1.6,"in"],[2.1,-1.6],[2.4,-1.3],[2.55,-1.55,"in"],[5.4,-1.55],[6.0,0.1]]);
+    recoil=kf(t,[[1.9,0],[1.96,-0.6],[2.15,0]])+kf(t,[[2.62,0],[2.68,-0.55],[2.9,0]]);
     HT.lx=aim;HT.le=kf(t,[[2.1,-0.05],[2.4,-0.5],[2.55,-0.6],[2.62,-0.1],[5.4,-0.05]]);
     HT.twist=kf(t,[[1.5,0],[1.65,-0.45],[2.3,-0.4],[2.55,-0.9,"in"],[2.9,-0.75],[5.4,-0.4],[6.0,0]]);
     HT.lean=kf(t,[[2.3,0.05],[2.55,-0.3,"in"],[2.9,-0.2],[3.6,0.05]]);HT.by=kf(t,[[2.3,0],[2.55,-0.18],[3.2,-0.1],[3.8,0]]);
@@ -3736,12 +3767,6 @@ function dimitriFinale(t,dt){
     /* side-step out of the lunge */
     if(t>2.4&&t<2.6)P.x+=2.2*dt;
     huntAt(HT,t<0.05?1:0.6);}
-  const v=new THREE.Vector3();
-  if(t>=1.9)once("shot1",()=>{P.m.muzzle.getWorldPosition(v);sfx("gun");fx("smoke",v.x,v.y,v.z,6);});
-  if(t>=1.95)once("deflect",()=>{m.armR.tip.getWorldPosition(v);sfx("deflect");fx("spark",v.x,v.y,v.z,10);});
-  if(t>=2.62)once("shot2",()=>{P.m.muzzle.getWorldPosition(v);sfx("gun");noise(0.3,0.12);fx("smoke",v.x,v.y,v.z,8);
-    fx("spark",B.x,1.8,B.z,6);fx("mist",B.x,1.8,B.z,4);G.shake=0.18;m.um.visible=false;G.umb.visible=true;});
-  if(t>=2.95)once("clatter",()=>{tone(700,0.15,"triangle",0.02,500);noise(0.12,0.05);});
   /* he rises, draws, flicks the umbrella across the bullet, and lunges; the second shot stops him dead */
   if(t>2.05&&t<2.6)B.z+=5.6*dt;
   const T=bossRest(),j=t>2.62&&t<3.2?Math.sin((t-2.62)/0.58*Math.PI):0;
@@ -3753,20 +3778,46 @@ function dimitriFinale(t,dt){
   T.rx=kf(t,[[1.7,-0.3],[1.85,-1.6,"in"],[1.95,-1.9],[2.05,-0.6]]);T.re=-0.25;T.rz=kf(t,[[1.7,-0.2],[1.95,0.4],[2.05,-0.1]]);
   if(lunging&&t>2.05){T.rx=th.rx;T.re=th.re;T.twist=th.twist;}
   if(t>2.75)T.rx=kf(t,[[2.75,-1.2],[3.2,-0.1]]);
-  T.lx=kf(t,[[0.8,-0.1],[1.6,-0.1],[1.8,-1.4,"in"],[1.95,-1.5],[2.3,-0.3],[3.4,-0.3],[3.7,-2.6],[4.1,-2.6],[4.4,-0.2]]);
-  T.le=kf(t,[[1.8,-0.05],[2.3,-0.3],[3.7,-1.7],[4.1,-1.7],[4.4,-0.3]]);T.lz=0.3;
+  /* the tip of the hat: the arm comes up and the hand finds the front of the brim (fitted below) */
+  T.lx=kf(t,[[0.8,-0.1],[1.6,-0.1],[1.8,-1.4,"in"],[1.95,-1.5],[2.3,-0.3],[3.4,-0.3],[3.7,-2.3],[4.1,-2.3],[4.4,-0.2]]);
+  T.le=kf(t,[[1.8,-0.05],[2.3,-0.3],[3.7,-1.5],[4.1,-1.5],[4.4,-0.3]]);T.lz=0.3;
   if(t>=3.7)once("tip",()=>sfx("tip"));
+  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;poseBoss(T,t<0.05?1:0.5);m.g.updateMatrixWorld(true);
+  const ch=chestAt(new V()),mz=new V(),gd=new V();
+  /* the hunter's pistol finds his chest, then kicks up with each shot */
+  if(!walking){aimGun(ch,kf(t,[[1.5,0],[1.7,1],[5.4,1],[6.0,0]]));gunLine(mz,gd);if(recoil){P.m.L.sh.rotation.x+=recoil;P.m.g.updateMatrixWorld(true);}}
+  /* the umbrella swings across the line of the first shot: the canopy meets the bullet on its way to his chest */
+  const sw=kf(t,[[1.75,0],[1.88,1],[1.98,1],[2.08,0]]);
+  /* a backhand swat across the line, not a point down it: elbow bent, the forearm and canopy laid crosswise in front
+     of him; then a small fit so the canopy really meets the bullet's path */
+  const R=m.armR;R.sh.rotation.y=0.45*sw;
+  if(sw>0){R.sh.rotation.x=lerp(R.sh.rotation.x,0,sw);R.sh.rotation.z=lerp(R.sh.rotation.z,-1.05,sw);R.el.rotation.x=lerp(R.el.rotation.x,-1.8,sw);
+    const pt=new V(),tp=new V();
+    reachRig(m.g,[[R.sh,"x"],[R.sh,"z"],[R.el,"x"]],()=>{R.hand.getWorldPosition(pt);R.tip.getWorldPosition(tp);pt.lerp(tp,0.4).sub(mz);
+      return tp.copy(gd).multiplyScalar(pt.dot(gd)).sub(pt).toArray();},sw,3);}
+  /* the spark: where the bullet's path passes the canopy */
+  if(t>=1.95)once("deflect",()=>{const p=m.armR.hand.getWorldPosition(new V()).lerp(m.armR.tip.getWorldPosition(new V()),0.4);
+    p.sub(mz);p.copy(mz).addScaledVector(gd,Math.max(0,p.dot(gd)));sfx("deflect");fx("spark",p.x,p.y,p.z,10);});
+  if(t>=2.62)once("shot2",()=>{gunLine(mz,gd);sfx("gun");noise(0.3,0.12);fx("smoke",mz.x,mz.y,mz.z,8);
+    fx("spark",ch.x,ch.y,ch.z,6);fx("mist",ch.x,ch.y,ch.z,4);G.shake=0.18;m.um.visible=false;
+    /* the umbrella falls where his hand was */
+    const h=m.armR.hand.getWorldPosition(new V());G.umb.position.set(h.x-0.5,0.06,h.z-0.1);G.umb.visible=true;});
+  if(t>=2.95)once("clatter",()=>{tone(700,0.15,"triangle",0.02,500);noise(0.12,0.05);});
+  /* the hat tip: the gloved fingers come to rest on the front of the brim */
+  const hw=kf(t,[[3.45,0],[3.75,1],[4.1,1],[4.35,0]]);
+  if(hw>0){const br=new V(),hp=new V();
+    reachRig(m.g,[[m.armL.sh,"x"],[m.armL.sh,"z"],[m.armL.el,"x"]],()=>{m.head.localToWorld(br.set(0.05,0.16,0.3));m.armL.hand.localToWorld(hp.set(0,-0.1,0.02));return _r.subVectors(hp,br).toArray();},hw,4);}
   const q=clamp((t-4.5)/1.1,0,1);if(q>0){B.fade.forEach(x=>{x.transparent=true;x.opacity=1-q;});
     if(Math.random()<0.12&&q<1)fx("mist",B.x+(Math.random()-0.5)*0.8,0.6+Math.random()*1.8,B.z+0.5+Math.random()*0.5,1);}
   if(q>=1)m.g.visible=false;
   if(t>=5.0&&G.rain)G.rain.frozen=false;
-  m.g.position.set(B.x,0,B.z);m.g.rotation.y=B.a;poseBoss(T,t<0.05?1:0.5);
   if(t>=8.0)once("gone",()=>{sfx("win");banner("The hunt is over",B.D.gone,false,0);});
   const fade=clamp((t-10.4)/1.2,0,1);
-  /* a wide, tilted standoff; after the second shot, straight behind him, so he hides the hunter until he is gone */
+  /* a wide, tilted standoff; after the second shot, from his left side, so the hat
+     and the tip read in profile against the street, with the hunter beyond him */
   if(t<2.62)return {pos:[lerp(6.6,5.6,t/2.62),1.4,-1.0],look:[0,1.7,-1.0],fov:48,roll:0.12,fade};
   const k=ease(clamp((t-5.6)/6,0,1));
-  return {pos:[0.15,lerp(1.95,2.2,k),lerp(B.z-3.4,B.z-2.8,k)],look:[0,lerp(1.9,1.2,k),lerp(B.z+2,P.z,k)],fov:lerp(38,44,k),fade};
+  return {pos:[lerp(-3.6,-1.9,k),lerp(2.0,2.2,k),lerp(B.z-0.4,B.z-2.8,k)],look:[lerp(0.3,0.1,k),lerp(2.0,1.2,k),lerp(B.z+1.2,P.z,k)],fov:lerp(47,44,k),fade};
 }
 
 function showResult(){
