@@ -1535,7 +1535,7 @@ const BOSSES={
       sink:{gen:()=>({dur:2.8,track:0.2,anim:surgeAnim,run:surgeRun,hits:[]}),weight:d=>G.boss.pres>=55?9:(d>10?1:0)},
       tentacles:{gen:B=>({dur:3.3,track:0.3,anim:reachAnim,run:tentRun,hits:[],
         waves:[{at:0.4,burst:1.45,n:4},{at:1.6,burst:2.6,n:2}]}),weight:(d,ph)=>ph>1?(d>2.6?2:0.6):0},
-      grab:{dur:2.7,track:1.1,anim:grabAnim,run:grabRun,hits:[],grabAt:1.3,weight:(d,ph)=>ph>1&&d<5.8?1.8:0},
+      grab:{dur:2.7,track:1.18,anim:grabAnim,run:grabRun,hits:[],grabAt:1.3,weight:(d,ph)=>ph>1&&d<5.8?1.8:0},
       chain:{gen:chainGen,weight:(d,ph)=>ph>1&&d<6?2.2:0}
     },
     build:buildPilgrim,down:pilgrimDown,
@@ -1563,14 +1563,16 @@ const BOSSES={
     /* raise = when the umbrella starts going up (early raise + hold = a delayed swing); s = swing side */
     moves:{
       string:{gen:makeString,weight:(d,ph)=>d<4.4?4:0},
-      thrust:{dur:1.55,track:0.55,anim:thrustAnim,hits:[{t:0.78,limb:"R",range:3.0,arc:60,dmg:26,parry:true}],step:[0.58,0.8,11],weight:d=>d>3.6&&d<7.5?2.4:0},
-      thrustLate:{dur:1.8,track:0.8,anim:thrustAnim,hits:[{t:1.05,raise:0.2,limb:"R",range:3.0,arc:60,dmg:26,parry:true}],step:[0.85,1.07,11],weight:d=>d>3.6&&d<7.5?1.5:0},
-      palm:{dur:1.4,track:0.5,anim:palmAnim,hits:[{t:0.7,limb:"L",range:2.6,arc:90,dmg:20,parry:true,push:true}],step:[0.5,0.7,3],weight:(d,ph)=>d<3.4?(ph>1?1.6:0.8):0},
+      /* the lunge: he winds up, may hold it, then dashes in. The dash ends just before the point lands, so seeing him
+         arrive is the moment to shoot (the shot leaves the barrel ACT.gun.hit after the press) */
+      thrust:{gen:B=>{const h=pickHold(B.phase>1?[0,0.3,0.6,0.9]:[0,0,0.3,0.6]),t=0.78+h;
+        return {dur:1.55+h,track:0.55+h,anim:thrustAnim,hits:[{t,raise:t-0.6-h,hold:h,warn:WARN+h,limb:"R",range:3.0,arc:60,dmg:26,parry:true}],step:[t-0.32,t-0.1,11]};},weight:d=>d>3.6&&d<7.5?3.9:0},
+      palm:{gen:()=>{const h=pickHold([0,0.4,0.8]);return {dur:1.4+h,track:0.5+h,anim:palmAnim,hits:[{t:0.7+h,hold:h,warn:WARN+h,limb:"L",range:2.6,arc:90,dmg:20,parry:true,push:true}],step:[0.5+h,0.7+h,3]};},weight:(d,ph)=>d<3.4?(ph>1?1.6:0.8):0},
       backstep:{dur:0.75,track:0.75,anim:backAnim,hits:[],back:[0.08,0.4,9],weight:(d,ph)=>ph===1&&d<2.8?1.8:0},
       guard:{guard:true,hits:[],weight:(d,ph)=>d<7?(ph>1?0.4:1.6):0},
       bash:{dur:1.0,track:0.3,keepShield:true,anim:bashAnim,hits:[{t:0.45,limb:"R",range:2.7,arc:110,dmg:18,parry:true,push:true}],weight:()=>0},
-      shot:{dur:1.25,track:0.7,anim:shotAnim,hits:[{t:0.8,shot:true,dmg:16}],weight:(d,ph)=>d>6.5?(ph>1?1.2:0.7):0},
-      blink:{dur:2.1,track:0,blink:true,anim:umbAnim,hits:[{t:1.15,raise:0.55,limb:"R",s:-1,range:3.1,arc:130,dmg:24,parry:true}],weight:(d,ph)=>ph>1?2.2:0}
+      shot:{gen:()=>{const h=pickHold([0,0.4,0.8]);return {dur:1.25+h,track:0.7+h,anim:shotAnim,hits:[{t:0.8+h,shot:true,dmg:16}]};},weight:(d,ph)=>d>6.5?(ph>1?1.2:0.7):0},
+      blink:{gen:()=>{const h=pickHold([0,0.3,0.6,0.9]);return {dur:2.1+h,track:0,blink:true,anim:umbAnim,hits:[{t:1.15+h,raise:0.55,hold:h,warn:WARN+h,limb:"R",s:-1,range:3.1,arc:130,dmg:24,parry:true}]};},weight:(d,ph)=>ph>1?2.2:0}
     },
     build:buildDimitri,
     finale:{dur:12,run:(t,dt)=>dimitriFinale(t,dt),
@@ -2210,11 +2212,11 @@ function lashAnim(Tm,T,mv){const m=G.boss.m,tr={};let last=null;
 /* a single lash; sometimes it holds the tentacle up at the top before the whip, so you can't play a rhythm.
    The gold comes on at the same point of the wind-up (warn covers the hold), so it still says when it is coming */
 function lashGen(limb){const hold=pickHold([0,0,0.25,0.45]);
-  return {dur:2.0+hold,track:0.7+hold,anim:lashAnim,hits:[{t:1.0+hold,hold,warn:WARN+hold,limb,range:5.6,arc:30,dmg:20,parry:true}]};}
+  return {dur:2.0+hold,track:0.85+hold,anim:lashAnim,hits:[{t:1.0+hold,hold,warn:WARN+hold,limb,range:5.6,arc:30,dmg:20,parry:true}]};}
 /* phase 2: two or three lashes from alternating arms, only one of them gold */
 function chainGen(B){const n=Math.random()<0.5?2:3,p=Math.floor(Math.random()*n),hits=[];let t=0.95;
   for(let i=0;i<n;i++){hits.push({t,limb:i%2?"L":"R",range:5.6,arc:30,dmg:16,parry:i===p});t+=0.62;}
-  return {dur:t-0.62+1.15,track:t-1.0,anim:lashAnim,hits};}
+  return {dur:t-0.62+1.15,track:t-0.62-0.15,anim:lashAnim,hits};}
 /* the grab: a deep sound, red eyes, the hood's darkness spreads; then both tentacles shoot out together.
    It cannot be shot; dodge it. If it catches you, it pulls you in for a big hit. */
 function grabAnim(Tm,T,mv){const g=mv.grabAt,u=Tm-g,m=G.boss.m;
@@ -2236,9 +2238,13 @@ function reachAnim(Tm,T,mv){   /* both arms plunge into the water; it stares at 
   bothArms(T,kf(Tm,[[0,-0.1],[0.35,0.5,"in"],[e-0.5,0.45],[e,-0.1]])+s,kf(Tm,[[0,0.15],[0.35,0.5],[e,0.15]]),-0.1);
   T.head=kf(Tm,[[0.35,-0.7],[e-0.5,-0.65],[e,0]]);return null;}
 function tentRun(B,mv,Tm,dt){
+  if(mv.px!=null&&dt>0){const k=Math.min(1,dt*8);mv.vx=lerp(mv.vx||0,(P.x-mv.px)/dt,k);mv.vz=lerp(mv.vz||0,(P.z-mv.pz)/dt,k);}mv.px=P.x;mv.pz=P.z;
   const W=mv.waves;
   W.forEach(w=>{
-    if(Tm>=w.at&&!w.spots){const n=w.n;w.spots=[[P.x,P.z]];for(let i=1;i<n;i++){const a=Math.random()*TAU,r=1.9+Math.random()*1.2;w.spots.push([clamp(P.x+Math.sin(a)*r,-12,12),clamp(P.z+Math.cos(a)*r,-12,12)]);}sfx("blot");}
+    if(Tm>=w.at&&!w.spots){const n=w.n;w.off=[[0,0]];for(let i=1;i<n;i++){const a=Math.random()*TAU,r=1.9+Math.random()*1.2;w.off.push([Math.sin(a)*r,Math.cos(a)*r]);}sfx("blot");}
+    /* the ripples follow you, and settle 0.35 s before the burst: walking away is not enough, dodge when they stop */
+    if(Tm>=w.at&&Tm<w.burst-0.35){const lead=w.burst-Tm;   /* they aim where you are heading, so walking in a straight line won't save you */
+      w.spots=w.off.map(([ox,oz])=>[clamp(P.x+(mv.vx||0)*lead+ox,-12,12),clamp(P.z+(mv.vz||0)*lead+oz,-12,12)]);}
     if(w.spots&&!w.done){w.rt=(w.rt||0)-dt;if(w.rt<=0){w.rt=0.13;w.spots.forEach(([x,z])=>ripple(x,z,0.6+Math.random()*0.8,0.6));}
       if(Tm>=w.burst){w.done=true;noise(0.4,0.08);tone(90,0.4,"sawtooth",0.04,50);let hit=false;
         w.spots.forEach(([x,z])=>{tentUp(x,z,0.95,{h:1.1+Math.random()*0.4});if(!hit&&Math.hypot(P.x-x,P.z-z)<1.05)hit=hitPlayer(18,x,z);});G.shake=Math.max(G.shake,0.12);}}});}
@@ -2248,7 +2254,7 @@ function surgeAnim(Tm,T){
   T.head=kf(Tm,[[1.55,0.4],[1.75,-0.6],[2.7,0]]);return {R:Tm>1.7&&Tm<1.85,L:Tm>1.7&&Tm<1.85};}
 function surgeRun(B,mv,Tm,dt){
   if(Tm<0.7){B.y=-3.6*ease(clamp((Tm-0.2)/0.5,0,1));if(Tm>0.2&&!mv.sank){mv.sank=1;fx("splash",B.x,0.3,B.z,10);noise(0.6,0.07);ripple(B.x,B.z,3,1.2,0xb8c8cc);}return;}
-  if(!mv.to){B.pres=0;mv.to=[clamp(P.x-Math.sin(P.a)*1.6,-12,12),clamp(P.z-Math.cos(P.a)*1.6,-12,12)];mv.from=[B.x,B.z];}   /* it comes up behind you */
+  if(!mv.to){B.pres=0;mv.from=[B.x,B.z];}if(!mv.to||Tm<1.3)mv.to=[clamp(P.x-Math.sin(P.a)*1.6,-12,12),clamp(P.z-Math.cos(P.a)*1.6,-12,12)];   /* follows you until just before it rises */   /* it comes up behind you */
   if(Tm<1.55){const q=ease((Tm-0.7)/0.85);B.x=lerp(mv.from[0],mv.to[0],q);B.z=lerp(mv.from[1],mv.to[1],q);
     mv.rt=(mv.rt||0)-dt;if(mv.rt<=0){mv.rt=0.1;ripple(B.x,B.z,1.2,0.7);}if(Tm>1.1){ripple(mv.to[0],mv.to[1],2.2,0.4);}return;}
   B.y=-3.6*(1-ease(clamp((Tm-1.55)/0.2,0,1)));
@@ -3299,7 +3305,7 @@ function boss(dt){
           const q=(Tm-L.from)/(L.to-L.from);B.x=lerp(B.leapFrom[0],B.leapTo[0],q);B.z=lerp(B.leapFrom[1],B.leapTo[1],q);B.y=Math.sin(q*Math.PI)*3.4;}
         else if(B.y>0){B.y=0;showMark(0,0,false);sfx("thud");G.shake=Math.max(G.shake,0.35);fx("dust",B.x,0.3,B.z,16);shock(B.x,B.z,3.4);}}
       if(mv.charge){const C=mv.charge;if(Tm>C.from&&Tm<C.to){B.x+=Math.sin(B.a)*C.speed*dt/sl;B.z+=Math.cos(B.a)*C.speed*dt/sl;B.walking=1;B.walk+=dt*10;if(Math.random()<0.4)fx("dust",B.x,0.2,B.z,1);}}
-      if(B.D.duel)mv.hits.forEach(h=>{if(h.lunge&&Tm>h.t-0.18&&Tm<h.t&&t.d>1.8){B.x+=Math.sin(B.a)*4.5*dt/sl;B.z+=Math.cos(B.a)*4.5*dt/sl;}});
+      if(B.D.duel)mv.hits.forEach(h=>{if(h.lunge&&Tm>h.t-0.28&&Tm<h.t-0.1&&t.d>1.8){B.x+=Math.sin(B.a)*4.5*dt/sl;B.z+=Math.cos(B.a)*4.5*dt/sl;}});
       mv.hits.forEach((h,i)=>{if(B.hitsDone[i])return;
         if(h.feint){if(Tm>=h.t)B.hitsDone[i]=true;return;}
         if(h.contact){if(Tm>h.from&&Tm<h.to&&Math.hypot(P.x-B.x,P.z-B.z)<1.9){B.hitsDone[i]=true;hitPlayer(h.dmg,B.x,B.z);}else if(Tm>=h.to)B.hitsDone[i]=true;return;}
@@ -3389,9 +3395,10 @@ function makeString(B){
   const hits=[];let t=0.5,s=-1,prev=null;
   for(let i=0;i<n;i++){
     if(i>0&&Math.random()<(ph2?0.25:0.2)){const ft=prev.t+0.55;hits.push({t:ft,feint:true,limb:"R",s,raise:prev.t+0.12});t=ft+0.5;prev={t:ft};}
-    const late=i>0&&Math.random()<(ph2?0.35:0.3);
-    if(i>0)t=prev.t+(late?0.95:0.42+Math.random()*0.1);
-    hits.push({t,limb:"R",s,range:3.1,arc:120,dmg:20,parry:i===pi,lunge:true,raise:late?prev.t+0.16:undefined});
+    /* a delayed swing: raised right after the last one, then held for a varied time */
+    const late=i>0&&Math.random()<(ph2?0.4:0.3),d=late?pickHold(ph2?[0.3,0.55,0.8,1.05]:[0.3,0.55,0.8]):0;
+    if(i>0)t=prev.t+(late?0.47+d:0.42+Math.random()*0.1);
+    hits.push({t,limb:"R",s,range:3.1,arc:120,dmg:20,parry:i===pi,lunge:true,raise:late?prev.t+0.16:undefined,hold:d,warn:WARN+d});
     prev=hits[hits.length-1];s=-s;}
   return {dur:prev.t+0.7,track:prev.t-0.2,anim:umbAnim,hits,weight:()=>0};}
 function thrustAnim(Tm,T,mv){const h=mv.hits[0],raise=h.raise??h.t-0.6,u=Tm<h.t-0.12?Math.min(-0.12,-0.6+(Tm-raise)):Tm-h.t;
@@ -3399,7 +3406,7 @@ function thrustAnim(Tm,T,mv){const h=mv.hits[0],raise=h.raise??h.t-0.6,u=Tm<h.t-
   T.chest=kf(u,[[-0.6,0.45],[-0.12,0.15],[0,0.95,"in"],[0.3,0.95],[0.7,0.45]]);T.twist=kf(u,[[-0.6,0],[-0.12,0.55],[0,-0.35,"in"],[0.7,0]]);
   T.by=kf(u,[[-0.6,0],[-0.12,-0.2],[0,-0.45,"in"],[0.3,-0.4],[0.7,0]]);T.lx=kf(u,[[-0.12,-0.6],[0,0.6],[0.7,-0.1]]);T.lz=0.3;T.le=-0.4;
   return {R:u>-0.04&&u<0.12};}
-function palmAnim(Tm,T,mv){const u=Tm-mv.hits[0].t;
+function palmAnim(Tm,T,mv){const ho=mv.hits[0].hold||0;let u=Tm-mv.hits[0].t;if(ho&&u<=-0.25)u=Math.min(-0.25,u+ho);   /* a held palm waits drawn back */
   T.lx=kf(u,[[-0.7,-0.1],[-0.25,0.5],[-0.08,0.55],[0,-1.6,"in"],[0.3,-1.55],[0.7,-0.1]]);T.le=kf(u,[[-0.25,-1.8],[0,0,"in"],[0.7,-0.3]]);T.lz=0.1;
   T.chest=kf(u,[[-0.7,0.45],[-0.1,0.2],[0,0.85,"in"],[0.7,0.45]]);T.twist=kf(u,[[-0.7,0],[-0.1,-0.5],[0,0.45,"in"],[0.7,0]]);T.by=kf(u,[[-0.1,-0.1],[0,-0.3,"in"],[0.7,0]]);
   T.rx=-0.25;T.rz=-0.25;
@@ -3415,7 +3422,7 @@ function backAnim(Tm,T){T.chest=kf(Tm,[[0,0.45],[0.1,0.2],[0.45,0.3],[0.75,0.45]
 function shotAnim(Tm,T,mv){const h=mv.hits[0];
   T.lx=kf(Tm,[[0,-0.1],[0.35,-1.55],[h.t,-1.55],[h.t+0.08,-1.95],[mv.dur,-0.1]]);T.le=-0.02;T.lz=kf(Tm,[[0,0.3],[0.35,0.05],[mv.dur,0.3]]);
   T.twist=kf(Tm,[[0,0],[0.35,0.4],[mv.dur,0]]);T.rx=0.2;T.rz=-0.35;
-  const m=G.boss.m;m.clawL.emissive.setHex(Tm>0.35&&Tm<h.t?0x8a6a20:0);}
+  const m=G.boss.m;m.clawL.emissive.setHex(Tm>0.35&&Tm<h.t?0x5a1410:0);}   /* a dull red: gold only ever means parry */
 function bossShot(B,h){
   const v=new THREE.Vector3();B.m.armL.hand.getWorldPosition(v);sfx("gun");fx("smoke",v.x,v.y,v.z,5);B.m.clawL.emissive.setHex(0);
   const d=Math.hypot(P.x-B.x,P.z-B.z),aTo=Math.atan2(P.x-B.x,P.z-B.z);
