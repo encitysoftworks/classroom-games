@@ -351,10 +351,10 @@ body.jp .pb .ja{display:block;font-size:9px}
   <section class="screen" id="home">
     <div class="hero">
       <div>
-        <p class="eyebrow">Colors, shapes and shopping (Let's Try! 1)</p>
-        <h1>Buy shapes. Make a picture!</h1>
-        <p class="lead">"What do you want?" "A red triangle, please." "How many?" "Two, please." Order shapes from the shop and make a house, a car, a panda or anything you like.</p>
-        <p class="ja">お店で形を注文して、絵を作ろう！</p>
+        <p class="eyebrow">Colors, shapes, food and shopping (Let's Try! 1)</p>
+        <h1 id="heroTitle"></h1>
+        <p class="lead" id="heroLead"></p>
+        <p class="ja" id="heroJa"></p>
       </div>
       <div class="hero-pic" id="heroPic"></div>
     </div>
@@ -364,18 +364,18 @@ body.jp .pb .ja{display:block;font-size:9px}
       <div class="panel role">
         <p class="who">Two friends, one Chromebook.</p>
         <h2>Shop with a partner</h2><p class="ja">ペアで1台：ひとりはお客さん、ひとりはお店の人</p>
-        <ul class="say"><li>What do you want?</li><li>A big red triangle, please.</li><li>How many? / Two, please.</li><li>Here you are. / Thank you.</li></ul>
+        <ul class="say"><li>What do you want?</li><li class="exOrder"></li><li class="exNum"></li><li>Here you are. / Thank you.</li></ul>
         <button class="btn primary big" id="startPair" type="button">Play with a partner<span class="ja">ペアで遊ぶ</span></button>
       </div>
       <div class="panel role">
         <p class="who">The computer runs the shop.</p>
         <h2>Solo shopping</h2><p class="ja">ひとりで：コンピューターがお店の人</p>
-        <ul class="say"><li>Listen: What do you want?</li><li>Click your order and say it.</li><li>Listen: How many?</li></ul>
+        <ul class="say"><li>Listen: What do you want?</li><li>Click your order and say it: <span class="exOrder"></span></li><li>Listen: How many?</li></ul>
         <button class="btn primary big" id="startSolo" type="button">Shop by myself<span class="ja">ひとりで遊ぶ</span></button>
       </div>
     </div>
     <div class="more">
-      <button class="btn" id="startFree" type="button">Free drawing (all shapes, no shop)<span class="ja">自由にかく（お店なし）</span></button>
+      <button class="btn" id="startFree" type="button"></button>
       <button class="btn" id="toTeacher" type="button">Teacher page<span class="ja">先生用ページ</span></button>
     </div>
     <div class="panel" id="homeSlot"></div>
@@ -411,7 +411,7 @@ body.jp .pb .ja{display:block;font-size:9px}
           <button class="btn primary" id="saveBtn" type="button">Save picture<span class="ja">絵を保存</span></button>
           <button class="btn primary" id="finishBtn" type="button" hidden>Finished!<span class="ja">できた！</span></button>
         </div>
-        <p class="hint" id="toolHint">Drag shapes from your bag onto the paper. Click a shape to turn it or make it bigger.<span class="ja">ふくろから紙に形をドラッグしよう。形をクリックすると回したり大きくしたりできます。</span></p>
+        <p class="hint" id="toolHint"></p>
         <div class="panel" id="cardPanel">
           <div id="cardHead"></div>
           <ul class="list" id="shopList"></ul>
@@ -444,11 +444,11 @@ body.jp .pb .ja{display:block;font-size:9px}
           </div>
         </div>
         <div class="panel" id="freePanel" hidden>
-          <h3>Shapes<span class="ja">形</span></h3>
+          <h3 id="freeTitle"></h3>
           <div class="sizes" id="freeSize"></div>
           <div class="cols" id="freeCol"></div>
           <div class="shps" id="freeShape"></div>
-          <p class="hint">Click or drag a shape onto the paper.<span class="ja">形をクリックするか、紙にドラッグしよう。</span></p>
+          <p class="hint" id="freeHint"></p>
         </div>
       </div>
     </div>
@@ -1125,6 +1125,14 @@ const THEMES={
 };
 /* every food is sold in both themes: the theme's own foods first, then all the others */
 ["parfait","pizza"].forEach(k=>{const own=THEMES[k].foods;THEMES[k].foods=own.concat(FOODS.map((f,i)=>i).filter(i=>!own.includes(i)));});
+/* words that change with the theme */
+const TXT={
+ shapes:{title:"Buy shapes. Make a picture!",lead:"Order colored shapes from the shop and make a house, a car, a panda or anything you like.",ja:"お店で形を注文して、絵を作ろう！",
+  ex:["A big red triangle, please.","Two, please."],thing:["shapes","形"],one:["a shape","形"],where:["the paper","紙"],free:["Free drawing (all shapes, no shop)","自由にかく（お店なし）"]},
+ parfait:{title:"Buy fruit. Make a parfait!",lead:"Order fruit, ice cream and more from the shop, then fill the parfait glass and pile toppings on top.",ja:"お店でフルーツやアイスを注文して、パフェを作ろう！",
+  ex:["A strawberry, please.","Three, please."],thing:["food","食べ物"],one:["food","食べ物"],where:["the parfait","パフェ"],free:["Free making (all food, no shop)","自由に作る（お店なし）"]},
+ pizza:{title:"Buy toppings. Make a pizza!",lead:"Order vegetables, meat and more from the shop and put them on the pizza.",ja:"お店で野菜や肉を注文して、ピザを作ろう！",
+  ex:["A tomato, please.","Five, please."],thing:["food","食べ物"],one:["food","食べ物"],where:["the pizza","ピザ"],free:["Free making (all food, no shop)","自由に作る（お店なし）"]}};
 const SPECIALS=[33, 34, 35, 36, 37];
 const isFood=o=>o.f>=0;
 const foodTheme=()=>G.theme!=="shapes";
@@ -1167,9 +1175,9 @@ $("#goHome").onclick=()=>scr.show("home");
 
 /* ---------- settings panel (moved between home and teacher page) ---------- */
 const panel=document.createElement("div");panel.className="settings";
-panel.innerHTML=`<div class="set-row"><h3>${bi(["Colors","色の数"])}</h3><div class="seg" id="setCols"></div></div>
+panel.innerHTML=`<div class="set-row"><h3>${bi(["Colors (Shapes)","色の数（形）"])}</h3><div class="seg" id="setCols"></div></div>
  <div class="set-row"><h3>${bi(["Numbers","数"])}</h3><div class="seg" id="setMax"></div></div>
- <div class="set-row"><h3>${bi(["Big and small","大きい・小さい"])}</h3><div class="seg" id="setSizes"></div></div>
+ <div class="set-row"><h3>${bi(["Big and small (Shapes)","大きい・小さい（形）"])}</h3><div class="seg" id="setSizes"></div></div>
  <div class="classcode"><div class="cc">${bi(["Class code","クラスコード"],true)}<b class="kitCode">----</b></div><div id="ccEntry"></div>
   <p class="note">The class code only changes these settings. You don't need it to play.<span class="ja">クラスコードは設定だけです。なくても遊べます。</span></p></div>`;
 Kit.codeEntry($("#ccEntry",panel),{codec,onCode(d){Object.assign(S,d.S);changed();Kit.toast(bi(["Code "+d.code+" loaded","コード "+d.code+" を読み込みました"]));}});
@@ -1183,10 +1191,11 @@ function renderSettings(){
 const setName=()=>[[6,9,12][S.colors]+" colors · 1–"+maxNum()+(sizesOn()?" · big/small":""),[6,9,12][S.colors]+"色・1–"+maxNum()+(sizesOn()?"・大小あり":"")];
 const teach=Kit.teacher({mount:"#teacher",store:st,artifactUrl:ARTIFACT_URL,getCode:code,getName:setName,
   steps:[["Pairs share one Chromebook. One is the customer (artist), one is the shopkeeper.","ペアで1台。ひとりはお客さん（絵をかく人）、ひとりはお店の人。"],
-   ["The customer picks a picture card and orders: \"A big red triangle, please.\" \"Two, please.\"","お客さんは絵カードをえらんで注文します。"],
+   ["Pick a theme on the home screen: Shapes, Parfait or Pizza.","ホーム画面でテーマ（形・パフェ・ピザ）をえらびます。"],
+   ["The customer orders: \"A big red triangle, please.\" or \"A strawberry, please.\" Then \"Three, please.\" In Shapes they can pick a picture card first.","お客さんが注文します。形のテーマでは先に絵カードをえらべます。"],
    ["Only the shopkeeper touches the shop. Ask \"What do you want?\" and \"How many?\", then tap Here you are.","お店の人だけがお店のボタンをおします。"],
-   ["When the picture is done, swap roles. Solo practice: the computer runs the shop.","絵ができたら役割を交代。ひとり練習ではコンピューターがお店の人。"]],
-  note:bi(["Fewer colors and numbers 1–5 make it easier. Picture cards that need other colors are hidden.","色を少なく、数を1–5にするとかんたんになります。"])});
+   ["When the picture card is done, or they press Finished! on a parfait or pizza, swap roles. Solo practice: the computer runs the shop.","絵ができたら（パフェ・ピザは「できた！」で）役割を交代。ひとり練習ではコンピューターがお店の人。"]],
+  note:bi(["Fewer colors and numbers 1–5 make it easier. Colors and big/small only change the Shapes theme. Picture cards that need other colors are hidden.","色を少なく、数を1–5にするとかんたんになります。色の数と大小は形のテーマだけに使います。"])});
 $("#toTeacher").onclick=()=>scr.show("teacher");
 
 /* ---------- the clerk (a bear shopkeeper) ---------- */
@@ -1208,7 +1217,12 @@ function startStudio(mode){
   G.mode=mode;const sv=st.get(saveKey(),null)||{};
   Object.assign(G,{mode,card:typeof sv.card==="number"&&CARDS[sv.card]?sv.card:-1,shapes:Array.isArray(sv.shapes)?sv.shapes:[],bag:sv.bag||{},orders:sv.orders||0,sel:null,done:false});
   G.id=G.shapes.reduce((m,o)=>Math.max(m,o.id),0)+1;
-  $("#modeChip").textContent=mode==="pair"?"With a partner":mode==="solo"?"Solo shopping":"Free drawing";
+  const X=TXT[G.theme];
+  $("#modeChip").textContent=THEMES[G.theme].name[0]+" · "+(mode==="pair"?"With a partner":mode==="solo"?"Solo shopping":foodTheme()?"Free making":"Free drawing");
+  $("#toolHint").innerHTML=bi([`Drag ${X.thing[0]} from your ${mode==="free"?"list":"bag"} onto ${X.where[0]}. Click one to turn it, make it bigger or smaller, or move it to the front or back.`+(foodTheme()?" Press Finished! when it's ready.":""),
+    `${X.thing[1]}を${X.where[1]}にドラッグしよう。クリックすると回したり、大きさや前後を変えたりできます。`+(foodTheme()?"できたら「できた！」を押そう。":"")]);
+  $("#freeTitle").innerHTML=bi(foodTheme()?["Food","食べ物"]:["Shapes","形"]);
+  $("#freeHint").innerHTML=bi([`Click or drag ${X.one[0]} onto ${X.where[0]}.`,`${X.one[1]}をクリックするか、${X.where[1]}にドラッグしよう。`]);
   $("#shopPanel").hidden=mode==="free";$("#bagPanel").hidden=mode==="free";$("#freePanel").hidden=mode!=="free";
   $("#swapBtn").hidden=mode!=="pair";
   $("#tools [data-t=copy]").hidden=mode!=="free";
@@ -1474,9 +1488,17 @@ function nextCard(){
 
 $("#finishBtn").onclick=()=>{if(!G.shapes.length){Kit.toast(bi(["Put some food on first!","先に食べ物をのせよう！"]));return;}G.sel=null;drawShapes();Kit.sound.play("win");showResult(timer.stop());};
 /* ---------- home ---------- */
-function renderThemes(){Kit.seg("#themePick",Object.keys(THEMES).map(k=>({html:bi(THEMES[k].name),k})),o=>G.theme===o.k,o=>{G.theme=o.k;st.set("theme",o.k);renderThemes();});}
+function renderThemes(){Kit.seg("#themePick",Object.keys(THEMES).map(k=>({html:bi(THEMES[k].name),k})),o=>G.theme===o.k,o=>{G.theme=o.k;st.set("theme",o.k);renderThemes();});
+  const X=TXT[G.theme];$("#heroTitle").textContent=X.title;$("#heroJa").textContent=X.ja;
+  $("#heroLead").textContent=`"What do you want?" "${X.ex[0]}" "How many?" "${X.ex[1]}" ${X.lead}`;
+  $$(".exOrder").forEach(e=>e.textContent=X.ex[0]);$$(".exNum").forEach(e=>e.textContent="How many? / "+X.ex[1]);
+  $("#startFree").innerHTML=bi(X.free);$("#heroPic").innerHTML=heroSVG();}
+/* the home picture: a picture card for shapes, a finished parfait or pizza for food */
+function heroSVG(){
+  if(G.theme==="shapes")return cardSVG(CARDS[0],"230 60 540 420");
+  const b=THEMES[G.theme].base,pick=G.theme==="parfait"?[[15,400,150],[0,330,250],[1,470,250],[3,400,330],[12,330,390],[8,470,390],[6,400,80]]:[[18,330,200],[27,470,200],[21,400,290],[29,320,330],[20,480,330],[19,400,420],[33,400,170]];
+  return `<svg viewBox="120 0 560 560" aria-hidden="true"><rect x="120" width="560" height="560" fill="#fffaf0"/><image href="${b.d}" x="${b.x}" y="${b.y}" width="${b.W}" height="${b.H}"/>${pick.map(([f,x,y])=>`<g transform="${tf({f,z:1,x,y,r:0,k:1})}">${foodImg(f)}</g>`).join("")}</svg>`;}
 G.theme=THEMES[st.get("theme","shapes")]?st.get("theme","shapes"):"shapes";renderThemes();
-$("#heroPic").innerHTML=cardSVG(CARDS[0],"230 60 540 420");
 renderSettings();
 scr.show("home");
 })();
