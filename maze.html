@@ -221,6 +221,7 @@ body[data-th="street"]{--accent:#ffb36b}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--ink);border-color:var(--accent)}
 .seg button[aria-pressed="true"] .ja{color:#3a2c12}
 .seg button .ja{font-size:11px}
+.seg button:disabled{opacity:.45;cursor:not-allowed}
 .range{display:flex;align-items:center;gap:12px}
 .range input{flex:1;accent-color:var(--accent)}
 .range output{font-family:var(--f-display);font-size:24px;min-width:2ch;text-align:right}
@@ -568,6 +569,7 @@ body[data-th="street"]{--accent:#ffb36b}
         <div class="field">
           <span class="lbl">Funny traps on wrong turns <span class="ja">まちがえるとワナ</span></span>
           <div class="seg" data-k="traps"><button type="button" data-v="1">On · sends back 1 step</button><button type="button" data-v="0">Off · free to wander</button></div>
+          <p class="summary" id="tFreeNote" hidden>Map only: any path to the goal counts, so free movement is always on.<span class="ja">地図のみ：どの道でもゴールできるので、ワナは自動でオフになります。</span></p>
         </div>
         <div class="field">
           <label for="tPairs">Number of pairs <span class="ja" style="display:inline">ペアの数</span></label>
@@ -1972,9 +1974,9 @@ function arrive(px,py,now){
     win(now);return;
   }
   G.atGoal=false;
-  const on=M.routeCells.has(G.cy*M.CW+G.cx);
+  const on=G.s.level===3||M.routeCells.has(G.cy*M.CW+G.cx); /* Map only: any path counts */
   if(!on&&G.wasOn)G.oops++;
-  if(!on&&G.s.traps){G.trap={t0:now,px,py,back:false};G.queue=null;G.auto=false;sfx(trapSfx());}
+  if(!on&&G.s.traps&&G.s.level!==3){G.trap={t0:now,px,py,back:false};G.queue=null;G.auto=false;sfx(trapSfx());}
   G.wasOn=on;
 }
 function step(now){
@@ -2143,7 +2145,7 @@ function checkLook(now,prevD){
   if(G.d===sd){G.atGoal=false;win(now);return;}
   if(G.d===(sd+2)%4){
     G.oops++;
-    if(G.s.traps){G.trap={t0:now,look:true,prevD,back:false};G.queue=null;sfx(trapSfx());}
+    if(G.s.traps&&G.s.level!==3){G.trap={t0:now,look:true,prevD,back:false};G.queue=null;sfx(trapSfx());}
     else{G.miss=now;sfx("bump");}
   }
 }
@@ -2548,6 +2550,9 @@ if(!(TS.mission>=0&&TS.mission<MISSIONS.length))TS.mission=0;
 if(!(TS.steps>=3&&TS.steps<=16))TS.steps=8;if(!(TS.theme>=0&&TS.theme<=MIX))TS.theme=0;
 let lastCodes=[];
 function syncTeacher(){
+  /* Map only has no set route, so any valid path counts: free movement (traps off) is forced on. */
+  const free=TS.level===3;if(free)TS.traps=0;
+  $('#teacher .seg[data-k="traps"] button[data-v="1"]').disabled=free;$("#tFreeNote").hidden=!free;
   $$("#teacher .seg").forEach(seg=>{const k=seg.dataset.k;$$("button",seg).forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.v===TS[k])));});
   $$("#presets button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.p===TS.preset)));
   const TR=TS.mission===1,minS=TR?3+TS.words:3+TS.see;
