@@ -320,7 +320,13 @@ body.jp .pb .ja{display:block;font-size:9px}
 .veil{position:fixed;inset:0;background:rgba(8,9,12,.9);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
 .veil .panel{max-width:760px;width:100%;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
 .veil img{max-width:100%;max-height:calc(100vh - 260px);min-height:120px;object-fit:contain;border-radius:8px;background:#fff}
-#saveVeil .panel{max-height:calc(100vh - 32px);overflow:auto;gap:8px}#saveVeil h2{margin:0}
+#saveVeil .panel,#galVeil .panel{max-height:calc(100vh - 32px);overflow:auto;gap:8px}#saveVeil h2,#galVeil h2{margin:0}
+#galVeil .panel{max-width:980px}
+.galgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;width:100%}
+.galgrid button{padding:4px;border-radius:10px;border:2px solid var(--edge);background:#fff;cursor:pointer}
+.galgrid button:hover,.galgrid button:focus-visible{border-color:var(--accent,#f5b041)}
+.galgrid img{display:block;width:100%;aspect-ratio:10/7;object-fit:contain;border-radius:6px}
+#galBig img{max-height:calc(100vh - 230px)}
 .resart svg{width:min(460px,100%);height:auto;border-radius:8px;border:4px solid #0d0904;display:block;margin:0 auto 8px}
 .gift{font:400 26px var(--f-display);color:var(--accent);margin:4px 0}
 .hero-pic svg{border-radius:12px;border:4px solid #0d0904}
@@ -377,6 +383,7 @@ body.jp .pb .ja{display:block;font-size:9px}
     </div>
     <div class="more">
       <button class="btn" id="startFree" type="button"></button>
+      <button class="btn" id="toGallery" type="button">Gallery<span class="ja">ギャラリー</span></button>
       <button class="btn" id="toTeacher" type="button">Teacher page<span class="ja">先生用ページ</span></button>
     </div>
     <div class="panel" id="homeSlot"></div>
@@ -388,6 +395,7 @@ body.jp .pb .ja{display:block;font-size:9px}
       <span class="stat">Time<b id="tTime">0:00</b></span>
       <span class="stat" id="tShapesLbl">Shapes<b id="tShapes">0</b></span>
       <button class="btn small" id="swapBtn" type="button">Swap roles<span class="ja">役割を交代</span></button>
+      <button class="btn small" id="studioGallery" type="button">Gallery<span class="ja">ギャラリー</span></button>
       <button class="btn small" id="studioQuit" type="button">Home<span class="ja">ホーム</span></button>
     </div>
     <div class="studio">
@@ -463,8 +471,21 @@ body.jp .pb .ja{display:block;font-size:9px}
 
 <div class="veil" id="saveVeil" hidden role="dialog" aria-label="Save picture">
   <div class="panel"><h2>Your picture<span class="ja">あなたの絵</span></h2><img id="saveImg" alt="Your shape picture">
-    <p class="note">Click Download, or right-click the picture and choose "Save image as".<span class="ja">「ダウンロード」を押すか、絵を右クリックして「名前を付けて画像を保存」</span></p>
+    <p class="note">It's in the Gallery now! Click Download if you also want a copy on the computer.<span class="ja">ギャラリーに入りました！パソコンにも保存したいときは「ダウンロード」</span></p>
     <div class="rowbtns"><button class="btn primary" id="saveLink" type="button" hidden>Download<span class="ja">ダウンロード</span></button><button class="btn" id="saveClose" type="button">Close<span class="ja">閉じる</span></button></div></div>
+</div>
+
+<div class="veil" id="galVeil" hidden role="dialog" aria-label="Gallery">
+  <div class="panel">
+    <div id="galList"><h2>Gallery<span class="ja">ギャラリー</span></h2>
+      <p class="note" id="galNote"></p>
+      <div class="galgrid" id="galGrid"></div></div>
+    <div id="galBig" hidden><img id="galImg" alt="A saved picture"><p class="note" id="galWhen"></p></div>
+    <div class="rowbtns"><button class="btn" id="galBack" type="button" hidden>All pictures<span class="ja">ぜんぶ見る</span></button>
+      <button class="btn primary" id="galDl" type="button" hidden>Download<span class="ja">ダウンロード</span></button>
+      <button class="btn" id="galDel" type="button" hidden>Delete<span class="ja">けす</span></button>
+      <button class="btn" id="galClose" type="button">Close<span class="ja">閉じる</span></button></div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
@@ -1382,7 +1403,7 @@ armed("#clearBtn",["Clear","全部もどす"],["Click again to clear","もう一
   G.shapes.slice().forEach(backToBag);G.done=false;Kit.sound.play("wipe");timer.start();save();drawAll();});
 /* Start over: empty paper AND empty bag */
 armed("#resetBtn",["Start over","さいしょから"],["Click again: empty bag too","もう一度：ふくろも空に"],()=>{
-  G.shapes=[];G.bag={};G.orders=0;G.sel=null;G.done=false;Kit.sound.play("wipe");timer.start();save();drawAll();
+  G.sel=null;drawShapes();addToGallery();G.shapes=[];G.bag={};G.orders=0;G.sel=null;G.done=false;Kit.sound.play("wipe");timer.start();save();drawAll();
   if(G.mode!=="free")shopReset();});
 
 /* ---------- the shop counter ----------
@@ -1460,20 +1481,59 @@ function pictureSVG(){
 }
 let DL=null;
 try{window.claude&&window.claude.use&&window.claude.use("downloads").then(d=>DL=d).catch(()=>{});}catch(e){}
+/* draw the paper onto a canvas, then cb(canvas, svgDataUrl) */
+function renderPic(w,h,cb){
+  const img=new Image(),cv=document.createElement("canvas");cv.width=w;cv.height=h;
+  img.onload=()=>{cv.getContext("2d").drawImage(img,0,0,w,h);cb(cv,img.src);};
+  img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(pictureSVG().replace(/<svg /,`<svg width="${w}" height="${h}" `));
+}
+function picName(){return (foodTheme()?THEMES[G.theme].what[0]:CARDS[G.card]?CARDS[G.card].en:"shape")+"-picture";}
+/* ---------- gallery: pictures kept in this browser (no files to save) ---------- */
+const GAL_KEY="ss_gallery",GAL_MAX=30;
+function galGet(){try{return JSON.parse(localStorage.getItem(GAL_KEY)||"[]");}catch(e){return [];}}
+function galPut(a){for(;;){try{localStorage.setItem(GAL_KEY,JSON.stringify(a));return true;}catch(e){if(a.length<=1)return false;a.shift();}}}
+let galLast="";
+function addToGallery(quiet){
+  if(!G.shapes.length)return;
+  const sig=JSON.stringify([G.theme,G.shapes.map(o=>[o.c,o.s,o.f,o.x,o.y,o.r,o.k,o.z])]);
+  if(sig===galLast)return;galLast=sig;
+  renderPic(800,560,cv=>{let d;try{d=cv.toDataURL("image/jpeg",.85);}catch(e){return;}
+    const a=galGet();a.push({d,t:Date.now(),n:picName()});while(a.length>GAL_MAX)a.shift();
+    if(galPut(a)&&!quiet)Kit.toast(bi(["Added to the Gallery!","ギャラリーに入れたよ！"]));});
+}
+function dataBlob(d){const [h,b]=d.split(",");const s=atob(b),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return new Blob([u],{type:h.slice(5,h.indexOf(";"))});}
+let galPick=-1,galArm=0;
+function galShow(i){
+  const a=galGet();galPick=i;clearTimeout(galArm);galArm=0;$("#galDel").innerHTML=bi(["Delete","けす"]);
+  const one=i>=0&&a[i];$("#galList").hidden=!!one;$("#galBig").hidden=!one;$("#galBack").hidden=!one;$("#galDel").hidden=!one;$("#galDl").hidden=!one||!DL;
+  if(one){$("#galImg").src=a[i].d;$("#galWhen").textContent=new Date(a[i].t).toLocaleString();return;}
+  $("#galNote").innerHTML=bi(a.length?["Click a picture to see it big. Pictures stay on this computer.","絵をクリックすると大きく見られます。絵はこのパソコンに残ります。"]
+    :["No pictures yet. Save picture, Start over and Finished! put your picture here.","まだ絵がありません。「絵を保存」「さいしょから」「できた！」でここに入ります。"]);
+  $("#galGrid").innerHTML=a.map((p,j)=>({p,j})).reverse().map(({p,j})=>`<button type="button" data-j="${j}" aria-label="Picture ${j+1}"><img src="${p.d}" alt=""></button>`).join("");
+}
+$("#galGrid").onclick=e=>{const b=e.target.closest("button[data-j]");if(b)galShow(+b.dataset.j);};
+function openGallery(){G.sel=null;if(scr.current==="studio"){drawShapes();updateTools();}galShow(-1);$("#galVeil").hidden=false;$("#galClose").focus();}
+$("#toGallery").onclick=openGallery;$("#studioGallery").onclick=openGallery;
+$("#galBack").onclick=()=>galShow(-1);
+$("#galClose").onclick=()=>$("#galVeil").hidden=true;
+$("#galDl").onclick=()=>{const p=galGet()[galPick];if(p&&DL)DL.save({filename:p.n+".jpg",data:dataBlob(p.d)}).catch(()=>{});};
+$("#galDel").onclick=()=>{
+  if(!galArm){galArm=setTimeout(()=>{galArm=0;$("#galDel").innerHTML=bi(["Delete","けす"]);},3000);$("#galDel").innerHTML=bi(["Click again to delete","もう一度クリック"]);return;}
+  clearTimeout(galArm);galArm=0;const a=galGet();a.splice(galPick,1);galPut(a);galShow(-1);};
 function savePicture(){
-  const img=new Image(),cv=document.createElement("canvas");cv.width=1600;cv.height=1120;
-  img.onload=()=>{const g=cv.getContext("2d");g.drawImage(img,0,0,1600,1120);
-    try{$("#saveImg").src=cv.toDataURL("image/png");}catch(e){$("#saveImg").src=img.src;}
-    $("#saveLink").hidden=!DL;$("#saveLink").onclick=()=>cv.toBlob(bl=>{if(!bl||!DL)return;DL.save({filename:(foodTheme()?THEMES[G.theme].what[0]:CARDS[G.card]?CARDS[G.card].en:"shape")+"-picture.png",data:bl}).catch(()=>{});});
-    $("#saveVeil").hidden=false;};
-  img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(pictureSVG().replace(/<svg /,'<svg width="1600" height="1120" '));
+  addToGallery(true);
+  renderPic(1600,1120,(cv,src)=>{
+    try{$("#saveImg").src=cv.toDataURL("image/png");}catch(e){$("#saveImg").src=src;}
+    $("#saveLink").hidden=!DL;$("#saveLink").onclick=()=>cv.toBlob(bl=>{if(!bl||!DL)return;DL.save({filename:picName()+".png",data:bl}).catch(()=>{});});
+    $("#saveVeil").hidden=false;});
 }
 $("#saveBtn").onclick=()=>{G.sel=null;drawShapes();updateTools();savePicture();};
 $("#saveClose").onclick=()=>$("#saveVeil").hidden=true;
-document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#saveVeil").hidden=true;});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#saveVeil").hidden=true;$("#galVeil").hidden=true;}});
 
 /* ---------- finished card ---------- */
 function showResult(t){
+  addToGallery(true);
   const c=foodTheme()?{en:THEMES[G.theme].what[0],ja:THEMES[G.theme].what[1]}:CARDS[G.card];
   Kit.result("#result",{title:[foodTheme()?"Your "+c.en+" is ready!":"You made a "+c.en+"!",c.ja+"ができた！"],
     art:`<div class="resart">${pictureSVG()}</div><p class="gift">"This is for you!"</p><p class="ja">できた絵を友だちに見せて「This is for you.」と言おう！</p>`,
