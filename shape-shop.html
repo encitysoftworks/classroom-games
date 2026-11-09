@@ -319,7 +319,8 @@ body.jp .pb .ja{display:block;font-size:9px}
 .hint{font-size:13px;color:var(--muted);margin-top:4px}
 .veil{position:fixed;inset:0;background:rgba(8,9,12,.9);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
 .veil .panel{max-width:760px;width:100%;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
-.veil img{max-width:100%;border-radius:8px;background:#fff}
+.veil img{max-width:100%;max-height:calc(100vh - 260px);min-height:120px;object-fit:contain;border-radius:8px;background:#fff}
+#saveVeil .panel{max-height:calc(100vh - 32px);overflow:auto;gap:8px}#saveVeil h2{margin:0}
 .resart svg{width:min(460px,100%);height:auto;border-radius:8px;border:4px solid #0d0904;display:block;margin:0 auto 8px}
 .gift{font:400 26px var(--f-display);color:var(--accent);margin:4px 0}
 .hero-pic svg{border-radius:12px;border:4px solid #0d0904}
@@ -1128,7 +1129,7 @@ const THEMES={
 /* words that change with the theme */
 const TXT={
  shapes:{title:"Buy shapes. Make a picture!",lead:"Order colored shapes from the shop and make a house, a car, a panda or anything you like.",ja:"お店で形を注文して、絵を作ろう！",
-  ex:["A big red triangle, please.","Two, please."],thing:["shapes","形"],one:["a shape","形"],where:["the paper","紙"],free:["Free drawing (all shapes, no shop)","自由にかく（お店なし）"]},
+  ex:["A red triangle, please.","Two, please."],thing:["shapes","形"],one:["a shape","形"],where:["the paper","紙"],free:["Free drawing (all shapes, no shop)","自由にかく（お店なし）"]},
  parfait:{title:"Buy fruit. Make a parfait!",lead:"Order fruit, ice cream and more from the shop, then fill the parfait glass and pile toppings on top.",ja:"お店でフルーツやアイスを注文して、パフェを作ろう！",
   ex:["A strawberry, please.","Three, please."],thing:["food","食べ物"],one:["food","食べ物"],where:["the parfait","パフェ"],free:["Free making (all food, no shop)","自由に作る（お店なし）"]},
  pizza:{title:"Buy toppings. Make a pizza!",lead:"Order vegetables, meat and more from the shop and put them on the pizza.",ja:"お店で野菜や肉を注文して、ピザを作ろう！",
@@ -1147,8 +1148,8 @@ const iconOf=o=>isFood(o)?foodIcon(o.f):icon(o.s,o.c);
 
 /* ---------- settings (class code) ---------- */
 const codec=Kit.codec({game:"shape-shop",fields:[{k:"colors",n:3},{k:"max",n:2},{k:"sizes",n:2}],length:4});
-const DEFAULT={colors:2,max:1,sizes:1};
-let S=(codec.decode(st.get("code",""))||{}).S||Object.assign({},DEFAULT);
+const DEFAULT={colors:2,max:1,sizes:0};   /* big/small is off unless the teacher turns it on */
+let S=(codec.decode(st.get("code2",""))||{}).S||Object.assign({},DEFAULT);
 const fromLink=codec.fromHash();
 if(fromLink){S=fromLink.S;setTimeout(()=>Kit.toast(bi(["Class code "+fromLink.code+" loaded","クラスコード "+fromLink.code+" を読み込みました"])),300);}
 const code=()=>codec.encode(S);
@@ -1181,7 +1182,7 @@ panel.innerHTML=`<div class="set-row"><h3>${bi(["Colors (Shapes)","色の数（�
  <div class="classcode"><div class="cc">${bi(["Class code","クラスコード"],true)}<b class="kitCode">----</b></div><div id="ccEntry"></div>
   <p class="note">The class code only changes these settings. You don't need it to play.<span class="ja">クラスコードは設定だけです。なくても遊べます。</span></p></div>`;
 Kit.codeEntry($("#ccEntry",panel),{codec,onCode(d){Object.assign(S,d.S);changed();Kit.toast(bi(["Code "+d.code+" loaded","コード "+d.code+" を読み込みました"]));}});
-function changed(){st.set("code",code());renderSettings();if(scr.current==="teacher")teach.refresh();}
+function changed(){st.set("code2",code());renderSettings();if(scr.current==="teacher")teach.refresh();}
 function renderSettings(){
   Kit.seg($("#setCols",panel),[6,9,12].map(n=>({html:String(n)})),(o,i)=>S.colors===i,(o,i)=>{S.colors=i;changed();});
   Kit.seg($("#setMax",panel),[5,10].map(n=>({html:"1–"+n})),(o,i)=>S.max===i,(o,i)=>{S.max=i;changed();});
@@ -1192,10 +1193,10 @@ const setName=()=>[[6,9,12][S.colors]+" colors · 1–"+maxNum()+(sizesOn()?" ·
 const teach=Kit.teacher({mount:"#teacher",store:st,artifactUrl:ARTIFACT_URL,getCode:code,getName:setName,
   steps:[["Pairs share one Chromebook. One is the customer (artist), one is the shopkeeper.","ペアで1台。ひとりはお客さん（絵をかく人）、ひとりはお店の人。"],
    ["Pick a theme on the home screen: Shapes, Parfait or Pizza.","ホーム画面でテーマ（形・パフェ・ピザ）をえらびます。"],
-   ["The customer orders: \"A big red triangle, please.\" or \"A strawberry, please.\" Then \"Three, please.\" In Shapes they can pick a picture card first.","お客さんが注文します。形のテーマでは先に絵カードをえらべます。"],
+   ["The customer orders: \"A red triangle, please.\" or \"A strawberry, please.\" Then \"Three, please.\" In Shapes they can pick a picture card first.","お客さんが注文します。形のテーマでは先に絵カードをえらべます。"],
    ["Only the shopkeeper touches the shop. Ask \"What do you want?\" and \"How many?\", then tap Here you are.","お店の人だけがお店のボタンをおします。"],
    ["When the picture card is done, or they press Finished! on a parfait or pizza, swap roles. Solo practice: the computer runs the shop.","絵ができたら（パフェ・ピザは「できた！」で）役割を交代。ひとり練習ではコンピューターがお店の人。"]],
-  note:bi(["Fewer colors and numbers 1–5 make it easier. Colors and big/small only change the Shapes theme. Picture cards that need other colors are hidden.","色を少なく、数を1–5にするとかんたんになります。色の数と大小は形のテーマだけに使います。"])});
+  note:bi(["Fewer colors and numbers 1–5 make it easier. Colors and big/small only change the Shapes theme. Big/small is off at first; turn it on for an extra challenge (\"A big red triangle, please.\"). Picture cards that need other colors are hidden.","色を少なく、数を1–5にするとかんたんになります。色の数と大小は形のテーマだけに使います。"])});
 $("#toTeacher").onclick=()=>scr.show("teacher");
 
 /* ---------- the clerk (a bear shopkeeper) ---------- */
