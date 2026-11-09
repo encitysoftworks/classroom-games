@@ -409,6 +409,7 @@ body.jp .pb .ja{display:block;font-size:9px}
           <button class="btn" data-t="bag" type="button">Back to bag<span class="ja">ふくろへ</span></button>
           <span class="sp"></span>
           <button class="btn" id="clearBtn" type="button">Clear<span class="ja">全部もどす</span></button>
+          <button class="btn" id="resetBtn" type="button">Start over<span class="ja">さいしょから</span></button>
           <button class="btn primary" id="saveBtn" type="button">Save picture<span class="ja">絵を保存</span></button>
           <button class="btn primary" id="finishBtn" type="button" hidden>Finished!<span class="ja">できた！</span></button>
         </div>
@@ -1372,12 +1373,17 @@ document.addEventListener("keydown",e=>{
   const k={q:"left",e:"right","+":"bigger","=":"bigger","-":"smaller",Delete:"bag",Backspace:"bag"}[e.key];
   if(k){e.preventDefault();tool(k);}
 });
-let clearArm=0;
-$("#clearBtn").onclick=()=>{
-  if(!clearArm){clearArm=setTimeout(()=>{clearArm=0;$("#clearBtn").innerHTML=bi(["Clear","全部もどす"]);},3000);$("#clearBtn").innerHTML=bi(["Click again to clear","もう一度クリック"]);return;}
-  clearTimeout(clearArm);clearArm=0;$("#clearBtn").innerHTML=bi(["Clear","全部もどす"]);
-  G.shapes.slice().forEach(backToBag);G.done=false;Kit.sound.play("wipe");timer.start();save();drawAll();
-};
+/* two-click buttons so one stray click can't wipe a picture */
+function armed(sel,label,ask,act){let arm=0;$(sel).onclick=()=>{
+  if(!arm){arm=setTimeout(()=>{arm=0;$(sel).innerHTML=bi(label);},3000);$(sel).innerHTML=bi(ask);return;}
+  clearTimeout(arm);arm=0;$(sel).innerHTML=bi(label);act();};}
+/* Clear: everything on the paper goes back into the bag */
+armed("#clearBtn",["Clear","全部もどす"],["Click again to clear","もう一度クリック"],()=>{
+  G.shapes.slice().forEach(backToBag);G.done=false;Kit.sound.play("wipe");timer.start();save();drawAll();});
+/* Start over: empty paper AND empty bag */
+armed("#resetBtn",["Start over","さいしょから"],["Click again: empty bag too","もう一度：ふくろも空に"],()=>{
+  G.shapes=[];G.bag={};G.orders=0;G.sel=null;G.done=false;Kit.sound.play("wipe");timer.start();save();drawAll();
+  if(G.mode!=="free")shopReset();});
 
 /* ---------- the shop counter ----------
    pair: prompts for the shopkeeper, who taps what the customer says.
