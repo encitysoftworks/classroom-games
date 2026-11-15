@@ -11,6 +11,7 @@ A game needs these three spots (the starter game already has them):
 Games with drawn word pictures also have  <script>/*KIT:PICS START*/ ... /*KIT:PICS END*/</script>  after the
 kit JS; it gets pictures.js (Kit.pics).
 Pages with big detailed word pictures also have  <script>/*KIT:ART START*/ ... /*KIT:ART END*/</script>; it gets art.js (Kit.art).
+Pages that use Wyatt's own word pictures also have  <script>/*KIT:PHOTOS START*/ ... /*KIT:PHOTOS END*/</script>; it gets photos.js (Kit.photos).
 Add --no-words to leave the word bank out (games that don't use textbook words).
 """
 import json, re, sys, pathlib
@@ -50,6 +51,8 @@ def main(args):
             t = between(t, "/*KIT:PICS START*/", "/*KIT:PICS END*/", safe((KIT / "pictures.js").read_text(encoding="utf-8")), p)
         if "/*KIT:ART START*/" in t:
             t = between(t, "/*KIT:ART START*/", "/*KIT:ART END*/", safe((KIT / "art.js").read_text(encoding="utf-8")), p)
+        if "/*KIT:PHOTOS START*/" in t:
+            t = between(t, "/*KIT:PHOTOS START*/", "/*KIT:PHOTOS END*/", safe((KIT / "photos.js").read_text(encoding="utf-8")), p)
         wb = re.compile(r'(<script type="application/json" id="kit-wordbank">).*?(</script>)', re.S)
         if words:
             if not wb.search(t):
