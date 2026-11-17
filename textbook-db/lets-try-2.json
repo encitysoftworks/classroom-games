@@ -702,6 +702,91 @@
      "en": "sausage",
      "ja": "ソーセージ",
      "emoji": "🌭"
+    },
+    {
+     "en": "tomato",
+     "ja": "トマト",
+     "emoji": "🍅"
+    },
+    {
+     "en": "onion",
+     "ja": "たまねぎ",
+     "emoji": "🧅"
+    },
+    {
+     "en": "green pepper",
+     "ja": "ピーマン",
+     "emoji": "🫑"
+    },
+    {
+     "en": "cucumber",
+     "ja": "きゅうり",
+     "emoji": "🥒"
+    },
+    {
+     "en": "carrot",
+     "ja": "にんじん",
+     "emoji": "🥕"
+    },
+    {
+     "en": "mushroom",
+     "ja": "きのこ",
+     "emoji": "🍄"
+    },
+    {
+     "en": "apple",
+     "ja": "りんご",
+     "emoji": "🍎"
+    },
+    {
+     "en": "strawberry",
+     "ja": "いちご",
+     "emoji": "🍓"
+    },
+    {
+     "en": "grapes",
+     "ja": "ぶどう",
+     "emoji": "🍇"
+    },
+    {
+     "en": "pineapple",
+     "ja": "パイナップル",
+     "emoji": "🍍"
+    },
+    {
+     "en": "peach",
+     "ja": "もも",
+     "emoji": "🍑"
+    },
+    {
+     "en": "melon",
+     "ja": "メロン",
+     "emoji": "🍈"
+    },
+    {
+     "en": "banana",
+     "ja": "バナナ",
+     "emoji": "🍌"
+    },
+    {
+     "en": "kiwi fruit",
+     "ja": "キウイ",
+     "emoji": "🥝"
+    },
+    {
+     "en": "lemon",
+     "ja": "レモン",
+     "emoji": "🍋"
+    },
+    {
+     "en": "orange",
+     "ja": "オレンジ",
+     "emoji": "🍊"
+    },
+    {
+     "en": "watermelon",
+     "ja": "すいか",
+     "emoji": "🍉"
     }
    ],
    "grammar": [
@@ -720,7 +805,8 @@
       ]
      ]
     }
-   ]
+   ],
+   "note": "Unit 7 new words: vegetable, potato, cabbage, corn, cherry. The other fruits and vegetables are review words from Let's Try 1 and Let's Try 2 Unit 3 (list OK'd by Wyatt 2026-10-29)."
   },
   {
    "unit": 8,

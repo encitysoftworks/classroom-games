@@ -314,7 +314,24 @@ cabbage = I want a cabbage, please.
 corn = I want corn, please.
 cherry = I want cherries, please.
 sausage = I want sausages, please.
-@0 cherries>cherry | sausages>sausage | corn | a cabbage>cabbage
+tomato = I want tomatoes, please.
+onion = I want an onion, please.
+green pepper = I want green peppers, please.
+cucumber = I want cucumbers, please.
+carrot = I want carrots, please.
+mushroom = I want mushrooms, please.
+apple = I want apples, please.
+strawberry = I want strawberries, please.
+grapes = I want grapes, please.
+pineapple = I want a pineapple, please.
+peach = I want peaches, please.
+melon = I want a melon, please.
+banana = I want bananas, please.
+kiwi fruit = I want two kiwi fruits, please.
+lemon = I want lemons, please.
+orange = I want oranges, please.
+watermelon = I want a watermelon, please.
+@0 cherries>cherry | sausages>sausage | corn | a cabbage>cabbage | tomatoes>tomato | an onion>onion | carrots>carrot | mushrooms>mushroom | strawberries>strawberry | grapes | a pineapple>pineapple | peaches>peach | a melon>melon | bananas>banana | oranges>orange | a watermelon>watermelon
 
 # Let's Try! 2|8
 go straight = Go straight.

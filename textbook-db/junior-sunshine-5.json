@@ -1016,6 +1016,31 @@
      "en": "yen",
      "ja": "円",
      "emoji": "💴"
+    },
+    {
+     "en": "corn soup",
+     "ja": "コーンスープ",
+     "emoji": "🥣"
+    },
+    {
+     "en": "latte",
+     "ja": "カフェラテ",
+     "emoji": "☕"
+    },
+    {
+     "en": "milk",
+     "ja": "牛乳",
+     "emoji": "🥛"
+    },
+    {
+     "en": "tea",
+     "ja": "お茶",
+     "emoji": "🍵"
+    },
+    {
+     "en": "water",
+     "ja": "水",
+     "emoji": "💧"
     }
    ],
    "grammar": [
