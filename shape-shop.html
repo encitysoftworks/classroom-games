@@ -68,7 +68,7 @@ body.jp .ja.inl{display:inline;margin-left:6px}
 .hero-pic{display:flex;justify-content:center}
 .hero-pic svg{width:min(260px,100%);height:auto}
 .panel{background:var(--panel);border:2px solid var(--edge);border-radius:12px;padding:16px 18px;box-shadow:0 4px 0 #07080b;min-width:0}
-.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
 .role{display:flex;flex-direction:column;gap:8px}
 .role h2{font-size:22px;color:var(--accent)}
 .role .who{font-weight:800;color:var(--muted);font-size:14px}
@@ -322,6 +322,25 @@ body.jp .pb .ja{display:block;font-size:9px}
 .veil img{max-width:100%;max-height:calc(100vh - 260px);min-height:120px;object-fit:contain;border-radius:8px;background:#fff}
 #saveVeil .panel,#galVeil .panel{max-height:calc(100vh - 32px);overflow:auto;gap:8px}#saveVeil h2,#galVeil h2{margin:0}
 #galVeil .panel{max-width:980px}
+#orderVeil{background:rgba(8,9,12,.97)}
+.ocard{max-width:680px!important;max-height:calc(100vh - 32px);overflow:auto;gap:10px!important}
+.ohead{display:flex;gap:14px;align-items:center;text-align:left}.ohead h2{margin:0}
+.ocust svg{width:96px;height:96px;display:block}
+.olist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;width:100%}
+.olist li{display:flex;align-items:center;gap:12px;background:#fffaf0;color:#1b1a17;border-radius:12px;padding:8px 14px;text-align:left}
+.olist .ico{width:52px;height:52px;flex:none}
+.olist b{font-size:30px;min-width:56px}
+.olist span{font-size:20px;font-weight:800}.olist .ja{font-size:13px;color:#6b6358;display:block;font-weight:400}
+.reveal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px;align-items:center;max-width:900px;margin:0 auto 6px}
+.reveal .rv-cust{display:flex;flex-direction:column;align-items:center}
+.reveal .rv-cust svg{width:140px;height:140px}
+.reveal table{border-collapse:collapse;width:100%;margin-top:8px;background:#fffaf0;color:#1b1a17;border-radius:10px;overflow:hidden}
+.reveal th,.reveal td{padding:4px 8px;text-align:center;font-weight:800}
+.reveal th{font-size:13px;background:#efe6d2}
+.reveal td .ico{width:36px;height:36px;display:block;margin:0 auto}
+.reveal .mk{width:26px;height:26px}
+.reveal .resart svg{width:min(380px,100%)}
+@media (max-width:820px){.reveal{grid-template-columns:minmax(0,1fr)}}
 .galgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;width:100%}
 .galgrid button{padding:4px;border-radius:10px;border:2px solid var(--edge);background:#fff;cursor:pointer}
 .galgrid button:hover,.galgrid button:focus-visible{border-color:var(--accent,#f5b041)}
@@ -380,6 +399,13 @@ body.jp .pb .ja{display:block;font-size:9px}
         <ul class="say"><li>Listen: What do you want?</li><li>Click your order and say it: <span class="exOrder"></span></li><li>Listen: How many?</li></ul>
         <button class="btn primary big" id="startSolo" type="button">Shop by myself<span class="ja">ひとりで遊ぶ</span></button>
       </div>
+      <div class="panel role">
+        <p class="who">Two friends, one Chromebook. A secret order!</p>
+        <h2>Secret order</h2><p class="ja">ひみつの注文：注文カードを見るのはお客さんだけ</p>
+        <ul class="say"><li>What do you want?</li><li class="exOrder"></li><li class="exNum"></li></ul>
+        <p class="note">Only the customer sees the order card. The shopkeeper builds what they hear. Does it match?<span class="ja">注文カードを見るのはお客さんだけ。お店の人は聞いたとおりに作ろう。</span></p>
+        <button class="btn primary big" id="startSecret" type="button">Play secret order<span class="ja">ひみつの注文で遊ぶ</span></button>
+      </div>
     </div>
     <div class="more">
       <button class="btn" id="startFree" type="button"></button>
@@ -395,6 +421,7 @@ body.jp .pb .ja{display:block;font-size:9px}
       <span class="stat">Time<b id="tTime">0:00</b></span>
       <span class="stat" id="tShapesLbl">Shapes<b id="tShapes">0</b></span>
       <button class="btn small" id="swapBtn" type="button">Swap roles<span class="ja">役割を交代</span></button>
+      <button class="btn small" id="peekBtn" type="button" hidden>Customer: peek<span class="ja">お客さん：カードを見る</span></button>
       <button class="btn small" id="studioGallery" type="button">Gallery<span class="ja">ギャラリー</span></button>
       <button class="btn small" id="studioQuit" type="button">Home<span class="ja">ホーム</span></button>
     </div>
@@ -475,6 +502,14 @@ body.jp .pb .ja{display:block;font-size:9px}
     <div class="rowbtns"><button class="btn primary" id="saveLink" type="button" hidden>Download<span class="ja">ダウンロード</span></button><button class="btn" id="saveClose" type="button">Close<span class="ja">閉じる</span></button></div></div>
 </div>
 
+<div class="veil" id="orderVeil" hidden role="dialog" aria-label="Secret order card">
+  <div class="panel ocard">
+    <div class="ohead"><div class="ocust" id="oCust"></div><div><h2 id="oTitle"></h2><p class="note" id="oWarn"></p></div></div>
+    <ul class="olist" id="oList"></ul>
+    <p class="note" id="oSay"></p>
+    <div class="rowbtns"><button class="btn primary big" id="oReady" type="button">Ready! Hide the card<span class="ja">OK！カードをかくす</span></button></div>
+  </div>
+</div>
 <div class="veil" id="galVeil" hidden role="dialog" aria-label="Gallery">
   <div class="panel">
     <div id="galList"><h2>Gallery<span class="ja">ギャラリー</span></h2>
@@ -1147,7 +1182,7 @@ const THEMES={
  pizza:{name:["Pizza","ピザ"],what:["pizza","ピザ"],foods:[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],base:Object.assign({"w": 284, "h": 284, "d": "data:image/webp;base64,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"},{x:140,y:20,W:520,H:520})}
 };
 /* every food is sold in both themes: the theme's own foods first, then all the others */
-["parfait","pizza"].forEach(k=>{const own=THEMES[k].foods;THEMES[k].foods=own.concat(FOODS.map((f,i)=>i).filter(i=>!own.includes(i)));});
+["parfait","pizza"].forEach(k=>{const own=THEMES[k].foods;THEMES[k].own=own;THEMES[k].foods=own.concat(FOODS.map((f,i)=>i).filter(i=>!own.includes(i)));});
 /* words that change with the theme */
 const TXT={
  shapes:{title:"Buy shapes. Make a picture!",lead:"Order colored shapes from the shop and make a house, a car, a panda or anything you like.",ja:"お店で形を注文して、絵を作ろう！",
@@ -1159,6 +1194,7 @@ const TXT={
 const SPECIALS=[33, 34, 35, 36, 37];
 const isFood=o=>o.f>=0;
 const foodTheme=()=>G.theme!=="shapes";
+const freeLike=()=>G.mode==="free"||G.mode==="secret";
 function foodImg(f){const F=FOODS[f],s=Math.min(40/F.w,40/F.h),w=F.w*s,h=F.h*s;return `<image href="${F.d}" x="${((40-w)/2).toFixed(1)}" y="${((40-h)/2).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}"/>`;}
 const foodIcon=f=>`<svg class="ico" viewBox="0 0 40 40" aria-hidden="true">${foodImg(f)}</svg>`;
 function dsc(o,n){if(!isFood(o))return desc(o.c,o.s,o.z,n);const F=FOODS[o.f];
@@ -1217,6 +1253,7 @@ const teach=Kit.teacher({mount:"#teacher",store:st,artifactUrl:ARTIFACT_URL,getC
    ["Pick a theme on the home screen: Shapes, Parfait or Pizza.","ホーム画面でテーマ（形・パフェ・ピザ）をえらびます。"],
    ["The customer orders: \"A red triangle, please.\" or \"A strawberry, please.\" Then \"Three, please.\" In Shapes they can pick a picture card first.","お客さんが注文します。形のテーマでは先に絵カードをえらべます。"],
    ["Only the shopkeeper touches the shop. Ask \"What do you want?\" and \"How many?\", then tap Here you are.","お店の人だけがお店のボタンをおします。"],
+   ["Secret order: only the customer looks at the order card, then presses Ready! The shopkeeper builds what they hear, and the reveal shows if it matches.","ひみつの注文：お客さんだけが注文カードを見て、お店の人は聞いたとおりに作ります。"],
    ["When the picture card is done, or they press Finished! on a parfait or pizza, swap roles. Solo practice: the computer runs the shop.","絵ができたら（パフェ・ピザは「できた！」で）役割を交代。ひとり練習ではコンピューターがお店の人。"]],
   note:bi(["Fewer colors and numbers 1–5 make it easier. Colors and big/small only change the Shapes theme. Big/small is off at first; turn it on for an extra challenge (\"A big red triangle, please.\"). Picture cards that need other colors are hidden.","色を少なく、数を1–5にするとかんたんになります。色の数と大小は形のテーマだけに使います。"])});
 $("#toTeacher").onclick=()=>scr.show("teacher");
@@ -1240,27 +1277,33 @@ function startStudio(mode){
   G.mode=mode;const sv=st.get(saveKey(),null)||{};
   Object.assign(G,{mode,card:typeof sv.card==="number"&&CARDS[sv.card]?sv.card:-1,shapes:Array.isArray(sv.shapes)?sv.shapes:[],bag:sv.bag||{},orders:sv.orders||0,sel:null,done:false});
   G.id=G.shapes.reduce((m,o)=>Math.max(m,o.id),0)+1;
-  const X=TXT[G.theme];
-  $("#modeChip").textContent=THEMES[G.theme].name[0]+" · "+(mode==="pair"?"With a partner":mode==="solo"?"Solo shopping":foodTheme()?"Free making":"Free drawing");
-  $("#toolHint").innerHTML=bi([`Drag ${X.thing[0]} from your ${mode==="free"?"list":"bag"} onto ${X.where[0]}. Click one to turn it, make it bigger or smaller, or move it to the front or back.`+(foodTheme()?" Press Finished! when it's ready.":""),
+  const X=TXT[G.theme],fl=freeLike(),sec=mode==="secret";
+  if(sec){G.shapes=[];G.card=-1;}
+  $("#modeChip").textContent=THEMES[G.theme].name[0]+" · "+(mode==="pair"?"With a partner":mode==="solo"?"Solo shopping":sec?"Secret order":foodTheme()?"Free making":"Free drawing");
+  $("#toolHint").innerHTML=sec?bi(["Shopkeeper: ask \"What do you want?\" and \"How many?\" Listen to the customer and build the order. Then press Done!",
+    "お店の人：「What do you want?」「How many?」と聞いて、お客さんの注文どおりに作ろう。できたら「できた！」"])
+   :bi([`Drag ${X.thing[0]} from your ${mode==="free"?"list":"bag"} onto ${X.where[0]}. Click one to turn it, make it bigger or smaller, or move it to the front or back.`+(foodTheme()?" Press Finished! when it's ready.":""),
     `${X.thing[1]}を${X.where[1]}にドラッグしよう。クリックすると回したり、大きさや前後を変えたりできます。`+(foodTheme()?"できたら「できた！」を押そう。":"")]);
   $("#freeTitle").innerHTML=bi(foodTheme()?["Food","食べ物"]:["Shapes","形"]);
   $("#freeHint").innerHTML=bi([`Click or drag ${X.one[0]} onto ${X.where[0]}.`,`${X.one[1]}をクリックするか、${X.where[1]}にドラッグしよう。`]);
-  $("#shopPanel").hidden=mode==="free";$("#bagPanel").hidden=mode==="free";$("#freePanel").hidden=mode!=="free";
-  $("#swapBtn").hidden=mode!=="pair";
-  $("#tools [data-t=copy]").hidden=mode!=="free";
-  $("#tools [data-t=bag]").innerHTML=mode==="free"?bi(["Remove","消す"]):bi(["Back to bag","ふくろへ"]);
+  $("#shopPanel").hidden=fl;$("#bagPanel").hidden=fl;$("#freePanel").hidden=!fl;
+  $("#swapBtn").hidden=mode!=="pair";$("#peekBtn").hidden=!sec;
+  $("#tools [data-t=copy]").hidden=!fl;
+  $("#tools [data-t=bag]").innerHTML=fl?bi(["Remove","消す"]):bi(["Back to bag","ふくろへ"]);
   $("#shopTitle").innerHTML=mode==="pair"?bi(["Shop: only the shopkeeper touches this","お店：お店の人だけがさわります"]):bi(["Shop","お店"]);
-  $("#cardPanel").hidden=foodTheme();$("#finishBtn").hidden=!foodTheme();
+  $("#cardPanel").hidden=foodTheme()||sec;$("#finishBtn").hidden=!foodTheme()&&!sec;
+  $("#finishBtn").innerHTML=bi(sec?["Done! Check the order","できた！注文をチェック"]:["Finished!","できた！"]);
   $("#tShapesLbl").firstChild.textContent=foodTheme()?"Items":"Shapes";
   if(foodTheme())G.card=-1;
   drawBase();scr.show("studio");timer.start();
   shopReset();renderFree();drawAll();
+  if(sec)newOrder();
 }
 function drawBase(){const b=THEMES[G.theme].base;$("#base").innerHTML=b?`<image href="${b.d}" x="${b.x}" y="${b.y}" width="${b.W}" height="${b.H}" preserveAspectRatio="xMidYMid meet"/>`:"";}
 $("#startPair").onclick=()=>startStudio("pair");
 $("#startSolo").onclick=()=>startStudio("solo");
 $("#startFree").onclick=()=>startStudio("free");
+$("#startSecret").onclick=()=>startStudio("secret");
 $("#studioQuit").onclick=()=>scr.show("home");
 $("#swapBtn").onclick=()=>{Kit.sound.play("ok");Kit.toast(bi(["Swap seats! The shopkeeper is the customer now.","交代！お店の人がお客さんになります。"]),3500);};
 
@@ -1279,7 +1322,7 @@ function sortShapes(){G.shapes=G.shapes.map((o,i)=>[o,o.back&&o.slot<0?-1000+i:o
 
 /* ---------- bag + free palette ---------- */
 function renderBag(){
-  if(G.mode==="free")return;
+  if(freeLike())return;
   const ks=Object.keys(G.bag).filter(k=>G.bag[k]>0);
   const what=foodTheme()?["food","食べ物"]:["shapes","形"];
   $("#bag").innerHTML=ks.length?ks.map(k=>{const sp=specOf(k);
@@ -1289,7 +1332,7 @@ function renderBag(){
 }
 const F={c:0,z:1};
 function renderFree(){
-  if(G.mode!=="free")return;
+  if(!freeLike())return;
   $("#freeSize").hidden=$("#freeCol").hidden=foodTheme();$("#freeShape").classList.toggle("foods",foodTheme());
   if(foodTheme()){$("#freeShape").innerHTML=THEMES[G.theme].foods.map(f=>`<button class="pb tile" type="button" data-k="f.${f}">${foodIcon(f)}${bi([FOODS[f].en,FOODS[f].ja])}</button>`).join("");$$("#freeShape .tile").forEach(wireTile);return;}
   $("#freeSize").hidden=!sizesOn();if(!sizesOn())F.z=1;
@@ -1325,8 +1368,8 @@ function pickCard(i){
 /* ---------- placing and dragging ---------- */
 function pt(e){const m=art.getScreenCTM();if(!m)return {x:400,y:280};const p=art.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const q=p.matrixTransform(m.inverse());return {x:q.x,y:q.y};}
 const clampX=v=>Math.max(10,Math.min(790,v)),clampY=v=>Math.max(10,Math.min(550,v));
-function takeFromBag(sp){if(G.mode==="free")return true;const k=keyOf(sp);if(!(G.bag[k]>0))return false;G.bag[k]--;if(!G.bag[k])delete G.bag[k];return true;}
-function backToBag(o){G.shapes=G.shapes.filter(x=>x!==o);if(G.mode!=="free"){const k=keyOf(o);G.bag[k]=(G.bag[k]||0)+1;}if(G.sel===o.id)G.sel=null;}
+function takeFromBag(sp){if(freeLike())return true;const k=keyOf(sp);if(!(G.bag[k]>0))return false;G.bag[k]--;if(!G.bag[k])delete G.bag[k];return true;}
+function backToBag(o){G.shapes=G.shapes.filter(x=>x!==o);if(!freeLike()){const k=keyOf(o);G.bag[k]=(G.bag[k]||0)+1;}if(G.sel===o.id)G.sel=null;}
 function addShape(sp,x,y){const o={id:G.id++,c:sp.c,s:sp.s,z:sp.z,f:sp.f,x,y,r:0,k:1,slot:-1};G.shapes.push(o);return o;}
 function wireTile(b){
   b.onpointerdown=e=>{
@@ -1381,7 +1424,7 @@ function tool(t){
   if(t==="smaller")o.k=Math.max(.35,+((o.k||1)/1.15).toFixed(3));
   if(t==="front"){o.back=false;G.shapes=G.shapes.filter(x=>x!==o).concat(o);}
   if(t==="back"){o.back=true;G.shapes=[o].concat(G.shapes.filter(x=>x!==o));sortShapes();}
-  if(t==="copy"&&G.mode==="free"){const n=addShape(o,clampX(o.x+24),clampY(o.y+24));n.r=o.r;n.k=o.k;G.sel=n.id;}
+  if(t==="copy"&&freeLike()){const n=addShape(o,clampX(o.x+24),clampY(o.y+24));n.r=o.r;n.k=o.k;G.sel=n.id;}
   if(t==="bag")backToBag(o);
   else if(t!=="copy"&&trySnap(o))Kit.sound.play("ok"),sortShapes();
   save();drawAll();checkDone();
@@ -1404,7 +1447,7 @@ armed("#clearBtn",["Clear","全部もどす"],["Click again to clear","もう一
 /* Start over: empty paper AND empty bag */
 armed("#resetBtn",["Start over","さいしょから"],["Click again: empty bag too","もう一度：ふくろも空に"],()=>{
   G.sel=null;drawShapes();addToGallery();G.shapes=[];G.bag={};G.orders=0;G.sel=null;G.done=false;Kit.sound.play("wipe");timer.start();save();drawAll();
-  if(G.mode!=="free")shopReset();});
+  if(!freeLike())shopReset();});
 
 /* ---------- the shop counter ----------
    pair: prompts for the shopkeeper, who taps what the customer says.
@@ -1414,7 +1457,7 @@ const ready=()=>foodTheme()?O.f>=0:O.c>=0&&O.s>=0;
 function bub(p,speak){$("#bub").innerHTML=bi(p);if(speak)say(p[0]);}
 function shopStep(n){$("#shopPick").hidden=n!==1;$("#shopNum").hidden=n!==2;$("#shopGive").hidden=n!==3;}
 function shopReset(){
-  if(G.mode==="free")return;
+  if(freeLike())return;
   Object.assign(O,{c:-1,s:-1,z:1,f:-1,n:0});shopStep(1);renderPad();
   const pair=G.mode==="pair";
   $("#step1").innerHTML=pair?bi(["1. Ask: \"What do you want?\" Tap what you hear.","1.「What do you want?」と聞いて、聞こえた物をタップ"],true):bi(["1. Click your order, then say it","1. 注文をクリックして、言ってみよう"],true);
@@ -1531,6 +1574,79 @@ $("#saveBtn").onclick=()=>{G.sel=null;drawShapes();updateTools();savePicture();}
 $("#saveClose").onclick=()=>$("#saveVeil").hidden=true;
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#saveVeil").hidden=true;$("#galVeil").hidden=true;}});
 
+/* ---------- secret order: only the customer sees the card ---------- */
+const CUST=[{en:"Ms. Cat",ja:"ねこさん"},{en:"Mr. Robot",ja:"ロボットさん"},{en:"King Frog",ja:"カエルの王さま"}];
+function custSVG(w,mood){
+  const S=`stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"`;
+  const head=w===0?`<polygon points="12,26 16,6 28,18" fill="#f5892a" ${S}/><polygon points="52,26 48,6 36,18" fill="#f5892a" ${S}/><circle cx="32" cy="36" r="22" fill="#f5a04a" ${S}/>`
+    :w===1?`<line x1="32" y1="12" x2="32" y2="4" stroke="${INK}" stroke-width="2.5"/><circle cx="32" cy="4" r="3" fill="#e2463b" ${S}/><rect x="10" y="12" width="44" height="44" rx="8" fill="#c9ced6" ${S}/><rect x="6" y="28" width="4" height="12" fill="#8a8f98"/><rect x="54" y="28" width="4" height="12" fill="#8a8f98"/>`
+    :`<polygon points="20,10 24,2 28,8 32,0 36,8 40,2 44,10" fill="#f7d038" ${S}/><circle cx="22" cy="20" r="8" fill="#6cc46a" ${S}/><circle cx="42" cy="20" r="8" fill="#6cc46a" ${S}/><ellipse cx="32" cy="38" rx="25" ry="19" fill="#6cc46a" ${S}/>`;
+  const ey=w===2?20:30;
+  const eyes=mood==="happy"?`<path d="M19 ${ey+1} Q23 ${ey-4} 27 ${ey+1}M37 ${ey+1} Q41 ${ey-4} 45 ${ey+1}" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>`
+    :mood==="silly"?`<circle cx="23" cy="${ey}" r="5.5" fill="#fff" stroke="${INK}" stroke-width="2"/><circle cx="25" cy="${ey+1}" r="2.4" fill="${INK}"/><circle cx="41" cy="${ey}" r="2.6" fill="${INK}"/>`
+    :`<circle cx="23" cy="${ey}" r="2.8" fill="${INK}"/><circle cx="41" cy="${ey}" r="2.8" fill="${INK}"/>`;
+  const mouth=mood==="happy"?`<path d="M22 41 Q32 52 42 41 Z" fill="#7a2a22" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>`
+    :mood==="silly"?`<path d="M23 43 Q28 40 32 43 Q36 46 41 42" fill="none" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/><path d="M33 44 q2 9 6 0" fill="#f59ac0" stroke="${INK}" stroke-width="1.8"/><text x="52" y="14" font-size="16" font-weight="900" fill="#f7d038" stroke="${INK}" stroke-width=".8">?</text>`
+    :`<path d="M26 43 Q32 46 38 43" fill="none" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/>`;
+  const blush=mood==="happy"?`<circle cx="16" cy="38" r="3.5" fill="#f59ac0" opacity=".8"/><circle cx="48" cy="38" r="3.5" fill="#f59ac0" opacity=".8"/>`:"";
+  return `<svg viewBox="-2 -4 68 66" aria-hidden="true">${head}${eyes}${blush}${mouth}</svg>`;
+}
+const SO={want:{},who:0,peeks:0};
+const plain=sp=>isFood(sp)?dsc(sp,2).replace(/^2 /,""):desc(sp.c,sp.s,sp.z,2).replace(/^2 /,"");   /* "red triangles", "strawberries" */
+function newOrder(){
+  const R=Kit.RND,n=maxNum(),want={};
+  const pick=a=>a.splice(Kit.ri(R,a.length),1)[0];
+  if(foodTheme()){
+    const pool=THEMES[G.theme].own.filter(f=>!SPECIALS.includes(f)),fancy=SPECIALS.slice();
+    for(let i=0;i<3;i++){const f=i===2&&R()<.3?pick(fancy):pick(pool);want["f."+f]=i===2&&SPECIALS.includes(f)?1:1+Kit.ri(R,n);}
+  }else{
+    const combos=[];for(let c=0;c<nColors();c++)for(let s=0;s<SHAPES.length;s++)combos.push([c,s]);
+    for(let i=0;i<3;i++){const [c,s]=pick(combos);want[bagKey(c,s,sizesOn()?Kit.ri(R,2):1)]=1+Kit.ri(R,n);}
+  }
+  SO.want=want;SO.who=Kit.ri(R,CUST.length);SO.peeks=0;
+  G.shapes=[];G.sel=null;G.done=false;drawAll();showOrder(true);
+}
+function showOrder(first){
+  const c=CUST[SO.who];if(first)timer.stop();
+  $("#oCust").innerHTML=custSVG(SO.who,"wait");
+  $("#oTitle").innerHTML=bi([c.en+"'s secret order",c.ja+"のひみつの注文"]);
+  $("#oWarn").innerHTML=bi(["Customer only! Shopkeeper, close your eyes!","お客さんだけ見てね！お店の人は目をとじて！"]);
+  $("#oList").innerHTML=Object.keys(SO.want).map(k=>{const sp=specOf(k),n=SO.want[k];
+    return `<li data-k="${k}" data-n="${n}">${iconOf(sp)}<b>×${n}</b><span>"${esc(cap(dsc(sp)))}, please." "${cap(NUM[n-1])}, please."<span class="ja">${dscJa(sp,n)}</span></span></li>`;}).join("");
+  $("#oSay").innerHTML=bi(["Remember it, then press Ready! The shopkeeper asks \"What do you want?\" and \"How many?\"","おぼえたら「OK！」。お店の人が「What do you want?」「How many?」と聞きます。"]);
+  $("#oReady").innerHTML=bi(first?["Ready! Hide the card","OK！カードをかくす"]:["Hide the card","カードをかくす"]);
+  $("#oReady").onclick=()=>{$("#orderVeil").hidden=true;Kit.sound.play("ok");
+    if(first){timer.start();Kit.toast(bi(["Shopkeeper, open your eyes! Ask: \"What do you want?\"","お店の人、目をあけて！「What do you want?」と聞こう"]),3500);}};
+  $("#orderVeil").hidden=false;$("#oReady").focus();
+}
+$("#peekBtn").onclick=()=>{SO.peeks++;Kit.sound.play("click");showOrder(false);};
+const MARK_OK=`<svg class="mk" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13l5 5L20 6" fill="none" stroke="#36a852" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const MARK_NO=`<svg class="mk" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#f7d038" stroke="${INK}" stroke-width="1.6"/><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="900" fill="${INK}">?</text></svg>`;
+function reveal(t){
+  const got={};G.shapes.forEach(o=>{const k=isFood(o)?keyOf(o):bagKey(o.c,o.s,sizesOn()?o.z:1);got[k]=(got[k]||0)+1;});
+  const keys=Object.keys(SO.want).concat(Object.keys(got).filter(k=>!(k in SO.want)));
+  let oops=0,line=null;
+  keys.forEach(k=>{const w=SO.want[k]||0,g=got[k]||0;if(w===g)return;oops+=Math.abs(w-g);if(line)return;
+    const sp=specOf(k),nm=plain(sp);
+    line=!w?[`${cap(nm)}? I didn't order ${nm}!`,`${dscJa(sp)}？たのんでないよ！`]
+      :!g?[`Where are my ${nm}?`,`${dscJa(sp)}はどこ？`]
+      :g<w?[`Only ${NUM[g-1]}? I said ${NUM[w-1]}!`,`${g}こだけ？${w}こって言ったよ！`]
+      :[`${cap(NUM[g-1]||String(g))} ${nm}? That's too many!`,`${g}こ？多すぎるよ！`];});
+  const stars=oops===0?3:oops<=2?2:1,c=CUST[SO.who];
+  const fancy=Object.keys(SO.want).some(k=>SPECIALS.includes(specOf(k).f));
+  if(!line)line=fancy?["Wow, fancy! Thank you!","わあ、ごうか！ありがとう！"]:foodTheme()?["Yummy! Thank you!","おいしそう！ありがとう！"]:["Perfect! Thank you!","ばっちり！ありがとう！"];
+  const rows=keys.map(k=>{const sp=specOf(k),w=SO.want[k]||0,g=got[k]||0;return `<tr><td>${iconOf(sp)}</td><td>${w}</td><td>${g}</td><td>${w===g?MARK_OK:MARK_NO}</td></tr>`;}).join("");
+  addToGallery(true);
+  Kit.result("#result",{title:oops?["Funny order!","へんてこな注文！"]:["Perfect order!","注文ぴったり！"],stars,
+    art:`<div class="reveal"><div class="rv-cust">${custSVG(SO.who,oops?"silly":"happy")}<p class="gift">"${esc(line[0])}"</p><p class="ja">${line[1]}</p><small class="note">${esc(c.en)}</small></div>
+      <div><div class="resart">${pictureSVG()}</div><table><tr><th></th><th>${bi(["Order","注文"],true)}</th><th>${bi(["Made","作った"],true)}</th><th></th></tr>${rows}</table></div></div>`,
+    nums:[{label:["Time","タイム"],value:Kit.fmtTime(t)},{label:["Oops","ミス"],value:oops},{label:["Peeks","カードを見た"],value:SO.peeks}],
+    swap:true,
+    buttons:[{label:["Swap roles: next order","交代して次の注文"],primary:true,onClick:()=>{scr.show("studio");newOrder();}},
+      {label:["Home","ホーム"],onClick:()=>scr.show("home")}]});
+  scr.show("result");
+}
+
 /* ---------- finished card ---------- */
 function showResult(t){
   addToGallery(true);
@@ -1546,14 +1662,15 @@ function showResult(t){
   scr.show("result");
 }
 function nextCard(){
-  if(foodTheme()){G.shapes=[];G.sel=null;G.done=false;save();scr.show("studio");timer.start();drawAll();if(G.mode!=="free")shopReset();return;}
+  if(foodTheme()){G.shapes=[];G.sel=null;G.done=false;save();scr.show("studio");timer.start();drawAll();if(!freeLike())shopReset();return;}
   const ok=CARDS.map((c,i)=>i).filter(i=>i!==G.card&&cardOk(CARDS[i]));
   G.shapes.slice().forEach(backToBag);G.sel=null;
   scr.show("studio");pickCard(ok.length?ok[Kit.ri(Kit.RND,ok.length)]:-1);
-  if(G.mode!=="free")shopReset();
+  if(!freeLike())shopReset();
 }
 
-$("#finishBtn").onclick=()=>{if(!G.shapes.length){Kit.toast(bi(["Put some food on first!","先に食べ物をのせよう！"]));return;}G.sel=null;drawShapes();Kit.sound.play("win");showResult(timer.stop());};
+$("#finishBtn").onclick=()=>{if(!G.shapes.length){Kit.toast(bi(foodTheme()?["Put some food on first!","先に食べ物をのせよう！"]:["Put some shapes on first!","先に形をおこう！"]));return;}
+  if(G.mode==="secret"){G.sel=null;drawShapes();Kit.sound.play("win");reveal(timer.stop());return;}G.sel=null;drawShapes();Kit.sound.play("win");showResult(timer.stop());};
 /* ---------- home ---------- */
 function renderThemes(){Kit.seg("#themePick",Object.keys(THEMES).map(k=>({html:bi(THEMES[k].name),k})),o=>G.theme===o.k,o=>{G.theme=o.k;st.set("theme",o.k);renderThemes();});
   const X=TXT[G.theme];$("#heroTitle").textContent=X.title;$("#heroJa").textContent=X.ja;
