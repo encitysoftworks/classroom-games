@@ -25,13 +25,15 @@ RENAME = {
     "memory-imposter/Memory Imposter.html": "memory-imposter.html",
     "word-dash/Word Dash.html": "word-dash.html",
     "shape-shop/Shape Shop.html": "shape-shop.html",
+    "mystery-lunchbox/Mystery Lunchbox.html": "mystery-lunchbox.html",
+    "lost-and-found-desk/Lost and Found Desk.html": "lost-and-found-desk.html",
 }
 FOLDERS = ["game-kit", "textbook-db", "sentence-box", "vocab-intro", "memory-imposter", "word-dash", "shape-shop"]
 SKIP_DIRS = {"uploads", "__pycache__"}
 
 def files():
     for name in RENAME:
-        if "/" not in name:
+        if "/" not in name or name.split("/")[0] not in FOLDERS:
             yield SRC / name
     for d in FOLDERS:
         for p in sorted((SRC / d).rglob("*")):
