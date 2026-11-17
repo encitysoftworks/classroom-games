@@ -479,15 +479,28 @@ body.jp .helpline .ja{display:block}
 .journal{font:italic 18px var(--f-gothic);color:var(--muted);max-width:520px;border-top:1px solid var(--edge);padding-top:10px}
 
 /* the five boards: a strip of pinned place tags, the fog veil for travelling, the empty-board note */
-.pmap{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 8px;margin:0 4px 12px}
-.pmap .pl{font:600 13px/1.1 var(--f-gothic);color:#2a2116;background:var(--parch,#d8c79d);border:0;border-radius:2px;padding:5px 9px 4px;cursor:pointer;
-  box-shadow:0 3px 0 rgba(0,0,0,.5);transform:rotate(-1deg);opacity:.78}
-.pmap .pl:nth-child(even){transform:rotate(1.2deg)}
-.pmap .pl b{font:400 12px var(--f-display);color:#6b2a1e;margin-right:5px}
-.pmap .pl .ja{display:block;font-size:10px;color:#5d5244}
-.pmap .pl.here{opacity:1;outline:2px solid #8f2320;outline-offset:1px}
+.pmap{margin:0 4px 14px}
+.pmap .plbl{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 2px 6px;font:400 14px var(--f-display);letter-spacing:.12em;color:#e3cf9f;text-shadow:0 2px 0 #000}
+.pmap .plbl .ja{letter-spacing:0}
+.pmap .pcards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.pmap .pcards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pmap .pl{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0;padding:8px 6px 7px;cursor:pointer;
+  font:600 15px/1.1 var(--f-gothic);color:#2a2116;background:var(--parch,#d8c79d);border:0;border-radius:3px;
+  box-shadow:0 4px 0 rgba(0,0,0,.55);transform:rotate(-.8deg);opacity:.8;transition:opacity .2s,transform .2s}
+.pmap .pl:nth-child(even){transform:rotate(.9deg)}
+.pmap .pl .pn{position:absolute;top:5px;left:6px;min-width:20px;padding:1px 4px;font:600 13px/1.2 monospace;color:#e3cf9f;background:#2a2116;border-radius:3px;box-shadow:0 2px 0 #000}
+.pmap .pl svg{width:46px;height:30px;display:block;margin-bottom:2px}
+.pmap .pl .pnm{font:400 16px var(--f-display);color:#20180f;white-space:nowrap}
+.pmap .pl .ja{display:block;font-size:11px;color:#5d5244}
+.pmap .pl .pdots{font-size:10px;letter-spacing:1px;color:#6b2a1e;margin-top:2px}
+.pmap .pl .pbo{margin-top:3px;padding-top:3px;border-top:1px dashed #8a7a5c;width:100%;font:italic 12px/1.2 var(--f-gothic);color:#4a3a26;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pmap .pl .pbo.none{color:#7d705c}
+.pmap .pl .prk{position:absolute;top:4px;right:5px;font:400 15px var(--f-display);color:#8f2320;transform:rotate(8deg)}
+.pmap .pl.here{opacity:1;transform:translateY(-3px) rotate(0);outline:3px solid #8f2320;outline-offset:2px;box-shadow:0 7px 0 rgba(0,0,0,.6)}
+.pmap .pl.here:after{content:"YOU ARE HERE";position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);font:400 10px var(--f-display);letter-spacing:.12em;color:#e3cf9f;background:#8f2320;padding:2px 6px;white-space:nowrap;box-shadow:0 2px 0 #000}
 .pmap .pl:hover{opacity:1}
-.pmap .phint{font:italic 12px var(--f-gothic);color:#e3cf9f;margin-left:6px;text-shadow:0 1px 0 #000}
+.pmap .pl:focus-visible{opacity:1;outline:3px solid #e3cf9f;outline-offset:2px}
+.pmap .phint{font:italic 13px var(--f-gothic);letter-spacing:0;color:#e3cf9f;text-shadow:0 1px 0 #000}
 .pmap .phint kbd{font-size:11px}
 .pnone{display:flex;flex-direction:column;align-items:center;gap:2px;width:260px;padding:26px 18px 22px;background:var(--parch,#d8c79d);color:#2a2116;
   font:16px var(--f-gothic);transform:rotate(-1.5deg);box-shadow:0 7px 0 rgba(0,0,0,.45)}
@@ -6038,10 +6051,30 @@ function renderTop(){
   const n=FD.place||1,nm=NAMES[n-1];
   const t=$("#wall .wtitle");if(t)t.innerHTML=`${nm[0]}<span class="ja inl">${nm[1]}</span>`;
   const m=$("#pmap");if(!m)return;
-  m.innerHTML=NAMES.map((p,i)=>`<button type="button" class="pl${i+1===n?" here":""}" data-n="${i+1}"><b>${i+1}</b>${p[0].replace(/^The /,"")}<span class="ja">${p[1]}</span></button>`).join("")
-    +`<span class="phint"><kbd>←</kbd><kbd>→</kbd> or <kbd>1</kbd>-<kbd>5</kbd> to travel<span class="ja">矢印キーか1〜5で移動</span></span>`;
+  const keep=!!(document.activeElement&&m.contains(document.activeElement));
+  m.innerHTML=`<div class="plbl"><span>Five contract boards. Choose one.<span class="ja inl">掲示板は5つ。えらぼう。</span></span><span class="phint"><kbd>←</kbd><kbd>→</kbd> or <kbd>1</kbd>-<kbd>5</kbd>, or <kbd>Tab</kbd> + <kbd>Enter</kbd><span class="ja inl">矢印キー・1〜5・Tab＋Enter</span></span></div><div class="pcards">`
+    +NAMES.map((p,i)=>{const ks=ORDER.filter(k=>(BOSSES[k].danger||1)===i+1),bests=ks.map(k=>st.get("best_"+k,null)).filter(Boolean);
+      const who=ks.length===1?BOSSES[ks[0]].name[0].replace(/^The /,""):ks.length?`${ks.length} contracts`:"No contracts yet";
+      const rk=bests.length&&bests.length===ks.length?bests.map(x=>x.rank).sort()[0]:"";
+      return `<button type="button" class="pl${i+1===n?" here":""}" data-n="${i+1}"${i+1===n?' aria-current="true"':""} aria-label="Board ${i+1}: ${p[0]}. ${who}">`
+        +`<span class="pn">${i+1}</span>${rk?`<span class="prk">${rk}</span>`:""}${PICONS[i]}<span class="pnm">${p[0].replace(/^The /,"")}</span><span class="ja">${p[1]}</span>`
+        +`<span class="pdots">${"●".repeat(i+1)}${"○".repeat(4-i)}</span><span class="pbo${ks.length?"":" none"}">${who}</span></button>`;}).join("")+`</div>`;
   m.querySelectorAll(".pl").forEach(b=>b.onclick=()=>travel(+b.dataset.n));
+  if(keep){const h=m.querySelector(".pl.here");if(h)h.focus({preventScroll:true});}
 }
+/* little ink pictures, one per board */
+const PICONS=[
+  /* field: moon, low hills, a signpost */
+  `<path d="M2 24 Q12 17 22 22 T44 20" /><circle cx="35" cy="7" r="3.5"/><path d="M12 22 V12 M8 13 H17"/><path d="M4 27 l1-3 M28 26 l1-3 M38 26 l1-3"/>`,
+  /* city: a row of rooftops with chimneys and lit windows */
+  `<path d="M2 27 V14 L8 9 L14 14 V27 M14 27 V11 L21 5 L28 11 V27 M28 27 V15 L34 10 L42 15 V27 M1 27 H45"/><path d="M24 7 V3 H26 V9"/><rect x="6" y="17" width="4" height="4"/><rect x="19" y="15" width="4" height="5"/><rect x="33" y="18" width="4" height="4"/>`,
+  /* library: shelves of books under a broken arch */
+  `<path d="M6 27 V10 Q6 3 15 3 M31 4 Q40 4 40 11 V27"/><path d="M4 27 H42 M9 20 H37"/><path d="M11 20 V13 M14 20 V12 M17 20 V14 M21 20 V12 M25 20 V13 l3 -1 l2 8 M33 20 V14"/><path d="M11 27 V22 M15 27 V21 M19 27 V22 M27 27 V21 M31 27 V22 M35 27 V21"/>`,
+  /* church: a pointed window with tracery */
+  `<path d="M13 28 V12 Q13 4 23 1 Q33 4 33 12 V28 Z"/><path d="M23 1 V28 M13 16 H33"/><circle cx="23" cy="9" r="3"/><path d="M6 28 H40"/>`,
+  /* firmament: star trails turning above a peak */
+  `<path d="M8 15 A15 15 0 0 1 38 15"/><path d="M13 15 A10 10 0 0 1 33 15"/><path d="M18 15 A5 5 0 0 1 28 15"/><path d="M4 28 L23 18 L42 28"/><circle cx="23" cy="15" r="1" fill="#2a2116"/>`
+].map(d=>`<svg viewBox="0 0 46 30" fill="none" stroke="#2a2116" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`);
 const emptyNote=()=>`<div class="pnone"><b>No contracts yet.</b><span class="ja">まだ依頼はない。</span><i>Come back later.</i><span class="ja">また来てね。</span></div>`;
 let busy=false;
 function travel(n){
