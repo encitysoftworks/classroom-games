@@ -322,7 +322,12 @@ body.jp .pb .ja{display:block;font-size:9px}
 .veil img{max-width:100%;max-height:calc(100vh - 260px);min-height:120px;object-fit:contain;border-radius:8px;background:#fff}
 #saveVeil .panel,#galVeil .panel{max-height:calc(100vh - 32px);overflow:auto;gap:8px}#saveVeil h2,#galVeil h2{margin:0}
 #galVeil .panel{max-width:980px}
-#orderVeil{background:rgba(8,9,12,.97)}
+#orderVeil,#introVeil{background:rgba(8,9,12,.97)}
+.isteps{list-style:none;margin:6px 0 4px;padding:0;display:flex;flex-direction:column;gap:8px;text-align:left}
+.isteps li{display:flex;gap:12px;align-items:center;background:#fffaf0;color:#1b1a17;border-radius:12px;padding:8px 14px;font-size:19px;font-weight:800}
+.isteps li b{flex:none;width:36px;height:36px;border-radius:50%;background:var(--accent,#f5b041);display:grid;place-items:center;font-size:20px}
+.isteps .ja{display:block;font-size:13px;font-weight:400;color:#6b6358}
+.bigcount{font:400 150px/1 var(--f-display);color:var(--accent,#f5b041);margin:10px 0 20px}
 .ocard{max-width:680px!important;max-height:calc(100vh - 32px);overflow:auto;gap:10px!important}
 .ohead{display:flex;gap:14px;align-items:center;text-align:left}.ohead h2{margin:0}
 .ocust svg{width:96px;height:96px;display:block}
@@ -502,6 +507,24 @@ body.jp .pb .ja{display:block;font-size:9px}
     <div class="rowbtns"><button class="btn primary" id="saveLink" type="button" hidden>Download<span class="ja">ダウンロード</span></button><button class="btn" id="saveClose" type="button">Close<span class="ja">閉じる</span></button></div></div>
 </div>
 
+<div class="veil" id="introVeil" hidden role="dialog" aria-label="How to play secret order">
+  <div class="panel ocard">
+    <div id="introSteps">
+      <h2>Secret order<span class="ja">ひみつの注文</span></h2>
+      <ol class="isteps">
+        <li><b>1</b><span>Who is the customer? Who is the shopkeeper?<span class="ja">お客さんとお店の人を決めよう。</span></span></li>
+        <li><b>2</b><span>Shopkeeper: close your eyes!<span class="ja">お店の人：目をとじてね！</span></span></li>
+        <li><b>3</b><span>Customer: look at the secret order card. Remember it, then hide it.<span class="ja">お客さん：ひみつの注文カードを見て、おぼえたらかくそう。</span></span></li>
+        <li><b>4</b><span>Shopkeeper: open your eyes. Ask "What do you want?" and "How many?" and make it!<span class="ja">お店の人：目をあけて「What do you want?」「How many?」と聞いて作ろう！</span></span></li>
+      </ol>
+      <div class="rowbtns"><button class="btn primary big" id="introReady" type="button">Ready!<span class="ja">じゅんびOK！</span></button></div>
+    </div>
+    <div id="introCount" hidden>
+      <h2 id="countWho"></h2>
+      <div class="bigcount" id="countNum">3</div>
+    </div>
+  </div>
+</div>
 <div class="veil" id="orderVeil" hidden role="dialog" aria-label="Secret order card">
   <div class="panel ocard">
     <div class="ohead"><div class="ocust" id="oCust"></div><div><h2 id="oTitle"></h2><p class="note" id="oWarn"></p></div></div>
@@ -1604,8 +1627,23 @@ function newOrder(){
     for(let i=0;i<3;i++){const [c,s]=pick(combos);want[bagKey(c,s,sizesOn()?Kit.ri(R,2):1)]=1+Kit.ri(R,n);}
   }
   SO.want=want;SO.who=Kit.ri(R,CUST.length);SO.peeks=0;
-  G.shapes=[];G.sel=null;G.done=false;drawAll();showOrder(true);
+  G.shapes=[];G.sel=null;G.done=false;drawAll();showIntro();
 }
+/* how-to page, then a 3-2-1 countdown so the shopkeeper has time to close their eyes */
+let countIv=0;
+function showIntro(){
+  timer.stop();clearInterval(countIv);
+  $("#introSteps").hidden=false;$("#introCount").hidden=true;$("#introVeil").hidden=false;$("#introReady").focus();
+}
+$("#introReady").onclick=()=>{
+  let n=3;Kit.sound.play("click");
+  $("#introSteps").hidden=true;$("#introCount").hidden=false;
+  $("#countWho").innerHTML=bi(["Shopkeeper, close your eyes!","お店の人、目をとじて！"]);$("#countNum").textContent=n;
+  clearInterval(countIv);countIv=setInterval(()=>{n--;
+    if(scr.current!=="studio"){clearInterval(countIv);$("#introVeil").hidden=true;return;}
+    if(n>0){$("#countNum").textContent=n;Kit.sound.play("click");return;}
+    clearInterval(countIv);$("#introVeil").hidden=true;Kit.sound.play("ok");showOrder(true);},1000);
+};
 function showOrder(first){
   const c=CUST[SO.who];if(first)timer.stop();
   $("#oCust").innerHTML=custSVG(SO.who,"wait");
