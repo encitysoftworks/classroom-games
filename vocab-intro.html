@@ -84,7 +84,7 @@ kbd{display:inline-block;min-width:22px;text-align:center;background:var(--panel
 .foot{margin-top:18px;color:var(--dim);font-size:13px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 
 /* ---------- slideshow ---------- */
-#show,#missing,#flash{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg)}
+#show,#missing,#flash,#reveal{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg)}
 .stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:2vh 2vw 0}
 .card{position:relative;width:min(96vw,calc((100vh - 64px) * 1.55));height:calc(100vh - 64px - 2vh);background:var(--card);color:var(--ink);border-radius:18px;box-shadow:0 6px 0 #07080b;
   display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;justify-items:center;align-items:center;padding:2.2vh 3vw 2.6vh;overflow:hidden;cursor:pointer;border-top:12px solid var(--c)}
@@ -168,6 +168,26 @@ kbd{display:inline-block;min-width:22px;text-align:center;background:var(--panel
 .card.free{grid-template-rows:auto minmax(0,1fr);cursor:pointer}
 .sleep{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}
 .sleep img{height:44vh}
+
+/* ---------- slow reveal (same reveal styles as Mystery Lunchbox; nothing flashes) ---------- */
+.card.rcard{grid-template-rows:auto minmax(0,1fr) auto}
+.rbox{position:relative;width:min(100%,calc((100vh - 64px) * 1.05));height:100%;overflow:hidden;border-radius:14px;background:#fff;border:3px solid var(--cardEdge)}
+.rbox .rpic{position:absolute;inset:5%;width:90%;height:90%;max-width:none;max-height:none;object-fit:contain;transform-origin:50% 50%}
+.rbox .rpic.px{image-rendering:pixelated}
+.rbox .tiles{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr)}
+.rbox .tiles i{background:#e9dfcc;border:2px solid #d8caae;transition:opacity .6s ease,transform .6s ease}
+.rbox .tiles i.off{opacity:0;transform:scale(.6)}
+.rbox .lid{position:absolute;inset:0;background:repeating-linear-gradient(135deg,#e9dfcc 0 22px,#ddd0b6 22px 44px);border-left:6px solid #b9ab90;display:flex;align-items:center;justify-content:center}
+.rbox .lid b,.rbox .qm{font-family:var(--f-display);color:#cdbf9f}
+.rbox .lid b{font-size:16vh}
+.rbox .qm{position:absolute;right:12px;top:4px;font-size:5vh}
+.tile .rbox{flex:1;width:100%;min-height:0;border:0;border-radius:10px}
+.tile.slow{border-style:dashed;border-color:#ffb000}
+.tile.slow .lbl{color:#cdbf9f}
+.chips{display:flex;flex-wrap:wrap;gap:1vh 1.2vw;justify-content:center;margin-top:1.6vh}
+.chips span{font-family:var(--f-en);font-weight:700;font-size:4vh;background:#f4eee2;border:3px solid #e2d6c0;border-radius:999px;padding:.2vh 1.6vw;transition:background .5s,border-color .5s}
+.chips span.right{background:#ffe9b0;border-color:#ffb000}
+.chips span.dim{opacity:.45}
 
 /* ---------- dialog ---------- */
 dialog{border:2px solid var(--edge);border-radius:14px;background:var(--panel);color:var(--text);padding:0;width:min(560px,94vw);box-shadow:0 10px 40px #000a}
@@ -482,6 +502,7 @@ body.jp .kq-prompt .ja{color:#6b6358}
         <button class="btn" id="gramBtn">Grammar</button>
         <button class="btn" id="missBtn">What's missing?</button>
         <button class="btn" id="flashBtn">Fast flash</button>
+        <button class="btn" id="revBtn">Slow reveal</button>
       </div>
       <div class="keys" id="keysShort">
         <kbd>Space</kbd> <kbd>→</kbd> or a clicker: next step &nbsp; <kbd>←</kbd> back<br>
@@ -525,6 +546,7 @@ body.jp .kq-prompt .ja{color:#6b6358}
     <span class="grow"></span>
     <label class="count">Cards <select id="mCount" style="width:auto;display:inline-block;padding:4px 8px;font-size:14px"><option>4</option><option selected>6</option><option>8</option><option>10</option></select></label>
     <button class="btn small" id="mWords" title="Words under pictures (W)">Words: on</button>
+    <button class="btn small" id="mSlow" title="The missing card comes back slowly (R)">Slow reveal: off</button>
     <button class="btn small" id="mFs" title="Full screen (F)">⛶</button>
   </div>
 </section>
@@ -541,6 +563,22 @@ body.jp .kq-prompt .ja{color:#6b6358}
     <label class="count">Speed <select id="fSpeed" style="width:auto;display:inline-block;padding:4px 8px;font-size:14px"><option value="4000">Slow</option><option value="2500" selected>Normal</option><option value="1500">Fast</option></select></label>
     <button class="btn small" id="fWord" title="Show the word (W)">Word: after</button>
     <button class="btn small" id="fFs" title="Full screen (F)">⛶</button>
+  </div>
+</section>
+
+<!-- ================= SLOW REVEAL ================= -->
+<section id="reveal" class="hidden">
+  <div class="stage"><div class="card free rcard" id="rCard"></div></div>
+  <div class="bar" id="rBar">
+    <button class="btn small" id="rHome" title="Back (Esc)">✕</button>
+    <button class="btn small primary" id="rNext" title="Show the answer / next (Space)">Answer ▶</button>
+    <button class="btn small" id="rMore" title="Show more (M or ↑)">Show more</button>
+    <span class="prog" id="rProg"></span>
+    <span class="grow"></span>
+    <label class="count">Style <select id="rStyle" style="width:auto;display:inline-block;padding:4px 8px;font-size:14px"><option value="mix">Mix</option><option value="hole">Peephole</option><option value="zoom">Zoom out</option><option value="tiles">Tiles</option><option value="lid">Curtain</option></select></label>
+    <label class="count">Auto <select id="rSpeed" style="width:auto;display:inline-block;padding:4px 8px;font-size:14px"><option value="0">Off</option><option value="0.02">Slow</option><option value="0.04">Normal</option></select></label>
+    <button class="btn small" id="rChoices" title="Word choices (C)">Choices: on</button>
+    <button class="btn small" id="rFs" title="Full screen (F)">⛶</button>
   </div>
 </section>
 
@@ -606,6 +644,7 @@ body.jp .kq-prompt .ja{color:#6b6358}
     <li><kbd>B</kbd> or <kbd>.</kbd>: blank screen (most clickers have this button)</li>
     <li><kbd>F</kbd>: full screen &nbsp; <kbd>Esc</kbd>: back to the word list</li>
     <li>What's missing? <kbd>Space</kbd> goes look → close your eyes → guess → answer. <kbd>W</kbd> words on/off.</li>
+    <li>Slow reveal: a picture appears bit by bit. <kbd>M</kbd> or <kbd>↑</kbd> show more, <kbd>Space</kbd> answer → next word, <kbd>C</kbd> word choices on/off. In What's missing?, <kbd>R</kbd> makes the missing card come back slowly.</li>
     <li>Fast flash: <kbd>Space</kbd> pause, <kbd>←</kbd> <kbd>→</kbd> step, <kbd>W</kbd> word on/after/off.</li>
   </ul>
   <div class="dlgBtns"><button class="btn primary" id="helpClose">OK</button></div>
@@ -3256,7 +3295,7 @@ const OWN="my-lists";
 
 /* ---------- saved settings (this browser) ---------- */
 const SKEY="vocabIntro.v1";
-const DEF={opts:{sent:true,ja:true,speak:false,shuffle:false,title:true,gram:true},edits:{},extra:{},lists:[],off:{},last:null,miss:{count:6,words:true},flash:{speed:2500,word:"after"}};
+const DEF={opts:{sent:true,ja:true,speak:false,shuffle:false,title:true,gram:true},edits:{},extra:{},lists:[],off:{},last:null,miss:{count:6,words:true},flash:{speed:2500,word:"after"},rev:{style:"mix",speed:"0.02",choices:true}};
 let S;
 try{S=Object.assign({},DEF,JSON.parse(localStorage.getItem(SKEY)||"{}"));}catch(e){S=JSON.parse(JSON.stringify(DEF));}
 S.opts=Object.assign({},DEF.opts,S.opts);
@@ -3388,7 +3427,7 @@ function renderSetup(){
       <button class="btn small" data-edit="${esc(w.id)}">Edit</button></div>`;}).join(""):`<div class="empty">${u?"No words yet. Press + Add a word.":"Pick a unit."}</div>`;
   const n=ws.filter(w=>!off.has(w.id)).length;
   $("#count").textContent=`${n} of ${ws.length} words chosen`;
-  ["#startBtn","#missBtn","#flashBtn"].forEach(s=>$(s).disabled=!n);
+  ["#startBtn","#missBtn","#flashBtn","#revBtn"].forEach(s=>$(s).disabled=!n);
   $("#gramBtn").disabled=!grammarOf(u).length;
 }
 function setOpts(){$("#oSent").checked=S.opts.sent;$("#oJa").checked=S.opts.ja;$("#oSpeak").checked=S.opts.speak;$("#oShuffle").checked=S.opts.shuffle;$("#oTitle").checked=S.opts.title;$("#oGram").checked=S.opts.gram;}
@@ -3481,8 +3520,8 @@ function afterEdit(removed){
 /* ---------- screens ---------- */
 let screen="setup";
 function go(name){
-  screen=name;["setup","show","missing","flash"].forEach(s=>$("#"+s).classList.toggle("hidden",s!==name));
-  stopFlash();speechSynthesis&&speechSynthesis.cancel();
+  screen=name;["setup","show","missing","flash","reveal"].forEach(s=>$("#"+s).classList.toggle("hidden",s!==name));
+  stopFlash();stopReveals();speechSynthesis&&speechSynthesis.cancel();
   if(name==="setup")renderSetup();
   wake();
 }
@@ -3617,7 +3656,7 @@ function renderSlide(){
     const nw=deck.filter(d=>d.en).length;
     card.classList.add("title");
     card.innerHTML=`<div></div><div class="bigMsg">Great job!</div><div class="unitSub" style="margin-bottom:3vh">${nw?nw+" new words":"Grammar done"}</div>
-      <div class="endBtns"><button class="btn alt" data-act="miss">What's missing?</button><button class="btn alt" data-act="flash">Fast flash</button>${w.gram?"":`<button class="btn alt" data-act="gram">Grammar</button>`}<button class="btn" data-act="again">Again</button><button class="btn" data-act="home">Word list</button></div>`;
+      <div class="endBtns"><button class="btn alt" data-act="miss">What's missing?</button><button class="btn alt" data-act="flash">Fast flash</button><button class="btn alt" data-act="rev">Slow reveal</button>${w.gram?"":`<button class="btn alt" data-act="gram">Grammar</button>`}<button class="btn" data-act="again">Again</button><button class="btn" data-act="home">Word list</button></div>`;
   }else if(w.grammar){
     renderGrammar(card,w);applyStep();fitGram(card);
   }else{
@@ -3661,7 +3700,7 @@ function sayNow(){const w=deck[idx];if(!w)return;
   if(!w.en)return;const u=getUnit(cur.book,cur.unit),steps=stepsFor(w);
   const si=steps.indexOf("sent");say(si>=0&&step>=si?w.en+". "+sentenceOf(w,u):w.en);}
 $("#slide").addEventListener("click",e=>{const a=e.target.closest("[data-act]");
-  if(a){const act=a.dataset.act;if(act==="miss")startMissing();else if(act==="flash")startFlash();else if(act==="gram")startGrammar();else if(act==="again")(deck[idx].gram?startGrammar:startShow)();else go("setup");return;}
+  if(a){const act=a.dataset.act;if(act==="miss")startMissing();else if(act==="flash")startFlash();else if(act==="rev")startReveal();else if(act==="gram")startGrammar();else if(act==="again")(deck[idx].gram?startGrammar:startShow)();else go("setup");return;}
   if(e.target.closest("[data-swap]")){swapWord(1);return;}
   next();});
 $("#sNext").onclick=next;$("#sPrev").onclick=prev;$("#sHome").onclick=()=>go("setup");
@@ -3692,19 +3731,22 @@ function newMissRound(){
 }
 function renderMissing(){
   const card=$("#mCard"),n=M.shown.length,cols=n<=4?n:n<=6?3:n<=8?4:5,rows=Math.ceil(n/cols);
+  stopReveals();
   $("#mWords").textContent="Words: "+(S.miss.words?"on":"off");
+  $("#mSlow").textContent="Slow reveal: "+(S.miss.slow?"on":"off");
   $("#mProg").textContent="Round "+M.round;
   const head={look:["Look and remember!","よく見てね"],hide:["Close your eyes!","目を閉じて"],guess:["What's missing?","何がなくなった？"],answer:["",""]}[M.phase];
   if(M.phase==="hide"){
     card.innerHTML=`<div class="mhead">${head[0]}${S.opts.ja?`<small lang="ja">${head[1]}</small>`:""}</div><div class="sleep">${Kit.art&&Kit.art.has("sleepy")?`<img src="${Kit.art.url("sleepy")}" alt="">`:""}</div>`;
     $("#mNext").textContent="Next ▶";return;
   }
-  const g=M.gone,w=M.shown[g];
+  const g=M.gone,w=M.shown[g],slow=M.phase==="guess"&&S.miss.slow;
   const title=M.phase==="answer"?esc(w.en)+(S.opts.ja&&w.ja?`<small lang="ja">${esc(w.ja)}</small>`:""):head[0]+(S.opts.ja?`<small lang="ja">${head[1]}</small>`:"");
   card.innerHTML=`<div class="mhead">${title}</div>
     <div class="grid" style="grid-template-columns:repeat(${cols},minmax(0,${Math.floor(70/rows)}vh));grid-template-rows:repeat(${rows},${Math.floor(62/rows)}vh)">
-    ${M.shown.map((x,i)=>`<div class="tile${M.phase==="guess"&&i===g?" gone":""}${M.phase==="answer"&&i===g?" back":""}">${picImg(x.en)}${S.miss.words?`<div class="lbl">${esc(x.en)}</div>`:""}</div>`).join("")}</div>`;
+    ${M.shown.map((x,i)=>slow&&i===g?`<div class="tile slow"><div class="rbox" id="mSlowBox"></div>${S.miss.words?`<div class="lbl">?</div>`:""}</div>`:`<div class="tile${M.phase==="guess"&&i===g?" gone":""}${M.phase==="answer"&&i===g?" back":""}">${picImg(x.en)}${S.miss.words?`<div class="lbl">${esc(x.en)}</div>`:""}</div>`).join("")}</div>`;
   $("#mNext").textContent=M.phase==="answer"?"New round ▶":"Next ▶";
+  if(slow)M.rev=Reveal($("#mSlowBox"),w.en,"mix",{auto:0.015,small:true});
 }
 function missNext(){
   if(M.phase==="look")M.phase="hide";else if(M.phase==="hide")M.phase="guess";
@@ -3714,6 +3756,86 @@ function missNext(){
 $("#mCard").addEventListener("click",missNext);$("#mNext").onclick=missNext;$("#mHome").onclick=()=>go("setup");
 $("#mCount").onchange=e=>{S.miss.count=Number(e.target.value);save();newMissRound();};
 $("#mWords").onclick=()=>{S.miss.words=!S.miss.words;save();renderMissing();};
+function missSlow(){S.miss.slow=!S.miss.slow;save();renderMissing();}
+$("#mSlow").onclick=missSlow;
+
+/* ---------- slow reveal ----------
+   Reveal() is the Mystery Lunchbox reveal: shows a picture little by little.
+   p goes from 0 (hidden) to 1 (all). Everything moves smoothly, nothing flashes. */
+const LIVE=new Set();
+function stopReveals(){LIVE.forEach(r=>r.stop());LIVE.clear();}
+function Reveal(box,en,style,opt){
+  opt=opt||{};
+  if(style==="mix")style=["hole","zoom","tiles","lid"][Math.floor(Math.random()*4)];
+  box.innerHTML=picImg(en,"rpic")+`<span class="qm">?</span>`;
+  const pic=$(".rpic",box);let p=0,goal=0,raf=0,t0=performance.now(),alive=true,tiles=null,lid=null;
+  const fx=0.3+Math.random()*0.4,fy=0.3+Math.random()*0.4,ph=Math.random()*6;
+  if(style==="tiles"){const d=document.createElement("div");d.className="tiles";d.innerHTML="<i></i>".repeat(20);box.appendChild(d);tiles=shuffle([...$$("i",d)]);}
+  if(style==="lid"){lid=document.createElement("div");lid.className="lid";lid.innerHTML=opt.small?"":"<b>?</b>";box.appendChild(lid);}
+  function draw(t){
+    const s=(t-t0)/1000;
+    if(style==="hole"){const r=7+p*62,cx=50+Math.sin(s*0.5+ph)*(1-p)*26,cy=50+Math.cos(s*0.37+ph)*(1-p)*20;
+      pic.style.clipPath=p>=1?"none":`circle(${r}% at ${cx}% ${cy}%)`;}
+    if(style==="zoom"){const z=1+Math.pow(1-p,1.6)*7;pic.style.transformOrigin=`${fx*100}% ${fy*100}%`;pic.style.transform=`scale(${z})`;}
+    if(style==="tiles"){const off=Math.round(p*tiles.length);tiles.forEach((e,i)=>e.classList.toggle("off",i<off));}
+    if(style==="lid"){lid.style.transform=`translateX(${Math.min(100,p*100)}%)`;}
+  }
+  function loop(t){if(!alive)return;
+    if(opt.auto&&goal<0.85)goal=Math.min(0.85,goal+opt.auto/60);
+    p+=(goal-p)*0.06;if(Math.abs(goal-p)<0.001)p=goal;draw(t);raf=requestAnimationFrame(loop);}
+  draw(t0);raf=requestAnimationFrame(loop);
+  const r={style,
+    more(d){goal=Math.min(1,goal+(d||0.15));},
+    open(){goal=1;const q=$(".qm",box);if(q)q.remove();},
+    stop(){alive=false;cancelAnimationFrame(raf);LIVE.delete(r);},
+    get p(){return p;}};
+  LIVE.add(r);return r;
+}
+let R={list:[],pool:[],i:0,open:false,rev:null,chips:[]};
+function startReveal(){
+  const ws=chosen().filter(w=>picFor(w.en));
+  if(ws.length<2){toast("Slow reveal needs at least 2 words with pictures.");return;}
+  R.pool=ws;R.list=shuffle(ws);R.i=0;
+  $("#rStyle").value=S.rev.style;$("#rSpeed").value=String(S.rev.speed);go("reveal");showReveal();
+}
+function showReveal(){
+  stopReveals();
+  const card=$("#rCard");R.open=false;
+  $("#rChoices").textContent="Choices: "+(S.rev.choices?"on":"off");
+  if(R.i>=R.list.length){
+    card.className="card title";
+    card.innerHTML=`<div></div><div class="bigMsg">All done!</div><div class="unitSub" style="margin-bottom:3vh">${R.list.length} words</div>
+      <div class="endBtns"><button class="btn alt" data-act="again">Again</button><button class="btn" data-act="home">Word list</button></div>`;
+    $("#rProg").textContent="";$("#rNext").textContent="Again ▶";return;
+  }
+  card.className="card free rcard";
+  const w=R.list[R.i];
+  R.chips=shuffle([w,...shuffle(R.pool.filter(x=>x!==w)).slice(0,5)]);
+  card.innerHTML=`<div class="mhead" id="rHead">What's this?${S.opts.ja?`<small lang="ja">これは何？</small>`:""}</div>
+    <div class="rbox" id="rBox"></div>
+    <div class="chips"${S.rev.choices?"":" hidden"}>${R.chips.map(x=>`<span>${esc(x.en)}</span>`).join("")}</div>`;
+  R.rev=Reveal($("#rBox"),w.en,S.rev.style,{auto:Number(S.rev.speed)||0});
+  $("#rProg").textContent=`${R.i+1} / ${R.list.length}`;
+  $("#rNext").textContent="Answer ▶";
+}
+function revStep(){
+  if(R.i>=R.list.length){R.list=shuffle(R.pool);R.i=0;showReveal();return;}
+  if(!R.open){
+    const w=R.list[R.i];R.open=true;R.rev&&R.rev.open();
+    $("#rHead").innerHTML=esc(w.en)+(S.opts.ja&&w.ja?`<small lang="ja">${esc(w.ja)}</small>`:"");
+    $$("#rCard .chips span").forEach((e,i)=>e.classList.add(R.chips[i]===w?"right":"dim"));
+    if(S.opts.speak)say(w.en);
+    $("#rNext").textContent=R.i+1>=R.list.length?"Finish ▶":"Next ▶";
+  }else{R.i++;showReveal();}
+}
+function revMore(){if(screen==="reveal"&&R.rev&&!R.open)R.rev.more(0.15);else if(screen==="missing"&&M.phase==="guess"&&M.rev)M.rev.more(0.15);}
+function revChoices(){S.rev.choices=!S.rev.choices;save();$("#rChoices").textContent="Choices: "+(S.rev.choices?"on":"off");const c=$("#rCard .chips");if(c)c.hidden=!S.rev.choices;}
+$("#rCard").addEventListener("click",e=>{const a=e.target.closest("[data-act]");
+  if(a){if(a.dataset.act==="again"){R.list=shuffle(R.pool);R.i=0;showReveal();}else go("setup");return;}
+  revStep();});
+$("#rNext").onclick=revStep;$("#rMore").onclick=revMore;$("#rHome").onclick=()=>go("setup");$("#rChoices").onclick=revChoices;
+$("#rStyle").onchange=e=>{S.rev.style=e.target.value;save();if(!R.open&&R.i<R.list.length)showReveal();};
+$("#rSpeed").onchange=e=>{S.rev.speed=e.target.value;save();if(!R.open&&R.i<R.list.length)showReveal();};
 
 /* ---------- fast flash ---------- */
 let F={list:[],i:0,playing:true,timer:null,t0:0,raf:0,half:false};
@@ -3763,11 +3885,11 @@ function flashWordMode(){S.flash.word=WORDMODES[(WORDMODES.indexOf(S.flash.word)
 $("#fWord").onclick=flashWordMode;
 
 /* ---------- starts ---------- */
-$("#startBtn").onclick=startShow;$("#gramBtn").onclick=startGrammar;$("#missBtn").onclick=startMissing;$("#flashBtn").onclick=startFlash;
+$("#startBtn").onclick=startShow;$("#gramBtn").onclick=startGrammar;$("#missBtn").onclick=startMissing;$("#flashBtn").onclick=startFlash;$("#revBtn").onclick=startReveal;
 
 /* ---------- full screen, blank, idle bar, toast, help ---------- */
 function fs(){try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}catch(e){}}
-["#fsBtn","#sFs","#mFs","#fFs"].forEach(s=>$(s).onclick=fs);
+["#fsBtn","#sFs","#mFs","#fFs","#rFs"].forEach(s=>$(s).onclick=fs);
 const blank=$("#blank");
 function toggleBlank(){blank.classList.toggle("off");}
 blank.addEventListener("click",toggleBlank);
@@ -3798,7 +3920,13 @@ document.addEventListener("keydown",e=>{
     else if(/^[1-9]$/.test(k))jumpStep(Number(k)-1);
     else if((k==="w"||k==="W")&&deck[idx].grammar)swapWord(1);
   }else if(screen==="missing"){
-    if(fwd){e.preventDefault();missNext();}else if(k==="w"||k==="W"){S.miss.words=!S.miss.words;save();renderMissing();}
+    if(k==="ArrowUp"||k==="m"||k==="M"){e.preventDefault();revMore();}
+    else if(fwd){e.preventDefault();missNext();}else if(k==="w"||k==="W"){S.miss.words=!S.miss.words;save();renderMissing();}
+    else if(k==="r"||k==="R")missSlow();
+  }else if(screen==="reveal"){
+    if(k==="ArrowUp"||k==="m"||k==="M"){e.preventDefault();revMore();}
+    else if(fwd){e.preventDefault();revStep();}
+    else if(k==="c"||k==="C")revChoices();
   }else if(screen==="flash"){
     if(k===" "||k==="Enter"){e.preventDefault();flashPlay();}
     else if(k==="ArrowRight"||k==="PageDown"){e.preventDefault();if(F.i<F.list.length){F.i++;showFlash();}}
