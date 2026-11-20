@@ -1713,7 +1713,8 @@ const THEMES=[
  {n:["All ingredients","全部の材料"],list:()=>SS.slice()},
  {n:["Everything","全部"],list:()=>FOODS.concat(SS)},
  {n:["Uppercase ABC","大文字 ABC"],list:()=>UPPER},
- {n:["Lowercase abc","小文字 abc"],list:()=>LOWER}
+ {n:["Lowercase abc","小文字 abc"],list:()=>LOWER},
+ {n:["Pizza toppings","ピザのトッピング"],list:()=>ssPick(VEG.concat(MEAT))}
 ];
 const pool=()=>(THEMES[S.th]||THEMES[0]).list();
 const deck=n=>{const d=Kit.shuffle(pool().slice(),Kit.RND);return n?d.slice(0,n):d;};
