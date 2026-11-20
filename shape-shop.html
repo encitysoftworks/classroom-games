@@ -362,7 +362,8 @@ body.jp .pb .ja{display:block;font-size:9px}
 .pb.special{background:#3a3018;border-color:#8a7330}
 #art image{pointer-events:none}
 #art .shp image{pointer-events:auto}
-@media (min-width:901px){.studio{grid-template-columns:360px minmax(0,1fr)}.studio>.side{order:-1}}
+/* customer (bag) sits on the left, shopkeeper (shop) on the right, picture in the middle */
+@media (min-width:901px){.studio{grid-template-columns:250px minmax(0,1fr) 330px}.studio>.side-l{order:-1}.studio:has(#shopPanel[hidden]){grid-template-columns:330px minmax(0,1fr)}.studio:has(#shopPanel[hidden])>.side-r{display:none}}
 .sizer{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px}.sizer input{width:190px;height:44px;margin:0;background:transparent;cursor:pointer;-webkit-appearance:none;appearance:none;touch-action:pan-y}
 .sizer input::-webkit-slider-runnable-track{height:12px;border-radius:6px;background:#3a3f52;border:2px solid #0d0904}
 .sizer input::-webkit-slider-thumb{-webkit-appearance:none;width:40px;height:40px;margin-top:-16px;border-radius:50%;background:var(--accent);border:3px solid #0d0904;box-shadow:0 3px 0 #07080b}
@@ -468,11 +469,20 @@ body.jp .pb .ja{display:block;font-size:9px}
           <details id="cardPick"><summary>Choose a picture card<span class="ja inl">絵カードをえらぶ</span></summary><div class="cards" id="cards"></div></details>
         </div>
       </div>
-      <div class="side">
+      <div class="side side-l">
         <div class="panel" id="bagPanel">
           <h3>My bag<span class="ja">わたしのふくろ</span></h3>
           <div class="bag" id="bag"></div>
         </div>
+        <div class="panel" id="freePanel" hidden>
+          <h3 id="freeTitle"></h3>
+          <div class="sizes" id="freeSize"></div>
+          <div class="cols" id="freeCol"></div>
+          <div class="shps" id="freeShape"></div>
+          <p class="hint" id="freeHint"></p>
+        </div>
+      </div>
+      <div class="side side-r">
         <div class="panel" id="shopPanel">
           <h3 id="shopTitle">Shop<span class="ja">お店</span></h3>
           <div class="clerk"><span id="clerkPic"></span><div class="bub" id="bub"></div></div>
@@ -492,13 +502,6 @@ body.jp .pb .ja{display:block;font-size:9px}
             <div class="step" id="step3"></div>
             <button class="say" id="giveBtn" type="button"></button>
           </div>
-        </div>
-        <div class="panel" id="freePanel" hidden>
-          <h3 id="freeTitle"></h3>
-          <div class="sizes" id="freeSize"></div>
-          <div class="cols" id="freeCol"></div>
-          <div class="shps" id="freeShape"></div>
-          <p class="hint" id="freeHint"></p>
         </div>
       </div>
     </div>
