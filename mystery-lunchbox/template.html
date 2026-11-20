@@ -1,0 +1,476 @@
+<title>Mystery Lunchbox</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Bungee&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<!--
+  Mystery Lunchbox: Junior Sunshine 5, Lesson 6 "What would you like?" (food words, "What's this? / It's ~.").
+  Built on the Classroom Game Kit (Word Party style). Do not edit inside the KIT blocks: run
+  python3 game-kit/update-kit.py --no-words "<this file>"   (build.py in this folder does it for you).
+  Food pictures are Wyatt's, embedded from /mnt/project-files/food-art/ by build.py.
+-->
+<style>
+/*KIT:CSS START*/ /*KIT:CSS END*/
+</style>
+<style>
+/* GAME: Mystery Lunchbox */
+:root{--accent:#ffb347;--bento:#c8372d;--bento2:#8f2219}
+.modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.mode{display:flex;flex-direction:column;gap:8px}
+.mode h2{font-size:22px;color:var(--accent);display:flex;gap:10px;align-items:center}
+.mode h2 img{width:44px;height:44px;object-fit:contain}
+.mode .who{font-weight:800;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.mode .btn{align-self:flex-start;margin-top:auto}
+.proj{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:16px;align-items:start;margin-bottom:14px}
+.side{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.side .btn{width:100%}
+.keyhint{font-size:12px;color:var(--muted);text-align:center;line-height:1.8}
+.keyhint kbd{font:700 12px var(--f-body);background:var(--panel2);border:1px solid var(--edge);border-radius:4px;padding:0 5px}
+/* the lunchbox */
+.bento{position:relative;max-width:calc((100vh - 400px) * 4 / 3 + 44px);min-width:min(320px,100%);margin:0 auto;background:var(--bento);border:6px solid #000;border-radius:26px;padding:16px;box-shadow:inset 0 0 0 6px var(--bento2),0 8px 0 #000}
+.box{position:relative;aspect-ratio:4/3;background:var(--paper);border:4px solid #000;border-radius:14px;overflow:hidden}
+.box .food{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;transform-origin:50% 50%}
+.box .tiles{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr)}
+.box .tiles i{background:var(--bento);border:2px solid var(--bento2);transition:opacity .6s ease,transform .6s ease}
+.box .tiles i.off{opacity:0;transform:scale(.6)}
+.box .lid{position:absolute;inset:0;background:repeating-linear-gradient(135deg,var(--bento) 0 22px,#b9302a 22px 44px);border-left:6px solid #000;display:flex;align-items:center;justify-content:center}
+.box .lid b{font:400 clamp(60px,12vw,140px)/1 var(--f-display);color:#ffe3a3;text-shadow:0 5px 0 #000}
+.box .qm{position:absolute;right:12px;top:8px;font:400 34px var(--f-display);color:#c9c0ad}
+.caption{text-align:center;min-height:2.6em;margin-top:10px}
+.caption .said{display:block;font:700 clamp(28px,4vw,46px)/1.15 var(--f-letter);color:var(--text)}
+.caption .said em{font-style:normal;color:var(--accent)}
+.caption .ja{font-size:20px}
+.ask{font:700 clamp(24px,3.4vw,38px) var(--f-letter);color:#ffe3a3}
+/* joke dish */
+.joke{position:absolute;left:50%;bottom:-70%;width:46%;transform:translateX(-50%);z-index:4;animation:popjoke 2.8s ease-in-out forwards;pointer-events:none}
+.joke img{width:100%;display:block;filter:drop-shadow(0 6px 0 rgba(0,0,0,.35))}
+.jokebubble{position:absolute;left:50%;top:5%;transform:translateX(-50%);z-index:5;background:#fff;color:var(--ink);border:4px solid #000;border-radius:16px;padding:8px 16px;font:700 clamp(18px,2.6vw,28px) var(--f-letter);text-align:center;white-space:nowrap;animation:bub 2.8s ease forwards}
+body.jp .jokebubble .ja{color:#6b6358;font-size:16px}
+@keyframes popjoke{0%{bottom:-70%}22%{bottom:4%}30%{bottom:0%}38%{bottom:4%}78%{bottom:4%}100%{bottom:-70%}}
+@keyframes bub{0%,18%{opacity:0;transform:translateX(-50%) scale(.7)}26%{opacity:1;transform:translateX(-50%) scale(1)}80%{opacity:1}100%{opacity:0}}
+/* meet the menu */
+.meet{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:16px;align-items:start}
+.meetword{font:700 clamp(34px,5vw,60px)/1.1 var(--f-letter);text-align:center;margin-top:12px}
+body.jp .meetword .ja{font-size:22px}
+.meetword .also{display:block;font-size:.4em;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.grid button{background:var(--paper);color:var(--ink);border:3px solid #000;border-radius:12px;padding:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font:700 18px var(--f-letter)}
+.grid button img{width:100%;aspect-ratio:4/3;object-fit:contain}
+.grid button .ja{color:#6b6358;font-size:13px}
+.grid.hidewords button span{visibility:hidden}
+.dots{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:8px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--edge)}
+.dots i.on{background:var(--accent)}
+/* practice choices */
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.choices button{font:700 clamp(20px,3vw,30px) var(--f-letter);background:var(--panel2);color:var(--text);border:3px solid var(--edge);border-radius:12px;padding:12px;cursor:pointer}
+.choices button:hover{border-color:var(--accent)}
+.choices button.right{background:#2c4a32;border-color:var(--go)}
+.choices button .num{font:400 14px var(--f-display);color:var(--muted);margin-right:8px}
+.stage{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:center}
+.stage .choices{grid-template-columns:minmax(0,1fr);margin-top:0}
+.artimg img{width:100%;height:auto;display:block}
+.kit-team .kt-em img{width:44px;height:44px;object-fit:contain;display:block}
+.hero-pic img{width:min(280px,100%)}
+@media (max-width:860px){.modes,.proj,.meet,.stage{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="app">
+  <header class="topbar">
+    <button class="brand" id="goHome" type="button">Mystery Lunchbox <span>なぞのおべんとう</span></button>
+    <div class="tb-tools">
+      <button class="tog" id="jpToggle" type="button" aria-pressed="true">日本語サポート</button>
+      <button class="tog" id="sndToggle" type="button" aria-pressed="true">Sound</button>
+      <button class="btn small" id="fsBtn" type="button">Fullscreen<span class="ja">全画面</span></button>
+    </div>
+  </header>
+
+  <main>
+  <section class="screen" id="home">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Junior Sunshine 5 · Lesson 6 · What would you like?</p>
+        <h1>Mystery Lunchbox!</h1>
+        <p class="lead">Something is hiding in the lunchbox. Ask <b>"What's this?"</b> and guess <b>"It's ___!"</b></p>
+        <p class="ja">おべんとうの中に何かがかくれているよ。「What's this?」と聞いて「It's ___!」で当てよう。</p>
+      </div>
+      <div class="hero-pic" id="heroPic"></div>
+    </div>
+    <div class="modes">
+      <div class="panel mode"><p class="who">Projector · introduce the words</p><h2 id="icoMeet"></h2>
+        <p>See each food big, hear it, and say it together.</p><p class="ja">食べ物を大きく見て、聞いて、みんなで言おう。</p>
+        <button class="btn primary big" id="goMeet" type="button">Meet the menu<span class="ja">メニューを見る</span></button></div>
+      <div class="panel mode"><p class="who">Projector · whole class or teams</p><h2 id="icoMys"></h2>
+        <p>The food appears little by little. The class asks "What's this?" and guesses.</p><p class="ja">少しずつ見えてくるよ。「What's this?」と聞いて当てよう。</p>
+        <button class="btn primary big" id="goMys" type="button">Play Mystery Lunchbox<span class="ja">ゲームを始める</span></button></div>
+      <div class="panel mode"><p class="who">Each Chromebook · solo</p><h2 id="icoPrac"></h2>
+        <p>Guess fast for more points. A wrong answer sets off a silly surprise.</p><p class="ja">早く当てると高得点。まちがえると、おもしろいことが起きるよ。</p>
+        <button class="btn primary big" id="goPrac" type="button">Practice<span class="ja">練習する</span></button></div>
+    </div>
+    <div class="more"><button class="btn" id="toTeacher" type="button">Teacher page<span class="ja">先生用ページ</span></button></div>
+    <div class="panel" id="homeSlot"></div>
+  </section>
+
+  <section class="screen" id="meet" hidden>
+    <div class="hud"><span class="rolechip">Meet the menu</span><span class="stat">Food<b id="mNum">1/24</b></span>
+      <button class="tog" id="mGridTog" type="button" aria-pressed="false">See all<span class="ja inl">全部見る</span></button>
+      <button class="btn small" id="meetQuit" type="button">Home<span class="ja">ホーム</span></button></div>
+    <div class="meet" id="meetOne">
+      <div><div class="bento"><div class="box" id="mBox"></div></div><div class="meetword" id="mWord"></div><div class="dots" id="mDots"></div></div>
+      <div class="side">
+        <button class="btn primary big" id="mNext" type="button">Next<span class="ja">次へ</span></button>
+        <button class="btn" id="mPrev" type="button">Back<span class="ja">もどる</span></button>
+        <button class="btn" id="mSay" type="button">Say it<span class="ja">読み上げ</span></button>
+        <button class="btn" id="mSentence" type="button">It's ___.<span class="ja">文で言う</span></button>
+        <button class="tog" id="mHideTog" type="button" aria-pressed="false">Hide the word<span class="ja inl">単語をかくす</span></button>
+        <p class="keyhint"><kbd>Space</kbd> / <kbd>→</kbd> next · <kbd>←</kbd> back<br><kbd>S</kbd> say it · <kbd>I</kbd> It's ___. · <kbd>H</kbd> hide word</p>
+      </div>
+    </div>
+    <div id="meetAll" hidden><div class="grid" id="mGrid"></div></div>
+  </section>
+
+  <section class="screen" id="mys" hidden>
+    <div class="hud"><span class="rolechip">Mystery Lunchbox</span><span class="stat">Lunchbox<b id="yNum">1/10</b></span>
+      <span class="stat">Teams</span><div class="seg" id="yTeams"></div><span class="badge">Class code <b class="kitCode">----</b></span><button class="btn small" id="mysQuit" type="button">Finish<span class="ja">終わる</span></button></div>
+    <div class="proj">
+      <div><div class="bento"><div class="box" id="yBox"></div></div><div class="caption" id="yCap"></div></div>
+      <div class="side">
+        <button class="btn" id="yAsk" type="button">What's this?<span class="ja">これは何？</span></button>
+        <button class="btn" id="yMore" type="button">Show more<span class="ja">もっと見せる</span></button>
+        <button class="btn" id="yNope" type="button">Not quite!<span class="ja">ちがうよ！</span></button>
+        <button class="btn primary big" id="yNext" type="button">Open the lunchbox<span class="ja">答えを見せる</span></button>
+        <p class="keyhint"><kbd>W</kbd> What's this? · <kbd>M</kbd> more · <kbd>X</kbd> not quite<br><kbd>Space</kbd> answer / next · <kbd>1</kbd>–<kbd>8</kbd> +1 point</p>
+      </div>
+    </div>
+    <div id="teamBoard"></div>
+  </section>
+
+  <section class="screen" id="prac" hidden>
+    <div class="hud"><span class="rolechip">Practice</span><div class="lights" id="pLights"></div>
+      <span class="stat">Time<b id="pTime">0:00</b></span><span class="stat">Oops<b id="pOops">0</b></span>
+      <button class="btn small" id="pSay" type="button">What's this?<span class="ja">もう一度</span></button>
+      <button class="btn small" id="pracQuit" type="button">Quit<span class="ja">やめる</span></button></div>
+    <div class="stage" id="pStage">
+      <div><div class="bento"><div class="box" id="pBox"></div></div><div class="caption" id="pCap"></div></div>
+      <div class="choices" id="pChoices"></div>
+      <div class="kit-trap-layer" id="pTraps"></div>
+    </div>
+  </section>
+
+  <section class="screen" id="result" hidden></section>
+  <section class="screen" id="teacher" hidden></section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+/*KIT:JS START*/ /*KIT:JS END*/
+</script>
+<script>
+/*KIT:PICS START*/ /*KIT:PICS END*/
+</script>
+<script>
+/* Food pictures (Wyatt's art), filled in by build.py */
+window.FOOD_IMG=/*FOOD_IMGS*/{};
+window.SS_FOODS=/*SS_FOODS*/[];
+</script>
+<script>
+/* =====================================================================
+   GAME: Mystery Lunchbox
+   Class code = word set + reveal style + rounds + teams. Same code on every screen = same settings.
+   ===================================================================== */
+(function(){
+"use strict";
+const {$,$$,bi,esc}=Kit;
+const ARTIFACT_URL="https://claude.ai/artifact/G3GNs6vaWNFpo4g3RWawS2";   /* paste this game's claude.ai artifact link after the first publish */
+const IMG=window.FOOD_IMG;(window.SS_FOODS||[]).forEach(f=>IMG["ss:"+f.en]=f.d);
+const st=Kit.store("ml");
+
+/* ---------- the food (Junior Sunshine 5, Lesson 6) ----------
+   pic = file name in food-art/. also = another textbook word that uses the same picture.
+   extra:true = Wyatt's additions (switch them on in settings). Add new foods at the END. */
+const FOODS=[
+ {en:"spaghetti",ja:"スパゲッティ",pic:"Spaghetti"},
+ {en:"curry and rice",ja:"カレーライス",pic:"Curry and Rice",also:"curry"},
+ {en:"sushi",ja:"すし",pic:"Sushi"},
+ {en:"hamburger",ja:"ハンバーガー",pic:"Hamburger"},
+ {en:"borscht",ja:"ボルシチ",pic:"Borscht"},
+ {en:"kebab",ja:"ケバブ",pic:"Kebab"},
+ {en:"tacos",ja:"タコス",pic:"Tacos"},
+ {en:"fish and chips",ja:"フィッシュアンドチップス",pic:"Fish and Chips"},
+ {en:"steak",ja:"ステーキ",pic:"Steak"},
+ {en:"French fries",ja:"フライドポテト",pic:"French fries"},
+ {en:"tempura",ja:"てんぷら",pic:"Tempura"},
+ {en:"rice",ja:"ごはん",pic:"Rice"},
+ {en:"salad",ja:"サラダ",pic:"Salad"},
+ {en:"corn soup",ja:"コーンスープ",pic:"Corn Soup",also:"soup"},
+ {en:"miso soup",ja:"みそ汁",pic:"Miso Soup"},
+ {en:"bread",ja:"パン",pic:"Bread"},
+ {en:"grilled fish",ja:"焼き魚",pic:"Grilled Fish"},
+ {en:"cake",ja:"ケーキ",pic:"Cake"},
+ {en:"ice cream",ja:"アイスクリーム",pic:"Ice Cream"},
+ {en:"pizza",ja:"ピザ",pic:"Pizza"},
+ {en:"yogurt",ja:"ヨーグルト",pic:"Yogurt"},
+ {en:"coffee",ja:"コーヒー",pic:"Coffee"},
+ {en:"orange juice",ja:"オレンジジュース",pic:"Orange Juice"},
+ {en:"tom yam kung",ja:"トムヤムクン",pic:"Tom Yam Kung"},
+ {en:"latte",ja:"カフェラテ",pic:"Latte",extra:true},
+ {en:"milk",ja:"牛乳",pic:"Milk",extra:true},
+ {en:"tea",ja:"お茶",pic:"Tea",extra:true},
+ {en:"water",ja:"水",pic:"Water",extra:true}
+];
+const JOKE="Fusion Reactor";
+const JOKES=[["Not that! That's a fusion reactor!","それじゃない！それは核融合炉だよ！"],["Oops! A fusion reactor came out!","あれ？核融合炉が出てきた！"],
+  ["Hmm... It's not a fusion reactor!","うーん…核融合炉じゃないよ！"],["Please don't eat the fusion reactor!","核融合炉は食べないでね！"]];
+/* letters are drawn on a canvas (the page font can't be used inside an SVG picture) */
+const letterURL=f=>{const k=f.pic;if(IMG[k])return IMG[k];
+  const c=document.createElement("canvas");c.width=800;c.height=600;const g=c.getContext("2d");g.scale(2,2);
+  g.fillStyle="#1b1a17";g.textAlign="center";g.textBaseline="alphabetic";g.font='700 250px "Andika","Century Gothic","Trebuchet MS",sans-serif';
+  g.fillText(f.letter,200,235);const u=c.toDataURL();
+  if(!document.fonts||document.fonts.status==="loaded")IMG[k]=u;return u;};
+const img=(f,cls)=>`<img class="${cls||""}" src="${f.letter?letterURL(f):IMG[f.pic||f]||""}" alt="" draggable="false">`;
+/* the article the voice reads: "It's sushi." / "It's a hamburger." */
+const A={"hamburger":"a ","kebab":"a ","steak":"a ","salad":"a ","cake":"a ","pizza":"a ","latte":"a "};
+const NOA=new Set(["bacon","cheese","corn","gold","caviar","wasabi","foie gras","konjac","naruto","vanilla ice cream","chocolate ice cream","strawberry ice cream"]);
+const art=f=>f.letter?"":f.ss?(NOA.has(f.en)?"":/^[aeiou]/i.test(f.en)?"an ":"a "):(A[f.en]||"");
+const sayw=f=>f.say||f.en;
+const its=f=>"It's "+(f.letter?f.say:art(f)+f.en)+".";
+const itsShow=f=>f.letter?"It's \u201C"+f.en+"\u201D.":its(f);
+
+/* ---------- settings + class code ---------- */
+const REVEALS=[{k:"mix",n:["Mix","ミックス"]},{k:"hole",n:["Peephole","のぞき穴"]},{k:"zoom",n:["Zoom out","ズームアウト"]},{k:"tiles",n:["Tiles","パネル"]},{k:"lid",n:["Sliding lid","ふたをずらす"]}];
+const ROUNDS=[5,10,15,0],TEAMS=[0,2,3,4,5,6,7,8];
+const codec=Kit.codec({game:"mystery-lunchbox",fields:[{k:"th",n:16},{k:"rv",n:5},{k:"rn",n:4},{k:"tm",n:8},{k:"ed",n:4}]});
+const DEFAULT={th:0,rv:0,rn:1,tm:3,ed:0};
+let S=(codec.decode(st.get("code",""))||{}).S||Object.assign({},DEFAULT);
+const fromLink=codec.fromHash();
+if(fromLink){S=fromLink.S;setTimeout(()=>Kit.toast(bi(["Class code "+fromLink.code+" loaded","クラスコード "+fromLink.code+" を読み込みました"])),300);}
+const code=()=>codec.encode(S);
+/* themes: Lesson 6 food, plus Shape Shop's ingredients (pictures in window.SS_FOODS, filled by build.py) */
+const SS=(window.SS_FOODS||[]).map(f=>({en:f.en,ja:f.ja,pic:"ss:"+f.en,ss:true}));
+const ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const UPPER=ABC.map(c=>({en:c,ja:"大文字の "+c,pic:"U:"+c,letter:c,say:c}));
+const LOWER=ABC.map(c=>({en:c.toLowerCase(),ja:"小文字の "+c.toLowerCase(),pic:"l:"+c,letter:c.toLowerCase(),say:c}));
+const ssPick=list=>list.map(n=>SS.find(f=>f.en===n)).filter(Boolean);
+const FRUITS=["strawberry","banana","apple","cherry","kiwi fruit","lemon","melon","grape","orange","peach","pear","pineapple","watermelon","dragon fruit","star fruit"];
+const VEG=["tomato","onion","green pepper","mushroom","potato","corn","cucumber","carrot","cabbage","avocado"];
+const MEAT=["sausage","bacon","cheese","naruto","konjac"];
+const FANCY=["vanilla ice cream","chocolate ice cream","strawberry ice cream","gold","caviar","truffle","wasabi","foie gras"];
+const THEMES=[
+ {n:["Lesson 6 food","Lesson 6 の食べ物"],list:()=>FOODS.filter(f=>!f.extra)},
+ {n:["Lesson 6 + drinks","Lesson 6 ＋飲み物"],list:()=>FOODS},
+ {n:["Fruits","フルーツ"],list:()=>ssPick(FRUITS)},
+ {n:["Vegetables","野菜"],list:()=>ssPick(VEG)},
+ {n:["Meat and more","肉など"],list:()=>ssPick(MEAT)},
+ {n:["Ice cream and fancy food","アイスと高級食材"],list:()=>ssPick(FANCY)},
+ {n:["All ingredients","全部の材料"],list:()=>SS.slice()},
+ {n:["Everything","全部"],list:()=>FOODS.concat(SS)},
+ {n:["Uppercase ABC","大文字 ABC"],list:()=>UPPER},
+ {n:["Lowercase abc","小文字 abc"],list:()=>LOWER},
+ {n:["Pizza toppings","ピザのトッピング"],list:()=>ssPick(VEG.concat(MEAT))}
+];
+const pool=()=>(THEMES[S.th]||THEMES[0]).list();
+const deck=n=>{const d=Kit.shuffle(pool().slice(),Kit.RND);return n?d.slice(0,n):d;};
+
+/* teams are foods, drawn with Wyatt's pictures */
+const TEAMFOOD=[["Sushi","スシ","#ff9f6b"],["Pizza","ピザ","#ffc35a"],["Tacos","タコス","#7fd18b"],["Cake","ケーキ","#ff9fc8"],["Hamburger","バーガー","#c9a26b"],["Tempura","テンプラ","#9aa7ff"],["Steak","ステーキ","#e07a6b"],["Spaghetti","スパゲッティ","#b9e06b"]];
+Kit.TEAMS=TEAMFOOD.map(([n,j,c])=>({em:img(n),name:["Team "+n,j+"チーム"],c}));
+
+Kit.setupToggles(st,{});Kit.fullscreen("#fsBtn");
+const scr=Kit.screens({onShow(id){
+  if(id!=="mys"){Y.rev&&Y.rev.stop();}
+  if(id!=="prac"){clock.stop();traps.clear();P.rev&&P.rev.stop();}
+  if(id==="home")$("#homeSlot").appendChild(panel);
+  if(id==="teacher"){teach.slot.appendChild(panel);teach.refresh();}
+}});
+$("#goHome").onclick=()=>scr.show("home");
+
+const panel=document.createElement("div");panel.className="settings";
+panel.innerHTML=`
+ <div class="set-row"><h3>${bi(["Theme","テーマ"])}</h3><div class="seg" id="setEx"></div></div>
+ <div class="set-row"><h3>${bi(["How it appears","見え方"])}</h3><div class="seg" id="setRv"></div></div>
+ <div class="set-row"><h3>${bi(["Lunchboxes","問題数"])}</h3><div class="seg" id="setRn"></div></div>
+ <div class="set-row"><h3>${bi(["Teams","チーム数"])}</h3><div class="seg" id="setTm"></div></div>
+ <div class="classcode"><div class="cc">${bi(["Class code","クラスコード"],true)}<b class="kitCode">----</b></div><div id="ccEntry"></div></div>`;
+Kit.codeEntry($("#ccEntry",panel),{codec,onCode(d){S=d.S;changed();Kit.toast(bi(["Code "+d.code+" loaded","コード "+d.code+" を読み込みました"]));}});
+function changed(){st.set("code",code());renderSettings();if(scr.current==="teacher")teach.refresh();}
+function renderSettings(){
+  Kit.seg($("#setEx",panel),THEMES.map(th=>{const k=th.list().length;return {html:bi([th.n[0]+" ("+k+")",th.n[1]+" ("+k+")"])};}),(o,i)=>S.th===i,(o,i)=>{S.th=i;changed();});
+  Kit.seg($("#setRv",panel),REVEALS.map(r=>({html:bi(r.n)})),(o,i)=>S.rv===i,(o,i)=>{S.rv=i;changed();});
+  Kit.seg($("#setRn",panel),ROUNDS.map(n=>({html:n?String(n):bi(["All","全部"])})),(o,i)=>S.rn===i,(o,i)=>{S.rn=i;changed();});
+  Kit.seg($("#setTm",panel),TEAMS.map(n=>({html:n?String(n):bi(["Off","なし"])})),(o,i)=>S.tm===i,(o,i)=>{S.tm=i;changed();});
+  Kit.badges(code());
+}
+
+/* ---------- reveal: shows a food little by little. set(p) with p from 0 (hidden) to 1 (all) ---------- */
+function Reveal(box,food,style,opt){
+  opt=opt||{};
+  if(style==="mix")style=["hole","zoom","tiles","lid"][Kit.ri(Kit.RND,4)];
+  box.innerHTML=img(food,"food")+`<span class="qm">?</span>`;
+  const pic=$(".food",box);let p=0,goal=0,raf=0,t0=performance.now(),alive=true,tiles=null,lid=null;
+  const fx=0.3+Kit.RND()*0.4,fy=0.3+Kit.RND()*0.4,ph=Kit.RND()*6;
+  if(style==="tiles"){const d=document.createElement("div");d.className="tiles";d.innerHTML="<i></i>".repeat(20);box.appendChild(d);
+    tiles=Kit.shuffle([...$$("i",d)],Kit.RND);}
+  if(style==="lid"){lid=document.createElement("div");lid.className="lid";lid.innerHTML="<b>?</b>";box.appendChild(lid);}
+  function draw(t){
+    const s=(t-t0)/1000;
+    if(style==="hole"){const r=7+p*62,cx=50+Math.sin(s*0.5+ph)*(1-p)*26,cy=50+Math.cos(s*0.37+ph)*(1-p)*20;
+      pic.style.clipPath=p>=1?"none":`circle(${r}% at ${cx}% ${cy}%)`;}
+    if(style==="zoom"){const z=1+Math.pow(1-p,1.6)*7;pic.style.transformOrigin=`${fx*100}% ${fy*100}%`;pic.style.transform=`scale(${z})`;}
+    if(style==="tiles"){const off=Math.round(p*tiles.length);tiles.forEach((e,i)=>e.classList.toggle("off",i<off));}
+    if(style==="lid"){lid.style.transform=`translateX(${Math.min(100,p*100)}%)`;}
+  }
+  function loop(t){if(!alive)return;
+    if(opt.auto&&goal<0.85)goal=Math.min(0.85,goal+opt.auto/60);
+    p+=(goal-p)*0.06;if(Math.abs(goal-p)<0.001)p=goal;draw(t);raf=requestAnimationFrame(loop);}
+  draw(t0);raf=requestAnimationFrame(loop);
+  return {style,
+    more(d){goal=Math.min(1,goal+(d||0.15));},
+    open(){goal=1;const q=$(".qm",box);if(q)q.remove();},
+    stop(){alive=false;cancelAnimationFrame(raf);},
+    get p(){return p;}};
+}
+/* the fusion reactor pops out of the lunchbox */
+let jokeBag=Kit.bag(JOKES.map((j,i)=>i));
+function joke(box,done){
+  $$(".joke,.jokebubble",box).forEach(e=>e.remove());
+  const j=JOKES[jokeBag()];
+  const a=document.createElement("div");a.className="joke";a.innerHTML=img(JOKE);
+  const b=document.createElement("div");b.className="jokebubble";b.innerHTML=bi(j);
+  box.append(a,b);Kit.sound.play("boing");setTimeout(()=>Kit.speech.say(j[0],0.85),350);
+  setTimeout(()=>{a.remove();b.remove();done&&done();},2850);
+}
+
+/* ---------- Meet the menu ---------- */
+const M={i:0,list:[]};
+const hideW=Kit.toggle("#mHideTog",st,"hide",false,()=>{if(scr.current==="meet")drawMeet(false);});
+const gridOn=Kit.toggle("#mGridTog",st,"grid",false,()=>{if(scr.current==="meet")drawMeet(false);});
+function openMeet(){M.list=pool();M.i=0;scr.show("meet");drawMeet(true);}
+function drawMeet(say){
+  $("#meetOne").hidden=gridOn.value;$("#meetAll").hidden=!gridOn.value;
+  if(gridOn.value){
+    $("#mGrid").className="grid"+(hideW.value?" hidewords":"");
+    $("#mGrid").innerHTML=M.list.map((f,i)=>`<button type="button" data-i="${i}">${img(f)}<span>${esc(f.en)}</span><span class="ja">${esc(f.ja)}</span></button>`).join("");
+    $$("#mGrid button").forEach(b=>b.onclick=()=>{const f=M.list[+b.dataset.i];Kit.speech.say(sayw(f),0.75);});
+    return;
+  }
+  const f=M.list[M.i];
+  $("#mBox").innerHTML=img(f,"food");
+  $("#mWord").innerHTML=hideW.value?`<span style="color:var(--muted)">?</span>`:`${esc(f.en)}${f.also?`<span class="also">(${esc(f.also)})</span>`:""}<span class="ja">${esc(f.ja)}</span>`;
+  $("#mNum").textContent=(M.i+1)+"/"+M.list.length;
+  $("#mDots").innerHTML=M.list.map((x,i)=>`<i class="${i===M.i?"on":""}"></i>`).join("");
+  if(say)setTimeout(()=>{if(scr.current==="meet")Kit.speech.say(sayw(f),0.75);},250);
+}
+function meetGo(d){if(gridOn.value)return;M.i=(M.i+d+M.list.length)%M.list.length;Kit.sound.play("click");drawMeet(true);}
+$("#mNext").onclick=()=>meetGo(1);$("#mPrev").onclick=()=>meetGo(-1);
+$("#mSay").onclick=()=>{const f=M.list[M.i];if(!gridOn.value&&f)Kit.speech.say(sayw(f),0.7);};
+$("#mSentence").onclick=()=>{const f=M.list[M.i];if(!gridOn.value&&f)Kit.speech.sayEach(["What's this?",its(f)],1500,0.8);};
+$("#meetQuit").onclick=()=>scr.show("home");$("#goMeet").onclick=openMeet;
+Kit.keys({" ":()=>meetGo(1),"ArrowRight":()=>meetGo(1),"ArrowLeft":()=>meetGo(-1),"s":()=>$("#mSay").click(),"i":()=>$("#mSentence").click(),"h":()=>$("#mHideTog").click()},()=>scr.current==="meet");
+
+/* ---------- Mystery Lunchbox (projector) ---------- */
+const Y={};
+const board=Kit.teams({mount:"#teamBoard",n:2});
+function setTeams(){
+  const n=TEAMS[S.tm];$("#teamBoard").hidden=!n;if(n)board.set(n);
+  $("#teamBoard").style.gridTemplateColumns=`repeat(${n>4?Math.ceil(n/2):Math.max(n,1)},minmax(0,1fr))`;
+  Kit.seg($("#yTeams"),TEAMS.map(k=>({html:k?String(k):bi(["Off","なし"])})),(o,i)=>S.tm===i,(o,i)=>{S.tm=i;changed();setTeams();});
+}
+function startMys(){
+  setTeams();
+  Object.assign(Y,{i:0,list:deck(ROUNDS[S.rn]),busy:false});scr.show("mys");nextY();
+}
+function nextY(){
+  Y.rev&&Y.rev.stop();
+  if(Y.i>=Y.list.length)return mysEnd();
+  Y.f=Y.list[Y.i++];Y.open=false;
+  Y.rev=Reveal($("#yBox"),Y.f,REVEALS[S.rv].k,{auto:0.03});
+  $("#yNum").textContent=Y.i+"/"+Y.list.length;
+  $("#yCap").innerHTML=`<div class="ask">What's this?</div><span class="ja">これは何ですか？</span>`;
+  $("#yNext").innerHTML=bi(["Open the lunchbox","答えを見せる"]);
+  setTimeout(()=>{if(scr.current==="mys"&&!Y.open)Kit.speech.say("What's this?",0.85);},400);
+}
+function mysStep(){
+  if(!Y.rev||Y.busy)return;
+  if(!Y.open){Y.open=true;Y.rev.open();Kit.sound.play("done");
+    $("#yCap").innerHTML=`<div class="said">It's ${art(Y.f)}<em>${esc(Y.f.en)}</em>!</div><span class="ja">${esc(Y.f.ja)}</span>`;
+    setTimeout(()=>Kit.speech.say(its(Y.f),0.8),300);
+    $("#yNext").innerHTML=Y.i>=Y.list.length?bi(["See the results","結果を見る"]):bi(["Next lunchbox","次のおべんとう"]);}
+  else nextY();
+}
+function mysNope(){if(!Y.rev||Y.open||Y.busy)return;Y.busy=true;joke($("#yBox"),()=>{Y.busy=false;});}
+function mysEnd(){
+  Y.rev&&Y.rev.stop();Kit.sound.play("win");
+  const n=TEAMS[S.tm];
+  if(!n){Kit.result("#result",{title:["Lunch is over!","ごちそうさまでした！"],art:`<div class="artimg" style="width:200px;margin:auto">${img("Curry and Rice")}</div>`,nums:[{label:["Lunchboxes","おべんとう"],value:Y.i}],
+    buttons:[{label:["Play again","もう一度"],primary:true,onClick:startMys},{label:["Home","ホーム"],onClick:()=>scr.show("home")}]});}
+  else{const sc=board.scores,top=board.leaders(),T=Kit.TEAMS;
+    const title=top.length===1?[T[top[0]].name[0]+" wins!",T[top[0]].name[1]+"の勝ち！"]:["It's a tie!","引き分け！"];
+    Kit.result("#result",{title,art:`<div style="display:flex;justify-content:center;gap:12px">${top.map(i=>`<div class="artimg" style="width:140px">${T[i].em}</div>`).join("")}</div>`,
+      nums:sc.map((s,i)=>({label:T[i].name,value:s})),
+      buttons:[{label:["Play again","もう一度"],primary:true,onClick:startMys},{label:["Home","ホーム"],onClick:()=>scr.show("home")}]});}
+  scr.show("result");
+}
+$("#yNext").onclick=mysStep;$("#yNope").onclick=mysNope;
+$("#yMore").onclick=()=>{if(Y.rev&&!Y.open){Y.rev.more(0.15);Kit.sound.play("key");}};
+$("#yAsk").onclick=()=>Kit.speech.say("What's this?",0.85);
+$("#mysQuit").onclick=mysEnd;$("#goMys").onclick=startMys;
+const yKeys={" ":mysStep,"Enter":mysStep,"ArrowRight":mysStep,"m":()=>$("#yMore").click(),"ArrowUp":()=>$("#yMore").click(),"x":mysNope,"w":()=>$("#yAsk").click()};
+for(let i=0;i<8;i++)yKeys[String(i+1)]=()=>TEAMS[S.tm]&&board.add(i,1);
+Kit.keys(yKeys,()=>scr.current==="mys");
+
+/* ---------- Practice (solo) ---------- */
+const P={};
+const clock=Kit.timer((s,t)=>$("#pTime").textContent=t);
+const traps=Kit.traps({layer:"#pTraps",target:"#pBox",area:"#pChoices"});
+traps.add("reactor",(done,k)=>{k.layer.classList.add("block");joke($("#pBox"),()=>{k.clear();done();});});
+traps.use(["reactor","glove","chicken","duck","bear","cat","reactor","water"]);
+function startPrac(){
+  const n=ROUNDS[S.rn]||pool().length;
+  Object.assign(P,{i:0,list:deck(n),oops:0,busy:false});$("#pOops").textContent="0";
+  scr.show("prac");clock.start();nextP();
+}
+function nextP(){
+  P.rev&&P.rev.stop();
+  if(P.i>=P.list.length)return pracEnd();
+  P.f=P.list[P.i++];P.busy=false;
+  P.rev=Reveal($("#pBox"),P.f,REVEALS[S.rv].k,{auto:0.06});
+  $("#pLights").innerHTML=P.list.map((x,k)=>`<i class="${k<P.i-1?"on":k===P.i-1?"now":""}"></i>`).join("");
+  $("#pCap").innerHTML=`<div class="ask">What's this?</div><span class="ja">これは何ですか？</span>`;
+  const others=Kit.shuffle(pool().filter(f=>f!==P.f),Kit.RND).slice(0,3);
+  P.ch=Kit.shuffle([P.f,...others],Kit.RND);
+  $("#pChoices").innerHTML=P.ch.map((f,i)=>`<button type="button" data-i="${i}"><span class="num">${i+1}</span>${esc(itsShow(f))}<span class="ja">${esc(f.ja)}</span></button>`).join("");
+  $$("#pChoices button").forEach(b=>b.onclick=()=>pick(+b.dataset.i));
+  setTimeout(()=>{if(scr.current==="prac")Kit.speech.say("What's this?",0.85);},350);
+}
+function pick(i){
+  if(P.busy||!P.ch||!P.ch[i])return;
+  if(P.ch[i]===P.f){P.busy=true;P.rev.open();Kit.sound.play("ok");$$("#pChoices button")[i].classList.add("right");
+    $("#pCap").innerHTML=`<div class="said">It's ${art(P.f)}<em>${esc(P.f.en)}</em>!</div><span class="ja">${esc(P.f.ja)}</span>`;
+    Kit.speech.say(its(P.f),0.85);setTimeout(()=>{if(scr.current==="prac")nextP();},1700);}
+  else{P.busy=true;P.oops++;$("#pOops").textContent=P.oops;P.rev.more(0.2);traps.next(()=>{P.busy=false;});}
+}
+function pracEnd(){
+  P.rev&&P.rev.stop();const elapsed=clock.stop(),sc=Kit.score({elapsed,oops:P.oops,par:P.list.length*6});Kit.sound.play("win");
+  Kit.result("#result",{elapsed,oops:P.oops,score:sc.score,stars:sc.stars,art:`<div class="artimg" style="width:200px;margin:auto">${img("Cake")}</div>`,
+    buttons:[{label:["Play again","もう一度"],primary:true,onClick:startPrac},{label:["Home","ホーム"],onClick:()=>scr.show("home")}]});
+  scr.show("result");
+}
+$("#pSay").onclick=()=>Kit.speech.say("What's this?",0.85);$("#pracQuit").onclick=()=>scr.show("home");$("#goPrac").onclick=startPrac;
+Kit.keys({"1":()=>pick(0),"2":()=>pick(1),"3":()=>pick(2),"4":()=>pick(3),"w":()=>$("#pSay").click()},()=>scr.current==="prac");
+
+/* ---------- teacher page ---------- */
+const teach=Kit.teacher({mount:"#teacher",artifactUrl:ARTIFACT_URL,store:st,getCode:code,getName:()=>["Junior Sunshine 5 · Lesson 6","Junior Sunshine 5・Lesson 6"],
+  steps:[["Start with Meet the menu to introduce the words. Hide the word to check that students remember.","まず「メニューを見る」で単語を紹介します。単語をかくして覚えているか確認できます。"],
+         ["Mystery Lunchbox runs on the projector. Students ask \"What's this?\" and answer \"It's ___!\"","なぞのおべんとうはプロジェクターで。「What's this?」と聞いて「It's ___!」と答えます。"],
+         ["Press X for a wrong guess. A fusion reactor pops out instead of a penalty. Press 1 to 8 to give a team a point. Change the number of teams at the top of the game screen.","まちがえたら X。罰のかわりに核融合炉が出てきます。1〜8でチームに1点。チーム数はゲーム画面の上で変えられます。"],
+         ["For solo practice, students scan the QR or type the class code on their Chromebooks.","ひとり練習は、QRを読み取るかクラスコードを入力します。"]],
+  note:"The class code keeps the food set, reveal style and number of lunchboxes the same on every screen."});
+$("#toTeacher").onclick=()=>scr.show("teacher");
+
+$("#heroPic").innerHTML=`<div class="bento" style="width:min(280px,100%)"><div class="box"><img class="food" src="${IMG["Tempura"]}" alt="" style="clip-path:circle(16% at 42% 48%)"><span class="qm">?</span></div></div>`;
+$("#icoMeet").innerHTML=img("Sushi")+bi(["Meet the menu","メニューを見る"],true);
+$("#icoMys").innerHTML=img("Kebab")+bi(["Mystery Lunchbox","なぞのおべんとう"],true);
+$("#icoPrac").innerHTML=img("Hamburger")+bi(["Practice","ひとりで練習"],true);
+scr.show("home");renderSettings();
+window.ML={codec,FOODS,get S(){return S;},Y,P,M};
+})();
+</script>
