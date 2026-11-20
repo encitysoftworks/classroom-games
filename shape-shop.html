@@ -362,6 +362,13 @@ body.jp .pb .ja{display:block;font-size:9px}
 .pb.special{background:#3a3018;border-color:#8a7330}
 #art image{pointer-events:none}
 #art .shp image{pointer-events:auto}
+@media (min-width:901px){.studio{grid-template-columns:360px minmax(0,1fr)}.studio>.side{order:-1}}
+.sizer{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px}.sizer input{width:190px;height:44px;margin:0;background:transparent;cursor:pointer;-webkit-appearance:none;appearance:none;touch-action:pan-y}
+.sizer input::-webkit-slider-runnable-track{height:12px;border-radius:6px;background:#3a3f52;border:2px solid #0d0904}
+.sizer input::-webkit-slider-thumb{-webkit-appearance:none;width:40px;height:40px;margin-top:-16px;border-radius:50%;background:var(--accent);border:3px solid #0d0904;box-shadow:0 3px 0 #07080b}
+.sizer input::-moz-range-track{height:12px;border-radius:6px;background:#3a3f52;border:2px solid #0d0904}.sizer input::-moz-range-thumb{width:36px;height:36px;border-radius:50%;background:var(--accent);border:3px solid #0d0904}
+.sizer input:disabled{opacity:.4;cursor:default}.sizer svg{width:14px;height:14px}.sizer svg.big{width:26px;height:26px}
+#finTitle{font:700 22px var(--f-body);width:min(420px,100%);padding:10px 14px;border-radius:12px;border:3px solid var(--edge);background:#fff;color:#14161d;text-align:center}
 @media (max-width:900px){.studio{grid-template-columns:minmax(0,1fr)}}
 </style>
 
@@ -442,8 +449,7 @@ body.jp .pb .ja{display:block;font-size:9px}
         <div class="tools" id="tools">
           <button class="btn" data-t="left" type="button"><svg viewBox="0 0 24 24"><path d="M9 4H4v5M4.5 8.5A8 8 0 1 1 6 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>Turn<span class="ja">回す</span></button>
           <button class="btn" data-t="right" type="button"><svg viewBox="0 0 24 24"><path d="M15 4h5v5M19.5 8.5A8 8 0 1 0 18 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>Turn<span class="ja">回す</span></button>
-          <button class="btn" data-t="bigger" type="button">Bigger<span class="ja">大きく</span></button>
-          <button class="btn" data-t="smaller" type="button">Smaller<span class="ja">小さく</span></button>
+          <label class="sizer"><span>Size<span class="ja">大きさ</span></span><svg viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4" fill="currentColor"/></svg><input id="sizeSlider" type="range" min="0" max="100" step="1" value="40" aria-label="Size"><svg class="big" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4.6" fill="currentColor"/></svg></label>
           <button class="btn" data-t="front" type="button">To front<span class="ja">前へ</span></button>
           <button class="btn" data-t="back" type="button">To back<span class="ja">うしろへ</span></button>
           <button class="btn" data-t="copy" type="button">Copy<span class="ja">コピー</span></button>
@@ -507,6 +513,13 @@ body.jp .pb .ja{display:block;font-size:9px}
   <div class="panel"><h2>Your picture<span class="ja">あなたの絵</span></h2><img id="saveImg" alt="Your shape picture">
     <p class="note">It's in the Gallery now! Click Download if you also want a copy on the computer.<span class="ja">ギャラリーに入りました！パソコンにも保存したいときは「ダウンロード」</span></p>
     <div class="rowbtns"><button class="btn primary" id="saveLink" type="button" hidden>Download<span class="ja">ダウンロード</span></button><button class="btn" id="saveClose" type="button">Close<span class="ja">閉じる</span></button></div></div>
+</div>
+
+<div class="veil" id="finVeil" hidden role="dialog" aria-label="Name your picture">
+  <div class="panel"><h2>Give it a title!<span class="ja">タイトルをつけよう！</span></h2>
+    <input id="finTitle" type="text" maxlength="30" autocomplete="off" placeholder="なまえ / name">
+    <p class="note">Your picture goes to the Gallery with this title.<span class="ja">このタイトルでギャラリーに保存します。</span></p>
+    <div class="rowbtns"><button class="btn primary" id="finOk" type="button">Save and finish<span class="ja">保存してできあがり</span></button><button class="btn" id="finBack" type="button">Back<span class="ja">もどる</span></button></div></div>
 </div>
 
 <div class="veil" id="introVeil" hidden role="dialog" aria-label="How to play secret order">
@@ -1308,7 +1321,7 @@ function startStudio(mode){
   $("#modeChip").textContent=THEMES[G.theme].name[0]+" · "+(mode==="pair"?"With a partner":mode==="solo"?"Solo shopping":sec?"Secret order":foodTheme()?"Free making":"Free drawing");
   $("#toolHint").innerHTML=sec?bi(["Shopkeeper: ask \"What do you want?\" and \"How many?\" Listen to the customer and build the order. Then press Done!",
     "お店の人：「What do you want?」「How many?」と聞いて、お客さんの注文どおりに作ろう。できたら「できた！」"])
-   :bi([`Drag ${X.thing[0]} from your ${mode==="free"?"list":"bag"} onto ${X.where[0]}. Click one to turn it, make it bigger or smaller, or move it to the front or back.`+(foodTheme()?" Press Finished! when it's ready.":""),
+   :bi([`Drag ${X.thing[0]} from your ${mode==="free"?"list":"bag"} onto ${X.where[0]}. Click one to turn it, change its size, or move it to the front or back.`+(foodTheme()?" Press Finished! when it's ready.":""),
     `${X.thing[1]}を${X.where[1]}にドラッグしよう。クリックすると回したり、大きさや前後を変えたりできます。`+(foodTheme()?"できたら「できた！」を押そう。":"")]);
   $("#freeTitle").innerHTML=bi(foodTheme()?["Food","食べ物"]:["Shapes","形"]);
   $("#freeHint").innerHTML=bi([`Click or drag ${X.one[0]} onto ${X.where[0]}.`,`${X.one[1]}をクリックするか、${X.where[1]}にドラッグしよう。`]);
@@ -1440,7 +1453,10 @@ function checkDone(){
 }
 
 /* ---------- tools ---------- */
-function updateTools(){const o=byId(G.sel);$$("#tools [data-t]").forEach(b=>b.disabled=!o);}
+const KMIN=.35,KMAX=3,k2v=k=>Math.round(100*Math.log(k/KMIN)/Math.log(KMAX/KMIN)),v2k=v=>+(KMIN*Math.pow(KMAX/KMIN,v/100)).toFixed(3);
+function updateTools(){const o=byId(G.sel);$$("#tools [data-t]").forEach(b=>b.disabled=!o);const sl=$("#sizeSlider");sl.disabled=!o;if(o)sl.value=k2v(o.k||1);}
+$("#sizeSlider").oninput=e=>{const o=byId(G.sel);if(!o)return;o.k=v2k(+e.target.value);drawShapes();};
+$("#sizeSlider").onchange=()=>{const o=byId(G.sel);if(!o)return;if(trySnap(o)){Kit.sound.play("ok");sortShapes();}save();drawAll();checkDone();};
 $$("#tools [data-t]").forEach(b=>b.onclick=()=>tool(b.dataset.t));
 function tool(t){
   const o=byId(G.sel);if(!o)return;Kit.sound.play("click");
@@ -1613,7 +1629,7 @@ $("#picTitle").oninput=e=>{G.title=e.target.value;save();};
 $("#picTitle").onkeydown=e=>{if(e.key==="Enter"&&!e.isComposing&&e.keyCode!==229)e.target.blur();};
 $("#saveBtn").onclick=()=>{G.sel=null;drawShapes();updateTools();savePicture();};
 $("#saveClose").onclick=()=>$("#saveVeil").hidden=true;
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#saveVeil").hidden=true;$("#galVeil").hidden=true;}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("#saveVeil").hidden=true;$("#finVeil").hidden=true;$("#galVeil").hidden=true;}});
 
 /* ---------- secret order: only the customer sees the card ---------- */
 const CUST=[{en:"Ms. Cat",ja:"ねこさん"},{en:"Mr. Robot",ja:"ロボットさん"},{en:"King Frog",ja:"カエルの王さま"}];
@@ -1726,7 +1742,14 @@ function nextCard(){
 }
 
 $("#finishBtn").onclick=()=>{if(!G.shapes.length){Kit.toast(bi(foodTheme()?["Put some food on first!","先に食べ物をのせよう！"]:["Put some shapes on first!","先に形をおこう！"]));return;}
-  if(G.mode==="secret"){G.sel=null;drawShapes();Kit.sound.play("win");reveal(timer.stop());return;}G.sel=null;drawShapes();Kit.sound.play("win");showResult(timer.stop());};
+  if(G.mode!=="secret"){G.sel=null;drawShapes();updateTools();$("#finTitle").value=G.title||"";$("#finVeil").hidden=false;setTimeout(()=>$("#finTitle").focus(),50);return;}
+  finishNow();};
+function finishNow(){
+  if(G.mode==="secret"){G.sel=null;drawShapes();Kit.sound.play("win");reveal(timer.stop());return;}G.sel=null;drawShapes();Kit.sound.play("win");showResult(timer.stop());}
+function finOk(){const t=$("#finTitle").value.trim();if(!t){Kit.toast(bi(["Type a title first!","先にタイトルを書こう！"]));$("#finTitle").focus();return;}
+  G.title=t;$("#picTitle").value=t;save();$("#finVeil").hidden=true;finishNow();}
+$("#finOk").onclick=finOk;$("#finBack").onclick=()=>$("#finVeil").hidden=true;
+$("#finTitle").onkeydown=e=>{if(e.key==="Enter"&&!e.isComposing&&e.keyCode!==229)finOk();};
 /* ---------- home ---------- */
 function renderThemes(){Kit.seg("#themePick",Object.keys(THEMES).map(k=>({html:bi(THEMES[k].name),k})),o=>G.theme===o.k,o=>{G.theme=o.k;st.set("theme",o.k);renderThemes();});
   const X=TXT[G.theme];$("#heroTitle").textContent=X.title;$("#heroJa").textContent=X.ja;
