@@ -1,0 +1,467 @@
+<title>Silly Restaurant</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Bungee&family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<!--
+  Silly Restaurant v2: Junior Sunshine 5, Lesson 6 "What would you like?"
+  Pair game on two Chromebooks. The customer has the order card. The waiter has the menu and the prices.
+  1. Waiter: What would you like?   Customer: I'd like ___.   -> the waiter taps the food and serves (the waiter's screen checks)
+  2. Customer: How much is it?      Waiter: It's ___ yen.     -> the customer pays with coins (the customer's screen checks)
+  Both screens build the same orders from the class code. Swap roles at the end.
+  Built on the Classroom Game Kit. Do not edit inside the KIT blocks: run build.py in this folder.
+-->
+<style>
+/*KIT:CSS START*/ /*KIT:CSS END*/
+</style>
+<style>
+/* GAME: Silly Restaurant */
+:root{--accent:#ff8a5c;--cloth1:#c8372d;--cloth2:#fff4e6}
+.modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.mode{display:flex;flex-direction:column;gap:8px}
+.mode h2{font-size:22px;color:var(--accent);display:flex;gap:10px;align-items:center}
+.mode h2 img{width:48px;height:48px;object-fit:contain}
+.mode .who{font-weight:800;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.mode .btn{align-self:flex-start;margin-top:auto}
+.ordnum{font:400 20px var(--f-display);background:#fff;color:var(--ink);border:2px solid #000;border-radius:8px;padding:1px 10px}
+.phr{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin-bottom:10px}
+.phr .p{background:var(--paper);color:var(--ink);border-radius:18px;padding:5px 14px;font:700 17px var(--f-letter);border:2px solid #000}
+.phr .p.you{background:#ffe3a3}
+.phr .who{font-weight:800;color:var(--muted);font-size:13px}
+.phr .p .ja{font-size:12px;color:#6b6358}
+.play{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+.menu{background:var(--paper);color:var(--ink);border:4px solid #000;border-radius:14px;padding:12px 14px;box-shadow:0 5px 0 #000}
+.menu h3{font:400 18px var(--f-display);color:var(--cloth1);margin-bottom:8px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(124px,1fr));gap:8px}
+.item{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;background:#fff;border:3px solid #d9d0bd;border-radius:12px;padding:6px;cursor:pointer;font:700 16px/1.15 var(--f-letter);color:var(--ink);text-align:center}
+.item:hover{border-color:var(--accent)}
+.item img{width:100%;aspect-ratio:4/3;object-fit:contain}
+.item .ja{font-size:12px;color:#6b6358}
+.item .price{position:absolute;right:-4px;top:-6px;background:var(--cloth1);color:#fff;font:400 15px var(--f-display);border:2px solid #000;border-radius:10px;padding:1px 7px;transform:rotate(4deg)}
+.item.on{border-color:#2f8a4a;background:#eaf8ec}
+.side{display:flex;flex-direction:column;gap:12px}
+.trayBox{background:#7a4a2a;border:4px solid #000;border-radius:16px;padding:12px;box-shadow:0 5px 0 #000}
+.trayBox h3{font:400 17px var(--f-display);color:#ffe3a3;margin-bottom:8px}
+.trayBox .ja{color:#e9d2b5}
+.slots{display:flex;flex-wrap:wrap;gap:8px;min-height:96px}
+.slots .empty{color:#e9d2b5;font:700 15px var(--f-letter);align-self:center}
+.mini{width:88px;height:88px;border-radius:50%;background:radial-gradient(circle,#fff 0 58%,#e8e2d6 59% 66%,#fff 67%);border:3px solid #000;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.mini img{width:72%;height:72%;object-fit:contain}
+.card{background:#fff;color:var(--ink);border:4px solid #000;border-radius:14px;padding:12px 14px;box-shadow:0 5px 0 #000}
+.card h3{font:400 20px var(--f-display);color:var(--cloth1);margin-bottom:6px}
+.card .ja{color:#6b6358}
+.cardfoods{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.cardfoods div{display:flex;flex-direction:column;align-items:center;width:min(190px,40%);font:700 clamp(18px,2.4vw,26px)/1.15 var(--f-letter);text-align:center}
+.cardfoods img{width:100%;aspect-ratio:4/3;object-fit:contain}
+.cardfoods .ja{font-size:14px}
+.say{margin-top:10px;background:#ffe3a3;border:2px solid #000;border-radius:12px;padding:8px 12px;font:700 clamp(18px,2.2vw,24px)/1.3 var(--f-letter);text-align:center}
+.say .ja{font-size:13px}
+/* coins */
+.purse{background:var(--panel);border:2px solid var(--edge);border-radius:12px;padding:12px}
+.purse h3{font-size:17px;color:var(--accent);margin-bottom:4px}
+.purse .help{font-size:13px;color:var(--muted);margin-bottom:8px}
+.coinbtns{display:flex;gap:14px;justify-content:center;align-items:center}
+.coin{border-radius:50%;border:3px solid #000;display:flex;align-items:center;justify-content:center;font:400 16px var(--f-display);color:#3b3226;cursor:pointer;box-shadow:0 3px 0 #000;padding:0;position:relative;flex:none}
+.coin.c500{width:76px;height:76px;background:radial-gradient(circle at 35% 30%,#fff3c2,#e8c35a 55%,#b48a26);font-size:18px}
+.coin.c100{width:66px;height:66px;background:radial-gradient(circle at 35% 30%,#fff,#cfd3d8 55%,#8f959c)}
+.coin.c50{width:58px;height:58px;background:radial-gradient(circle at 50% 50%,var(--panel) 0 7px,#000 7px 9px,transparent 9px),radial-gradient(circle at 35% 30%,#fff,#d9dde2 55%,#9aa0a7);font-size:13px;align-items:flex-start;padding-top:6px}
+.coin.s{transform:scale(.62);margin:-11px;box-shadow:none}
+.paid{display:flex;flex-wrap:wrap;gap:0;min-height:64px;background:#3a2a1f;border:3px dashed #a07a55;border-radius:12px;padding:12px;margin-top:10px;align-content:flex-start}
+.paid .empty{color:#c9b29a;font:700 14px var(--f-letter);margin:auto}
+.paid .coin.c50.s{background:radial-gradient(circle at 50% 50%,#3a2a1f 0 7px,#000 7px 9px,transparent 9px),radial-gradient(circle at 35% 30%,#fff,#d9dde2 55%,#9aa0a7)}
+.paybtns{display:flex;gap:8px;margin-top:10px}
+.paybtns .btn{flex:1}
+.bigprice{font:400 clamp(34px,6vw,60px) var(--f-display);color:var(--accent);text-shadow:0 4px 0 #000}
+.done{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:16px;background:var(--panel);border:2px solid var(--edge);border-radius:14px}
+.done h2{font-size:clamp(26px,4vw,40px);color:var(--go)}
+/* serving + surprise */
+.serve{position:fixed;inset:0;z-index:40;background:rgba(8,9,12,.93);display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow:auto}
+.serve[hidden]{display:none}
+.scard{margin:auto;width:min(860px,100%);display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.scard h2{font-size:clamp(28px,4.4vw,48px);color:var(--accent);text-shadow:0 4px 0 #000}
+.cloth{width:100%;border-radius:18px;padding:18px 18px 26px;background:repeating-conic-gradient(var(--cloth1) 0 25%,var(--cloth2) 0 50%) 0 0/64px 64px;border:5px solid #000}
+.tray{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
+.plate{width:min(170px,28vw,24vh);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff 0 56%,#e8e2d6 57% 62%,#fff 63% 68%,#d9d0bd 69% 71%);border:4px solid #000;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 6px 0 rgba(0,0,0,.45);animation:landing .5s ease-out both}
+.plate img{width:74%;height:74%;object-fit:contain}
+.plate small{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);background:#fff;color:var(--ink);border:2px solid #000;border-radius:10px;padding:0 8px;font:700 15px var(--f-letter);white-space:nowrap}
+.plate.huge{width:min(300px,60vw,40vh)}
+@keyframes landing{0%{transform:translateY(-40px);opacity:0}100%{transform:none;opacity:1}}
+.chef{display:flex;align-items:center;gap:12px;background:var(--paper);color:var(--ink);border:4px solid #000;border-radius:16px;padding:10px 16px;text-align:left;max-width:640px}
+.chef .hat{flex:none;width:64px;height:64px}
+.chef .hat img,.chef .hat svg{width:64px;height:64px;image-rendering:pixelated}
+.chef b{display:block;font:700 clamp(20px,2.8vw,26px)/1.2 var(--f-letter)}
+.chef .ja{color:#6b6358}
+.sbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.robot{margin-bottom:10px}
+.hero-pic .cloth{width:min(320px,100%);padding:14px}
+.hero-pic .plate{width:84px}
+@media (max-width:860px){.modes,.play{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="app">
+  <header class="topbar">
+    <button class="brand" id="goHome" type="button">Silly Restaurant <span>へんてこレストラン</span></button>
+    <div class="tb-tools">
+      <button class="tog" id="jpToggle" type="button" aria-pressed="true">日本語サポート</button>
+      <button class="tog" id="sndToggle" type="button" aria-pressed="true">Sound</button>
+    </div>
+  </header>
+
+  <main>
+  <section class="screen" id="home">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Junior Sunshine 5 · Lesson 6 · What would you like?</p>
+        <h1>Silly Restaurant!</h1>
+        <p class="lead">The <b>customer</b> has the order. The <b>waiter</b> has the prices. Order the food, serve it, and pay with coins!</p>
+        <p class="ja">お客さんは注文を、ウェイターは値段を知っているよ。注文して、料理を出して、コインではらおう！</p>
+      </div>
+      <div class="hero-pic" id="heroPic"></div>
+    </div>
+    <div class="modes">
+      <div class="panel mode"><p class="who">Pair · two Chromebooks</p><h2 id="icoW"></h2>
+        <p>Listen to the order and tap the food. Then tell the customer the price.</p><p class="ja">注文を聞いて料理をタップ。値段を教えよう。</p>
+        <button class="btn primary big" id="goWaiter" type="button">I'm the waiter<span class="ja">ウェイター</span></button></div>
+      <div class="panel mode"><p class="who">Pair · two Chromebooks</p><h2 id="icoC"></h2>
+        <p>Order the food on your card. Ask "How much is it?" and pay with coins.</p><p class="ja">カードの料理を注文しよう。「How much is it?」と聞いてコインではらおう。</p>
+        <button class="btn primary big" id="goCustomer" type="button">I'm the customer<span class="ja">お客さん</span></button></div>
+      <div class="panel mode"><p class="who">One Chromebook · solo</p><h2 id="icoS"></h2>
+        <p>The computer is your partner. Practice both jobs.</p><p class="ja">コンピューターがパートナー。両方の役を練習しよう。</p>
+        <button class="btn primary big" id="goSolo" type="button">Practice<span class="ja">ひとりで練習</span></button></div>
+    </div>
+    <p class="note" style="margin-bottom:12px">Both Chromebooks need the same class code. Swap roles at the end.<span class="ja">2台とも同じクラスコードにしよう。最後に役割を交代しよう。</span></p>
+    <div class="more"><button class="btn" id="toTeacher" type="button">Teacher page<span class="ja">先生用ページ</span></button></div>
+    <div class="panel" id="homeSlot"></div>
+  </section>
+
+  <section class="screen" id="play" hidden style="position:relative">
+    <div class="hud"><span class="rolechip" id="gRole">Waiter</span><span class="ordnum" id="gNum">Order 1/8</span>
+      <span class="stat">Time<b id="gTime">0:00</b></span><span class="stat">Oops<b id="gOops">0</b></span>
+      <span class="badge">Class code <b class="kitCode">----</b></span>
+      <button class="btn small" id="gQuit" type="button">Quit<span class="ja">やめる</span></button></div>
+    <div class="robot" id="gRobot" hidden></div>
+    <div id="gBody"></div>
+    <div class="kit-trap-layer" id="gTraps"></div>
+  </section>
+
+  <section class="screen" id="result" hidden></section>
+  <section class="screen" id="teacher" hidden></section>
+  </main>
+</div>
+<div class="serve" id="serve" hidden><div class="scard" id="serveCard"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+/*KIT:JS START*/ /*KIT:JS END*/
+</script>
+<script>
+/*KIT:PICS START*/ /*KIT:PICS END*/
+</script>
+<script>
+/* Wyatt's food pictures, keyed by lower-case file name. Filled by build.py. */
+window.FOOD_IMG=/*FOOD_IMGS*/{};
+</script>
+<script>
+/* =====================================================================
+   GAME: Silly Restaurant v2
+   Class code = menu set + number of orders + order size. Order r (foods, prices, the waiter's menu) comes from
+   the class code + r, so both Chromebooks match with no internet syncing.
+   ===================================================================== */
+(function(){
+"use strict";
+const {$,$$,bi,esc}=Kit;
+const ARTIFACT_URL="https://claude.ai/artifact/WDorxZu72WAZwAkVoByFM7";
+const IMG=window.FOOD_IMG||{};
+const st=Kit.store("sr2");
+
+/* ---------- the menu (Junior Sunshine 5, Lesson 6 + picture dictionary p.10-11) ----------
+   c = food / drink / dessert. pic = picture file names to try (lower case). dict = on the picture dictionary page.
+   l6 = in the Lesson 6 menu (same words as Mystery Lunchbox). a = article for "I'd like a ___." Add new items at the END. */
+const ITEMS=[
+ {en:"fried chicken",ja:"フライドチキン",c:"food",dict:1},
+ {en:"French fries",ja:"フライドポテト",c:"food",dict:1,l6:1},
+ {en:"omelet",ja:"オムレツ",c:"food",dict:1,a:"an "},
+ {en:"steak",ja:"ステーキ",c:"food",dict:1,l6:1,a:"a "},
+ {en:"grilled fish",ja:"焼き魚",c:"food",dict:1,l6:1},
+ {en:"hamburger",ja:"ハンバーガー",c:"food",dict:1,l6:1,a:"a "},
+ {en:"hot dog",ja:"ホットドッグ",c:"food",dict:1,a:"a "},
+ {en:"pizza",ja:"ピザ",c:"food",dict:1,l6:1},
+ {en:"sandwich",ja:"サンドイッチ",c:"food",dict:1,a:"a "},
+ {en:"spaghetti",ja:"スパゲッティ",c:"food",dict:1,l6:1},
+ {en:"curry and rice",ja:"カレーライス",c:"food",dict:1,l6:1},
+ {en:"salad",ja:"サラダ",c:"food",dict:1,l6:1,a:"a "},
+ {en:"soup",ja:"スープ",c:"food",dict:1,l6:1,pic:["soup","corn soup"]},
+ {en:"jam",ja:"ジャム",c:"food",dict:1},
+ {en:"noodles",ja:"めん",c:"food",dict:1},
+ {en:"rice",ja:"ごはん",c:"food",dict:1,l6:1},
+ {en:"rice ball",ja:"おにぎり",c:"food",dict:1,a:"a ",pic:["rice ball","onigiri"]},
+ {en:"bread",ja:"パン",c:"food",dict:1,l6:1},
+ {en:"sushi",ja:"すし",c:"food",l6:1},
+ {en:"borscht",ja:"ボルシチ",c:"food",l6:1},
+ {en:"kebab",ja:"ケバブ",c:"food",l6:1,a:"a "},
+ {en:"tacos",ja:"タコス",c:"food",l6:1},
+ {en:"fish and chips",ja:"フィッシュアンドチップス",c:"food",l6:1},
+ {en:"tempura",ja:"てんぷら",c:"food",l6:1},
+ {en:"miso soup",ja:"みそ汁",c:"food",l6:1},
+ {en:"tom yam kung",ja:"トムヤムクン",c:"food",l6:1},
+ {en:"tea",ja:"紅茶",c:"drink",dict:1,l6:1},
+ {en:"coffee",ja:"コーヒー",c:"drink",dict:1,l6:1},
+ {en:"green tea",ja:"緑茶",c:"drink",dict:1},
+ {en:"milk",ja:"牛乳",c:"drink",dict:1,l6:1},
+ {en:"juice",ja:"ジュース",c:"drink",dict:1,l6:1,pic:["juice","orange juice"]},
+ {en:"soda pop",ja:"ソーダ",c:"drink",dict:1,pic:["soda pop","soda"]},
+ {en:"mineral water",ja:"ミネラルウォーター",c:"drink",dict:1},
+ {en:"water",ja:"水",c:"drink",dict:1,l6:1},
+ {en:"cake",ja:"ケーキ",c:"dessert",dict:1,l6:1},
+ {en:"candy",ja:"キャンディー",c:"dessert",dict:1},
+ {en:"chocolate",ja:"チョコレート",c:"dessert",dict:1},
+ {en:"shaved ice",ja:"かき氷",c:"dessert",dict:1},
+ {en:"ice cream",ja:"アイスクリーム",c:"dessert",dict:1,l6:1},
+ {en:"pancakes",ja:"パンケーキ",c:"dessert",dict:1,pic:["pancakes","pancake"]},
+ {en:"parfait",ja:"パフェ",c:"dessert",dict:1,a:"a "},
+ {en:"pie",ja:"パイ",c:"dessert",dict:1,pic:["pie","apple pie"]},
+ {en:"pudding",ja:"プリン",c:"dessert",dict:1},
+ {en:"donut",ja:"ドーナツ",c:"dessert",dict:1,a:"a ",pic:["donut","doughnut"]},
+ {en:"yogurt",ja:"ヨーグルト",c:"dessert",dict:1,l6:1},
+ {en:"popcorn",ja:"ポップコーン",c:"dessert",dict:1}
+];
+ITEMS.forEach((f,i)=>{f.i=i;const k=(f.pic||[f.en]).map(s=>s.toLowerCase()).find(s=>IMG[s]);f.src=k?IMG[k]:"";});
+const SETS=[
+ {n:["Everything","全部"],has:f=>true},
+ {n:["Picture dictionary (p.10-11)","絵じてん (p.10-11)"],has:f=>f.dict},
+ {n:["Lesson 6 menu","Lesson 6 のメニュー"],has:f=>f.l6}
+];
+const ORDERS=[5,8,10,12];
+const SIZES=[{n:["1 food","1品"],k:[1]},{n:["1 or 2 foods","1〜2品"],k:[1,2]},{n:["2 or 3 foods","2〜3品"],k:[2,3]}];
+const pic=f=>f.src?`<img src="${f.src}" alt="" draggable="false">`:"";
+const imgOf=name=>{const s=IMG[name.toLowerCase()];return s?`<img src="${s}" alt="" draggable="false">`:"";};
+const withA=f=>(f.a||"")+f.en;
+const andList=a=>a.length<2?a.join(""):a.slice(0,-1).join(", ")+" and "+a[a.length-1];
+const likeLine=o=>"I'd like "+andList(o.foods.map(withA))+".";
+const likeJa=o=>o.foods.map(f=>f.ja).join("と")+"をください。";
+const yen=n=>n.toLocaleString("en-US")+" yen";
+const chefHat=()=>(Kit.pics&&Kit.pics.has&&Kit.pics.has("shop:chef"))?Kit.pics.img("shop:chef",64):
+  `<svg viewBox="0 0 64 64"><path d="M14 34c-8-2-9-16 2-17 1-9 15-12 19-4 6-6 19-2 17 8 10 2 8 15-1 14v12H15z" fill="#fff" stroke="#000" stroke-width="3"/><rect x="15" y="44" width="34" height="9" fill="#eee" stroke="#000" stroke-width="3"/></svg>`;
+
+/* ---------- class code ---------- */
+const codec=Kit.codec({game:"silly-restaurant-2",fields:[{k:"ms",n:8},{k:"on",n:4},{k:"sz",n:4},{k:"ex",n:4}]});
+const DEFAULT={ms:0,on:1,sz:1,ex:0};
+let S=(codec.decode(st.get("code",""))||{}).S||Object.assign({},DEFAULT);
+const fromLink=codec.fromHash();
+if(fromLink){S=fromLink.S;setTimeout(()=>Kit.toast(bi(["Class code "+fromLink.code+" loaded","クラスコード "+fromLink.code+" を読み込みました"])),300);}
+const code=()=>codec.encode(S);
+const pool=()=>ITEMS.filter(f=>f.src&&(SETS[S.ms]||SETS[0]).has(f));
+const nOrders=()=>ORDERS[S.on]||8;
+
+/* ---------- one order, the same on both Chromebooks ----------
+   Prices: steps of 50 yen. The total is never more than 950 yen. The waiter's menu = the ordered foods + others (12 in all). */
+function orderOf(r,salt){
+  const R=Kit.rng("silly-restaurant-2",salt||code(),r),P=pool();
+  const ks=(SIZES[S.sz]||SIZES[1]).k,k=Math.min(ks[Kit.ri(R,ks.length)],P.length);
+  const foods=[],cats=Kit.shuffle(["food","drink","dessert"],R);
+  for(let j=0;j<k;j++){const c=cats[j%3],opts=P.filter(f=>f.c===c&&!foods.includes(f));const list=opts.length?opts:P.filter(f=>!foods.includes(f));foods.push(list[Kit.ri(R,list.length)]);}
+  const cap=k===1?950:k===2?450:300;
+  const price=new Map();
+  const menu=Kit.shuffle(foods.concat(Kit.pickN(R,P.filter(f=>!foods.includes(f)),Math.max(0,12-k))),R);
+  menu.forEach(f=>price.set(f,50+50*Kit.ri(R,(foods.includes(f)?cap:950)/50)));
+  const total=foods.reduce((s,f)=>s+price.get(f),0);
+  return {r,foods,menu,price,total};
+}
+
+/* ---------- silly surprises (wrong order) ---------- */
+const SILLY=[
+ {pic:"Stargazy Pie",t:["That's not your order! Here's a stargazy pie. The fish are looking at you.","注文とちがう！スターゲイジーパイだよ。魚がこっちを見てる。"]},
+ {pic:"Fusion Reactor",t:["That's not your order! The chef made a fusion reactor. Please don't eat it!","注文とちがう！シェフが核融合炉を作った。食べないでね！"]},
+ {pic:"Blobfish",t:["That's not your order! It's a blobfish. It looks very sad.","注文とちがう！ブロブフィッシュだよ。とてもかなしそう。"]},
+ {pic:"Blue Curry",t:["That's not your order! Blue curry and rice. Why is it blue?","注文とちがう！青いカレーライス。なんで青いの？"]},
+ {pic:"Giant Takoyaki",t:["That's not your order! One giant takoyaki. It's bigger than your head!","注文とちがう！巨大たこ焼き。頭より大きい！"]},
+ {pic:"Jellied Eels",t:["That's not your order! Jellied eels. They wiggle a little.","注文とちがう！ウナギのゼリー寄せ。ちょっとプルプルしてる。"]},
+ {pic:"Meat on the Bone",t:["That's not your order! Meat on the bone, just like in a cartoon.","注文とちがう！マンガ肉。アニメみたい。"]},
+ {pic:"Sakabam Baspis",t:["That's not your order! It's a sacabambaspis. It's 450 million years old!","注文とちがう！サカバンバスピス。4億5千万年前の魚だよ！"]},
+ {pic:"Space Food",t:["That's not your order! Space food. Please eat it on the moon.","注文とちがう！宇宙食。月で食べてね。"]},
+ {pic:"Tsuchinoko",t:["That's not your order! A tsuchinoko. Nobody has ever caught one... until now!","注文とちがう！ツチノコ。だれもつかまえたことがない…今までは！"]}
+].filter(s=>IMG[s.pic.toLowerCase()]);
+const sillyBag=Kit.bag(SILLY.map((s,i)=>i));
+function sillyHTML(){
+  if(!SILLY.length)return `<div class="chef"><div class="hat">${chefHat()}</div><div><b>That's not your order!</b><span class="ja">注文とちがうよ！</span></div></div>`;
+  const s=SILLY[sillyBag()];
+  return `<div class="cloth"><div class="tray"><div class="plate huge">${imgOf(s.pic)}</div></div></div>
+    <div class="chef"><div class="hat">${chefHat()}</div><div><b>${s.t[0]}</b><span class="ja">${s.t[1]}</span></div></div>`;
+}
+const trayHTML=foods=>`<div class="cloth"><div class="tray">${foods.map(f=>`<div class="plate">${pic(f)}<small>${esc(f.en)}</small></div>`).join("")}</div></div>`;
+const serve=$("#serve");
+function showServe(html){$("#serveCard").innerHTML=html;serve.hidden=false;serve.scrollTop=0;}
+function hideServe(){serve.hidden=true;$("#serveCard").innerHTML="";}
+
+/* ---------- coins ---------- */
+const COINS=[500,100,50];
+const coinHTML=(v,small,k)=>`<button type="button" class="coin c${v}${small?" s":""}" data-v="${v}" ${k!=null?`data-k="${k}"`:""} aria-label="${v} yen">${v}</button>`;
+function purseHTML(paid,help){
+  return `<div class="purse"><h3>${bi(["Coins","コイン"],true)}</h3><p class="help">${bi(help)}</p>
+    <div class="coinbtns">${COINS.map(v=>coinHTML(v)).join("")}</div>
+    <div class="paid" id="paid">${paid.length?paid.map((v,k)=>coinHTML(v,true,k)).join(""):`<span class="empty">${bi(["Tap coins to pay. Tap a coin here to take it back.","コインをタップしてはらう。ここのコインをタップするともどせるよ。"],true)}</span>`}</div>
+    <div class="paybtns"><button class="btn" id="payClear" type="button">${bi(["Take back all","全部もどす"])}</button><button class="btn primary" id="payGo" type="button" ${paid.length?"":"disabled"}>${bi(["Pay","はらう"])}</button></div></div>`;
+}
+function wirePurse(root,paid,redraw,onPay){
+  $$(".coinbtns .coin",root).forEach(b=>b.onclick=()=>{if(paid.length<20){paid.push(+b.dataset.v);Kit.sound.play("key");redraw();}});
+  $$("#paid .coin",root).forEach(b=>b.onclick=()=>{paid.splice(+b.dataset.k,1);Kit.sound.play("wipe");redraw();});
+  $("#payClear",root).onclick=()=>{paid.length=0;redraw();};
+  $("#payGo",root).onclick=onPay;
+}
+const sum=a=>a.reduce((s,v)=>s+v,0);
+
+/* ---------- screens + settings ---------- */
+Kit.setupToggles(st,{});
+const scr=Kit.screens({onShow(id){
+  if(id!=="play"){clock.stop();hideServe();traps.clear();}
+  if(id==="home")$("#homeSlot").appendChild(panel);
+  if(id==="teacher"){teach.slot.appendChild(panel);teach.refresh();}
+}});
+$("#goHome").onclick=()=>scr.show("home");
+const panel=document.createElement("div");panel.className="settings";
+panel.innerHTML=`
+ <div class="set-row"><h3>${bi(["Menu","メニュー"])}</h3><div class="seg" id="setMs"></div></div>
+ <div class="set-row"><h3>${bi(["Each order","1回の注文"])}</h3><div class="seg" id="setSz"></div></div>
+ <div class="set-row"><h3>${bi(["Orders","注文の数"])}</h3><div class="seg" id="setOn"></div></div>
+ <div class="classcode"><div class="cc">${bi(["Class code","クラスコード"],true)}<b class="kitCode">----</b></div><div id="ccEntry"></div></div>`;
+Kit.codeEntry($("#ccEntry",panel),{codec,onCode(d){S=d.S;changed();Kit.toast(bi(["Code "+d.code+" loaded","コード "+d.code+" を読み込みました"]));}});
+function changed(){st.set("code",code());renderSettings();if(scr.current==="teacher")teach.refresh();}
+function renderSettings(){
+  Kit.seg($("#setMs",panel),SETS.map(s=>{const k=ITEMS.filter(f=>f.src&&s.has(f)).length;return {html:bi([s.n[0]+" ("+k+")",s.n[1]+" ("+k+")"])};}),(o,i)=>S.ms===i,(o,i)=>{S.ms=i;changed();});
+  Kit.seg($("#setSz",panel),SIZES.map(s=>({html:bi(s.n)})),(o,i)=>S.sz===i,(o,i)=>{S.sz=i;changed();});
+  Kit.seg($("#setOn",panel),ORDERS.map(n=>({html:String(n)})),(o,i)=>S.on===i,(o,i)=>{S.on=i;changed();});
+  Kit.badges(code());
+}
+
+/* ---------- the game (pair or solo) ----------
+   G.mode = "waiter" | "customer" | "solo". In solo, odd orders you are the waiter and even orders the customer. */
+const G={};
+/* the computer voice is for solo practice only: pairs speak for themselves */
+const say=(...a)=>{if(G.mode==="solo")Kit.speech.say(...a);};
+const clock=Kit.timer((s,t)=>$("#gTime").textContent=t);
+const traps=Kit.traps({layer:"#gTraps",target:"#gBody",area:"#gBody"});
+const robot=Kit.soloPartner({mount:"#gRobot",speak(slow){if(G.line)say(G.line,slow?0.6:0.85);}});
+function start(mode){
+  Object.assign(G,{mode,r:0,oops:0,salt:mode==="solo"?String(Date.now()):null});$("#gOops").textContent="0";
+  $("#gRobot").hidden=mode!=="solo";
+  scr.show("play");clock.start();round();
+}
+function oops(){G.oops++;$("#gOops").textContent=G.oops;}
+function round(){
+  hideServe();traps.clear();
+  if(G.r>=nOrders())return finish();
+  G.o=orderOf(G.r,G.salt);G.tray=[];G.paid=[];G.step=1;
+  G.role=G.mode==="solo"?(G.r%2===0?"waiter":"customer"):G.mode;
+  $("#gRole").textContent=(G.role==="waiter"?"Waiter":"Customer")+(G.mode==="solo"?" · practice":"");
+  $("#gNum").textContent="Order "+(G.r+1)+"/"+nOrders();
+  draw();window.scrollTo(0,0);
+  if(G.mode==="solo")setTimeout(()=>{if(scr.current!=="play")return;
+    if(G.role==="waiter")talk(likeLine(G.o),["I'd like "+G.o.foods.map(()=>"___").join(" and ")+".","聞いて、料理をタップしよう。"]);
+    else talk("What would you like?",["What would you like?","何になさいますか？"]);},500);
+}
+function talk(line,shown){G.line=line;robot.tell(shown);say(line,0.85);}
+function next(){G.r++;round();}
+const phr=(you,them,themName)=>`<div class="phr"><span class="who">${bi(["You say","あなた"],true)}</span>${you.map(p=>`<span class="p you">${esc(p[0])}<span class="ja">${p[1]}</span></span>`).join("")}
+  <span class="who">${bi(themName,true)}</span>${them.map(p=>`<span class="p">${esc(p[0])}<span class="ja">${p[1]}</span></span>`).join("")}</div>`;
+const W1=["What would you like?","何になさいますか？"],W2=["It's ___ yen.","___円です。"],W3=["Here you are.","はい、どうぞ。"];
+const C1=["I'd like ___.","___をください。"],C2=["How much is it?","いくらですか？"],C3=["Thank you!","ありがとう！"];
+function draw(){
+  const body=$("#gBody");
+  body.innerHTML=(G.role==="waiter"?drawWaiter():drawCustomer());
+  (G.role==="waiter"?wireWaiter:wireCustomer)(body);
+}
+
+/* waiter: tap the food, serve, then tell the price */
+function drawWaiter(){
+  const o=G.o;
+  if(G.step===2)return phr([W2,W3],[C2,C3],["Customer","お客さん"])+`<div class="done">
+     ${trayHTML(o.foods)}<p>${bi(["The customer asks: \"How much is it?\" Tell them:","お客さん：「How much is it?」と聞かれたら、こう答えよう："])}</p>
+     <div class="bigprice">It's ${yen(o.total)}.</div><span class="ja">${o.total}円です。</span>
+     ${G.mode==="solo"?"":`<p class="note">${bi(["When your partner has paid, go to the next order.","パートナーがはらったら、次の注文へ。"])}</p>`}
+     <button class="btn primary big" id="wNext" type="button">${bi(G.r+1>=nOrders()?["Finish","終わる"]:["Next order","次の注文"])}</button></div>`;
+  return phr([W1,W3],[C1],["Customer","お客さん"])+`<div class="play"><div class="menu"><h3>${bi(["Menu","メニュー"],true)}</h3>
+     <div class="mgrid">${o.menu.map((f,i)=>`<button class="item${G.tray.includes(f)?" on":""}" type="button" data-i="${i}"><span class="price">${o.price.get(f)}</span>${pic(f)}${esc(f.en)}<span class="ja">${f.ja}</span></button>`).join("")}</div></div>
+    <div class="side"><div class="trayBox"><h3>${bi(["Tray","トレー"],true)}</h3>
+      <div class="slots">${G.tray.length?G.tray.map((f,k)=>`<button type="button" class="mini" data-k="${k}" aria-label="Take off ${esc(f.en)}">${pic(f)}</button>`).join(""):`<span class="empty">${bi(["Ask \"What would you like?\" and tap the food.","「What would you like?」と聞いて、料理をタップ。"],true)}</span>`}</div></div>
+      <button class="btn primary big" id="wServe" type="button" ${G.tray.length?"":"disabled"}>${bi(["Serve! Here you are.","料理を出す"])}</button>
+      ${G.mode==="solo"?"":`<p class="note">${bi(["Tap a plate on the tray to take it off.","トレーのお皿をタップすると外せるよ。"])}</p>`}</div></div>`;
+}
+function wireWaiter(body){
+  const o=G.o;
+  $$(".item",body).forEach(b=>b.onclick=()=>{const f=o.menu[+b.dataset.i];const k=G.tray.indexOf(f);if(k>=0)G.tray.splice(k,1);else if(G.tray.length<4)G.tray.push(f);Kit.sound.play("key");draw();});
+  $$(".mini",body).forEach(b=>b.onclick=()=>{G.tray.splice(+b.dataset.k,1);Kit.sound.play("wipe");draw();});
+  const sv=$("#wServe",body);if(sv)sv.onclick=waiterServe;
+  const nx=$("#wNext",body);if(nx)nx.onclick=next;
+}
+function waiterServe(){
+  const o=G.o,ok=G.tray.length===o.foods.length&&o.foods.every(f=>G.tray.includes(f));
+  say("Here you are.",0.85);
+  if(ok){Kit.sound.play("ok");G.step=2;draw();
+    if(G.mode==="solo")setTimeout(()=>{if(G.step===2&&G.role==="waiter")talk("How much is it?",["How much is it?","いくらですか？"]);},900);
+    return;}
+  oops();Kit.sound.play("boing");
+  showServe(`<h2>${bi(["Here you are!?","はい、どうぞ!?"],true)}</h2>${sillyHTML()}
+    <div class="sbtns"><button class="btn primary big" id="sBack" type="button">${bi(G.mode==="solo"?["Listen again","もう一度聞く"]:["Ask again: What would you like?","もう一度聞く"])}</button></div>`);
+  $("#sBack").onclick=()=>{hideServe();if(G.mode==="solo")say(likeLine(o),0.7);};
+}
+
+/* customer: say the order, then pay with coins */
+function drawCustomer(){
+  const o=G.o,card=`<div class="card"><h3>${bi(["Your order","あなたの注文"],true)}</h3>
+     <div class="cardfoods">${o.foods.map(f=>`<div>${pic(f)}${esc(f.en)}<span class="ja">${f.ja}</span></div>`).join("")}</div>
+     <div class="say">${esc(likeLine(o))}<span class="ja">${likeJa(o)}</span></div></div>`;
+  if(G.step===1&&G.mode!=="solo")G.step=2; /* pair: the customer can pay as soon as they hear the price */
+  if(G.step===3)return phr([C3],[],["Waiter","ウェイター"])+`<div class="done">${trayHTML(o.foods)}<h2>${bi(["Thank you!","ありがとう！"],true)}</h2>
+     <button class="btn primary big" id="cNext" type="button">${bi(G.r+1>=nOrders()?["Finish","終わる"]:["Next order","次の注文"])}</button></div>`;
+  const soloAsk=G.mode==="solo"&&G.step===1;
+  return phr([C1,C2,C3],[W1,W2],["Waiter","ウェイター"])+`<div class="play"><div>${card}
+     ${soloAsk?`<div class="sbtns" style="margin-top:12px"><button class="btn primary big" id="cOrder" type="button">${esc(likeLine(o))}<span class="ja">注文する</span></button></div>`:""}
+     ${G.mode==="solo"&&G.step===2&&!G.asked?`<div class="sbtns" style="margin-top:12px"><button class="btn primary big" id="cHow" type="button">How much is it?<span class="ja">いくらですか？</span></button></div>`:""}</div>
+    <div class="side">${soloAsk?"":purseHTML(G.paid,["The waiter says \"It's ___ yen.\" Pay with coins.","「It's ___ yen.」と言われたら、コインではらおう。"])}</div></div>`;
+}
+function wireCustomer(body){
+  const o=G.o;
+  const nx=$("#cNext",body);if(nx)nx.onclick=next;
+  const od=$("#cOrder",body);if(od)od.onclick=()=>{say(likeLine(o),0.85);G.step=2;G.asked=false;draw();
+    setTimeout(()=>{showServe(`<h2>${bi(["Here you are!","はい、どうぞ！"],true)}</h2>${trayHTML(o.foods)}<div class="sbtns"><button class="btn primary big" id="sOk" type="button">OK</button></div>`);
+      talk("Here you are.",["Here you are.","はい、どうぞ。"]);$("#sOk").onclick=hideServe;},1800);};
+  const hw=$("#cHow",body);if(hw)hw.onclick=()=>{say("How much is it?",0.9);G.asked=true;draw();
+    setTimeout(()=>talk("It's "+o.total+" yen.",["It's ___ yen.","___円です。（聞いてね）"]),1200);};
+  if($("#paid",body))wirePurse(body,G.paid,draw,customerPay);
+}
+function customerPay(){
+  const o=G.o,got=sum(G.paid);
+  if(G.mode==="solo"&&!G.asked){Kit.toast(bi(["Ask \"How much is it?\" first.","先に「How much is it?」と聞こう。"]));return;}
+  if(got===o.total){Kit.sound.play("ok");say("Thank you!",0.9);G.step=3;draw();return;}
+  oops();Kit.toast(bi(["You paid "+yen(got)+". Ask again: How much is it?",got+"円はらったよ。もう一度「How much is it?」と聞こう。"]));
+  traps.next(()=>{if(G.mode==="solo")say("It's "+o.total+" yen.",0.7);});
+}
+function finish(){
+  hideServe();const elapsed=clock.stop(),sc=Kit.score({elapsed,oops:G.oops,par:nOrders()*(G.mode==="solo"?35:60)});Kit.sound.play("win");
+  Kit.result("#result",{title:["The restaurant is closed!","閉店です！"],elapsed,oops:G.oops,score:sc.score,stars:sc.stars,swap:G.mode!=="solo",
+    art:`<div class="hero-pic">${heroTray()}</div>`,
+    buttons:G.mode==="solo"?[{label:["Play again","もう一度"],primary:true,onClick:()=>start("solo")},{label:["Home","ホーム"],onClick:()=>scr.show("home")}]
+      :[{label:["Now I'm the "+(G.mode==="waiter"?"customer":"waiter"),(G.mode==="waiter"?"次はお客さん":"次はウェイター")],primary:true,onClick:()=>start(G.mode==="waiter"?"customer":"waiter")},{label:["Home","ホーム"],onClick:()=>scr.show("home")}]});
+  scr.show("result");
+}
+$("#goWaiter").onclick=()=>start("waiter");$("#goCustomer").onclick=()=>start("customer");$("#goSolo").onclick=()=>start("solo");
+$("#gQuit").onclick=()=>scr.show("home");
+
+/* ---------- teacher page ---------- */
+const teach=Kit.teacher({mount:"#teacher",artifactUrl:ARTIFACT_URL,store:st,getCode:code,getName:()=>["Junior Sunshine 5 · Lesson 6","Junior Sunshine 5・Lesson 6"],
+  steps:[["Pairs use two Chromebooks with the same class code. One taps \"I'm the waiter\", the other \"I'm the customer\".","ペアで2台使い、同じクラスコードにします。ひとりは「ウェイター」、もうひとりは「お客さん」を押します。"],
+         ["Waiter: \"What would you like?\" Customer reads the order card: \"I'd like ___.\" The waiter taps the food and serves. A wrong order brings out a silly dish.","ウェイター「What would you like?」お客さんはカードを見て「I'd like ___.」。ウェイターは料理をタップして出します。まちがえると、へんてこ料理が出ます。"],
+         ["Customer: \"How much is it?\" Only the waiter sees the price: \"It's ___ yen.\" The customer pays with 500, 100 and 50 yen coins.","お客さん「How much is it?」値段はウェイターにしか見えません。「It's ___ yen.」お客さんは500・100・50円玉ではらいます。"],
+         ["Both screens show the same order number. At the end, swap roles and play again.","2台とも同じ注文番号です。最後に役割を交代して、もう一度。"]],
+  note:"Every order, price and menu comes from the class code and the order number, so nothing needs internet syncing. Prices are steps of 50 yen, and an order is never more than 950 yen."});
+$("#toTeacher").onclick=()=>scr.show("teacher");
+
+function heroTray(){const pick=["hamburger","French fries","soda pop"].map(n=>ITEMS.find(f=>f.en===n&&f.src)).filter(Boolean);
+  return `<div class="cloth"><div class="tray">${pick.map(f=>`<div class="plate">${pic(f)}</div>`).join("")}</div></div>`;}
+$("#heroPic").innerHTML=heroTray();
+const ico=(n,lab)=>{const f=ITEMS.find(x=>x.en===n);return (f&&f.src?pic(f):"")+bi(lab,true);};
+$("#icoW").innerHTML=ico("spaghetti",["Waiter","ウェイター"]);
+$("#icoC").innerHTML=ico("hamburger",["Customer","お客さん"]);
+$("#icoS").innerHTML=ico("parfait",["Practice","ひとりで練習"]);
+scr.show("home");renderSettings();
+window.SR={codec,ITEMS,orderOf,get S(){return S;},G};
+})();
+</script>
