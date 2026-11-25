@@ -26,12 +26,13 @@ RENAME = {
     "word-dash/Word Dash.html": "word-dash.html",
     "shape-shop/Shape Shop.html": "shape-shop.html",
     "mystery-lunchbox/Mystery Lunchbox.html": "mystery-lunchbox.html",
+    "mystery-lunchbox/Mystery Lunchbox.html": "mystery-lunchbox.html",
     "lost-and-found-desk/Lost and Found Desk.html": "lost-and-found-desk.html",
     "silly-restaurant/Silly Restaurant.html": "silly-restaurant.html",
     "silly-restaurant/template.html": "silly-restaurant/template.html",
     "silly-restaurant/build.py": "silly-restaurant/build.py",
 }
-FOLDERS = ["game-kit", "textbook-db", "sentence-box", "vocab-intro", "memory-imposter", "word-dash", "shape-shop"]
+FOLDERS = ["game-kit", "textbook-db", "sentence-box", "vocab-intro", "memory-imposter", "word-dash", "shape-shop", "mystery-lunchbox"]
 SKIP_DIRS = {"uploads", "__pycache__"}
 
 def files():
