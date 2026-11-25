@@ -214,8 +214,28 @@ const FOODS=[
  {en:"tom yam kung",ja:"トムヤムクン",pic:"Tom Yam Kung"},
  {en:"latte",ja:"カフェラテ",pic:"Latte",extra:true},
  {en:"milk",ja:"牛乳",pic:"Milk",extra:true},
- {en:"tea",ja:"お茶",pic:"Tea",extra:true},
- {en:"water",ja:"水",pic:"Water",extra:true}
+ {en:"tea",ja:"紅茶",pic:"Tea",extra:true},
+ {en:"water",ja:"水",pic:"Water",extra:true},
+ {en:"green tea",ja:"緑茶",pic:"Green Tea",extra:true},
+ {en:"mineral water",ja:"ミネラルウォーター",pic:"Mineral Water",more:true},
+ {en:"soda",ja:"ソーダ",pic:"Soda",more:true},
+ {en:"fried chicken",ja:"フライドチキン",pic:"Fried Chicken",more:true},
+ {en:"hot dog",ja:"ホットドッグ",pic:"Hot Dog",more:true},
+ {en:"sandwich",ja:"サンドイッチ",pic:"Sandwich",more:true},
+ {en:"omelet",ja:"オムレツ",pic:"Omelet",more:true},
+ {en:"noodles",ja:"めん",pic:"Noodles",more:true},
+ {en:"onigiri",ja:"おにぎり",pic:"Onigiri",more:true},
+ {en:"pancakes",ja:"パンケーキ",pic:"Pancakes",more:true},
+ {en:"jam",ja:"ジャム",pic:"Jam",more:true},
+ {en:"apple pie",ja:"アップルパイ",pic:"Apple Pie",more:true},
+ {en:"stargazy pie",ja:"スターゲイジーパイ",pic:"Stargazy Pie",more:true},
+ {en:"donut",ja:"ドーナツ",pic:"Donut",more:true},
+ {en:"pudding",ja:"プリン",pic:"Pudding",more:true},
+ {en:"parfait",ja:"パフェ",pic:"Parfait",more:true},
+ {en:"shaved ice",ja:"かき氷",pic:"Shaved Ice",more:true},
+ {en:"popcorn",ja:"ポップコーン",pic:"Popcorn",more:true},
+ {en:"candy",ja:"キャンディー",pic:"Candy",more:true},
+ {en:"chocolate",ja:"チョコレート",pic:"Chocolate",more:true}
 ];
 const JOKE="Fusion Reactor";
 const JOKES=[["Not that! That's a fusion reactor!","それじゃない！それは核融合炉だよ！"],["Oops! A fusion reactor came out!","あれ？核融合炉が出てきた！"],
@@ -228,7 +248,7 @@ const letterURL=f=>{const k=f.pic;if(IMG[k])return IMG[k];
   if(!document.fonts||document.fonts.status==="loaded")IMG[k]=u;return u;};
 const img=(f,cls)=>`<img class="${cls||""}" src="${f.letter?letterURL(f):IMG[f.pic||f]||""}" alt="" draggable="false">`;
 /* the article the voice reads: "It's sushi." / "It's a hamburger." */
-const A={"hamburger":"a ","kebab":"a ","steak":"a ","salad":"a ","cake":"a ","pizza":"a ","latte":"a "};
+const A={"hamburger":"a ","kebab":"a ","steak":"a ","salad":"a ","cake":"a ","pizza":"a ","latte":"a ","hot dog":"a ","sandwich":"a ","omelet":"an ","apple pie":"an ","stargazy pie":"a ","donut":"a ","parfait":"a "};
 const NOA=new Set(["bacon","cheese","corn","gold","caviar","wasabi","foie gras","konjac","naruto","vanilla ice cream","chocolate ice cream","strawberry ice cream"]);
 const art=f=>f.letter?"":f.ss?(NOA.has(f.en)?"":/^[aeiou]/i.test(f.en)?"an ":"a "):(A[f.en]||"");
 const sayw=f=>f.say||f.en;
@@ -255,8 +275,8 @@ const VEG=["tomato","onion","green pepper","mushroom","potato","corn","cucumber"
 const MEAT=["sausage","bacon","cheese","naruto","konjac"];
 const FANCY=["vanilla ice cream","chocolate ice cream","strawberry ice cream","gold","caviar","truffle","wasabi","foie gras"];
 const THEMES=[
- {n:["Lesson 6 food","Lesson 6 の食べ物"],list:()=>FOODS.filter(f=>!f.extra)},
- {n:["Lesson 6 + drinks","Lesson 6 ＋飲み物"],list:()=>FOODS},
+ {n:["Lesson 6 food","Lesson 6 の食べ物"],list:()=>FOODS.filter(f=>!f.extra&&!f.more)},
+ {n:["Lesson 6 + drinks","Lesson 6 ＋飲み物"],list:()=>FOODS.filter(f=>!f.more)},
  {n:["Fruits","フルーツ"],list:()=>ssPick(FRUITS)},
  {n:["Vegetables","野菜"],list:()=>ssPick(VEG)},
  {n:["Meat and more","肉など"],list:()=>ssPick(MEAT)},
@@ -265,7 +285,9 @@ const THEMES=[
  {n:["Everything","全部"],list:()=>FOODS.concat(SS)},
  {n:["Uppercase ABC","大文字 ABC"],list:()=>UPPER},
  {n:["Lowercase abc","小文字 abc"],list:()=>LOWER},
- {n:["Pizza toppings","ピザのトッピング"],list:()=>ssPick(VEG.concat(MEAT))}
+ {n:["Pizza toppings","ピザのトッピング"],list:()=>ssPick(VEG.concat(MEAT))},
+ {n:["More food and sweets","もっと食べ物とおかし"],list:()=>FOODS.filter(f=>f.more)},
+ {n:["All food pictures","全部の食べ物"],list:()=>FOODS}
 ];
 const pool=()=>(THEMES[S.th]||THEMES[0]).list();
 const deck=n=>{const d=Kit.shuffle(pool().slice(),Kit.RND);return n?d.slice(0,n):d;};
